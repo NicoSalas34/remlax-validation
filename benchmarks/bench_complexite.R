@@ -23,7 +23,7 @@
 #   ar1ar1  champ nr x nc, genotype iid, residuelle ar1(row):ar1(col)      4
 #   us3, us6, us9, us12   t caracteres, us genetique et us residuelle      t(t+1)
 #   usK3, usK6            idem avec parente dense sur le terme genetique   t(t+1)
-#   ige     le modele du chapitre 3 : str(dge + voisinage) us(2) sur GRM=I,
+#   ige     reduction a une espece du modele de Salas et al. (2026) : str(dge + voisinage) us(2) sur GRM=I,
 #           IGE inter-specifique iid, champ ar1 x ar1 aleatoire, pepite    8
 #
 # DELAI PAR AJUSTEMENT (--timeout-fit, s). remlax : prefixe `timeout` sur la

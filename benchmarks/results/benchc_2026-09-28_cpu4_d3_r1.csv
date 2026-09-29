@@ -1,2 +1,3 @@
 "date","tag","backend","case","n","reps","q","n_par","software","version","status","wall_s","startup_s","compile_s","solver_s","n_iter","n_eval","s_per_iter","s_per_eval","eval_s","converged","logLik","components","error"
 "2026-09-29","cpu4_d3_r1","cpu","usK6",7998,1,1333,NA,"remlax","9a51c79/jax0.11.1","timeout",10805.3,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,"solveur REML : echec"
+"2026-09-29","cpu4_d3_r1","cpu","ige",8037,1,8037,8,"remlax","9a51c79/jax0.11.1","ok",9724.333,218.958,18.396,9486.979,50,104,189.7396,91.221,92.1296,TRUE,"-8401.022253","0.739761;-0.328043;0.339262;0.212725;0.394118;0.664487;0.706664;0.466418",""

@@ -57,7 +57,8 @@ Features with **no external reference**: `mtrn` with all four parameters
 free (checked against a besselK profile and asreml with fixed parameters
 only), `own` user kernels (checked against the same kernel written as `exp`),
 `sep` with more than three factors, weighted incidences (checked for
-finiteness and against the IGE repository's own engine in `validation/ch3_*.R`),
+finiteness and against the engine of the IGE analysis repository, in
+`scripts/remlax/reproduction_remlax/validation/`),
 and the GPU backend today (see below).
 
 ## Figure
@@ -154,12 +155,12 @@ genotype goes from 40 to 1. Three findings.
 2. Where the problem is dense, many genotypes for few replicates, a dense
    relationship matrix, weighted neighbourhood incidences, asreml's equations
    fill in and its cost grows with q while the remlax solver does not see q.
-   On the model of chapter 3 the A100 is ahead from n = 2000 (13 s against
+   On the model of Salas et al. (2026) the A100 is ahead from n = 2000 (13 s against
    19 s), by a factor 7 at n = 8000 (114 s against 816 s) and 8 at n = 16000
    (644 s against 5422 s), at the same log-likelihood to 1e-6. On
    `usK3`/`usK6` at n = 16000 the A100 takes 442/449 s against 547/550 s. At
    n = 8000 the A100 passes asreml between 200 and 800 genotypes for the
-   chapter 3 model and between 2000 and 4000 for a single trait on a GRM.
+   model of Salas et al. (2026) and between 2000 and 4000 for a single trait on a GRM.
 3. The costs specific to remlax are the number of evaluations, which grows
    with the number of variance parameters (thousands on 91 to 157 parameters
    fitted on small samples), and XLA compilation when the relationship and
@@ -316,6 +317,6 @@ deciles at start-up.
 The LaTeX draft is in [`paper/validation_section_draft.tex`](../paper/validation_section_draft.tex);
 it is not inserted in the manuscript. It quotes the final numbers above.
 
-## Paragraph for the methods of chapter 3 (section 2.6, Fitting)
+## Paragraph for a methods section (Fitting)
 
-> All models were fitted by restricted maximum likelihood with remlax (revision f576638), a solver that evaluates the restricted log-likelihood on the dense covariance matrix with automatic differentiation and maximises it by L-BFGS-B followed by Newton polishing. Its correctness was checked against asreml 4.2, lme4 2.0.1, sommer 4.4.5 and nlme 3.1 on the same simulated data and models, in 399 comparisons covering one-factor, crossed and nested designs, genomic relationship matrices, multi-trait unstructured, diagonal, factor-analytic, reduced-rank, antedependence and Cholesky covariances, AR1 to AR3, MA, ARMA, uniform, banded and general correlations, exponential, Gaussian, spherical and Matern kernels, separable AR1 x AR1 fields, sectioned residuals, prediction, Wald and Kenward-Roger tests. Of these, 387 passed; the 12 that did not concern the MA(2) model and the spherical and circular kernels, where asreml declared convergence with parameters still moving or oscillated without converging, and where an independent REML written in dense algebra reproduces remlax's log-likelihood exactly and not asreml's. The restricted log-likelihood at the optimum agreed to within 4e-5 with asreml (3e-8 outside the reduced-rank model) and 1e-8 with lme4 and nlme, variance components to within 1e-4 relative, fixed effects to 1e-6, BLUPs to 1e-4 and prediction error variances to the mixed-model-equations formula to 1e-14. On the complete direct and indirect genetic effects model of this chapter, fitted on simulated data with known parameters, remlax and asreml agreed on all eight variance parameters within 0.1 standard error, remlax reaching a log-likelihood higher by 0.02. The full table of checks and the scripts that produce it are in the remlax repository (docs/validation.md).
+> All models were fitted by restricted maximum likelihood with remlax (revision f576638), a solver that evaluates the restricted log-likelihood on the dense covariance matrix with automatic differentiation and maximises it by L-BFGS-B followed by Newton polishing. Its correctness was checked against asreml 4.2, lme4 2.0.1, sommer 4.4.5 and nlme 3.1 on the same simulated data and models, in 399 comparisons covering one-factor, crossed and nested designs, genomic relationship matrices, multi-trait unstructured, diagonal, factor-analytic, reduced-rank, antedependence and Cholesky covariances, AR1 to AR3, MA, ARMA, uniform, banded and general correlations, exponential, Gaussian, spherical and Matern kernels, separable AR1 x AR1 fields, sectioned residuals, prediction, Wald and Kenward-Roger tests. Of these, 387 passed; the 12 that did not concern the MA(2) model and the spherical and circular kernels, where asreml declared convergence with parameters still moving or oscillated without converging, and where an independent REML written in dense algebra reproduces remlax's log-likelihood exactly and not asreml's. The restricted log-likelihood at the optimum agreed to within 4e-5 with asreml (3e-8 outside the reduced-rank model) and 1e-8 with lme4 and nlme, variance components to within 1e-4 relative, fixed effects to 1e-6, BLUPs to 1e-4 and prediction error variances to the mixed-model-equations formula to 1e-14. On the complete direct and indirect genetic effects model of Salas et al. (2026), fitted on simulated data with known parameters, remlax and asreml agreed on all eight variance parameters within 0.1 standard error, remlax reaching a log-likelihood higher by 0.02. The full table of checks and the scripts that produce it are in the remlax-validation repository (docs/validation-summary.md).

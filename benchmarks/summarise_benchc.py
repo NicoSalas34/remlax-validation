@@ -73,7 +73,7 @@ CASE_ORDER = ["iid", "grm", "ar1ar1", "us3", "us6", "us9", "us12", "usK3", "usK6
 CASE_LABEL = {"iid": "one random factor", "grm": "GRM (dense kinship)", "ar1ar1": "AR1 x AR1 field",
               "us3": "3 traits, us + us", "us6": "6 traits, us + us", "us9": "9 traits, us + us",
               "us12": "12 traits, us + us", "usK3": "3 traits x GRM", "usK6": "6 traits x GRM",
-              "ige": "chapter 3 model"}
+              "ige": "Salas et al. (2026)"}
 df["case"] = pd.Categorical(df["case"], [c for c in CASE_ORDER if c in set(df["case"])], ordered=True)
 df = df.sort_values(["case", "n", "serie"]).reset_index(drop=True)
 # taille nominale : les cas multi-caracteres perdent quelques observations a l'arrondi

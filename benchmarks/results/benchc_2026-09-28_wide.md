@@ -132,7 +132,7 @@ Times in seconds. `wall` is the complete call from R. For remlax, `startup` is t
 | 8000 | 43 | 77.9 | 47 | 1.658 | 7537.0 | 56.4 | 205.9 | 7274.7 | 39 | 402 | 186.5314 | 18.0963 | +0.0e+00 | 340.6 | 16.1 | 208.8 | 115.7 | 39 | 399 | 2.9661 | 0.2899 | +0.0e+00 |
 | 16000 | 43 | 549.6 | 47 | 11.693 | not run |  |  |  |  |  |  |  |  | 448.6 | 90.8 | 92.3 | 265.5 | 39 | 141 | 6.8073 | 1.8829 | +0.0e+00 |
 
-## ige (chapter 3 model)
+## ige (Salas et al. (2026))
 
 | n | n_par | asreml wall | asreml iters | asreml s/iter | remlax CPU wall | CPU startup | CPU compile | CPU solver | CPU iters | CPU evals | CPU s/iter | CPU s/eval | CPU dlogLik | remlax GPU wall | GPU startup | GPU compile | GPU solver | GPU iters | GPU evals | GPU s/iter | GPU s/eval | GPU dlogLik |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -184,4 +184,4 @@ Times in seconds. `wall` is the complete call from R. For remlax, `startup` is t
 | ige | 8000 | 10 | 804 | 8 | 221.8 | 2884.7 | 100.4 | 18.486 | 138.484 | 1.953 | 45.6 | 39.1 | +0.0e+00 |
 | ige | 8000 | 4 | 2009 | 8 | 815.7 | 4058.5 | 114.0 | 67.978 | 149.866 | 1.899 | 49.1 | 49.4 | +0.0e+00 |
 | ige | 8000 | 2 | 4018 | 8 | 2040.4 | 5103.5 | 162.2 | 170.036 | 176.165 | 2.208 | 73.8 | 61.8 | +5.7e-05 |
-| ige | 8000 | 1 | 8037 | 8 | failed | not run | 258.2 |  |  | 2.633 | 91.1 | 131.7 |  |
+| ige | 8000 | 1 | 8037 | 8 | failed | 9724.3 | 258.2 |  | 189.740 | 2.633 | 91.1 | 131.7 |  |

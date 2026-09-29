@@ -52,8 +52,8 @@ q = n/4 genotypes (or n/(2t) for the multi-trait cases).
 random factor (`iid`), the same with a dense genomic relationship matrix
 (`grm`), an AR1 x AR1 field (`ar1ar1`), 3, 6, 9 and 12 traits with unstructured
 genetic and residual covariances (`us3` to `us12`), 3 and 6 traits on a
-genomic relationship matrix (`usK3`, `usK6`), and the model of chapter 3
-(`ige`: direct and indirect genetic effects in a 2 x 2 unstructured block,
+genomic relationship matrix (`usK3`, `usK6`), and a one-species reduction of
+the model of Salas et al. (2026) (`ige`: direct and indirect genetic effects in a 2 x 2 unstructured block,
 an indirect effect from the other species, an AR1 x AR1 random field and a
 nugget).
 
@@ -101,7 +101,7 @@ update, or a warm start from a smaller model, is the lever on this cost.
 Once the relationship matrix is dense or the incidence links genotypes to
 each other, asreml's equations fill in and its cost grows with q. On `usK3`
 and `usK6` at n = 16000 asreml takes 547 and 550 s, the A100 442 and 449 s. On
-the model of chapter 3 the A100 is ahead from n = 2000: 13 s against 19 s at
+the model of Salas et al. (2026) the A100 is ahead from n = 2000: 13 s against 19 s at
 n = 2000, 114 s against 816 s at n = 8000, 644 s against 5422 s at n = 16000,
 with the same log-likelihood to 1e-6 (-13850.232858 against -13850.232859).
 
@@ -114,7 +114,9 @@ information matrix (with an identity relationship matrix and one plot per
 genotype, the direct genetic variance and the nugget are not separately
 identified). The remlax solver takes 39 to 132 s over the same range; its
 one-replicate fit is timed but its variance components carry the same
-identification problem and are not a result. The A100 passes asreml between
+identification problem and are not a result. On 4 CPU cores the remlax
+solver takes 2770 to 9487 s over the same range. Its one-replicate fit
+reaches the same log-likelihood as on the A100 (-8401.022253). The A100 passes asreml between
 q = 200 and 800 genotypes for `ige` at n = 8000, and between q = 2000 and
 4000 for `grm`.
 
@@ -122,7 +124,7 @@ What makes the problem dense for asreml is the ratio of genotypes to
 replicates, not n. A weighted neighbourhood incidence links every genotype
 to the genotypes of its neighbours; in asreml it has no syntax of its own
 and is passed through `grp()`, that is q dense covariate columns, treated as
-dense regressors of size n x q. The design of chapter 3 (12760 observations,
+dense regressors of size n x q. The field design this model was built for (12760 observations,
 neighbourhoods up to order 10, several hundred neighbours per plant) is a
 strong case of this. For remlax none of this matters: V is n x n and dense
 whatever the incidence, and a neighbourhood of order 10 costs the same
@@ -214,7 +216,7 @@ It is the tool when the model is dense in the sense above: many genotypes
 and few replicates, a genomic relationship matrix, weighted neighbourhood
 incidences, several traits on a relationship matrix; when the structure is
 written as a function and differentiated exactly; when a GPU is available;
-and when no asreml licence is. On the model of chapter 3 at the size of the
+and when no asreml licence is. On the model of Salas et al. (2026) at the size of the
 experiment, the A100 is 7 to 8 times faster than asreml on 4 cores.
 
 ## Part 2. The engine alone: CPU against a MIG slice (2026-09-01)
