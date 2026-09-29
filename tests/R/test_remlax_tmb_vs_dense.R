@@ -28,8 +28,8 @@
 suppressPackageStartupMessages({ library(Matrix) })
 ICI <- tryCatch(dirname(normalizePath(sys.frame(1)$ofile)), error = function(e) "tests/R")
 RACINE <- normalizePath(file.path(ICI, "..", ".."), mustWork = FALSE)
-source(file.path(RACINE, "R", "remlax.R"))
-source(file.path(RACINE, "R", "remlax_tmb.R"))
+source(file.path(RACINE, "R", "charger_remlax.R"))
+invisible(NULL)  # remlax_tmb.R : dans le paquet, charge par charger_remlax.R
 
 TOL_LL <- 1e-6          # unites de -2logL : bien en dessous de tout ecart interpretable
 ok <- 0L; ko <- 0L

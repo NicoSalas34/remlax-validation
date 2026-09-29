@@ -27,7 +27,7 @@
 # qu'un job tue par le mur de temps laisse ses donnees dans le journal.
 # =============================================================================
 suppressPackageStartupMessages({ library(here); library(Matrix); library(jsonlite) })
-source(here::here("R", "remlax.R"))
+source(here::here("R", "charger_remlax.R"))
 
 args <- commandArgs(trailingOnly = TRUE)
 opt <- function(nom, defaut) {

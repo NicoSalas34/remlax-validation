@@ -4,7 +4,7 @@
 # identite n'apporte aucun parametre, donc les deux correlations sont PARTAGEES
 # entre les repliques. C'est ce que le moteur d'IGE_analysis estime, et c'est ce
 # que l'interface R ne savait pas exprimer.
-suppressMessages(source(file.path(Sys.getenv("RX_DIR", "."), "R", "remlax.R")))
+suppressMessages(source(file.path(Sys.getenv("RX_DIR", "."), "R", "charger_remlax.R")))
 set.seed(4)
 nb <- 3L; nr <- 4L; nc <- 5L; q <- nb * nr * nc
 n <- 2L * q

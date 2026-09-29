@@ -34,8 +34,8 @@ TT  <- as.integer(arg("t", "2")); OUT <- arg("out", "grille.csv"); TAG <- arg("t
 SEED <- as.integer(arg("seed", "20260901"))
 MAXIT <- as.integer(arg("maxiter", "3000"))
 REPO <- arg("repo", ".")
-source(file.path(REPO, "R/remlax.R"))
-if (MOT == "creux") source(file.path(REPO, "R/remlax_tmb.R"))
+source(file.path(REPO, "R/charger_remlax.R"))
+if (MOT == "creux") invisible(NULL)  # remlax_tmb.R : dans le paquet, charge par charger_remlax.R
 set.seed(SEED)
 
 inc <- function(f, q) Matrix::sparseMatrix(i = seq_along(f), j = as.integer(f),

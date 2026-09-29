@@ -39,7 +39,7 @@
 # CSV est reecrit a chaque ligne : un job tue laisse ses donnees.
 # =============================================================================
 suppressPackageStartupMessages({ library(here); library(Matrix); library(jsonlite) })
-source(here::here("R", "remlax.R"))
+source(here::here("R", "charger_remlax.R"))
 
 args <- commandArgs(trailingOnly = TRUE)
 opt <- function(nom, defaut) {

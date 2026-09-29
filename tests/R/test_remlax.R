@@ -22,7 +22,7 @@
 suppressPackageStartupMessages({
   library(here); library(Matrix); library(jsonlite)
 })
-source(here::here("R", "remlax.R"))
+source(here::here("R", "charger_remlax.R"))
 # Backend de la suite. Defaut "cpu" : en local on veut un temoin deterministe.
 # RX_BACKEND=gpu rejoue EXACTEMENT les memes comparaisons sur la carte, ce qui
 # fait de cette suite un test de la machine autant que du code.

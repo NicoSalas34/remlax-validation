@@ -18,7 +18,7 @@
 # conteneur : ce script IMPRIME ce qu'il trouve avant de comparer, et une
 # structure inattendue produit un diagnostic, non un echec muet.
 suppressPackageStartupMessages({library(Matrix); library(asreml)})
-source("R/remlax.R")
+source("R/charger_remlax.R")
 ok <- 0L; ko <- 0L
 verifier <- function(nom, cond, detail = "") {
   if (isTRUE(cond)) { ok <<- ok + 1L; cat(sprintf("  OK    %-44s %s\n", nom, detail)) }

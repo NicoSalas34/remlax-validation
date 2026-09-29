@@ -16,7 +16,7 @@
 #   Rscript tests/R/diag_asreml3_ecarts.R
 # ==============================================================================
 suppressPackageStartupMessages({ library(here); library(Matrix); library(jsonlite); library(asreml) })
-source(here::here("R", "remlax.R"))
+source(here::here("R", "charger_remlax.R"))
 BK <- Sys.getenv("RX_BACKEND", "cpu")
 asreml.options(workspace = "2gb", pworkspace = "1gb")
 cat("asreml", as.character(packageVersion("asreml")), "\n")

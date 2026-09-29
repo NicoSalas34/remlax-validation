@@ -318,7 +318,8 @@ def main(argv=None):
                     help="evaluations seules ; l'ajustement complet est le poste cher")
     a = ap.parse_args(argv)
 
-    sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "src"))
+    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    import moteur_remlax  # noqa: F401
     import jax
     from remlax.device import pick_device, device_report
     from remlax.fit import fit_reml

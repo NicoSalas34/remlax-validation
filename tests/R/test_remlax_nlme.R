@@ -30,7 +30,7 @@
 suppressPackageStartupMessages({
   library(here); library(Matrix); library(jsonlite); library(nlme)
 })
-source(here::here("R", "remlax.R"))
+source(here::here("R", "charger_remlax.R"))
 BK <- Sys.getenv("RX_BACKEND", "cpu")
 cat("nlme", as.character(packageVersion("nlme")), "| R", R.version$major, R.version$minor, "\n")
 

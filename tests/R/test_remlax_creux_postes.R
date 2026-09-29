@@ -20,7 +20,7 @@
 #   2. proc.time() quantifie a ~10 ms, or une evaluation creuse est
 #      sous-milliseconde aux petites tailles — celles qui portent le point de
 #      croisement entre moteurs.
-suppressMessages({source("R/remlax.R"); source("R/remlax_tmb.R")})
+suppressMessages({source("R/charger_remlax.R"); invisible(NULL)  # remlax_tmb.R : dans le paquet, charge par charger_remlax.R})
 src <- readLines("benchmarks/bench_engines.R")
 i <- grep("^cas_traits <- function", src); j <- grep("^lignes <- list", src)[1]
 eval(parse(text = paste(src[i:(j - 1L)], collapse = "\n")))

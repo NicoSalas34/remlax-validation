@@ -262,7 +262,7 @@ def main(argv=None):
     A("")
     A("```sh")
     A("# inside a container or an environment carrying JAX, R, lme4, sommer, nlme")
-    A("export PYTHONPATH=$PWD/src RX_PY=python3")
+    A("export RX_PY=python3   # remlax installe comme paquet R")
     A("")
     A("python3 -m pytest tests/python -q                 # unit tests")
     A("python3 tests/python/test_remlax_core.py          # internal algebra")

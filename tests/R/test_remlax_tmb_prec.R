@@ -15,7 +15,7 @@ suppressPackageStartupMessages(library(Matrix))
 ici <- function(f) file.path(dirname(dirname(dirname(normalizePath(
   sys.frame(1)$ofile %||% "tests/R/x")))), f)
 `%||%` <- function(a, b) if (is.null(a)) b else a
-source("R/remlax.R"); source("R/remlax_tmb.R")
+source("R/charger_remlax.R"); invisible(NULL)  # remlax_tmb.R : dans le paquet, charge par charger_remlax.R
 
 ok <- 0L; ko <- 0L
 verif <- function(nom, ecart, tol = 1e-8) {

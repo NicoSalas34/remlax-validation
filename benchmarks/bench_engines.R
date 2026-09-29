@@ -17,7 +17,7 @@
 # laisser sur un rapport de flops non calibre.
 suppressPackageStartupMessages(library(Matrix))
 `%||%` <- function(a, b) if (is.null(a)) b else a
-source("R/remlax.R"); source("R/remlax_tmb.R")
+source("R/charger_remlax.R"); invisible(NULL)  # remlax_tmb.R : dans le paquet, charge par charger_remlax.R
 
 a <- commandArgs(TRUE)
 arg <- function(k, d) { i <- match(paste0("--", k), a); if (is.na(i)) d else a[i + 1L] }

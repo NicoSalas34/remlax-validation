@@ -30,7 +30,7 @@
 suppressPackageStartupMessages({
   library(here); library(Matrix); library(jsonlite)
 })
-source(here::here("R", "remlax.R"))
+source(here::here("R", "charger_remlax.R"))
 ga <- function(k, d) { a <- commandArgs(TRUE); m <- grep(paste0("^--", k, "="), a, value = TRUE)
   if (length(m)) sub(paste0("^--", k, "="), "", m[1]) else d }
 NOYAU <- ga("noyau", "puissance"); ORD <- as.integer(ga("ord", 6))

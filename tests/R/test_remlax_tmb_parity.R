@@ -19,7 +19,7 @@
 # forme close de la precision AR(1) etait fausse d'un facteur ou d'un signe.
 suppressPackageStartupMessages({ library(Matrix) })
 ICI <- tryCatch(dirname(normalizePath(sys.frame(1)$ofile)), error = function(e) "tests/R")
-source(file.path(ICI, "..", "..", "R", "remlax_tmb.R"))
+invisible(NULL)  # remlax_tmb.R : dans le paquet, charge par charger_remlax.R
 
 PY <- Sys.getenv("RX_PY", "python3")
 SRC <- normalizePath(file.path(ICI, "..", "..", "src"), mustWork = FALSE)

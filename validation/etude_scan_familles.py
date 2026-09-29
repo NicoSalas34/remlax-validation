@@ -36,8 +36,9 @@ import numpy as np
 from scipy.stats import chi2 as chi2_dist
 
 RACINE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, os.path.join(RACINE, "src"))
-sys.path.insert(0, os.path.join(RACINE, "tests", "python"))
+sys.path.insert(0, RACINE)
+import moteur_remlax  # noqa: E402
+sys.path.insert(0, os.path.join(moteur_remlax.MOTEUR, "..", "..", "tests-python"))  # outils_dispositifs, si le depot remlax est a cote
 
 
 def _charger(nom, chemin):
@@ -47,7 +48,7 @@ def _charger(nom, chemin):
     return m
 
 
-_scan = _charger("remlax_scan", os.path.join(RACINE, "src", "remlax", "scan.py"))
+_scan = _charger("remlax_scan", os.path.join(moteur_remlax.MOTEUR, "remlax", "scan.py"))
 _t = _charger("t_scan", os.path.join(RACINE, "tests", "python", "test_scan.py"))
 projeter, scan, lambda_gc = _scan.projeter, _scan.scan, _scan.lambda_gc
 

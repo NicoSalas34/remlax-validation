@@ -17,7 +17,7 @@
 # ==============================================================================
 suppressPackageStartupMessages({ library(Matrix) })
 RACINE <- Sys.getenv("IGE_RACINE", ".")
-source(file.path(RACINE, "R", "remlax.R"))
+source(file.path(RACINE, "R", "charger_remlax.R"))
 BACKEND <- Sys.getenv("RX_BACKEND", "auto")
 
 .n_ok <- 0L; .n_ko <- 0L

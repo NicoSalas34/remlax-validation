@@ -20,7 +20,7 @@
 suppressPackageStartupMessages({
   library(here); library(Matrix); library(jsonlite); library(asreml)
 })
-source(here::here("R", "remlax.R"))
+source(here::here("R", "charger_remlax.R"))
 BK <- Sys.getenv("RX_BACKEND", "cpu")
 cat("asreml", as.character(packageVersion("asreml")), "| R", R.version$major, R.version$minor, "\n")
 asreml.options(trace = FALSE, workspace = "2gb", pworkspace = "1gb", maxit = 100)

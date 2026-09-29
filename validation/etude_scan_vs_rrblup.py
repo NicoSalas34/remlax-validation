@@ -25,13 +25,15 @@ CE QUI EST VERIFIE.
 import importlib.util
 import os
 import sys
+import sys
 
 import numpy as np
 from scipy.stats import beta as beta_dist, chi2 as chi2_dist
 
 RACINE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, RACINE)
 _sp = importlib.util.spec_from_file_location(
-    "remlax_scan", os.path.join(RACINE, "src", "remlax", "scan.py"))
+    "remlax_scan", os.path.join(__import__("moteur_remlax").MOTEUR, "remlax", "scan.py"))
 rxscan = importlib.util.module_from_spec(_sp)
 _sp.loader.exec_module(rxscan)
 

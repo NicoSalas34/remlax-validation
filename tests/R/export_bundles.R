@@ -18,7 +18,7 @@ getarg <- function(k, d) { a <- commandArgs(TRUE); i <- grep(paste0("^--", k, "=
   if (length(i)) sub(paste0("^--", k, "="), "", a[i[1]]) else d }
 RACINE <- getarg("racine", ".")
 OUT    <- getarg("out", file.path(RACINE, "output", "tests", "bundles"))
-source(file.path(RACINE, "R", "remlax.R"))
+source(file.path(RACINE, "R", "charger_remlax.R"))
 dir.create(OUT, recursive = TRUE, showWarnings = FALSE)
 
 set.seed(20260901)

@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+.Rhistory
+.RData
+benchmarks/results/scratch/
+benchmarks/figures/scratch/
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.bbl
+paper/*.blg
+paper/*.toc
+paper/*.synctex.gz
+paper/*.fls
+paper/*.fdb_latexmk
+paper/*.pdf
+!paper/figures/*.pdf

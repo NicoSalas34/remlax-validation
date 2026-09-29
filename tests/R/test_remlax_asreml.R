@@ -20,7 +20,7 @@
 suppressPackageStartupMessages({
   library(here); library(Matrix); library(jsonlite); library(splines); library(asreml)
 })
-source(here::here("R", "remlax.R"))
+source(here::here("R", "charger_remlax.R"))
 
 ECHECS <- character(0)
 verifier <- function(nom, cond, detail = "") {
