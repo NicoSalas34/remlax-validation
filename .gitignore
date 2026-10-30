@@ -15,3 +15,4 @@ paper/*.fls
 paper/*.fdb_latexmk
 paper/*.pdf
 !paper/figures/*.pdf
+_archive_bancs_20261021/

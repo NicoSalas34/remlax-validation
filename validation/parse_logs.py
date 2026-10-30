@@ -52,6 +52,8 @@ SOURCES = [
     ("15_asreml3.log", "asreml_rest", "asreml"),
     ("06b_asreml_blup.log", "asreml_blup", "asreml"),
     ("06_ige.log", "ige_model", "asreml + known truth"),
+    # Les trois journaux tmb n'existent que dans la campagne de 2026-09 : le moteur
+    # RTMB a ete retire de remlax ensuite, avec ses suites.
     ("10_tmb_parity.log", "sparse_parity", "dense engine (same theta)"),
     ("11_tmb_vs_dense.log", "sparse_vs_dense", "dense engine (warm start both ways)"),
     ("12_tmb_prec.log", "sparse_prec", "independent dense-algebra REML"),
@@ -82,6 +84,7 @@ VERSIONS = [
     ("nlme", re.compile(r"nlme (\d+\.\d+[-.]\d+)")),
     ("pbkrtest", re.compile(r"pbkrtest (\d+\.\d+\.\d+)")),
     ("jax", re.compile(r"\[jax\] (\d+\.\d+\.\d+)")),
+    # Ne sert qu'aux journaux de 2026-09 (moteur RTMB retire de remlax depuis).
     ("RTMB", re.compile(r"RTMB (\d+\.\d+[\d.]*)")),
 ]
 N_LIGNES_VERSIONS = 8

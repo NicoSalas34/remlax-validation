@@ -7,7 +7,7 @@
 # signe qu'un programme deja compile etait reutilise d'une cellule a l'autre.
 # L'ordre d'execution influencait donc le resultat. Un processus neuf par
 # cellule supprime la cause plutot que de corriger l'effet, au prix d'un
-# demarrage par mesure — qui est justement ce qu'on veut mesurer.
+# demarrage par mesure, qui est justement ce qu'on veut mesurer.
 #
 # LES TROIS AXES, ET POURQUOI ILS SONT SEPARABLES.
 #   n  observations         -> cout de la factorisation dense, en n^3
@@ -22,9 +22,14 @@
 #   creux-dense   champ ar1                      -> moteur dense
 #   dense-dense   parente genomique pleine       -> moteur dense      (son terrain)
 #   dense-creux   parente genomique pleine       -> moteur creux      LE PIRE CAS
-# La derniere est celle que le perimetre declare du moteur creux exclut par
-# principe : on la force par la fente Kinv, pour chiffrer ce que coute le
-# mauvais choix plutot que de l'affirmer.
+# Le moteur "creux" est le moteur des equations du modele mixte (MME) de remlax,
+# avec inversion creuse et optimiseur AI : rx_fit(engine = "mme",
+# inversion = "sparse", optimizer = "ai"). Il remplace le moteur RTMB, retire de
+# remlax en octobre 2026 ; le jeton "creux" est garde pour que les tableaux
+# produits gardent leurs colonnes et leurs valeurs.
+# La derniere cellule force une parente pleine dans la factorisation creuse, par
+# la fente Kinv, pour chiffrer ce que coute le mauvais choix plutot que de
+# l'affirmer.
 suppressPackageStartupMessages(library(Matrix))
 a <- commandArgs(TRUE)
 arg <- function(k, d = NULL) { i <- match(paste0("--", k), a); if (is.na(i)) d else a[i + 1L] }
@@ -35,7 +40,6 @@ SEED <- as.integer(arg("seed", "20260901"))
 MAXIT <- as.integer(arg("maxiter", "3000"))
 REPO <- arg("repo", ".")
 source(file.path(REPO, "R/charger_remlax.R"))
-if (MOT == "creux") invisible(NULL)  # remlax_tmb.R : dans le paquet, charge par charger_remlax.R
 set.seed(SEED)
 
 inc <- function(f, q) Matrix::sparseMatrix(i = seq_along(f), j = as.integer(f),
@@ -71,8 +75,11 @@ m <- rx_model(y, X, terms = list(tm),
               residual = rx_residual(trait = factor(trait), struct = "diag"))
 
 t0 <- proc.time()[["elapsed"]]
-# MEME plafond des deux cotes : sinon une troncature passe pour une convergence.
-r <- try(if (MOT == "creux") rx_fit_sparse(m, maxiter = MAXIT, verbose = FALSE)
+# MEME plafond et memes sorties des deux cotes : sinon une troncature passe pour
+# une convergence. Le moteur MME tourne sur CPU (factorisation creuse).
+r <- try(if (MOT == "creux") rx_fit(m, backend = "cpu", engine = "mme", inversion = "sparse",
+                                    optimizer = "ai", maxiter = MAXIT, hessian = FALSE,
+                                    blups = FALSE, verbose = FALSE)
          else rx_fit(m, backend = BK, maxiter = MAXIT, hessian = FALSE,
                      blups = FALSE, verbose = FALSE),
          silent = TRUE)
@@ -87,16 +94,17 @@ ligne <- data.frame(
   # dans le cas creux : le champ ar1 porte sa correlation.
   p_attendu = as.integer(TT * (TT + 1) / 2 + TT + (CAS == "creux")),
   n_iter = if (inherits(r, "try-error")) NA_integer_ else as.integer(r$n_iter %||% NA),
-  # PAROI contre INTERNE : le moteur dense est invoque hors processus et paie un
-  # demarrage de python a chaque appel. Les deux sont enregistres ; seul
-  # l'interne compare les algebres, seule la paroi dit ce que l'utilisateur subit.
+  # PAROI contre INTERNE : les deux moteurs passent par le solveur Python, hors du
+  # processus R, et la paroi contient ce cout d'invocation. Les deux sont
+  # enregistres ; seul l'interne compare les algebres, seule la paroi dit ce que
+  # l'utilisateur subit.
   fit_paroi_s = paroi,
   fit_interne_s = if (inherits(r, "try-error")) NA_real_
                   else as.numeric(r$secondes %||% paroi),
-  # Le moteur dense rapporte desormais lui-meme sa compilation et le cout d'une
-  # evaluation : XLA compile au premier appel, donc premier - suivant = compilation.
-  # Le moteur creux n'a pas d'equivalent — RTMB compile son C++ une fois a la
-  # construction, et ce cout est deja dans le total.
+  # Les deux moteurs rapportent eux-memes leur compilation et le cout d'une
+  # evaluation : le premier appel paie la compilation, donc premier - suivant =
+  # compilation. Pour le moteur MME, eval_s est la mediane de ses evaluations
+  # completes.
   compile_s = if (inherits(r, "try-error")) NA_real_ else as.numeric(r$compile_s %||% NA),
   eval_s = if (inherits(r, "try-error")) NA_real_ else as.numeric(r$eval_s %||% NA),
   logLik = if (inherits(r, "try-error")) NA_real_ else as.numeric(r$logLik),

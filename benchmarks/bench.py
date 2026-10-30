@@ -216,9 +216,8 @@ def timed_objective(terms, res, y, X, reps):
     fait qu'un petit modele est plus rapide sur CPU que sur GPU.
     """
     import jax
-    from remlax import structures as S
-    from remlax.model import make_objective, n_theta
-    from remlax.fit import initial_theta
+    from remlax.model import make_objective
+    from remlax.start import initial_theta
     fun_sc, fun, sc, Zs = make_objective(terms, res, y, X)
     th = np.asarray(initial_theta(terms, res, y))
     t0 = time.perf_counter()

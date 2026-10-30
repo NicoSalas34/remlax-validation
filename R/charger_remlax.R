@@ -3,8 +3,9 @@
 #                     depot de validation
 # ------------------------------------------------------------------------------
 # Les scripts de validation sont nes dans le depot remlax, ou ils chargeaient les
-# sources par source("R/remlax.R"). Ils testent aussi des fonctions internes
-# (rx_python_cmd, rx_sparse_*, ...). On charge donc le paquet INSTALLE et l'on
+# sources par source("R/remlax.R"), fichier depuis decoupe en plusieurs. Ils
+# testent aussi des fonctions internes (.rx_parse_random, .rx_parse_residual,
+# ...). On charge donc le paquet INSTALLE et l'on
 # rend son espace de noms entier visible depuis l'environnement global : les
 # scripts voient exactement ce qu'ils voyaient avec source(), mais c'est bien le
 # code du paquet teste, a la version installee, qui repond.

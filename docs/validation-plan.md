@@ -21,6 +21,11 @@ the row says so.
 
 ## 2. The sparse engine computes the *same* REML
 
+The sparse engine of this section was the RTMB engine. It was removed from
+remlax after the campaign of 2026-09-28/29, together with the three suites named
+below, and the mixed model equations engine (`rx_fit(engine = "mme")`) now
+covers its scope. The rows record what that campaign checked.
+
 This is the part where a defect is easiest to miss, because a wrong likelihood
 can leave the parameter estimates correct.
 

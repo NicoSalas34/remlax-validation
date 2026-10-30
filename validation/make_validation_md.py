@@ -276,9 +276,6 @@ def main(argv=None):
     A("Rscript  tests/R/test_remlax_asreml3.R            # asreml, remaining structures")
     A("Rscript  tests/R/test_remlax_asreml_blup.R        # asreml, BLUPs")
     A("Rscript  tests/R/test_remlax_ige.R                # full model, known truth")
-    A("Rscript  tests/R/test_remlax_tmb_parity.R         # sparse engine (RTMB)")
-    A("Rscript  tests/R/test_remlax_tmb_vs_dense.R")
-    A("Rscript  tests/R/test_remlax_tmb_prec.R")
     A("")
     A("Rscript  tests/R/export_bundles.R --out=bundles   # serialise the catalogue")
     A("python3  tests/python/parite_gpu.py bundles --tol 1e-8   # CPU against GPU")
@@ -286,6 +283,10 @@ def main(argv=None):
     A("python3 validation/parse_logs.py <logs>=<provenance> --out validation/results/checks_<date>.csv")
     A("python3 validation/make_validation_md.py --csv ... --versions ... --rev <sha> --date <date>")
     A("```")
+    A("")
+    A("The RTMB sparse engine was removed from remlax after this campaign, together "
+      "with its three suites (`test_remlax_tmb_*.R`), and the mixed model equations "
+      "engine (`rx_fit(engine = \"mme\")`) now covers its scope.")
     A("")
     A("asreml requires a licence, and the `test_remlax_asreml*.R` suites "
       "check one out at run time. The other suites need no licence. The "

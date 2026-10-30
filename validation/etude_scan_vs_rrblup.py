@@ -25,7 +25,6 @@ CE QUI EST VERIFIE.
 import importlib.util
 import os
 import sys
-import sys
 
 import numpy as np
 from scipy.stats import beta as beta_dist, chi2 as chi2_dist
@@ -64,7 +63,7 @@ def main(dossier):
     Py = Vi @ resid - Vi @ X @ (vbeta @ (X.T @ Vi @ resid))
 
     # une observation par genotype => l'incidence du genotype focal est I(q)
-    proj = rxscan.projeter(dict(Vi=Vi, vbeta=vbeta, Py=Py), X, {"dir": np.eye(q)})
+    proj = rxscan.project(dict(Vi=Vi, vbeta=vbeta, Py=Py), X, {"dir": np.eye(q)})
     r = rxscan.scan(proj, M, tests=["dir"])
     num, den, chi2 = r["num_dir"], r["den_dir_dir"], r["chi2_dir"]
 

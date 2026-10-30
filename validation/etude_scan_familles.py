@@ -50,7 +50,7 @@ def _charger(nom, chemin):
 
 _scan = _charger("remlax_scan", os.path.join(moteur_remlax.MOTEUR, "remlax", "scan.py"))
 _t = _charger("t_scan", os.path.join(RACINE, "tests", "python", "test_scan.py"))
-projeter, scan, lambda_gc = _scan.projeter, _scan.scan, _scan.lambda_gc
+projeter, scan, lambda_gc = _scan.project, _scan.scan, _scan.lambda_gc
 
 RNG = np.random.default_rng(90210)
 

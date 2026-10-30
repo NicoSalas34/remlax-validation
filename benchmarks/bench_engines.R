@@ -1,23 +1,28 @@
 # =============================================================================
 # La grille de decision : {cas creux, cas dense} x {dense CPU, dense GPU, creux CPU}
 # =============================================================================
-# SIX cellules et non huit. Le moteur creux factorise par CHOLMOD, qui est CPU :
-# la cellule "creux x GPU" N'EXISTE PAS, et cette absence est un resultat — elle
-# rend les choix "creux" et "GPU" exclusifs, donc la decision est un arbitrage et
-# non une optimisation a deux axes independants.
+# Le moteur "creux" est le moteur des equations du modele mixte (MME) de remlax,
+# avec inversion creuse et optimiseur AI : rx_fit(engine = "mme",
+# inversion = "sparse", optimizer = "ai"). Il remplace le moteur RTMB, retire de
+# remlax en octobre 2026 ; le jeton "creux" est garde pour que les tableaux
+# produits gardent leurs colonnes et leurs valeurs.
+#
+# SIX cellules et non huit. La factorisation creuse tourne sur CPU : la cellule
+# "creux x GPU" N'EXISTE PAS. Cette absence rend les choix "creux" et "GPU"
+# exclusifs, donc la decision est un arbitrage et non une optimisation a deux
+# axes independants.
 #
 # Les deux cas sont definis par la STRUCTURE, jamais par la taille :
 #   CREUX : facteur iid + champ ar1, dont les inverses sont diagonal et tridiagonal
 #   DENSE : parente genomique, dont l'inverse est PLEIN
 #
-# La cellule la plus instructive est le cas DENSE force sur le moteur creux. Le
-# perimetre declare l'exclut par principe ; on l'y force ici, via Kinv, pour
-# mesurer l'ampleur du cout. C'est la reponse quantitative a "pourquoi ne pas
+# La cellule la plus instructive est le cas DENSE force sur le moteur creux. On
+# l'y force ici, via une Kinv pleine, pour mesurer l'ampleur du cout. C'est la reponse quantitative a "pourquoi ne pas
 # faire du creux partout", et ce qui calibre l'outil de decision au lieu de le
 # laisser sur un rapport de flops non calibre.
 suppressPackageStartupMessages(library(Matrix))
 `%||%` <- function(a, b) if (is.null(a)) b else a
-source("R/charger_remlax.R"); invisible(NULL)  # remlax_tmb.R : dans le paquet, charge par charger_remlax.R
+source("R/charger_remlax.R")
 
 a <- commandArgs(TRUE)
 arg <- function(k, d) { i <- match(paste0("--", k), a); if (is.na(i)) d else a[i + 1L] }
@@ -48,22 +53,24 @@ if (KIN) {
 # rx_fit expose backend = c("auto", "gpu", "cpu") : on le fixe explicitement,
 # jamais "auto", pour qu'une cellule GPU qui retomberait sur le CPU se voie.
 fit_dense <- function(m, ...) rx_fit(m, backend = BK, ...)
+# Le moteur MME avec inversion creuse, sur CPU.
+fit_creux <- function(m, ...) rx_fit(m, backend = "cpu", engine = "mme",
+                                     inversion = "sparse", optimizer = "ai", ...)
 
-# BIAIS A NE PAS MESURER. Le moteur dense est invoque HORS PROCESSUS : chaque
-# appel paie le demarrage de Python et la compilation XLA, mesures a ~3 s contre
-# 0,07 s pour une evaluation du moteur creux en processus. Comparer ces temps de
-# paroi produirait une conclusion fausse sur le cout du calcul. On enregistre
-# donc, pour le moteur dense, le temps INTERNE que le solveur rapporte lui-meme
-# (champ `secondes`), et le temps de paroi dans une colonne separee : l'ecart
-# entre les deux EST le cout d'invocation, qui a son propre interet puisqu'un
-# ajustement le paie une fois et une boucle de comparaison de modeles a chaque
-# appel.
+# BIAIS A NE PAS MESURER. Les deux moteurs passent par le solveur Python, HORS DU
+# PROCESSUS R : chaque appel paie cette invocation, et le premier la compilation.
+# Comparer ces temps de paroi produirait une conclusion fausse sur le cout du
+# calcul. On enregistre donc le temps INTERNE que le solveur rapporte
+# lui-meme (champ `secondes`), et le temps de paroi dans une colonne separee :
+# l'ecart entre les deux EST le cout d'invocation, qui a son propre interet
+# puisqu'un ajustement le paie une fois et une boucle de comparaison de modeles
+# a chaque appel.
 # ECHAUFFEMENT HORS MESURE. Le premier appel d'une cellule paie des couts de
-# construction qui ne sont pas le calcul mesure : compilation C++ de RTMB cote
-# creux, compilation XLA cote dense. Mesure du piege : le moteur creux affichait
-# 0,209 s a t = 1 puis 0,012 s a t = 2, un facteur 17 a l'envers de la pente
-# attendue — la mediane de deux repetitions contenait encore la construction.
-# Un appel non chronometre precede donc les repetitions.
+# construction qui ne sont pas le calcul mesure, dont la compilation. Mesure du
+# piege avec l'ancien moteur RTMB : il affichait 0,209 s a t = 1 puis 0,012 s a
+# t = 2, un facteur 17 a l'envers de la pente attendue. La mediane de deux
+# repetitions contenait encore la construction. Un appel non chronometre precede
+# donc les repetitions.
 chrono <- function(f, reps) {
   invisible(try(f(), silent = TRUE))
   ts <- numeric(reps)
@@ -94,7 +101,8 @@ cas_dense <- function(n, q) {
   K <- K + diag(q) * 1e-6 * mean(diag(K))
   lev <- factor(rep(seq_len(q), length.out = n), levels = seq_len(q))
   y <- 2 + rnorm(n, 0, 1.2); X <- matrix(1, n, 1)
-  # Kinv est PLEINE : c'est le point. On la fournit pour forcer le moteur creux.
+  # Kinv est PLEINE : c'est le point. On la fournit pour forcer la factorisation
+  # creuse du moteur MME sur une parente dense.
   Ki <- as(as(solve(K), "CsparseMatrix"), "generalMatrix")
   list(y = y, X = X,
        terms_d = list(rx_term("g", lev, K = K, struct = "iid")),
@@ -105,7 +113,7 @@ cas_dense <- function(n, q) {
 # --- COMPLEXITE DU MODELE A n PAR CARACTERE CONSTANT --------------------------
 # Le dispositif que fait reellement un selectionneur : les MEMES plantes, mesurees
 # sur de plus en plus de caracteres. Il couple donc deliberement n et p, la ou le
-# balayage precedent tenait n constant — les deux ensemble separent les effets.
+# balayage precedent tenait n constant. Les deux ensemble separent les effets.
 #
 # us(t) porte t(t+1)/2 parametres (les variances ET les covariances), soit 36 a
 # t = 8. La residuelle est diag(t) pour que p soit domine par le terme genetique
@@ -170,7 +178,7 @@ for (cl in CELL) {
                    cl, g$t, 2L * g$q, NU)); next
     }
     # q >= n : plus d'effets que d'observations. Le facteur porte alors des
-    # niveaux NON OBSERVES, que rx_term ne compte pas — d'ou une K de taille q
+    # niveaux NON OBSERVES, que rx_term ne compte pas, d'ou une K de taille q
     # face a un terme de taille inferieure. Le cas est degenere (la variance
     # n'est pas identifiee) : on le saute en le DISANT, plutot que de le laisser
     # interrompre le balayage.
@@ -188,7 +196,7 @@ for (cl in CELL) {
     m <- rx_model(d$y, d$X, terms = tms, residual = d$residual, name = cl)
     # THETA IMPOSE, IDENTIQUE POUR LES DEUX MOTEURS. Sans lui, chaque moteur
     # evalue a SON theta initial et la colonne logLik n'est pas comparable d'un
-    # moteur a l'autre — un piege verifie : les valeurs divergeaient de 1e-5 a
+    # moteur a l'autre. Piege verifie : les valeurs divergeaient de 1e-5 a
     # 9e-3 en croissant avec t, ce qui ressemblait a un defaut de formulation,
     # alors qu'a theta COMMUN les deux moteurs s'accordent a 1e-12. Le zero sur
     # l'echelle transformee (variances a 1, correlations nulles) est le choix
@@ -197,63 +205,31 @@ for (cl in CELL) {
     # suite de concordance.
     th0 <- rep(0, rx_n_theta(m))
     r <- tryCatch({
-      if (mot == "dense") {
-        ev <- chrono(function() fit_dense(m, theta_init = th0, maxiter = 0L,
-                                          polish = 0L, hessian = FALSE,
-                                          blups = FALSE, verbose = FALSE), REPS)
-        aj <- chrono(function() fit_dense(m, hessian = FALSE, blups = FALSE,
-                                         verbose = FALSE), 1L)
-        list(ev = ev$val$secondes %||% NA_real_, ev_paroi = ev$med,
-             ev_min = ev$min, ev_max = ev$max, ll = ev$val$logLik,
-             # LA VRAISEMBLANCE A L'OPTIMUM, distincte de celle a theta impose.
-             # Sans elle, comparer des TEMPS d'ajustement entre moteurs n'a pas
-             # de sens : un moteur qui s'arrete a un point moins bon n'est pas
-             # plus rapide, il est moins bon. La colonne ll est la valeur au
-             # theta impose commun et ne repond pas a cette question.
-             ll_fit = aj$val$logLik %||% NA_real_,
-             fit = aj$val$secondes %||% NA_real_, fit_paroi = aj$med,
-             n_iter = aj$val$n_iter %||% NA_integer_,
-             # COMPTE et non inference. Diviser le temps d'ajustement par le
-             # cout unitaire donne un nombre d'evaluations plausible et faux :
-             # c'est precisement l'erreur qui faisait echouer la reconstruction
-             # du modele de cout d'un facteur deux. Le solveur les compte.
-             n_eval = aj$val$n_eval %||% NA_integer_,
-             compile_s = aj$val$compile_s %||% NA_real_, err = "")
-      } else {
-        # LE COUT UNITAIRE CREUX EST CELUI QUE LE SOLVEUR RAPPORTE, jamais le
-        # temps de paroi de l'appel : celui-ci inclut la construction du ruban
-        # de derivation, payee a chaque appel de rx_fit_sparse mais une seule
-        # fois dans un ajustement. Mesure du piege : le controle
-        # « ajustement >= n_eval x cout unitaire » echouait sur les HUIT
-        # cellules creuses d'un balayage et sur aucune dense. On ne prend donc
-        # plus $logLik ici, pour garder acces aux postes du resultat.
-        ev <- chrono(function() rx_fit_sparse(m, theta_init = th0, maxiter = 0L,
-                                              verbose = FALSE), REPS)
-        # SYMETRIE DE L'APPEL. Le moteur dense est appele avec hessian = FALSE
-        # et blups = FALSE ; sans sdreport = FALSE le moteur creux formerait en
-        # plus la covariance de TOUS les effets aleatoires, que le dense ne
-        # calcule pas. Mesure de l'asymetrie : ce rapport pesait 28 a 58 pour
-        # cent du temps d'ajustement creux a q_total de 300 a 900, et sa part
-        # croit avec le nombre d'effets — a t = 8 sur le cluster, 93 pour cent
-        # du temps d'ajustement echappait au bilan des postes. Le comparer ainsi
-        # SOUS-ESTIMAIT l'avantage du moteur creux.
-        # Le plafond doit aussi egaler celui du dense : 300 contre 3000 aurait
-        # tronque le creux et laisse le dense aller au bout, defaut deja corrige
-        # une fois dans ce projet.
-        aj <- chrono(function() rx_fit_sparse(m, maxiter = 3000L, verbose = FALSE,
-                                              sdreport = FALSE), 1L)
-        list(ev = ev$val$eval_s %||% NA_real_, ev_paroi = ev$med,
-             ev_min = ev$min, ev_max = ev$max,
-             ll = ev$val$logLik %||% NA_real_,
-             ll_fit = aj$val$logLik %||% NA_real_,
-             fit = aj$val$secondes %||% aj$med, fit_paroi = aj$med,
-             n_iter = aj$val$n_iter %||% NA_integer_,
-             n_eval = aj$val$n_eval %||% NA_integer_,
-             # `compile_s` porte ici la CONSTRUCTION du ruban, poste homologue
-             # de la compilation XLA du moteur dense : paye une fois, amorti sur
-             # les iterations.
-             compile_s = ev$val$construct_s %||% NA_real_, err = "")
-      }
+      # Les deux moteurs sont appeles de la meme facon, avec les memes sorties
+      # (hessian = FALSE, blups = FALSE) et le meme plafond d'iterations : une
+      # asymetrie d'appel se lirait comme une difference de moteur.
+      fit_mot <- if (mot == "dense") fit_dense else fit_creux
+      ev <- chrono(function() fit_mot(m, theta_init = th0, maxiter = 0L,
+                                      polish = 0L, hessian = FALSE,
+                                      blups = FALSE, verbose = FALSE), REPS)
+      aj <- chrono(function() fit_mot(m, hessian = FALSE, blups = FALSE,
+                                      verbose = FALSE), 1L)
+      list(ev = ev$val$secondes %||% NA_real_, ev_paroi = ev$med,
+           ev_min = ev$min, ev_max = ev$max, ll = ev$val$logLik,
+           # LA VRAISEMBLANCE A L'OPTIMUM, distincte de celle a theta impose.
+           # Sans elle, comparer des TEMPS d'ajustement entre moteurs n'a pas
+           # de sens : un moteur qui s'arrete a un point moins bon n'est pas
+           # plus rapide, il est moins bon. La colonne ll est la valeur au
+           # theta impose commun et ne repond pas a cette question.
+           ll_fit = aj$val$logLik %||% NA_real_,
+           fit = aj$val$secondes %||% NA_real_, fit_paroi = aj$med,
+           n_iter = aj$val$n_iter %||% NA_integer_,
+           # COMPTE et non inference. Diviser le temps d'ajustement par le
+           # cout unitaire donne un nombre d'evaluations plausible et faux :
+           # c'est precisement l'erreur qui faisait echouer la reconstruction
+           # du modele de cout d'un facteur deux. Le solveur les compte.
+           n_eval = aj$val$n_eval %||% NA_integer_,
+           compile_s = aj$val$compile_s %||% NA_real_, err = "")
     }, error = function(e) list(ev = NA_real_, ev_paroi = NA_real_,
                                 ev_min = NA_real_, ev_max = NA_real_,
                                 ll = NA_real_, fit = NA_real_, fit_paroi = NA_real_,

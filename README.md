@@ -18,8 +18,13 @@ and sommer on the user's machine.
 |---|---|
 | `tests/R/` | the comparison suites, one line per check (`label`, measured values, verdict); `test_remlax_asreml*.R` need an asreml licence |
 | `validation/` | log parsing (`parse_logs.py`), the table of checks (`results/checks_<date>.csv`), the figure, the regeneration of `docs/validation.md` |
-| `benchmarks/` | speed at equal model: `bench_complexite.R` (size, model complexity, density), `summarise_benchc.py` (tables and figures), `verif_ecarts_asreml.R` (asreml continued where it stops short) |
-| `docs/` | `validation-summary.md` (one page), `validation.md` (every check), `benchmarks.md` (speed), `vram.md` (GPU memory) |
+| `benchmarks/` | speed at equal model: `bench_complexite.R` (size, model complexity, density), `summarise_benchc.py` (tables and figures), `verif_ecarts_asreml.R` (asreml continued where it stops short); `bench_engines.R` and `grille.R` time the dense engine against the mixed model equations engine with sparse inversion |
+| `banc_moteurs/` | the engine benchmark of `docs/plan_banc_moteurs.md`: every remlax engine on CPU and GPU, with asreml, sommer and lme4, on the same simulated data and against a common dense REML arbiter |
+| `banc_kmmr/` | remlax against kmmr and asreml-R on CPU and GPU; `R/` and `resultats_2026-10-27/` hold the seven DROPS and Krause models, `absolu/` the absolute benchmark on simulated cases (time against n, p and dim(C)/n), summarised by `absolu/synthese_abs.py` with figures in `absolu/sortie_v14/` |
+| `verif_simulations/` | simulation checks: each model type is fitted by every applicable route, its REML log-likelihood is compared with a dense REML arbiter written in R, and its variance components with the simulated truth |
+| `demo/` | simulated demonstrations: a field trial with a 2D P-spline surface and direct and indirect genetic effects, a one-step GWAS with LOCO, and studies of neighbourhood kernels and of the identifiability of the dilution |
+| `refacto/` | the safety nets of the 2026-10 remlax cleanup: `golden.R` captures and compares whole fits through R, `golden_py.py` the Python engine values at fixed theta; both run pinned to one CPU core |
+| `docs/` | `validation-summary.md` (one page), `validation.md` (every check), `validation-plan.md` (the claims and their evidence), `benchmarks.md` (speed), `vram.md` (GPU memory), `mesures-en-cours.md` (the 2026-09-01 measurement record), `rapport_nuit_2026-10-27.md` (remlax against kmmr and asreml-R), `paysage_logiciels_reml.md` (survey of REML software), `plan_banc_moteurs.md`, `plan_nettoyage_remlax.md` and `plan_branche_cran.md` (plans), `cran_policy_audit.md` (CRAN policy audit), `note_remlax_fr.md` (the original note on the solver) |
 | `paper/` | the draft of the software paper and its validation section |
 | `R/charger_remlax.R` | loads the installed remlax package and exposes its namespace to the scripts |
 | `moteur_remlax.py` | locates the Python engine shipped with the installed package, for the Python scripts |
@@ -38,13 +43,24 @@ Rscript tests/R/test_remlax_sommer.R     # sommer
 Rscript tests/R/test_remlax_asreml3.R    # asreml (licence)
 Rscript benchmarks/bench_complexite.R --sizes 500,2000 --software asreml,remlax --tag cpu4
 python3 benchmarks/summarise_benchc.py --date <date>
+Rscript verif_simulations/verif_simulations.R --coeurs=10
+Rscript demo/demo_remlax_spatial_cpu.R
+Rscript banc_moteurs/R/executer.R --famille=grm --n=2000 --rep=1 --sortie=resultats
+python3 banc_kmmr/absolu/synthese_abs.py banc_kmmr/absolu/resultats banc_kmmr/absolu/sortie_v14
+Rscript refacto/golden.R capture <dir> [<remlax sources>]
+python3 refacto/golden_py.py capture <out.pkl> <remlax repository>
 ```
+
+The `.sbatch` files in `banc_moteurs/` and `banc_kmmr/` launch the full
+benchmarks on the authors' clusters.
 
 The published campaign (2026-09-28/29) ran in the apptainer image
 `ige_reml.sif` of the authors' cluster (R 4.6.0, asreml 4.2.0.480, lme4 2.0.1,
 sommer 4.4.5, nlme 3.1.169, pbkrtest 0.5.5, jax 0.11.1) against remlax
 revision `9a51c79`. The version of each program is recorded in
-`validation/results/versions_<date>.json`.
+`validation/results/versions_<date>.json`. The RTMB sparse engine was removed
+from remlax after this campaign, together with its suites, and the mixed model
+equations engine (`rx_fit(engine = "mme")`) now covers its scope.
 
 ## History
 
