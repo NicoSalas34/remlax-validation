@@ -1,0 +1,215 @@
+"etiquette","cas","outil","voie","gpu","noeud","fils","n","q_K","logLik","n_iter","converge","secondes","n_par","moteur","eval_s","compile_s","t_modele","inversion","erreur","date"
+"froid","sim_q1000_t2_r1_sus_x0_o100_g4","remlax","mme",FALSE,"n028","8",2000,1000,-1981.57034940719,5,TRUE,5.23065185546875,5,"mme",0.10394287109375,0.508188962936401,0.145919561386108,"dense","","2026-10-28 11:16:27"
+"chaud","sim_q1000_t2_r1_sus_x0_o100_g4","remlax","mme",FALSE,"n028","8",2000,1000,-1981.57034940719,5,TRUE,3.93341636657715,5,"mme",0.103534460067749,0.182267427444458,0.128274917602539,"dense","","2026-10-28 11:16:33"
+"unique","sim_q1000_t2_r1_sus_x0_o100_g4","remlax","mme_creux",FALSE,"n028","8",2000,1000,-1981.5703492683,11,TRUE,10.9404945373535,5,"mme",0.252760410308838,0.975285291671753,0.144715309143066,"sparse","","2026-10-28 11:16:33"
+"unique","sim_q1000_t2_r1_sus_x0_o100_g4","remlax","mme_dense",FALSE,"n028","8",2000,1000,-1981.57034940719,5,TRUE,21.8841087818146,5,"mme",2.65429532527924,2.41585719585419,0.154820442199707,"dense","","2026-10-28 11:16:44"
+"unique","sim_q1000_t2_r1_sus_x0_o100_g4","remlax","mme_hybride",FALSE,"n028","8",2000,1000,-1981.5703492719,8,TRUE,6.97679352760315,5,"mme",0.203590631484985,0.731632709503174,0.13886284828186,"hybrid","","2026-10-28 11:16:59"
+"froid","sim_q1000_t2_r1_sus_x0_o100_g5","remlax","mme",FALSE,"n028","8",2000,1000,-2012.80467319728,6,TRUE,6.2715482711792,5,"mme",0.110438346862793,1.61294770240784,0.175897359848022,"dense","","2026-10-28 11:16:59"
+"unique","sim_q1000_t2_r1_sus_x0_o100_g4","remlax","V_ai",FALSE,"n028","8",2000,1000,-1981.57034943925,6,TRUE,10.5423290729523,5,"dense",0.426355838775635,0.499158382415771,0.139038562774658,NA,"","2026-10-28 11:17:02"
+"chaud","sim_q1000_t2_r1_sus_x0_o100_g5","remlax","mme",FALSE,"n028","8",2000,1000,-2012.80467319728,6,TRUE,18.882844209671,5,"mme",0.104269027709961,6.4860622882843,0.221850872039795,"dense","","2026-10-28 11:17:20"
+"unique","sim_q1000_t2_r1_sus_x0_o100_g5","remlax","mme_dense",FALSE,"n028","8",2000,1000,-2012.80467319728,6,TRUE,4.79197978973389,5,"mme",0.0946896076202393,0.497223854064941,0.123803615570068,"dense","","2026-10-28 11:17:27"
+"unique","sim_q1000_t2_r1_sus_x0_o100_g5","remlax","mme_creux",FALSE,"n028","8",2000,1000,-2012.80467328261,20,TRUE,13.093373298645,5,"mme",0.261716604232788,0.953720331192017,0.145501375198364,"sparse","","2026-10-28 11:17:35"
+"froid","sim_q1000_t2_r1_sus_x0_o100","remlax","mme",FALSE,"n028","8",2000,1000,-1979.2411955409,6,TRUE,6.93395519256592,5,"mme",0.113859415054321,2.30507755279541,0.142706632614136,"dense","","2026-10-28 11:17:59"
+"unique","sim_q1000_t2_r1_sus_x0_o100_g5","remlax","mme_hybride",FALSE,"n028","8",2000,1000,-2012.80467334386,19,TRUE,7.53813338279724,5,"mme",0.193911075592041,0.751132965087891,0.139272451400757,"hybrid","","2026-10-28 11:18:00"
+"unique","sim_q1000_t2_r1_sus_x0_o100_g5","remlax","V_ai",FALSE,"n028","8",2000,1000,-2012.80467319345,6,TRUE,10.7114975452423,5,"dense",0.434951782226562,0.582657337188721,0.135589838027954,NA,"","2026-10-28 11:18:03"
+"chaud","sim_q1000_t2_r1_sus_x0_o100","remlax","mme",FALSE,"n028","8",2000,1000,-1979.2411955409,6,TRUE,19.065970659256,5,"mme",0.10985803604126,4.17249178886414,0.159309148788452,"dense","","2026-10-28 11:18:20"
+"unique","sim_q1000_t2_r1_sus_x0_o100","remlax","mme_dense",FALSE,"n028","8",2000,1000,-1979.2411955409,6,TRUE,4.86920094490051,5,"mme",0.0952498912811279,0.494332551956177,0.132498979568481,"dense","","2026-10-28 11:18:28"
+"unique","sim_q1000_t2_r1_sus_x0_o100","remlax","mme_creux",FALSE,"n028","8",2000,1000,-1979.24119554095,6,TRUE,10.9786067008972,5,"mme",0.278517484664917,0.976897239685059,0.137277603149414,"sparse","","2026-10-28 11:18:36"
+"unique","sim_q1000_t2_r1_sus_x0_o100","remlax","mme_hybride",FALSE,"n028","8",2000,1000,-1979.24119554091,6,TRUE,6.8479437828064,5,"mme",0.199286222457886,0.730604410171509,0.142315626144409,"hybrid","","2026-10-28 11:19:00"
+"froid","sim_q1000_t3_r1_sus_x0_o100_g4","remlax","mme",FALSE,"n028","8",3000,1000,-3008.47523207041,10,TRUE,10.5271604061127,9,"mme",0.383566737174988,0.429669260978699,0.143941164016724,"dense","","2026-10-28 11:19:03"
+"unique","sim_q1000_t2_r1_sus_x0_o100","remlax","V_ai",FALSE,"n028","8",2000,1000,-1979.24119554081,6,TRUE,16.7452759742737,5,"dense",0.450058341026306,1.93682825565338,0.135707855224609,NA,"","2026-10-28 11:19:09"
+"chaud","sim_q1000_t3_r1_sus_x0_o100_g4","remlax","mme",FALSE,"n028","8",3000,1000,-3008.47523207041,10,TRUE,9.22270131111145,9,"mme",0.361238956451416,1.52315044403076,0.259390354156494,"dense","","2026-10-28 11:19:14"
+"unique","sim_q1000_t3_r1_sus_x0_o100_g4","remlax","mme_hybride",FALSE,"n038","8",3000,1000,-3008.47523211114,11,TRUE,11.172242641449,9,"mme",0.561165928840637,0.630485653877258,0.147924900054932,"hybrid","","2026-10-28 11:19:34"
+"unique","sim_q1000_t3_r1_sus_x0_o100_g4","remlax","mme_creux",FALSE,"n010","8",3000,1000,-3008.47523206091,28,TRUE,37.0448181629181,9,"mme",0.80514931678772,0.996534824371338,0.17904806137085,"sparse","","2026-10-28 11:20:00"
+"unique","sim_q1000_t3_r1_sus_x0_o100_g4","remlax","mme_dense",FALSE,"n036","8",3000,1000,-3008.47523207041,10,TRUE,57.8151533603668,9,"mme",3.9204648733139,10.9765967130661,0.190244674682617,"dense","","2026-10-28 11:20:20"
+"unique","sim_q1000_t3_r1_sus_x0_o100_g4","remlax","V_ai",FALSE,"n010","8",3000,1000,-3008.47523207,7,TRUE,30.0837795734406,9,"dense",1.48181867599487,0.289283037185669,0.150259256362915,NA,"","2026-10-28 11:20:22"
+"froid","sim_q1000_t3_r1_sus_x0_o100_g5","remlax","mme",FALSE,"n010","8",3000,1000,-2945.43563989025,5,TRUE,6.88298225402832,9,"mme",0.353336215019226,0.519095778465271,0.15214991569519,"dense","","2026-10-28 11:20:30"
+"chaud","sim_q1000_t3_r1_sus_x0_o100_g5","remlax","mme",FALSE,"n010","8",3000,1000,-2945.43563989025,5,TRUE,5.89218235015869,9,"mme",0.364780187606812,0.140701293945312,0.136708498001099,"dense","","2026-10-28 11:20:37"
+"unique","sim_q1000_t3_r1_sus_x0_o100_g5","remlax","mme_dense",FALSE,"n038","8",3000,1000,-2945.43563989025,5,TRUE,7.0366063117981,9,"mme",0.390238881111145,0.469310164451599,0.17824649810791,"dense","","2026-10-28 11:21:00"
+"unique","sim_q1000_t3_r1_sus_x0_o100_g5","remlax","mme_hybride",FALSE,"n010","8",3000,1000,-2945.43563990642,20,TRUE,23.6529893875122,9,"mme",0.769494771957397,0.816292524337769,0.18129825592041,"hybrid","","2026-10-28 11:21:16"
+"froid","sim_q1000_t3_r1_sus_x0_o100","remlax","mme",FALSE,"n036","8",3000,1000,-3043.73486967448,10,TRUE,11.4090929031372,9,"mme",0.380632162094116,2.90019631385803,0.159916400909424,"dense","","2026-10-28 11:21:34"
+"chaud","sim_q1000_t3_r1_sus_x0_o100","remlax","mme",FALSE,"n036","8",3000,1000,-3043.73486967448,10,TRUE,7.86064767837524,9,"mme",0.387239694595337,0.53793740272522,0.157570838928223,"dense","","2026-10-28 11:21:45"
+"unique","sim_q1000_t3_r1_sus_x0_o100_g5","remlax","mme_creux",FALSE,"n036","8",3000,1000,-2945.43564019667,21,TRUE,56.8035080432892,9,"mme",3.12240743637085,1.5266101360321,0.276573896408081,"sparse","","2026-10-28 11:21:50"
+"unique","sim_q1000_t3_r1_sus_x0_o100_g5","remlax","V_ai",FALSE,"n038","8",3000,1000,-2945.43563981002,6,TRUE,28.7953853607178,9,"dense",1.52465772628784,1.02559733390808,0.159615755081177,NA,"","2026-10-28 11:21:52"
+"unique","sim_q1000_t3_r1_sus_x0_o100","remlax","mme_dense",FALSE,"n010","8",3000,1000,-3043.73486967448,10,TRUE,9.30949807167053,9,"mme",0.437694072723389,0.389527082443237,0.15435528755188,"dense","","2026-10-28 11:22:32"
+"unique","sim_q1000_t3_r1_sus_x0_o100","remlax","mme_creux",FALSE,"n008","8",3000,1000,-3043.734869639,38,TRUE,43.8840899467468,9,"mme",0.795279502868652,1.0179328918457,0.167314291000366,"sparse","","2026-10-28 11:22:36"
+"unique","sim_q1000_t3_r1_sus_x0_o100","remlax","mme_hybride",FALSE,"n010","8",3000,1000,-3043.73486980332,18,TRUE,14.1913819313049,9,"mme",0.617785215377808,0.838626623153687,0.14309549331665,"hybrid","","2026-10-28 11:22:37"
+"froid","sim_q1000_t5_r1_sus_x0_o100_g4","remlax","mme",FALSE,"n010","8",5000,1000,-5006.89713743806,9,TRUE,16.4243867397308,20,"mme",1.14988887310028,0.475834250450134,0.154475927352905,"dense","","2026-10-28 11:23:09"
+"unique","sim_q1000_t3_r1_sus_x0_o100","remlax","V_ai",FALSE,"n008","8",3000,1000,-3043.73486969566,6,TRUE,21.7910358905792,9,"dense",1.23319971561432,0.547100186347961,0.132730722427368,NA,"","2026-10-28 11:23:14"
+"unique","sim_q1000_t5_r1_sus_x0_o100_g4","remlax","mme_dense",FALSE,"n038","8",5000,1000,-5006.89713743806,9,TRUE,14.8537566661835,20,"mme",1.0089328289032,0.481293439865112,0.138317108154297,"dense","","2026-10-28 11:23:37"
+"chaud","sim_q1000_t5_r1_sus_x0_o100_g4","remlax","mme",FALSE,"n010","8",5000,1000,-5006.89713743806,9,TRUE,29.6157004833221,20,"mme",1.29179501533508,3.38034200668335,0.159615039825439,"dense","","2026-10-28 11:23:40"
+"unique","sim_q1000_t5_r1_sus_x0_o100_g4","remlax","mme_hybride",FALSE,"n038","8",5000,1000,-5006.89713750841,19,TRUE,34.6411480903625,20,"mme",1.86903405189514,0.456295490264893,0.134782791137695,"hybrid","","2026-10-28 11:24:28"
+"unique","sim_q1000_t5_r1_sus_x0_o100_g4","remlax","mme_creux",FALSE,"n010","8",5000,1000,-5006.89713743884,18,TRUE,117.372116565704,20,"mme",2.72026205062866,0.965847730636597,0.146363258361816,"sparse","","2026-10-28 11:24:50"
+"unique","sim_q1000_t5_r1_sus_x0_o100_g4","remlax","V_ai",FALSE,"n038","8",5000,1000,-5006.89713742569,7,TRUE,131.973233699799,20,"dense",8.10483551025391,1.54467415809631,0.145859241485596,NA,"","2026-10-28 11:26:05"
+"froid","sim_q1000_t5_r1_sus_x0_o100_g5","remlax","mme",FALSE,"n009","8",5000,1000,-5063.15534229045,44,TRUE,106.641013622284,20,"mme",1.40082883834839,0.488133192062378,0.161574840545654,"dense","","2026-10-28 11:26:39"
+"unique","sim_q1000_t5_r1_sus_x0_o100_g5","remlax","mme_dense",FALSE,"n010","8",5000,1000,-5063.15534229045,44,TRUE,35.5240428447723,20,"mme",1.05112099647522,0.443220615386963,0.143097162246704,"dense","","2026-10-28 11:26:59"
+"unique","sim_q1000_t5_r1_sus_x0_o100_g5","remlax","mme_hybride",FALSE,"n010","8",5000,1000,-5063.15533987873,45,TRUE,54.0163383483887,20,"mme",1.94386863708496,0.420980930328369,0.140040636062622,"hybrid","","2026-10-28 11:28:17"
+"chaud","sim_q1000_t5_r1_sus_x0_o100_g5","remlax","mme",FALSE,"n009","8",5000,1000,-5063.15534229045,44,TRUE,123.451767444611,20,"mme",1.37356305122375,18.6579701900482,0.144353151321411,"dense","","2026-10-28 11:28:45"
+"froid","sim_q1000_t5_r1_sus_x0_o100","remlax","mme",FALSE,"n009","8",5000,1000,-5096.03541160402,10,TRUE,30.2678828239441,20,"mme",1.5232994556427,9.45233392715454,0.282917261123657,"dense","","2026-10-28 11:29:24"
+"chaud","sim_q1000_t5_r1_sus_x0_o100","remlax","mme",FALSE,"n009","8",5000,1000,-5096.03541160402,10,TRUE,28.8633964061737,20,"mme",1.52960562705994,9.56467986106873,0.176220178604126,"dense","","2026-10-28 11:29:56"
+"unique","sim_q1000_t5_r1_sus_x0_o100_g5","remlax","V_ai",FALSE,"n038","8",5000,1000,-5063.15533764152,8,TRUE,95.48024559021,20,"dense",5.3216381072998,0.501346588134766,0.156389951705933,NA,"","2026-10-28 11:29:59"
+"unique","sim_q1000_t5_r1_sus_x0_o100","remlax","mme_dense",FALSE,"n009","8",5000,1000,-5096.03541160402,10,TRUE,23.4511251449585,20,"mme",1.5723625421524,0.841434359550476,0.2879478931427,"dense","","2026-10-28 11:30:49"
+"unique","sim_q1000_t5_r1_sus_x0_o100","remlax","mme_hybride",FALSE,"n004","8",5000,1000,-5096.03541131756,47,TRUE,72.5605320930481,20,"mme",1.68649935722351,0.61850380897522,0.178759574890137,"hybrid","","2026-10-28 11:32:06"
+"unique","sim_q1000_t5_r1_sus_x0_o100_g5","remlax","mme_creux",FALSE,"n010","8",5000,1000,-5063.15533990831,169,TRUE,453.047620534897,20,"mme",2.65890741348267,0.90488862991333,0.138883829116821,"sparse","","2026-10-28 11:32:56"
+"unique","sim_q1000_t5_r1_sus_x0_o100","remlax","mme_creux",FALSE,"n038","8",5000,1000,-5096.03541139042,46,TRUE,173.765329837799,20,"mme",2.80703902244568,1.20968413352966,0.153795003890991,"sparse","","2026-10-28 11:33:17"
+"unique","sim_q1000_t5_r1_sus_x0_o100","remlax","V_ai",FALSE,"n032","8",5000,1000,-5096.03541174438,8,TRUE,167.021610498428,20,"dense",7.98441243171692,2.70161461830139,0.182698011398315,NA,"","2026-10-28 11:35:11"
+"unique","sim_q1000_t8_r1_sus_x0_o100_g4","remlax","V_ai",FALSE,"n032","8",8000,1000,-7691.76767920969,10,TRUE,756.144948482513,44,"dense",35.8111585378647,0,0.17056679725647,NA,"","2026-10-28 11:48:01"
+"unique","sim_q1000_t12_r1_sus_x0_o100","remlax","V_ai",FALSE,"n026","8",12000,1000,-11792.0890516874,15,TRUE,2270.6624917984,90,"dense",73.9332747459412,9.60147142410278,0.21142053604126,NA,"","2026-10-28 11:54:13"
+"unique","sim_q1000_t12_r1_sus_x0_o100_g5","remlax","V_ai",FALSE,"n026","8",12000,1000,-11721.1474683496,18,TRUE,2382.59718370438,90,"dense",66.2885540723801,1.23002994060516,0.155770301818848,NA,"","2026-10-28 11:56:05"
+"unique","sim_q1000_t8_r1_sus_x0_o100_g4","remlax","mme_dense",FALSE,"n038","8",8000,1000,-7691.76767945362,17,TRUE,1504.76871824265,44,"mme+dense",20.8024649620056,1.87451791763306,0.159048318862915,"dense","","2026-10-28 11:58:29"
+"froid","sim_q1000_t8_r1_sus_x0_o100_g4","remlax","mme",FALSE,"n038","8",8000,1000,-7691.76767945362,17,TRUE,1505.84213376045,44,"mme+dense",21.4367389678955,0,0.164796829223633,"dense","","2026-10-28 11:58:30"
+"unique","sim_q1000_t12_r1_sus_x0_o100_g4","remlax","V_ai",FALSE,"n010","8",12000,1000,-11588.1123319581,25,TRUE,2545.774310112,90,"dense",59.8282310962677,21.2101819515228,0.227024078369141,NA,"","2026-10-28 11:58:49"
+"unique","sim_q1000_t12_r1_sus_x0_o100_g4","remlax","mme_dense",FALSE,"n011","8",12000,1000,-11588.1123315273,16,TRUE,3906.58063721657,90,"mme+dense",59.6869782209396,1.16541492938995,0.251717329025269,"dense","","2026-10-28 12:21:29"
+"chaud","sim_q1000_t8_r1_sus_x0_o100_g4","remlax","mme",FALSE,"n038","8",8000,1000,-7691.76767945362,17,TRUE,1437.44271707535,44,"mme+dense",21.5145738124847,1.50029850006104,0.169632911682129,"dense","","2026-10-28 12:22:29"
+"unique","sim_q1000_t8_r1_sus_x0_o100","remlax","mme_dense",FALSE,"n033","8",8000,1000,-7813.94022106648,17,TRUE,1593.32717490196,44,"mme+dense",23.3219656944275,2.54226398468018,0.212219715118408,"dense","","2026-10-28 12:25:32"
+"froid","sim_q1000_t12_r1_sus_x0_o100_g4","remlax","mme",FALSE,"n030","8",12000,1000,-11588.1123315273,16,TRUE,4234.70749950409,90,"mme+dense",73.5215363502502,14.1021993160248,0.161348104476929,"dense","","2026-10-28 12:26:57"
+"froid","sim_q1000_t12_r1_sus_x0_o100","remlax","mme",FALSE,"n026","8",12000,1000,-11792.0890520494,24,TRUE,4382.64030718803,90,"mme+dense",65.6202000379562,0,0.153584003448486,"dense","","2026-10-28 12:29:25"
+"froid","sim_q1000_t8_r1_sus_x0_o100","remlax","mme",FALSE,"n032","8",8000,1000,-7813.94022106648,17,TRUE,1889.1794757843,44,"mme+dense",32.7783977985382,6.27388334274292,0.211469411849976,"dense","","2026-10-28 12:30:29"
+"unique","sim_q1000_t12_r1_sus_x0_o100","remlax","mme_dense",FALSE,"n026","8",12000,1000,-11792.0890520494,24,TRUE,4867.34219646454,90,"mme+dense",74.2438006401062,20.7186872959137,0.163228988647461,"dense","","2026-10-28 12:37:29"
+"unique","sim_q1000_t8_r1_sus_x0_o100","remlax","V_ai",FALSE,"n005","8",8000,1000,-7813.94022124641,13,TRUE,1638.34796237946,44,"dense",63.2775890827179,0,0.224016904830933,NA,"","2026-10-28 12:49:20"
+"chaud","sim_q1000_t8_r1_sus_x0_o100","remlax","mme",FALSE,"n032","8",8000,1000,-7813.94022106648,17,TRUE,1887.04999709129,44,"mme+dense",30.318291425705,0,0.174394845962524,"dense","","2026-10-28 13:01:58"
+"unique","sim_q1000_t8_r1_sus_x0_o100_g5","remlax","V_ai",FALSE,"n004","8",8000,1000,-7877.94347621558,91,TRUE,4113.83845376968,44,"dense",21.8779728412628,0,0.145113945007324,NA,"","2026-10-28 13:05:04"
+"froid","sim_q1000_t8_r1_sus_x0_o100_g5","remlax","mme",FALSE,"n007","8",8000,1000,-7877.94347647438,90,TRUE,4807.61568331718,44,"mme+dense",23.5262060165405,0,0.177459955215454,"dense","","2026-10-28 13:08:35"
+"unique","sim_q1000_t12_r1_sus_x0_o100_g5","remlax","mme_dense",FALSE,"n010","8",12000,1000,-11721.1474687159,34,TRUE,6897.44384360313,90,"mme+dense",67.8909466266632,0,0.205874919891357,"dense","","2026-10-28 13:11:21"
+"froid","sim_q1000_t12_r1_sus_x0_o100_g5","remlax","mme",FALSE,"n010","8",12000,1000,-11721.1474687159,34,TRUE,7547.82229280472,90,"mme+dense",70.6107931137085,11.8345830440521,0.175982475280762,"dense","","2026-10-28 13:22:11"
+"unique","sim_q1000_t8_r1_sus_x0_o100_g5","remlax","mme_dense",FALSE,"n005","8",8000,1000,-7877.94347647438,90,TRUE,5362.69538187981,44,"mme+dense",27.972083568573,5.39144802093506,0.202271938323975,"dense","","2026-10-28 13:23:51"
+"unique","sim_q1000_t8_r1_sus_x0_o100_g4","remlax","mme_hybride",FALSE,"n026","8",8000,1000,-7691.76767910495,9,TRUE,1362.62034368515,44,"mme+dense",23.3409371376038,0.687793731689453,0.153715372085571,"hybrid","","2026-10-28 13:25:46"
+"unique","sim_q1000_t8_r1_sus_x0_o100","remlax","mme_hybride",FALSE,"n025","8",8000,1000,-7813.94022133635,13,TRUE,1491.86475610733,44,"mme+dense",23.387307882309,0,0.173494338989258,"hybrid","","2026-10-28 13:27:59"
+"chaud","sim_q1000_t12_r1_sus_x0_o100_g4","remlax","mme",FALSE,"n030","8",12000,1000,-11588.1123315273,16,TRUE,3962.9871532917,90,"mme+dense",68.3373193740845,2.99358201026917,0.205219984054565,"dense","","2026-10-28 13:33:02"
+"chaud","sim_q1000_t12_r1_sus_x0_o100","remlax","mme",FALSE,"n026","8",12000,1000,-11792.0890520494,24,TRUE,4237.18494343758,90,"mme+dense",64.5622481107712,0,0.166064977645874,"dense","","2026-10-28 13:40:04"
+"unique","sim_q1000_t8_r1_sus_x0_o100","remlax","mme_creux",FALSE,"n026","8",8000,1000,-7813.94022175868,12,TRUE,2416.75630259514,44,"mme+dense",21.429102063179,0.358349204063416,0.159271955490112,"sparse","","2026-10-28 14:06:21"
+"unique","sim_q1000_t8_r1_sus_x0_o100_g4","remlax","mme_creux",FALSE,"n022","8",8000,1000,-7691.76767921713,8,TRUE,2371.9502530098,44,"mme+dense",19.2383466959,0.31794798374176,0.145159721374512,"sparse","","2026-10-28 14:07:36"
+"unique","sim_q1000_t8_r1_sus_x0_o100_g5","remlax","mme_hybride",FALSE,"n026","8",8000,1000,-7877.94347617002,91,TRUE,3992.21930909157,44,"mme+dense",19.0087974071503,0.375858306884766,0.146858692169189,"hybrid","","2026-10-28 14:09:35"
+"chaud","sim_q1000_t8_r1_sus_x0_o100_g5","remlax","mme",FALSE,"n007","8",8000,1000,-7877.94347647438,90,TRUE,4564.39277029037,44,"mme+dense",21.9115427732468,11.1656423807144,0.19185209274292,"dense","","2026-10-28 14:24:42"
+"unique","sim_q1000_t12_r1_sus_x0_o100","remlax","mme_hybride",FALSE,"n033","8",12000,1000,-11792.089052073,14,TRUE,6882.89331531525,90,"mme+dense",66.1601116657257,4.32273817062378,0.188094854354858,"hybrid","","2026-10-28 14:57:47"
+"chaud","sim_q1000_t12_r1_sus_x0_o100_g5","remlax","mme",FALSE,"n010","8",12000,1000,-11721.1474687159,34,TRUE,6137.48107481003,90,"mme+dense",59.821035861969,0,0.141768932342529,"dense","","2026-10-28 15:04:30"
+"unique","sim_q1000_t12_r1_sus_x0_o100_g5","remlax","mme_hybride",FALSE,"n032","8",12000,1000,-11721.1474676444,14,TRUE,9029.87547326088,90,"mme+dense",74.4011396169662,31.8331903219223,0.195611715316772,"hybrid","","2026-10-28 15:33:33"
+"unique","sim_q2000_t1_r64_sid_x0_o100","remlax","V_ai",FALSE,"n005","8",128000,2000,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,"solveur REML : echec. Sortie du solveur :
+[remlax] peripheriques : [{'platform': 'cpu', 'kind': 'cpu'}]
+[remlax] backend retenu : cpu (cpu:0)
+[remlax] n=128000, 1 effet(s) fixe(s), 1 terme(s) aleatoire(s)
+          g              iid   t=1   q=2000  K fournie
+[remlax] le processus solveur persistant s'est arrete en cours d'ajustement","2026-10-28 15:34:19"
+"unique","sim_q2000_t1_r64_sid_x0_o100_g2","remlax","V_ai",FALSE,"n005","8",128000,2000,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,"solveur REML : echec. Sortie du solveur :
+[remlax] peripheriques : [{'platform': 'cpu', 'kind': 'cpu'}]
+[remlax] backend retenu : cpu (cpu:0)
+[remlax] n=128000, 1 effet(s) fixe(s), 1 terme(s) aleatoire(s)
+          g              iid   t=1   q=2000  K fournie
+[remlax] le processus solveur persistant s'est arrete en cours d'ajustement","2026-10-28 15:35:25"
+"unique","sim_q2000_t1_r64_sid_x0_o100_g3","remlax","V_ai",FALSE,"n005","8",128000,2000,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,"solveur REML : echec. Sortie du solveur :
+[remlax] peripheriques : [{'platform': 'cpu', 'kind': 'cpu'}]
+[remlax] backend retenu : cpu (cpu:0)
+[remlax] n=128000, 1 effet(s) fixe(s), 1 terme(s) aleatoire(s)
+          g              iid   t=1   q=2000  K fournie
+[remlax] le processus solveur persistant s'est arrete en cours d'ajustement","2026-10-28 15:36:26"
+"unique","sim_q2000_t1_r32_sid_x0_o100","remlax","V_ai",FALSE,"n005","8",64000,2000,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,"solveur REML : echec. Sortie du solveur :
+[remlax] peripheriques : [{'platform': 'cpu', 'kind': 'cpu'}]
+[remlax] backend retenu : cpu (cpu:0)
+[remlax] n=64000, 1 effet(s) fixe(s), 1 terme(s) aleatoire(s)
+          g              iid   t=1   q=2000  K fournie
+[remlax] le processus solveur persistant s'est arrete en cours d'ajustement","2026-10-28 15:37:16"
+"unique","sim_q2000_t1_r32_sid_x0_o100_g2","remlax","V_ai",FALSE,"n005","8",64000,2000,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,"solveur REML : echec. Sortie du solveur :
+[remlax] peripheriques : [{'platform': 'cpu', 'kind': 'cpu'}]
+[remlax] backend retenu : cpu (cpu:0)
+[remlax] n=64000, 1 effet(s) fixe(s), 1 terme(s) aleatoire(s)
+          g              iid   t=1   q=2000  K fournie
+[remlax] le processus solveur persistant s'est arrete en cours d'ajustement","2026-10-28 15:38:13"
+"unique","sim_q1000_t12_r1_sus_x0_o100_g4","remlax","mme_creux",FALSE,"n020","8",12000,1000,-11588.1123318158,17,TRUE,9316.82129073143,90,"mme+dense",62.2266957759857,2.44609427452087,0.160561800003052,"sparse","","2026-10-28 15:38:21"
+"unique","sim_q2000_t1_r32_sid_x0_o100_g3","remlax","V_ai",FALSE,"n005","8",64000,2000,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,"solveur REML : echec. Sortie du solveur :
+[remlax] peripheriques : [{'platform': 'cpu', 'kind': 'cpu'}]
+[remlax] backend retenu : cpu (cpu:0)
+[remlax] n=64000, 1 effet(s) fixe(s), 1 terme(s) aleatoire(s)
+          g              iid   t=1   q=2000  K fournie
+[remlax] le processus solveur persistant s'est arrete en cours d'ajustement","2026-10-28 15:38:46"
+"unique","sim_q16000_t1_r4_sid_x0_o100","remlax","V_ai",FALSE,"n020","8",64000,16000,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,"solveur REML : echec. Sortie du solveur :
+[remlax] peripheriques : [{'platform': 'cpu', 'kind': 'cpu'}]
+[remlax] backend retenu : cpu (cpu:0)
+[remlax] n=64000, 1 effet(s) fixe(s), 1 terme(s) aleatoire(s)
+          g              iid   t=1   q=16000 K fournie
+[remlax] le processus solveur persistant s'est arrete en cours d'ajustement","2026-10-28 15:39:31"
+"unique","sim_q16000_t1_r4_sid_x0_o100_g2","remlax","V_ai",FALSE,"n005","8",64000,16000,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,"solveur REML : echec. Sortie du solveur :
+[remlax] peripheriques : [{'platform': 'cpu', 'kind': 'cpu'}]
+[remlax] backend retenu : cpu (cpu:0)
+[remlax] n=64000, 1 effet(s) fixe(s), 1 terme(s) aleatoire(s)
+          g              iid   t=1   q=16000 K fournie
+[remlax] le processus solveur persistant s'est arrete en cours d'ajustement","2026-10-28 15:40:09"
+"unique","sim_q1000_t12_r1_sus_x0_o100_g4","remlax","mme_hybride",FALSE,"n032","8",12000,1000,-11588.1123315954,20,TRUE,9441.15824079514,90,"mme+dense",80.4038347005844,1.79516494274139,0.162466764450073,"hybrid","","2026-10-28 15:40:25"
+"unique","sim_q2000_t1_r64_sid_x0_o100","remlax","V_lbfgsb",FALSE,"n005","8",128000,2000,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,"solveur REML : echec. Sortie du solveur :
+[remlax] peripheriques : [{'platform': 'cpu', 'kind': 'cpu'}]
+[remlax] backend retenu : cpu (cpu:0)
+[remlax] n=128000, 1 effet(s) fixe(s), 1 terme(s) aleatoire(s)
+          g              iid   t=1   q=2000  K fournie
+[remlax] le processus solveur persistant s'est arrete en cours d'ajustement","2026-10-28 15:40:52"
+"unique","sim_q16000_t1_r4_sid_x0_o100_g3","remlax","V_ai",FALSE,"n022","8",64000,16000,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,"solveur REML : echec. Sortie du solveur :
+[remlax] peripheriques : [{'platform': 'cpu', 'kind': 'cpu'}]
+[remlax] backend retenu : cpu (cpu:0)
+[remlax] n=64000, 1 effet(s) fixe(s), 1 terme(s) aleatoire(s)
+          g              iid   t=1   q=16000 K fournie
+[remlax] le processus solveur persistant s'est arrete en cours d'ajustement","2026-10-28 15:40:58"
+"unique","sim_q2000_t1_r64_sid_x0_o100_g2","remlax","V_lbfgsb",FALSE,"n003","8",128000,2000,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,"solveur REML : echec. Sortie du solveur :
+[remlax] peripheriques : [{'platform': 'cpu', 'kind': 'cpu'}]
+[remlax] backend retenu : cpu (cpu:0)
+[remlax] n=128000, 1 effet(s) fixe(s), 1 terme(s) aleatoire(s)
+          g              iid   t=1   q=2000  K fournie
+[remlax] le processus solveur persistant s'est arrete en cours d'ajustement","2026-10-28 15:41:19"
+"unique","sim_q2000_t1_r32_sid_x0_o100","remlax","V_lbfgsb",FALSE,"n022","8",64000,2000,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,"solveur REML : echec. Sortie du solveur :
+[remlax] peripheriques : [{'platform': 'cpu', 'kind': 'cpu'}]
+[remlax] backend retenu : cpu (cpu:0)
+[remlax] n=64000, 1 effet(s) fixe(s), 1 terme(s) aleatoire(s)
+          g              iid   t=1   q=2000  K fournie
+[remlax] le processus solveur persistant s'est arrete en cours d'ajustement","2026-10-28 15:41:49"
+"unique","sim_q2000_t1_r64_sid_x0_o100_g3","remlax","V_lbfgsb",FALSE,"n005","8",128000,2000,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,"solveur REML : echec. Sortie du solveur :
+[remlax] peripheriques : [{'platform': 'cpu', 'kind': 'cpu'}]
+[remlax] backend retenu : cpu (cpu:0)
+[remlax] n=128000, 1 effet(s) fixe(s), 1 terme(s) aleatoire(s)
+          g              iid   t=1   q=2000  K fournie
+[remlax] le processus solveur persistant s'est arrete en cours d'ajustement","2026-10-28 15:41:50"
+"unique","sim_q2000_t1_r32_sid_x0_o100_g2","remlax","V_lbfgsb",FALSE,"n003","8",64000,2000,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,"solveur REML : echec. Sortie du solveur :
+[remlax] peripheriques : [{'platform': 'cpu', 'kind': 'cpu'}]
+[remlax] backend retenu : cpu (cpu:0)
+[remlax] n=64000, 1 effet(s) fixe(s), 1 terme(s) aleatoire(s)
+          g              iid   t=1   q=2000  K fournie
+[remlax] le processus solveur persistant s'est arrete en cours d'ajustement","2026-10-28 15:42:14"
+"unique","sim_q2000_t1_r32_sid_x0_o100_g3","remlax","V_lbfgsb",FALSE,"n005","8",64000,2000,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,"solveur REML : echec. Sortie du solveur :
+[remlax] peripheriques : [{'platform': 'cpu', 'kind': 'cpu'}]
+[remlax] backend retenu : cpu (cpu:0)
+[remlax] n=64000, 1 effet(s) fixe(s), 1 terme(s) aleatoire(s)
+          g              iid   t=1   q=2000  K fournie
+[remlax] le processus solveur persistant s'est arrete en cours d'ajustement","2026-10-28 15:42:45"
+"unique","sim_q16000_t1_r4_sid_x0_o100_g2","remlax","V_lbfgsb",FALSE,"n003","8",64000,16000,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,"solveur REML : echec. Sortie du solveur :
+[remlax] peripheriques : [{'platform': 'cpu', 'kind': 'cpu'}]
+[remlax] backend retenu : cpu (cpu:0)
+[remlax] n=64000, 1 effet(s) fixe(s), 1 terme(s) aleatoire(s)
+          g              iid   t=1   q=16000 K fournie
+[remlax] le processus solveur persistant s'est arrete en cours d'ajustement","2026-10-28 15:43:10"
+"unique","sim_q16000_t1_r4_sid_x0_o100","remlax","V_lbfgsb",FALSE,"n022","8",64000,16000,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,"solveur REML : echec. Sortie du solveur :
+[remlax] peripheriques : [{'platform': 'cpu', 'kind': 'cpu'}]
+[remlax] backend retenu : cpu (cpu:0)
+[remlax] n=64000, 1 effet(s) fixe(s), 1 terme(s) aleatoire(s)
+          g              iid   t=1   q=16000 K fournie
+[remlax] le processus solveur persistant s'est arrete en cours d'ajustement","2026-10-28 15:43:25"
+"unique","sim_q16000_t1_r4_sid_x0_o100_g3","remlax","V_lbfgsb",FALSE,"n005","8",64000,16000,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,"solveur REML : echec. Sortie du solveur :
+[remlax] peripheriques : [{'platform': 'cpu', 'kind': 'cpu'}]
+[remlax] backend retenu : cpu (cpu:0)
+[remlax] n=64000, 1 effet(s) fixe(s), 1 terme(s) aleatoire(s)
+          g              iid   t=1   q=16000 K fournie
+[remlax] le processus solveur persistant s'est arrete en cours d'ajustement","2026-10-28 15:44:12"
+"unique","sim_q1000_t8_r1_sus_x0_o100_g5","remlax","mme_creux",FALSE,"n026","8",8000,1000,-7877.94347702402,89,TRUE,5919.38632369041,44,"mme+dense",20.58422935009,1.81706893444061,0.151427268981934,"sparse","","2026-10-28 15:45:18"
+"unique","sim_q1000_t12_r1_sus_x0_o100","remlax","mme_creux",FALSE,"n021","8",12000,1000,-11792.0890518841,14,TRUE,10271.5677375793,90,"mme+dense",72.1861042976379,5.92409348487854,0.181011915206909,"sparse","","2026-10-28 15:54:15"
+"unique","sim_q1000_t12_r1_sus_x0_o100_g5","remlax","mme_creux",FALSE,"n020","8",12000,1000,-11721.1474681957,18,TRUE,11343.8878481388,90,"mme+dense",60.719230055809,4.70870196819305,0.165549516677856,"sparse","","2026-10-28 16:12:07"
+"unique","sim_q2000_t10_r1_sfa2_x0_o10_g4","remlax","mme_hybride",FALSE,"n022","8",2000,2000,-2077.83803579138,103,TRUE,12028.7808134556,39,"mme+dense",3.46926844120026,2.05538928508759,0.311034440994263,"hybrid","","2026-10-28 16:23:32"
+"unique","sim_q2000_t10_r1_sfa2_x0_o10_g5","remlax","mme_hybride",FALSE,"n021","8",2000,2000,-2029.8939155389,35,TRUE,15712.0694553852,39,"mme+dense",3.78031277656555,2.1900622844696,0.320444822311401,"hybrid","","2026-10-28 17:24:56"
+"unique","sim_q2000_t1_r16_sid_x0_o100","remlax","V_lbfgsb",FALSE,"n003","8",32000,2000,-24412.8820589388,7,TRUE,11276.0720033646,2,"dense",448.725707411766,24.9181708097458,0.274762868881226,NA,"","2026-10-28 18:51:15"
+"unique","sim_q8000_t1_r4_sid_x0_o100","remlax","V_lbfgsb",FALSE,"n021","8",32000,8000,-25357.9327559408,7,TRUE,12777.2576429844,2,"dense",607.981274366379,179.634709596634,1.8342297077179,NA,"","2026-10-28 19:18:49"
+"unique","sim_q2000_t1_r8_sid_x0_o100","remlax","V_lbfgsb",FALSE,"n002","8",16000,2000,-12771.1441663754,8,TRUE,2337.40212202072,2,"dense",85.7833514213562,0,0.272027492523193,NA,"","2026-10-28 19:42:35"
+"unique","sim_q2000_t1_r8_sid_x0_o100_g2","remlax","V_lbfgsb",FALSE,"n025","8",16000,2000,-12910.7802083607,7,TRUE,1534.81711769104,2,"dense",76.8337502479553,0,0.298242330551147,NA,"","2026-10-28 19:44:44"
+"unique","sim_q2000_t10_r1_sfa2_x0_o10_g4","remlax","mme_creux",FALSE,"n026","8",2000,2000,-2077.83803572823,81,TRUE,20748.5038781166,39,"mme+dense",3.69599676132202,0,0.320535182952881,"sparse","","2026-10-28 19:55:57"
+"unique","sim_q2000_t1_r8_sid_x0_o100_g3","remlax","V_lbfgsb",FALSE,"n002","8",16000,2000,-12725.287150896,6,TRUE,1832.33109498024,2,"dense",75.1057684421539,0.141578197479248,0.302177667617798,NA,"","2026-10-28 20:13:41"
+"unique","sim_q4000_t1_r4_sid_x0_o100","remlax","V_lbfgsb",FALSE,"n025","8",16000,4000,-12921.9174316018,6,TRUE,2327.36032676697,2,"dense",92.0822373628616,0.820582032203674,0.519665718078613,NA,"","2026-10-28 20:23:57"
+"unique","sim_q4000_t1_r4_sid_x0_o100_g2","remlax","V_lbfgsb",FALSE,"n026","8",16000,4000,-13010.9370718336,6,TRUE,1741.56895017624,2,"dense",83.4263784885406,8.01299381256104,0.8430335521698,NA,"","2026-10-28 20:25:11"
+"unique","sim_q8000_t1_r4_sid_x0_o100_g2","remlax","V_lbfgsb",FALSE,"n005","8",32000,8000,-25222.25459118,7,TRUE,16388.9957973957,2,"dense",763.653002977371,125.034037828445,2.27269101142883,NA,"","2026-10-28 20:27:30"
+"unique","sim_q4000_t1_r4_sid_x0_o100_g3","remlax","V_lbfgsb",FALSE,"n036","8",16000,4000,-12969.2898948368,7,TRUE,2015.15380620956,2,"dense",74.4226045608521,0,0.444243192672729,NA,"","2026-10-28 20:42:15"
+"unique","sim_q8000_t1_r4_sid_x0_o100_g3","remlax","V_lbfgsb",FALSE,"n020","8",32000,8000,-25168.7115889594,7,TRUE,21547.2233462334,2,"dense",582.326639294624,10.2511802911758,1.2491090297699,NA,"","2026-10-28 22:11:28"
+"unique","sim_q2000_t10_r1_sfa2_x0_o10","remlax","V_lbfgsb",FALSE,"n025","8",2000,2000,-2037.04134201893,976,TRUE,8179.14146280289,39,"dense",2.75546562671661,1.04728329181671,0.466125011444092,NA,"","2026-10-29 00:31:31"
+"unique","sim_q2000_t10_r1_sfa2_x0_o10_g4","remlax","V_lbfgsb",FALSE,"n003","8",2000,2000,-2077.83803277051,829,TRUE,8338.62101697922,39,"dense",2.7980979681015,0.939182639122009,0.320438861846924,NA,"","2026-10-29 00:34:10"
+"unique","sim_q2000_t10_r1_sfa2_x0_o10_g5","remlax","V_lbfgsb",FALSE,"n002","8",2000,2000,-2027.16871224013,1438,TRUE,10710.107524395,39,"dense",2.8785355091095,0.818212985992432,0.30200982093811,NA,"","2026-10-29 01:13:41"

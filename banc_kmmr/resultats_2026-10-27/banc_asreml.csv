@@ -1,0 +1,10 @@
+etiquette,cas,outil,voie,gpu,noeud,fils,n,logLik,n_iter,converge,secondes,n_par,moteur,eval_s,compile_s,t_modele,inversion,erreur,date
+unique,drops2_fa1,asreml,ai,FALSE,io-cpu-14.io.internal,8,1400,-492.861036727097,13,TRUE,0.496760845184326,56,NA,NA,NA,NA,NA,,2026-10-26 22:05:42
+unique,drops2_fa3,asreml,ai,FALSE,io-cpu-14.io.internal,8,1400,-378.251289954291,30,TRUE,2.36586093902588,109,NA,NA,NA,NA,NA,,2026-10-26 22:05:44
+unique,drops1_fa1,asreml,ai,FALSE,io-cpu-21.io.internal,8,3640,-1161.85681042979,24,TRUE,15.3421230316162,39,NA,0.608695652173913,NA,NA,NA,,2026-10-26 22:05:57
+"unique","drops1_us","asreml","ai",FALSE,"io-cpu-21.io.internal","8",3640,-1146.72091476078,23,TRUE,10.5377614498138,43,NA,0.409090909090909,NA,NA,NA,"","2026-10-26 22:25:53"
+"unique","krause_gblup","asreml","ai",FALSE,"io-cpu-22.io.internal","8",3768,389.567353278223,7,TRUE,60.2477264404297,2,NA,7,NA,NA,NA,"","2026-10-26 22:26:58"
+"unique","krause_fa2","asreml","ai",FALSE,"io-cpu-21.io.internal","8",18840,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,"Error   : Insufficient workspace; current workspace is approx 8589.93 Mb
+          : Please try increasing the amount available via the workspace option","2026-10-26 22:27:13"
+"unique","krause_us","asreml","ai",FALSE,"io-cpu-21.io.internal","8",18840,7138.92944358522,9,TRUE,7529.50458908081,20,NA,836,NA,NA,NA,"","2026-10-27 00:32:48"
+"unique","krause_fa2","asreml","ai",FALSE,"io-cpu-06.io.internal","8",18840,7126.3557539852,15,TRUE,7429.38609790802,19,NA,458,NA,NA,NA,"","2026-10-27 02:36:44"

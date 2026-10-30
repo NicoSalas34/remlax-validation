@@ -1,0 +1,4 @@
+remlax fige v10 le 2026-10-27T04:24:32+01:00 : v9 + evaluation complete d'un pas AI accepte reprenant la factorisation de l'essai (derivees seules)
+commit ddf700c4e0cbbf6d8e4557a30af78c17a1c060a4
+empreinte des sources (R, inst) : 6dd91ae14f4c5211
+image ige_reml_v2.sif sha1 aafa0386fbb18fca

@@ -1,0 +1,4 @@
+remlax fige v7 le 2026-10-27T02:03:24+01:00 : v6 + voie GPU groupee par terme (kron et einsum, compilation independante du nombre de blocs)
+commit ddf700c4e0cbbf6d8e4557a30af78c17a1c060a4
+empreinte des sources (R, inst) : 7c414a6bd5fb7b9e
+image ige_reml_v2.sif sha1 aafa0386fbb18fca

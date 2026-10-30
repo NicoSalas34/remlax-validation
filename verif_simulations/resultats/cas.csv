@@ -1,0 +1,38 @@
+"cas","replicat","famille","note","secondes"
+"ige_melange_deux_especes",1,"DGE / IGE","2 bacs 30 x 20, colonnes alternees ; DGE + IGE intra + IGE inter us (3 x 3) par espece avec GRM ; IEE iid ; residuelle diag par espece ; rangs 2 (intra) et 1 (inter), normalisation L2 ; h2 0,30, IGE 7 et 5 %, IEE 5 %, r(DGE, IGE) -0,4",524.137894153595
+"mt_g_fa2",1,"multi-caracteres","fa rang 2, 5 caracteres (rang 2 non identifie a 4 caracteres)",196.92351603508
+"decalage_rx_lag",1,"decalage spatial","y = (I - Psi (x) W)^-1 (Xb + Zu + e), W reine 15 x 20, 2 caracteres, critere reml_y",30.2806348800659
+"mt_residuelle_fa1",1,"multi-caracteres","residuelle fa rang 1 entre caracteres d'une plante",126.655299425125
+"mt_g_rr2",1,"multi-caracteres","rang reduit 2 sans variance specifique : Sigma genetique singuliere",146.055703639984
+"mt_g_ante1",1,"multi-caracteres","antedependance d'ordre 1",77.9603879451752
+"mt_g_chol1",1,"multi-caracteres","Cholesky en bande d'ordre 1",95.4887444972992
+"mt_g_fa1",1,"multi-caracteres","fa rang 1, 4 caracteres",122.446023702621
+"spline_spl2d",1,"splines","rx_spl2d(nseg = c(6, 8)) : cinq termes PS-ANOVA, partie nulle en effets fixes",25.1420493125916
+"niveaux_corg_ge",1,"structures entre niveaux","correlation generale entre 4 milieux ; correlations par delta-methode sur theta",19.7329351902008
+"iid_un_terme",1,"termes simples","un facteur aleatoire, effectifs desequilibres",8.74311470985413
+"iid_deux_termes_croises",1,"termes simples","genotype x milieu croises, 8 % de cellules manquantes",11.101993560791
+"parente_grm_dense",1,"parente","GRM VanRaden (rx_grm, blending 0,05), 200 genotypes x 3 repetitions",8.64726829528809
+"parente_pedigree_kinv",1,"parente","modele animal, 500 individus sur 3 generations ; A^-1 par Henderson (fonction R, asreml::ainverse non utilise) ; Kinv seul : rx_fit_mme et rx_fit_sparse ; rx_fit sur le meme modele avec K = A dense",10.9307341575623
+"mt_g_diag_r_diag",1,"multi-caracteres","3 caracteres, 120 genotypes x 3 plantes, 5 % manquants",38.6987574100494
+"mt_g_us_r_us",1,"multi-caracteres","Sigma genetique us, residuelle us entre caracteres d'une meme plante",87.2216563224792
+"mt_g_corh",1,"multi-caracteres","variances heterogenes, correlation uniforme 0,4",55.7508587837219
+"residuelle_ar1xar1",1,"residuelles","champ complet 30 x 20, residual = ~ ar1(row):ar1(col)",21.5286452770233
+"residuelle_ar1xar1_manquants",1,"residuelles","5 % de cellules absentes du champ 30 x 20",21.0056717395782
+"dsum_ar1xar1_et_iid",1,"residuelles","deux sites, dsum(~ ar1(row):ar1(col) + units | site) : structures differentes",22.030398607254
+"dsum_iid_heterogene",1,"residuelles","residuelle iid propre a chaque site, dsum(~ units | site)",16.3452875614166
+"residuelle_none_terme_plante",1,"residuelles","residual none, la plante us porte la residuelle ; jumeau a residuelle us(trait):units",33.1205751895905
+"niveaux_ar1",1,"structures entre niveaux","transect de 100 parcelles x 4 sous-echantillons, terme ar1",13.9392795562744
+"niveaux_ar1xar1_champ",1,"structures entre niveaux","champ aleatoire ar1 x ar1 sur 20 x 25 cellules, avec pepite et genotype",19.5817315578461
+"niveaux_cor_ge",1,"structures entre niveaux","60 genotypes x 4 milieux x 2 rep., correlation uniforme entre milieux",12.0771591663361
+"metrique_exp",1,"structures entre niveaux","exp, 1D, 150 positions x 3 obs",8.83238863945007
+"metrique_gau",1,"structures entre niveaux","gau, 1D, 150 positions x 3 obs",12.2390599250793
+"metrique_lvr",1,"structures entre niveaux","lvr, 1D, 150 positions x 3 obs",45.6959736347198
+"metrique_iexp",1,"structures entre niveaux","iexp, 2D, 150 positions x 3 obs",9.15123271942139
+"metrique_igau",1,"structures entre niveaux","igau, 2D, 150 positions x 3 obs",12.0992732048035
+"metrique_ieuc",1,"structures entre niveaux","ieuc, 2D, 150 positions x 3 obs",9.3117733001709
+"metrique_sph",1,"structures entre niveaux","sph, 2D, 150 positions x 3 obs",15.7280120849609
+"metrique_cir",1,"structures entre niveaux","cir, 2D, 150 positions x 3 obs",18.0812356472015
+"metrique_aexp",1,"structures entre niveaux","aexp, 2D, 150 positions x 3 obs",13.6578545570374
+"metrique_agau",1,"structures entre niveaux","agau, 2D, 150 positions x 3 obs",15.3710553646088
+"metrique_mtrn",1,"structures entre niveaux","mtrn, 2D, 150 positions x 3 obs, nu fixe a 1.5",27.0682923793793
+"ige_univarie_une_espece",1,"DGE / IGE","monoculture 30 x 20, 120 genotypes x 5, DGE iid + IGE iid (rang 1, L2)",10.9502394199371

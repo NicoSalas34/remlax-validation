@@ -1,0 +1,231 @@
+Verification par simulation de remlax (2026-10-21 23:41)
+Paquet : /tmp/claude-1000/-home-salas-Documents-Git-IGE-analysis-2024-2025/162e877b-436f-40fc-bda3-3809b2eeed6b/scratchpad/remlax_instantane
+Criteres : |logLik - arbitre| / |arbitre| < 1e-08 ; ecart a la meilleure voie < 0.0001 ; |z| < 3
+Duree totale : 12.5 min
+
+Ajustements : ECHEC 21, PASSE 19
+
+== ige_melange_deux_especes  [DGE / IGE]  2 bacs 30 x 20, colonnes alternees ; DGE + IGE intra + IGE inter us (3 x 3) par espece avec GRM ; IEE iid ; residuelle diag par espece ; rangs 2 (intra) et 1 (inter), normalisation L2 ; h2 0,30, IGE 7 et 5 %, IEE 5 %, r(DGE, IGE) -0,4
+   lbfgsb             rep 1  PASSE         logLik -1548.189279  arbitre -1548.189279  ecart_rel 5.1e-14  ecart_voies 0.0e+00  max|z| 2.00  
+   ai                 rep 1  ECHEC         logLik -1548.189341  arbitre -1548.189341  ecart_rel -8.4e-15  ecart_voies 6.2e-05  max|z| 2.00  convergence non etablie
+   mme                rep 1  ECHEC         logLik -1548.288248  arbitre -1548.288248  ecart_rel -1.2e-12  ecart_voies 9.9e-02  max|z| 2.02  optimum inferieur de 9.90e-02
+   lbfgsb             rep 2  PASSE         logLik -1592.760171  arbitre -1592.760171  ecart_rel 7.1e-14  ecart_voies 0.0e+00  max|z| 1.60  
+   ai                 rep 2  PASSE         logLik -1592.760171  arbitre -1592.760171  ecart_rel 3.3e-15  ecart_voies 3.8e-08  max|z| 1.60  
+   mme                rep 2  PASSE         logLik -1592.760171  arbitre -1592.760171  ecart_rel -1.0e-12  ecart_voies 1.8e-09  max|z| 1.60  
+   lbfgsb             rep 3  PASSE         logLik -1588.444678  arbitre -1588.444678  ecart_rel 6.7e-14  ecart_voies 0.0e+00  max|z| 2.84  
+   ai                 rep 3  PASSE         logLik -1588.444678  arbitre -1588.444678  ecart_rel -3.1e-15  ecart_voies 1.8e-07  max|z| 2.84  
+   mme                rep 3  PASSE         logLik -1588.444678  arbitre -1588.444678  ecart_rel -1.2e-12  ecart_voies 2.1e-09  max|z| 2.84  
+   lbfgsb             rep 4  PASSE         logLik -1572.271174  arbitre -1572.271174  ecart_rel 2.7e-14  ecart_voies 0.0e+00  max|z| 2.05  
+   ai                 rep 4  PASSE         logLik -1572.271174  arbitre -1572.271174  ecart_rel -2.0e-14  ecart_voies 6.7e-08  max|z| 2.05  
+   mme                rep 4  PASSE         logLik -1572.271174  arbitre -1572.271174  ecart_rel -1.0e-12  ecart_voies 1.7e-09  max|z| 2.05  
+      gA[1,1]                vrai    0.3026  estime    0.2186  se   0.0474  z  -1.77
+      gA[2,1]                vrai   -0.0609  estime   -0.0754  se   0.0291  z  -0.50
+      gA[2,2]                vrai    0.0766  estime    0.0445  se   0.0285  z  -1.13
+      gA[3,1]                vrai   -0.0252  estime   -0.0748  se   0.0251  z  -1.98
+      gA[3,2]                vrai    0.0190  estime    0.0321  se   0.0175  z   0.75
+      gA[3,3]                vrai    0.0524  estime    0.0278  se       NA  z     NA
+      gB[1,1]                vrai    0.3042  estime    0.2532  se   0.0549  z  -0.93
+      gB[2,1]                vrai   -0.0609  estime   -0.0334  se   0.0322  z   0.85
+      gB[2,2]                vrai    0.0763  estime    0.0212  se   0.0276  z  -2.00
+      gB[3,1]                vrai   -0.0252  estime   -0.0582  se   0.0326  z  -1.01
+      gB[3,2]                vrai    0.0189  estime    0.0187  se   0.0244  z  -0.01
+      gB[3,3]                vrai    0.0521  estime    0.0791  se   0.0358  z   0.76
+      iee                    vrai    0.0250  estime    0.0348  se   0.0140  z   0.70
+      residuelle[1,1]        vrai    0.5000  estime    0.4762  se   0.0388  z  -0.61
+      residuelle[2,2]        vrai    0.5500  estime    0.5659  se   0.0450  z   0.35
+      gA[1,1]                vrai    0.3022  estime    0.2993  se   0.0569  z  -0.05
+      gA[2,1]                vrai   -0.0603  estime   -0.0961  se   0.0328  z  -1.09
+      gA[2,2]                vrai    0.0752  estime    0.1096  se   0.0411  z   0.84
+      gA[3,1]                vrai   -0.0250  estime   -0.0341  se   0.0335  z  -0.27
+      gA[3,2]                vrai    0.0187  estime    0.0341  se   0.0335  z   0.46
+      gA[3,3]                vrai    0.0516  estime    0.0870  se   0.0451  z   0.79
+      gB[1,1]                vrai    0.3036  estime    0.2693  se   0.0581  z  -0.59
+      gB[2,1]                vrai   -0.0612  estime   -0.0432  se   0.0292  z   0.62
+      gB[2,2]                vrai    0.0770  estime    0.0269  se   0.0313  z  -1.60
+      gB[3,1]                vrai   -0.0252  estime   -0.0027  se   0.0263  z   0.85
+      gB[3,2]                vrai    0.0191  estime    0.0045  se   0.0192  z  -0.76
+      gB[3,3]                vrai    0.0524  estime    0.0212  se   0.0221  z  -1.41
+      iee                    vrai    0.0250  estime    0.0195  se   0.0176  z  -0.31
+      residuelle[1,1]        vrai    0.5000  estime    0.4828  se   0.0386  z  -0.45
+      residuelle[2,2]        vrai    0.5500  estime    0.6268  se   0.0520  z   1.48
+      gA[1,1]                vrai    0.3039  estime    0.3599  se   0.0675  z   0.83
+      gA[2,1]                vrai   -0.0609  estime   -0.0207  se   0.0373  z   1.08
+      gA[2,2]                vrai    0.0763  estime    0.0441  se   0.0377  z  -0.86
+      gA[3,1]                vrai   -0.0252  estime   -0.0458  se   0.0316  z  -0.65
+      gA[3,2]                vrai    0.0190  estime    0.0203  se   0.0296  z   0.05
+      gA[3,3]                vrai    0.0523  estime    0.0496  se   0.0323  z  -0.09
+      gB[1,1]                vrai    0.3043  estime    0.4282  se   0.0727  z   1.70
+      gB[2,1]                vrai   -0.0612  estime    0.0142  se   0.0415  z   1.82
+      gB[2,2]                vrai    0.0769  estime    0.1126  se   0.0509  z   0.70
+      gB[3,1]                vrai   -0.0253  estime    0.0089  se   0.0427  z   0.80
+      gB[3,2]                vrai    0.0191  estime    0.0403  se   0.0351  z   0.60
+      gB[3,3]                vrai    0.0525  estime    0.1262  se   0.0418  z   1.76
+      iee                    vrai    0.0250  estime    0.0148  se   0.0185  z  -0.55
+      residuelle[1,1]        vrai    0.5000  estime    0.5549  se   0.0460  z   1.19
+      residuelle[2,2]        vrai    0.5500  estime    0.4401  se   0.0387  z  -2.84
+      gA[1,1]                vrai    0.3042  estime    0.2835  se   0.0567  z  -0.36
+      gA[2,1]                vrai   -0.0609  estime   -0.0895  se   0.0331  z  -0.86
+      gA[2,2]                vrai    0.0762  estime    0.0667  se   0.0336  z  -0.28
+      gA[3,1]                vrai   -0.0252  estime    0.0286  se   0.0293  z   1.84
+      gA[3,2]                vrai    0.0189  estime   -0.0075  se   0.0196  z  -1.34
+      gA[3,3]                vrai    0.0522  estime    0.0110  se   0.0201  z  -2.05
+      gB[1,1]                vrai    0.3017  estime    0.3359  se   0.0653  z   0.52
+      gB[2,1]                vrai   -0.0603  estime   -0.0432  se   0.0398  z   0.43
+      gB[2,2]                vrai    0.0752  estime    0.0863  se   0.0403  z   0.27
+      gB[3,1]                vrai   -0.0249  estime   -0.0600  se   0.0320  z  -1.10
+      gB[3,2]                vrai    0.0186  estime    0.0172  se   0.0225  z  -0.07
+      gB[3,3]                vrai    0.0513  estime    0.0565  se   0.0259  z   0.20
+      iee                    vrai    0.0250  estime    0.0215  se   0.0134  z  -0.26
+      residuelle[1,1]        vrai    0.5000  estime    0.4600  se   0.0400  z  -1.00
+      residuelle[2,2]        vrai    0.5500  estime    0.5901  se   0.0457  z   0.88
+== mt_g_fa2  [multi-caracteres]  fa rang 2, 5 caracteres (rang 2 non identifie a 4 caracteres)
+   lbfgsb             rep 1  ECHEC         logLik -1977.914757  arbitre -1977.914757  ecart_rel 2.0e-15  ecart_voies 0.0e+00  max|z| 3.06  1 composante(s) a |z| >= 3
+   ai                 rep 1  ECHEC         logLik -1977.914757  arbitre -1977.914757  ecart_rel 2.5e-15  ecart_voies 1.2e-07  max|z| 3.06  1 composante(s) a |z| >= 3
+   lbfgsb             rep 2  PASSE         logLik -2035.398308  arbitre -2035.398308  ecart_rel 3.2e-15  ecart_voies 0.0e+00  max|z| 2.18  
+   ai                 rep 2  PASSE         logLik -2035.398308  arbitre -2035.398308  ecart_rel -1.9e-15  ecart_voies 1.1e-08  max|z| 2.18  
+   lbfgsb             rep 3  PASSE         logLik -1929.791203  arbitre -1929.791203  ecart_rel 9.4e-16  ecart_voies 0.0e+00  max|z| 2.47  
+   ai                 rep 3  PASSE         logLik -1929.791203  arbitre -1929.791203  ecart_rel -1.6e-15  ecart_voies 2.3e-07  max|z| 2.47  
+   lbfgsb             rep 4  PASSE         logLik -1974.480398  arbitre -1974.480398  ecart_rel 1.3e-15  ecart_voies 0.0e+00  max|z| 2.43  
+   ai                 rep 4  PASSE         logLik -1974.480398  arbitre -1974.480398  ecart_rel -2.1e-15  ecart_voies 5.7e-08  max|z| 2.43  
+      g[1,1]                 vrai    0.6400  estime    0.5053  se   0.1171  z  -1.15
+      g[2,1]                 vrai    0.3500  estime    0.3296  se   0.0896  z  -0.23
+      g[2,2]                 vrai    0.7000  estime    0.6408  se   0.1218  z  -0.49
+      g[3,1]                 vrai   -0.2100  estime   -0.1566  se   0.0903  z   0.59
+      g[3,2]                 vrai    0.1500  estime    0.1231  se   0.0868  z  -0.31
+      g[3,3]                 vrai    0.6500  estime    0.7656  se   0.1425  z   0.81
+      g[4,1]                 vrai    0.4200  estime    0.2319  se   0.0793  z  -2.37
+      g[4,2]                 vrai    0.1000  estime   -0.0328  se   0.0764  z  -1.74
+      g[4,3]                 vrai   -0.4200  estime   -0.3606  se   0.0912  z   0.65
+      g[4,4]                 vrai    0.6700  estime    0.5172  se   0.1015  z  -1.51
+      g[5,1]                 vrai    0.2800  estime    0.2233  se   0.0782  z  -0.73
+      g[5,2]                 vrai    0.3500  estime    0.3085  se   0.0839  z  -0.50
+      g[5,3]                 vrai    0.0600  estime    0.1608  se   0.0850  z   1.19
+      g[5,4]                 vrai    0.1200  estime   -0.0865  se   0.0674  z  -3.06
+      g[5,5]                 vrai    0.5000  estime    0.4793  se   0.1029  z  -0.20
+      residuelle[1,1]        vrai    0.8000  estime    0.8267  se   0.0863  z   0.31
+      residuelle[2,2]        vrai    0.6000  estime    0.5879  se   0.0605  z  -0.20
+      residuelle[3,3]        vrai    0.7000  estime    0.6299  se   0.0650  z  -1.08
+      residuelle[4,4]        vrai    0.5000  estime    0.5174  se   0.0541  z   0.32
+      residuelle[5,5]        vrai    0.6000  estime    0.6307  se   0.0658  z   0.47
+      g[1,1]                 vrai    0.6400  estime    0.7748  se   0.1640  z   0.82
+      g[2,1]                 vrai    0.3500  estime    0.3529  se   0.1107  z   0.03
+      g[2,2]                 vrai    0.7000  estime    0.7458  se   0.1444  z   0.32
+      g[3,1]                 vrai   -0.2100  estime   -0.3571  se   0.1093  z  -1.35
+      g[3,2]                 vrai    0.1500  estime    0.1675  se   0.0987  z   0.18
+      g[3,3]                 vrai    0.6500  estime    0.6821  se   0.1334  z   0.24
+      g[4,1]                 vrai    0.4200  estime    0.4598  se   0.0982  z   0.41
+      g[4,2]                 vrai    0.1000  estime    0.2259  se   0.0826  z   1.52
+      g[4,3]                 vrai   -0.4200  estime   -0.3032  se   0.0842  z   1.39
+      g[4,4]                 vrai    0.6700  estime    0.4608  se   0.0958  z  -2.18
+      g[5,1]                 vrai    0.2800  estime    0.3517  se   0.0998  z   0.72
+      g[5,2]                 vrai    0.3500  estime    0.4986  se   0.1030  z   1.44
+      g[5,3]                 vrai    0.0600  estime    0.0886  se   0.0881  z   0.32
+      g[5,4]                 vrai    0.1200  estime    0.2330  se   0.0748  z   1.51
+      g[5,5]                 vrai    0.5000  estime    0.5827  se   0.1173  z   0.71
+      residuelle[1,1]        vrai    0.8000  estime    1.0287  se   0.1065  z   2.15
+      residuelle[2,2]        vrai    0.6000  estime    0.6873  se   0.0722  z   1.21
+      residuelle[3,3]        vrai    0.7000  estime    0.6814  se   0.0711  z  -0.26
+      residuelle[4,4]        vrai    0.5000  estime    0.5755  se   0.0590  z   1.28
+      residuelle[5,5]        vrai    0.6000  estime    0.6487  se   0.0668  z   0.73
+      g[1,1]                 vrai    0.6400  estime    0.5302  se   0.1265  z  -0.87
+      g[2,1]                 vrai    0.3500  estime    0.1569  se   0.0807  z  -2.39
+      g[2,2]                 vrai    0.7000  estime    0.5047  se   0.1071  z  -1.82
+      g[3,1]                 vrai   -0.2100  estime   -0.2632  se   0.0835  z  -0.64
+      g[3,2]                 vrai    0.1500  estime    0.0814  se   0.0718  z  -0.96
+      g[3,3]                 vrai    0.6500  estime    0.4813  se   0.1036  z  -1.63
+      g[4,1]                 vrai    0.4200  estime    0.3821  se   0.0884  z  -0.43
+      g[4,2]                 vrai    0.1000  estime    0.0971  se   0.0703  z  -0.04
+      g[4,3]                 vrai   -0.4200  estime   -0.3428  se   0.0799  z   0.97
+      g[4,4]                 vrai    0.6700  estime    0.5783  se   0.1051  z  -0.87
+      g[5,1]                 vrai    0.2800  estime    0.1217  se   0.0640  z  -2.47
+      g[5,2]                 vrai    0.3500  estime    0.2240  se   0.0659  z  -1.91
+      g[5,3]                 vrai    0.0600  estime    0.1143  se   0.0623  z   0.87
+      g[5,4]                 vrai    0.1200  estime    0.0584  se   0.0613  z  -1.00
+      g[5,5]                 vrai    0.5000  estime    0.3172  se   0.0760  z  -2.41
+      residuelle[1,1]        vrai    0.8000  estime    0.9118  se   0.0955  z   1.17
+      residuelle[2,2]        vrai    0.6000  estime    0.6435  se   0.0679  z   0.64
+      residuelle[3,3]        vrai    0.7000  estime    0.6520  se   0.0674  z  -0.71
+      residuelle[4,4]        vrai    0.5000  estime    0.4291  se   0.0436  z  -1.63
+      residuelle[5,5]        vrai    0.6000  estime    0.5461  se   0.0573  z  -0.94
+      g[1,1]                 vrai    0.6400  estime    0.7234  se   0.1473  z   0.57
+      g[2,1]                 vrai    0.3500  estime    0.4712  se   0.1168  z   1.04
+      g[2,2]                 vrai    0.7000  estime    0.8913  se   0.1565  z   1.22
+      g[3,1]                 vrai   -0.2100  estime   -0.2601  se   0.1040  z  -0.48
+      g[3,2]                 vrai    0.1500  estime    0.1692  se   0.1027  z   0.19
+      g[3,3]                 vrai    0.6500  estime    0.7704  se   0.1403  z   0.86
+      g[4,1]                 vrai    0.4200  estime    0.4504  se   0.0986  z   0.31
+      g[4,2]                 vrai    0.1000  estime    0.1216  se   0.0897  z   0.24
+      g[4,3]                 vrai   -0.4200  estime   -0.3919  se   0.0954  z   0.29
+      g[4,4]                 vrai    0.6700  estime    0.5803  se   0.1091  z  -0.82
+      g[5,1]                 vrai    0.2800  estime    0.5255  se   0.1167  z   2.10
+      g[5,2]                 vrai    0.3500  estime    0.6265  se   0.1258  z   2.20
+      g[5,3]                 vrai    0.0600  estime    0.1358  se   0.1058  z   0.72
+      g[5,4]                 vrai    0.1200  estime    0.1636  se   0.0899  z   0.49
+      g[5,5]                 vrai    0.5000  estime    0.8754  se   0.1548  z   2.43
+      residuelle[1,1]        vrai    0.8000  estime    0.8300  se   0.0864  z   0.35
+      residuelle[2,2]        vrai    0.6000  estime    0.5561  se   0.0578  z  -0.76
+      residuelle[3,3]        vrai    0.7000  estime    0.5740  se   0.0609  z  -2.07
+      residuelle[4,4]        vrai    0.5000  estime    0.5044  se   0.0519  z   0.08
+      residuelle[5,5]        vrai    0.6000  estime    0.5928  se   0.0609  z  -0.12
+== spline_spl2d  [splines]  rx_spl2d(nseg = c(6, 8)) : cinq termes PS-ANOVA, partie nulle en effets fixes
+   lbfgsb             rep 1  PASSE         logLik -760.013957  arbitre -760.013957  ecart_rel 2.2e-15  ecart_voies 0.0e+00  max|z| 2.72  
+   ai                 rep 1  PASSE         logLik -760.013957  arbitre -760.013957  ecart_rel 1.0e-15  ecart_voies 1.2e-07  max|z| 2.72  
+   mme                rep 1  ECHEC         logLik -760.014637  arbitre -760.014637  ecart_rel -2.4e-13  ecart_voies 6.8e-04  max|z| 2.72  optimum inferieur de 6.79e-04
+   lbfgsb             rep 2  ECHEC         logLik -762.240883  arbitre -762.240883  ecart_rel 1.2e-15  ecart_voies 0.0e+00  max|z| 4.91  2 composante(s) a |z| >= 3
+   ai                 rep 2  ECHEC         logLik -762.240883  arbitre -762.240883  ecart_rel 6.0e-16  ecart_voies 8.6e-08  max|z| 4.91  2 composante(s) a |z| >= 3
+   mme                rep 2  ECHEC         logLik -762.240883  arbitre -762.240883  ecart_rel -1.7e-13  ecart_voies 1.4e-10  max|z| 4.91  2 composante(s) a |z| >= 3
+   lbfgsb             rep 3  ECHEC         logLik -758.043393  arbitre -758.043393  ecart_rel 2.5e-15  ecart_voies 0.0e+00  max|z| 7.22  1 composante(s) a |z| >= 3
+   ai                 rep 3  ECHEC         logLik -758.043393  arbitre -758.043393  ecart_rel 1.3e-15  ecart_voies 5.1e-08  max|z| 7.22  1 composante(s) a |z| >= 3
+   mme                rep 3  ECHEC         logLik -758.043393  arbitre -758.043393  ecart_rel -1.3e-13  ecart_voies 1.2e-10  max|z| 7.22  1 composante(s) a |z| >= 3
+   lbfgsb             rep 4  ECHEC         logLik -754.094966  arbitre -754.094966  ecart_rel 3.2e-15  ecart_voies 0.0e+00  max|z| 8.03  1 composante(s) a |z| >= 3
+   ai                 rep 4  ECHEC         logLik -754.094966  arbitre -754.094966  ecart_rel -1.8e-15  ecart_voies 3.0e-07  max|z| 8.03  1 composante(s) a |z| >= 3
+   mme                rep 4  ECHEC         logLik -754.094966  arbitre -754.094966  ecart_rel -1.9e-13  ecart_voies 2.8e-09  max|z| 8.03  1 composante(s) a |z| >= 3
+      g                      vrai    0.4000  estime    0.5497  se   0.0902  z   1.66
+      spl_fx                 vrai    3.2627  estime    0.7862  se   0.9091  z  -2.72
+      spl_fy                 vrai    1.4039  estime    1.8756  se   2.2662  z   0.21
+      spl_fx_y               vrai    2.8615  estime    4.2736  se   4.2507  z   0.33
+      spl_x_fy               vrai    1.4113  estime    0.0000  se       NA  z     NA
+      spl_fx_fy              vrai    3.7450  estime    4.8190  se   2.0193  z   0.53
+      residuelle             vrai    0.5000  estime    0.4664  se   0.0309  z  -1.09
+      g                      vrai    0.4000  estime    0.4380  se   0.0751  z   0.51
+      spl_fx                 vrai    3.2627  estime    0.5377  se   0.5828  z  -4.68
+      spl_fy                 vrai    1.4039  estime    1.5692  se   1.1760  z   0.14
+      spl_fx_y               vrai    2.8615  estime    2.2480  se   2.0909  z  -0.29
+      spl_x_fy               vrai    1.4113  estime    0.1798  se   0.2508  z  -4.91
+      spl_fx_fy              vrai    3.7450  estime    1.6863  se   0.9470  z  -2.17
+      residuelle             vrai    0.5000  estime    0.5078  se   0.0331  z   0.23
+      g                      vrai    0.4000  estime    0.3292  se   0.0600  z  -1.18
+      spl_fx                 vrai    3.2627  estime    1.2675  se   1.3273  z  -1.50
+      spl_fy                 vrai    1.4039  estime    2.8333  se   2.2904  z   0.62
+      spl_fx_y               vrai    2.8615  estime    0.1308  se   0.3781  z  -7.22
+      spl_x_fy               vrai    1.4113  estime    0.6711  se   0.7767  z  -0.95
+      spl_fx_fy              vrai    3.7450  estime    3.4690  se   1.7273  z  -0.16
+      residuelle             vrai    0.5000  estime    0.5097  se   0.0336  z   0.29
+      g                      vrai    0.4000  estime    0.3912  se   0.0679  z  -0.13
+      spl_fx                 vrai    3.2627  estime    0.8290  se   1.3894  z  -1.75
+      spl_fy                 vrai    1.4039  estime    1.2341  se   1.0403  z  -0.16
+      spl_fx_y               vrai    2.8615  estime    7.5419  se   6.3897  z   0.73
+      spl_x_fy               vrai    1.4113  estime    0.0163  se   0.1738  z  -8.03
+      spl_fx_fy              vrai    3.7450  estime    4.6216  se   2.1774  z   0.40
+      residuelle             vrai    0.5000  estime    0.4829  se   0.0321  z  -0.53
+== metrique_lvr  [structures entre niveaux]  lvr, 1D, 150 positions x 3 obs
+   lbfgsb             rep 1  PASSE         logLik -487.724066  arbitre -487.724066  ecart_rel 2.7e-12  ecart_voies 0.0e+00  max|z| 0.77  
+   ai                 rep 1  ECHEC         logLik -487.724234  arbitre -487.724234  ecart_rel 2.7e-12  ecart_voies 1.7e-04  max|z| 0.48  optimum inferieur de 1.68e-04 ; convergence non etablie
+   lbfgsb             rep 2  ECHEC         logLik -458.750730  arbitre -458.750730  ecart_rel -8.6e-12  ecart_voies 0.0e+00  max|z| 16.10  1 composante(s) a |z| >= 3
+   ai                 rep 2  ECHEC         logLik -458.750756  arbitre -458.750756  ecart_rel -8.6e-12  ecart_voies 2.5e-05  max|z| 1.64  convergence non etablie
+   lbfgsb             rep 3  ECHEC         logLik -482.151623  arbitre -482.151623  ecart_rel -2.4e-12  ecart_voies 0.0e+00  max|z| 12.88  1 composante(s) a |z| >= 3
+   ai                 rep 3  ECHEC         logLik -482.151698  arbitre -482.151698  ecart_rel -2.4e-12  ecart_voies 7.5e-05  max|z| 12.87  convergence non etablie ; 1 composante(s) a |z| >= 3
+   lbfgsb             rep 4  ECHEC         logLik -487.378701  arbitre -487.378701  ecart_rel -5.8e-12  ecart_voies 0.0e+00  max|z| 44.44  1 composante(s) a |z| >= 3
+   ai                 rep 4  ECHEC         logLik -487.378721  arbitre -487.378721  ecart_rel -5.8e-12  ecart_voies 2.0e-05  max|z| 44.39  convergence non etablie ; 1 composante(s) a |z| >= 3
+      s                      vrai    1.0000  estime    1.1496  se   0.3128  z   0.48
+      s!lvr                  vrai    8.0000  estime    8.0172  se   0.0222  z   0.77
+      residuelle             vrai    0.4000  estime    0.4048  se   0.0298  z   0.16
+      s                      vrai    1.0000  estime    1.0060  se   0.2605  z   0.02
+      s!lvr                  vrai    8.0000  estime    8.2536  se   0.0158  z  16.10
+      residuelle             vrai    0.4000  estime    0.3574  se   0.0260  z  -1.64
+      s                      vrai    1.0000  estime    0.9297  se   0.2613  z  -0.27
+      s!lvr                  vrai    8.0000  estime    8.1065  se   0.0083  z  12.88
+      residuelle             vrai    0.4000  estime    0.4044  se   0.0294  z   0.15
+      s                      vrai    1.0000  estime    0.8778  se   0.2853  z  -0.43
+      s!lvr                  vrai    8.0000  estime    9.3967  se   0.0314  z  44.44
+      residuelle             vrai    0.4000  estime    0.4223  se   0.0310  z   0.72

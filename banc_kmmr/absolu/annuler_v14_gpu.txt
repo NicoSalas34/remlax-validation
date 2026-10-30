@@ -1,0 +1,29 @@
+107 sim_q2000_t10_r1_sfa2_x0_o100_g4 mme_creux # creux GPU mesure 4,3 h, une repetition faite et une en cours
+108 sim_q2000_t10_r1_sfa2_x0_o100_g5 mme_creux # creux GPU mesure 4,3 h, une repetition faite et une en cours
+115 sim_q1000_t12_r1_sus_x0_o100 mme_creux # creux GPU prevu 4-7 h (CPU 2,9 h)
+116 sim_q1000_t12_r1_sus_x0_o100_g4 mme_creux # creux GPU prevu 4-7 h (CPU 2,9 h)
+117 sim_q1000_t12_r1_sus_x0_o100_g5 mme_creux # creux GPU prevu 4-7 h (CPU 2,9 h)
+148 sim_q2000_t10_r1_sfa2_x0_o20 mme_creux # creux GPU prevu 5-8 h (CPU 3,5 h)
+149 sim_q2000_t10_r1_sfa2_x0_o20_g4 mme_creux # creux GPU prevu 5-8 h (CPU 3,5 h)
+150 sim_q2000_t10_r1_sfa2_x0_o20_g5 mme_creux # creux GPU prevu 5-8 h (CPU 3,5 h)
+163 sim_q2000_t10_r1_sfa2_x0_o10 mme_creux # creux GPU prevu 9-14 h (CPU 5,8 h x 1,5-2,4)
+164 sim_q2000_t10_r1_sfa2_x0_o10_g4 mme_creux # creux GPU prevu 9-14 h (CPU 5,8 h x 1,5-2,4)
+165 sim_q2000_t10_r1_sfa2_x0_o10_g5 mme_creux # creux GPU prevu 9-14 h (CPU 5,8 h x 1,5-2,4)
+181 sim_q2000_t1_r64_sid_x0_o100 V_ai # V n=128000 hors memoire A100
+182 sim_q2000_t1_r64_sid_x0_o100_g2 V_ai # V n=128000 hors memoire A100
+183 sim_q2000_t1_r64_sid_x0_o100_g3 V_ai # V n=128000 hors memoire A100
+184 sim_q2000_t1_r32_sid_x0_o100 V_ai # V n=64000 hors memoire A100
+185 sim_q2000_t1_r32_sid_x0_o100_g2 V_ai # V n=64000 hors memoire A100
+186 sim_q2000_t1_r32_sid_x0_o100_g3 V_ai # V n=64000 hors memoire A100
+187 sim_q16000_t1_r4_sid_x0_o100 V_ai # V n=64000 hors memoire A100
+188 sim_q16000_t1_r4_sid_x0_o100_g2 V_ai # V n=64000 hors memoire A100
+189 sim_q16000_t1_r4_sid_x0_o100_g3 V_ai # V n=64000 hors memoire A100
+193 sim_q2000_t1_r64_sid_x0_o100 V_lbfgsb # V n=128000 hors memoire A100
+194 sim_q2000_t1_r64_sid_x0_o100_g2 V_lbfgsb # V n=128000 hors memoire A100
+195 sim_q2000_t1_r64_sid_x0_o100_g3 V_lbfgsb # V n=128000 hors memoire A100
+196 sim_q2000_t1_r32_sid_x0_o100 V_lbfgsb # V n=64000 hors memoire A100
+197 sim_q2000_t1_r32_sid_x0_o100_g2 V_lbfgsb # V n=64000 hors memoire A100
+198 sim_q2000_t1_r32_sid_x0_o100_g3 V_lbfgsb # V n=64000 hors memoire A100
+199 sim_q16000_t1_r4_sid_x0_o100 V_lbfgsb # V n=64000 hors memoire A100
+200 sim_q16000_t1_r4_sid_x0_o100_g2 V_lbfgsb # V n=64000 hors memoire A100
+201 sim_q16000_t1_r4_sid_x0_o100_g3 V_lbfgsb # V n=64000 hors memoire A100

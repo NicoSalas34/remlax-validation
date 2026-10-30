@@ -1,0 +1,14 @@
+"modele","composante","estimation","se"
+"A  rep","gid",0.898940943188512,0.214397523850868
+"A  rep","residuelle",1.37559763184162,0.160706819325979
+"B  rep + bloc","gid",0.961046517698469,0.188837656343607
+"B  rep + bloc","bloc",0.574075908871726,0.154692309861685
+"B  rep + bloc","residuelle",0.789689822917075,0.111978824631125
+"C  rep + bloc + spl2d","gid",0.969700566166353,0.185615435904013
+"C  rep + bloc + spl2d","bloc",0.199735764531225,0.0945454315451139
+"C  rep + bloc + spl2d","spl_fx",1.05279366879148,2.3631934843913
+"C  rep + bloc + spl2d","spl_fy",3.7751345442791e-11,NA
+"C  rep + bloc + spl2d","spl_fx_y",3.7751345442791e-11,NA
+"C  rep + bloc + spl2d","spl_x_fy",3.7751345442791e-11,NA
+"C  rep + bloc + spl2d","spl_fx_fy",0.207070942021543,0.381437024030808
+"C  rep + bloc + spl2d","residuelle",0.784062783144548,0.113917960777868

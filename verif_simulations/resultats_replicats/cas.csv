@@ -1,0 +1,17 @@
+"cas","replicat","famille","note","secondes"
+"ige_melange_deux_especes",1,"DGE / IGE","2 bacs 30 x 20, colonnes alternees ; DGE + IGE intra + IGE inter us (3 x 3) par espece avec GRM ; IEE iid ; residuelle diag par espece ; rangs 2 (intra) et 1 (inter), normalisation L2 ; h2 0,30, IGE 7 et 5 %, IEE 5 %, r(DGE, IGE) -0,4",748.203975439072
+"ige_melange_deux_especes",2,"DGE / IGE","2 bacs 30 x 20, colonnes alternees ; DGE + IGE intra + IGE inter us (3 x 3) par espece avec GRM ; IEE iid ; residuelle diag par espece ; rangs 2 (intra) et 1 (inter), normalisation L2 ; h2 0,30, IGE 7 et 5 %, IEE 5 %, r(DGE, IGE) -0,4",610.885143756866
+"ige_melange_deux_especes",3,"DGE / IGE","2 bacs 30 x 20, colonnes alternees ; DGE + IGE intra + IGE inter us (3 x 3) par espece avec GRM ; IEE iid ; residuelle diag par espece ; rangs 2 (intra) et 1 (inter), normalisation L2 ; h2 0,30, IGE 7 et 5 %, IEE 5 %, r(DGE, IGE) -0,4",450.885958909988
+"ige_melange_deux_especes",4,"DGE / IGE","2 bacs 30 x 20, colonnes alternees ; DGE + IGE intra + IGE inter us (3 x 3) par espece avec GRM ; IEE iid ; residuelle diag par espece ; rangs 2 (intra) et 1 (inter), normalisation L2 ; h2 0,30, IGE 7 et 5 %, IEE 5 %, r(DGE, IGE) -0,4",498.120528459549
+"mt_g_fa2",1,"multi-caracteres","fa rang 2, 5 caracteres (rang 2 non identifie a 4 caracteres)",532.21386051178
+"mt_g_fa2",2,"multi-caracteres","fa rang 2, 5 caracteres (rang 2 non identifie a 4 caracteres)",630.137324571609
+"mt_g_fa2",3,"multi-caracteres","fa rang 2, 5 caracteres (rang 2 non identifie a 4 caracteres)",643.506633758545
+"mt_g_fa2",4,"multi-caracteres","fa rang 2, 5 caracteres (rang 2 non identifie a 4 caracteres)",605.436599493027
+"spline_spl2d",1,"splines","rx_spl2d(nseg = c(6, 8)) : cinq termes PS-ANOVA, partie nulle en effets fixes",129.492715358734
+"spline_spl2d",2,"splines","rx_spl2d(nseg = c(6, 8)) : cinq termes PS-ANOVA, partie nulle en effets fixes",138.813585281372
+"spline_spl2d",3,"splines","rx_spl2d(nseg = c(6, 8)) : cinq termes PS-ANOVA, partie nulle en effets fixes",111.426991701126
+"spline_spl2d",4,"splines","rx_spl2d(nseg = c(6, 8)) : cinq termes PS-ANOVA, partie nulle en effets fixes",126.483417272568
+"metrique_lvr",1,"structures entre niveaux","lvr, 1D, 150 positions x 3 obs",132.773921728134
+"metrique_lvr",2,"structures entre niveaux","lvr, 1D, 150 positions x 3 obs",116.142738819122
+"metrique_lvr",3,"structures entre niveaux","lvr, 1D, 150 positions x 3 obs",155.048847675323
+"metrique_lvr",4,"structures entre niveaux","lvr, 1D, 150 positions x 3 obs",139.131548166275

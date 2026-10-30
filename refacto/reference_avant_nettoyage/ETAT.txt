@@ -1,0 +1,2 @@
+Capture faite sur le commit 3e713f9 de remlax (avant tout nettoyage), CPU, un fil.
+Regeneree le 2026-10-29 avec golden.R appelant les fonctions par leur nom.

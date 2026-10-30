@@ -1,0 +1,55 @@
+60 jeux, 2160 ajustements, 0 echec(s), 17 non converge(s)
+
+1. Profils (exponentiel + masse, R = 8). Verite A : lambda = 1, d = 0,5.
+
+verite A (30 jeux)
+  lambda : moyenne 1.006, RMSE 0.134, largeur IC 0.581, couverture de 1 1.00
+  d masse : moyenne 0.459, RMSE 0.271, largeur IC 0.813, couverture de 0,5 0.97, d = 0 exclu 0.30, d au bord 0.17
+  d nombre (lambda = 1) : moyenne 0.350, largeur IC 0.695, d = 0 exclu 0.30, d au bord 0.23
+  fenetre, logLik - logLik(R = 8) : R = 4 med -0.131 max|.| 2.047 ; R = 6 med -0.039 max|.| 0.304 ; R = 12 med -0.000 max|.| 0.035
+
+verite B (30 jeux)
+  lambda : moyenne 1.128, RMSE 0.195, largeur IC 0.634, couverture de 1 0.90
+  d masse : moyenne 0.463, RMSE 0.263, largeur IC 0.825, couverture de 0,5 0.97, d = 0 exclu 0.30, d au bord 0.10
+  d nombre (lambda = 1) : moyenne 0.364, largeur IC 0.704, d = 0 exclu 0.30, d au bord 0.23
+  fenetre, logLik - logLik(R = 8) : R = 4 med 0.312 max|.| 2.074 ; R = 6 med -0.056 max|.| 0.323 ; R = 12 med 0.005 max|.| 0.039
+
+2. Modeles compares (medianes ; precision = moyenne des deux especes ; dLL = logLik - logLik du noyau vrai)
+ verite                      modele     dLL   dge intra inter   tbv err_intra
+      A exp + masse, meilleur point   0.265 0.900 0.698 0.740 0.449    -0.030
+      A exp + masse, lambda 1 d 0,5   0.000 0.901 0.697 0.740 0.449    -0.035
+      A                  noyau vrai   0.000 0.901 0.697 0.740 0.449    -0.035
+      A       puissance r 3, nombre  -1.608 0.901 0.700 0.735 0.432    -0.046
+      A                  chapitre 3  -5.973 0.900 0.692 0.724 0.416    -0.097
+      A                        naif -19.029 0.899 0.654 0.721 0.160    -0.266
+      B                  noyau vrai   0.000 0.900 0.710 0.749 0.476    -0.037
+      B       puissance r 3, nombre   0.000 0.900 0.710 0.749 0.476    -0.037
+      B exp + masse, meilleur point  -2.811 0.899 0.702 0.747 0.443    -0.039
+      B exp + masse, lambda 1 d 0,5  -3.233 0.900 0.701 0.747 0.441    -0.037
+      B                  chapitre 3  -3.499 0.899 0.704 0.742 0.424    -0.075
+      B                        naif -21.689 0.898 0.656 0.726 0.258    -0.239
+ err_inter
+    -0.016
+    -0.035
+    -0.035
+    -0.078
+    -0.097
+    -0.123
+    -0.034
+    -0.034
+    -0.019
+    -0.010
+    -0.044
+    -0.117
+
+Part des jeux ou le modele bat le noyau vrai en logLik, et ecart de TBV au noyau vrai (mediane, quartiles)
+  A | exp + masse, meilleur point  bat le vrai 0.73 ; dTBV 0.000 [-0.008 ; 0.001]
+  A | exp + masse, lambda 1 d 0,5  bat le vrai 0.00 ; dTBV 0.000 [0.000 ; 0.000]
+  A | puissance r 3, nombre        bat le vrai 0.13 ; dTBV -0.005 [-0.022 ; 0.015]
+  A | chapitre 3                   bat le vrai 0.03 ; dTBV -0.028 [-0.042 ; -0.007]
+  A | naif                         bat le vrai 0.00 ; dTBV -0.263 [-0.314 ; -0.167]
+  B | exp + masse, meilleur point  bat le vrai 0.17 ; dTBV -0.031 [-0.048 ; -0.010]
+  B | exp + masse, lambda 1 d 0,5  bat le vrai 0.07 ; dTBV -0.025 [-0.039 ; -0.009]
+  B | puissance r 3, nombre        bat le vrai 0.00 ; dTBV 0.000 [0.000 ; 0.000]
+  B | chapitre 3                   bat le vrai 0.03 ; dTBV -0.039 [-0.068 ; -0.007]
+  B | naif                         bat le vrai 0.00 ; dTBV -0.200 [-0.241 ; -0.123]

@@ -1,0 +1,93 @@
+Dispositif : 450 parcelles, 150 genotypes, 3 repetitions, 90 blocs de 5
+Voisinage : 2/3/4 voisines par parcelle ; exposition k = 1.044 ; poids emis s = 1.94
+Modele mixte ajuste par REML (remlax, cpu)
+Appel : rx_reml(fixed = y ~ rep, random = random, data = d, backend = "cpu", verbose = FALSE)
+
+450 observations, 444 ddl residuels, 10 parametre(s) de variance dont 10 estime(s)
+logLik -786.4840 (convention asreml : -378.4752)   AIC 1592.97   BIC 1633.93
+Convergence : NON | max|grad| 1.22e-07 | decrement de Newton 1.48e-22 | 53 iteration(s) | 30.4 s
+
+Composantes de variance :
+              component std.error z.ratio bound
+dge_ige[1,1]  9.434e-01   0.16650    5.66     P
+dge_ige[2,1] -2.830e-01   0.09759   -2.90     U
+dge_ige[2,2]  3.963e-01   0.11440    3.46     P
+bloc          5.309e-01   0.12430    4.27     P
+spl_fx        3.502e-01   0.61330    0.57     P
+spl_fy        1.902e-01   0.38910    0.49     P
+spl_fx_y      1.012e-08        NA      NA     B
+spl_x_fy      1.329e-08        NA      NA     B
+spl_fx_fy     2.406e+00   1.55000    1.55     P
+residuelle    7.392e-01   0.09235    8.00     P
+  bound : P variance, U non contrainte, B a une borne, F fixee
+
+Dimensions (a la maniere de SpATS) :
+                                  Effective Model Nominal Ratio     Type
+(Intercept)                             1.0     1       1 1.000    fixed
+rep                                     2.0     2       2 1.000    fixed
+spl2d(col, rang, nseg = c(7, 10))       3.0     3       3 1.000    fixed
+dge_ige                                  NA   300      NA    NA   random
+bloc                                   55.1    90      86 0.640   random
+spl_fx                                  1.2     8       8 0.155   random
+spl_fy                                  1.0    11      11 0.090   random
+spl_fx_y                                0.0     8       8 0.000   random
+spl_x_fy                                0.0    11      11 0.000   random
+spl_fx_fy                              10.8    88      88 0.123   random
+Residual                                 NA   450     444    NA residual
+  spl_fx = f(col), spl_fy = f(rang), spl_fx_y = f(col):rang, spl_x_fy = col:f(rang), spl_fx_fy = f(col):f(rang)
+  Pour un genotype sans parente, Ratio = heritabilite generalisee (Oakey et al. 2006).
+
+Effets fixes :
+            solution std.error z.ratio
+(Intercept)  6.47000    0.3899   16.59
+repR2        0.01897    0.4675    0.04
+repR3       -0.65680    0.7364   -0.89
+spl_lin1    21.26000    7.6000    2.80
+spl_lin2    15.46000    5.1410    3.01
+spl_lin3     0.63400    3.2450    0.20
+A  DGE seul              criteres : decrement 1, gradient 1, hessien 0 (0 valeur(s) propre(s) negative(s), 1 direction(s) plate(s)) ; 1 variance(s) a la borne
+B  DGE + IGE             criteres : decrement 1, gradient 1, hessien 0 (0 valeur(s) propre(s) negative(s), 1 direction(s) plate(s)) ; 1 variance(s) a la borne
+C  DGE + IGE correles    criteres : decrement 1, gradient 1, hessien 0 (0 valeur(s) propre(s) negative(s), 2 direction(s) plate(s)) ; 0 variance(s) a la borne
+
+Comparaison des modeles
+                modele logLik  AIC converge secondes  r_dge  r_ige  r_tbv
+           A  DGE seul -810.4 1637    FALSE     11.4 0.8565     NA 0.1544
+          B  DGE + IGE -790.8 1600    FALSE     13.1 0.8584 0.7245 0.6243
+ C  DGE + IGE correles -786.5 1593    FALSE     37.3 0.8631 0.7514 0.6304
+ selection_10pc
+        0.06667
+        0.33333
+        0.33333
+
+Composantes genetiques, echelle phenotypique (vraies : DGE 1 , IGE x k 0.4 , r -0.5 )
+                modele composante estimation    se      r
+           A  DGE seul        DGE      0.976 0.184     NA
+           A  DGE seul    IGE x k         NA    NA     NA
+          B  DGE + IGE        DGE      0.929 0.167     NA
+          B  DGE + IGE    IGE x k      0.486 0.131     NA
+ C  DGE + IGE correles        DGE      0.943 0.167 -0.463
+ C  DGE + IGE correles    IGE x k      0.414 0.120 -0.463
+
+Correlation tendance estimee (C) / vraie sur les parcelles : 0.963
+
+=== Partie 2 : voisinage a estimer ===
+405 parcelles semees ; voisinage vrai r = 3, lambda = 1.5, d = 0.5 ; k = 0.269
+Grille grossiere : 39 ajustements en 94 s ; meilleur r = 3
+Grille fine : 78 ajustements en 170 s ; meilleur point lambda = 1.75, d = 0
+Maximisation directe : lambda = 1.68, d = 0.00, logLik -694.596 (15 ajustements, 40 s)
+
+Modele C sous trois voisinages (vrai : DGE 1, IGE x k 0,4, r -0,5)
+        voisinage logLik   dge ige_k r_dge_ige prec_dge prec_ige prec_tbv
+ naif : r = 1, L2   -693 1.004 0.154    -0.793    0.872    0.702   -0.228
+           estime   -691 0.882 0.569    -0.511    0.873    0.739    0.572
+    vrai (oracle)   -692 0.895 0.577    -0.485    0.873    0.737    0.567
+ converge secondes
+    FALSE     43.3
+    FALSE     35.8
+    FALSE     35.4
+
+Relation lambda-d a r = 3 : b(lambda) = -0.218 au vrai, -0.243 a l'estime ;
+  exposant e = 1/2 - d + b/2 : -0.109 au vrai, 0.379 a l'estime ;
+  d sur la courbe a lambda estime : 0.487 (dispositif), 0.408 (disque) ; d estime 0.000
+
+Figures et tableaux ecrits dans /home/salas/Documents/Git/remlax-validation/demo/sortie_demo_ige 

@@ -1,0 +1,4 @@
+remlax fige v9 le 2026-10-27T03:27:35+01:00 : v8 + temps par evaluation du MME mesure hors cache + variance bridee 3 pas de suite autorisee a rejoindre le plancher (Heywood)
+commit ddf700c4e0cbbf6d8e4557a30af78c17a1c060a4
+empreinte des sources (R, inst) : 39538a21add09f9e
+image ige_reml_v2.sif sha1 aafa0386fbb18fca

@@ -1,0 +1,6 @@
+43 sim_q2000_t10_r1_sfa2_x0_o100 V_lbfgsb # L-BFGS-B CPU prevu ~55 h (V_ai 3,7 h x 15)
+44 sim_q2000_t10_r1_sfa2_x0_o100_g4 V_lbfgsb # L-BFGS-B CPU prevu ~55 h (V_ai 3,7 h x 15)
+45 sim_q2000_t10_r1_sfa2_x0_o100_g5 V_lbfgsb # L-BFGS-B CPU prevu ~55 h (V_ai 3,7 h x 15)
+55 sim_q2000_t10_r1_sfa2_x0_o50 V_lbfgsb # L-BFGS-B CPU prevu ~18 h (V_ai 1,2 h x 15)
+56 sim_q2000_t10_r1_sfa2_x0_o50_g4 V_lbfgsb # L-BFGS-B CPU prevu ~18 h (V_ai 1,2 h x 15)
+57 sim_q2000_t10_r1_sfa2_x0_o50_g5 V_lbfgsb # L-BFGS-B CPU prevu ~18 h (V_ai 1,2 h x 15)

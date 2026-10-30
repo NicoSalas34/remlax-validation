@@ -1,0 +1,61 @@
+"modele","effet","n_rep","prec","err"
+"noyau vrai","DGE",5,0.838040689768619,0.0079893689730098
+"r = 3, lambda et d estimes","DGE",5,0.83763070451224,0.0108893798213494
+"R = 6, lambda et d estimes","DGE",5,0.838552131602883,0.0095359548935865
+"r = 3, lambda = 1, d = 0 (chapitre 3)","DGE",5,0.834512047238341,-0.000542549274078755
+"naif (rang 1, poids egaux)","DGE",5,0.839922729216404,0.018549807159642
+"noyau vrai","IGE intra",5,0.636926622155951,0.0329050483674669
+"r = 3, lambda et d estimes","IGE intra",5,0.638932039214885,0.0209963093426453
+"R = 6, lambda et d estimes","IGE intra",5,0.615517617049804,0.00159213096915432
+"r = 3, lambda = 1, d = 0 (chapitre 3)","IGE intra",5,0.619209694277157,0.0470575549160445
+"naif (rang 1, poids egaux)","IGE intra",5,0.561189196625132,-0.224532587424337
+"noyau vrai","IGE inter",5,0.662829708990767,0.0136063264193957
+"r = 3, lambda et d estimes","IGE inter",5,0.660390059184489,0.0128244856425144
+"R = 6, lambda et d estimes","IGE inter",5,0.647724035459472,0.0246357886769436
+"r = 3, lambda = 1, d = 0 (chapitre 3)","IGE inter",5,0.652615300517339,-0.00957389514450356
+"naif (rang 1, poids egaux)","IGE inter",5,0.63667591782467,-0.0663050065007516
+"noyau vrai","TBV intra",5,0.332641420022515,NA
+"r = 3, lambda et d estimes","TBV intra",5,0.3492739243571,NA
+"R = 6, lambda et d estimes","TBV intra",5,0.291084332233204,NA
+"r = 3, lambda = 1, d = 0 (chapitre 3)","TBV intra",5,0.296699199205488,NA
+"naif (rang 1, poids egaux)","TBV intra",5,0.240879272706992,NA
+"noyau vrai","DGE",10,0.9032287956851,0.00177191199068398
+"r = 3, lambda et d estimes","DGE",10,0.903798969686709,0.00165071079750299
+"R = 6, lambda et d estimes","DGE",10,0.903907157940454,0.00354609638282672
+"r = 3, lambda = 1, d = 0 (chapitre 3)","DGE",10,0.90289822872206,-0.00278468437446317
+"naif (rang 1, poids egaux)","DGE",10,0.900708241966437,0.0115282272209612
+"noyau vrai","IGE intra",10,0.721017097150873,0.0333902924305544
+"r = 3, lambda et d estimes","IGE intra",10,0.720287634031973,0.0324287721894422
+"R = 6, lambda et d estimes","IGE intra",10,0.710725487439279,-0.0155931049960962
+"r = 3, lambda = 1, d = 0 (chapitre 3)","IGE intra",10,0.709912546214773,0.0275545194991334
+"naif (rang 1, poids egaux)","IGE intra",10,0.66536285071391,-0.202347645992709
+"noyau vrai","IGE inter",10,0.745931555451582,0.00685722093741522
+"r = 3, lambda et d estimes","IGE inter",10,0.745113572447536,0.0110762978405983
+"R = 6, lambda et d estimes","IGE inter",10,0.743782744283916,0.0382606585503787
+"r = 3, lambda = 1, d = 0 (chapitre 3)","IGE inter",10,0.737543927481026,-0.00409731666765317
+"naif (rang 1, poids egaux)","IGE inter",10,0.728129146768862,-0.0654116906720126
+"noyau vrai","TBV intra",10,0.498830906377961,NA
+"r = 3, lambda et d estimes","TBV intra",10,0.499970001502818,NA
+"R = 6, lambda et d estimes","TBV intra",10,0.488639397743263,NA
+"r = 3, lambda = 1, d = 0 (chapitre 3)","TBV intra",10,0.467546999941004,NA
+"naif (rang 1, poids egaux)","TBV intra",10,0.312504642432271,NA
+"noyau vrai","DGE",20,0.943152321468476,-0.0221897109031145
+"r = 3, lambda et d estimes","DGE",20,0.943078203506773,-0.0221897109031145
+"R = 6, lambda et d estimes","DGE",20,0.942060242924464,-0.0209728130992377
+"r = 3, lambda = 1, d = 0 (chapitre 3)","DGE",20,0.941935891894766,-0.0258937982450002
+"naif (rang 1, poids egaux)","DGE",20,0.94043732574199,-0.0129834985253933
+"noyau vrai","IGE intra",20,0.80140614374547,0.00890408322426839
+"r = 3, lambda et d estimes","IGE intra",20,0.80110827748771,0.00799779831325195
+"R = 6, lambda et d estimes","IGE intra",20,0.791680105703116,-0.0128676355476261
+"r = 3, lambda = 1, d = 0 (chapitre 3)","IGE intra",20,0.792999546976049,0.00551074139601296
+"naif (rang 1, poids egaux)","IGE intra",20,0.750484921905127,-0.224033732379847
+"noyau vrai","IGE inter",20,0.823760252207036,-0.0278556454858198
+"r = 3, lambda et d estimes","IGE inter",20,0.823760252207036,-0.0245409610691413
+"R = 6, lambda et d estimes","IGE inter",20,0.818582771135601,-0.00503826434448113
+"r = 3, lambda = 1, d = 0 (chapitre 3)","IGE inter",20,0.815295013450905,-0.0375164201006066
+"naif (rang 1, poids egaux)","IGE inter",20,0.797322913006048,-0.121190248590112
+"noyau vrai","TBV intra",20,0.63606258997686,NA
+"r = 3, lambda et d estimes","TBV intra",20,0.633152828043539,NA
+"R = 6, lambda et d estimes","TBV intra",20,0.603770720998148,NA
+"r = 3, lambda = 1, d = 0 (chapitre 3)","TBV intra",20,0.598002374512695,NA
+"naif (rang 1, poids egaux)","TBV intra",20,0.340586452086367,NA
