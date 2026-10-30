@@ -1,0 +1,35 @@
+remlax 0.1.0 installed in /scratch/users/salasn/validation_2026-10-30_bc2af0c/rlib 
+sommer 4.4.5 | R 4 6.0 
+
+=== 1. one GRM, univariate: components, fixed effects, BLUP, PEV ===
+  GRM : variance components                                OK  s2g 1.350769/1.350769 | s2e 0.844907/0.844907
+  GRM : fixed effects                                      OK  max rel diff 1.61e-13
+  GRM : standard errors of the fixed effects               OK  max rel diff 1.33e-10
+  GRM : BLUPs                                              OK  max diff 2.00e-11
+  GRM : PEV of the BLUPs                                   OK  max rel diff 2.60e-10 | mean PEV 0.17607
+  GRM : sommer logLik constant (measured)                  OK  sommer -42.2549 | remlax logLik_asreml -135.2526 | diff 92.9977 ((n-p)/2 log var(y) = 87.6572)
+
+=== 2. three traits, genetic us with GRM and residual us ===
+  us3 + GRM : the 6 genetic components                     OK  max rel diff 7.74e-08 | diag remlax 1.3404 1.0058 1.0875 | sommer 1.3404 1.0058 1.0875
+  us3 + GRM : the 6 residual components                    OK  max rel diff 1.94e-08
+  us3 + GRM : the 3 genetic correlations                   OK  remlax 0.5164 0.1735 0.6232 | sommer 0.5164 0.1735 0.6232
+  us3 + GRM : fixed effects (3 means)                      OK  max rel diff 1.91e-15
+  us3 + GRM : BLUPs of the 3 traits                        OK  max diff 6.65e-08 over 180 values
+
+=== 3. three traits, genetic diag with GRM and residual diag; LRT us vs diag ===
+  diag3 + GRM : the 3 genetic variances                    OK  remlax 1.3399 0.9738 1.0889 | sommer 1.3399 0.9738 1.0889
+  diag3 + GRM : the 3 residual variances                   OK  remlax 0.7849 1.3983 0.6668 | sommer 0.7849 1.3983 0.6668
+  LRT us vs diag : same difference in -2logL               OK  remlax 81.06687 | sommer 81.06687 (6 df)
+
+=== 4. additive + dominance: two kinship matrices on the same factor ===
+  A + D : the three components                             OK  remlax 0.93906 0.76455 0.78469 | sommer 0.93906 0.76455 0.78469
+  A + D : additive and dominance BLUPs                     OK  max diff 6.47e-08
+
+=== 5. multi-environment: one genetic variance per environment with GRM ===
+  MET : the 4 genetic variances                            OK  remlax 0.5255 0.8048 1.1331 0.9474 | sommer 0.5255 0.8048 1.1331 0.9474
+  MET : the 4 residual variances                           OK  remlax 0.7188 1.1889 1.5606 0.3662 | sommer 0.7188 1.1889 1.5606 0.3662
+  MET : fixed effects                                      OK  max rel diff 7.46e-11
+
+==============================================================
+ALL CHECKS PASS: same components, fixed effects, BLUP and PEV
+ as sommer on the genomic models tested.

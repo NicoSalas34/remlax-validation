@@ -246,3 +246,5 @@
 "r3_unique","sim_q2000_t10_r1_sfa2_x0_o50","kmmr","ai_tol0.000001",FALSE,"io-cpu-27.io.internal","8",10000,2000,-9943.65722677085,21,TRUE,284.587352275848,37,NA,13.25,NA,NA,NA,"","2026-10-30 08:11:16"
 "r3_froid","sim_q2000_t10_r1_sfa2_x0_o50","remlax","mme",FALSE,"io-cpu-27.io.internal","8",10000,2000,-9943.63121658856,22,TRUE,537.071028232574,39,"mme",24.9842672348022,0.640727996826172,0.342505693435669,"dense","","2026-10-30 08:20:15"
 "r3_chaud","sim_q2000_t10_r1_sfa2_x0_o50","remlax","mme",FALSE,"io-cpu-27.io.internal","8",10000,2000,-9943.63121658856,22,TRUE,535.430643796921,39,"mme",24.8913112878799,0.697800993919373,0.33784294128418,"dense","","2026-10-30 08:29:12"
+"r1_unique","sim_q1000_t12_r1_sus_x0_o100","asreml","ai",FALSE,"io-cpu-27.io.internal","8",12000,1000,-11797.153811432,50,FALSE,10615.1239640713,90,NA,212,NA,NA,NA,"","2026-10-30 11:26:10"
+"r1_unique","sim_q1000_t12_r1_sus_x0_o100","kmmr","ai_tol0.000001",FALSE,"io-cpu-27.io.internal","8",12000,1000,NA,NA,NA,NA,NA,NA,NA,NA,NA,NA,"Log-likelihood still decreased after halving the proposed update 5 times...","2026-10-30 11:27:14"

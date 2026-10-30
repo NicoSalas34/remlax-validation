@@ -1,0 +1,7 @@
+=== io-gpu-a100-01.io.internal | job 11747479 | Fri Oct 30 05:13:19 PM CET 2026 | /scratch/users/salasn/ige_reml_v3.sif ===
+NVIDIA A100 80GB PCIe, 81920 MiB
+us_res_mv         1395.95209251    1395.95209251    0.00e+00    1.25e-15      0.8      2.6
+vm_kin             494.64877180     494.64877180    5.75e-16    3.05e-09      0.3      0.5
+--------------------------------------------------------------------------------------------
+
+Parite CPU/GPU verifiee sur 34 modeles (tolerance relative 1e-08).

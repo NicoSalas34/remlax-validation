@@ -1,4 +1,4 @@
-remlax 0.1.0 installed in /scratch/users/salasn/validation_2026-10-30_bc2af0c/rlib 
+remlax 0.1.0 installed in /scratch/users/salasn/validation_2026-10-30_6dbada5/rlib 
 Design: 40 x 30, kernel power (order 6) | 600 obs, 90 genotypes A, 60 B
 Truth  : var_DGE 0.90  var_IGEintra 0.30  cov -0.35  (r = -0.674)
          var_IGEinter 0.22 | AR1 var 0.45 rho 0.65/0.40 | nugget 0.50
@@ -10,7 +10,7 @@ REML model 'model': 600 observations, 1 fixed effects
   residual       iid   t=1  (1 parameter)
   total: 8 parameters
 
-remlax (cpu) : logLik -937.637215 | 2.6 s | decrement 2.35e-24
+remlax (cpu) : logLik -937.637215 | 2.8 s | decrement 2.35e-24
   var_DGE      1.0952   (true 0.90)
   var_IGEintra 0.1627   (true 0.30)
   cov          -0.4221   (true -0.35)   r = -1.0000 (true -0.674)
@@ -22,7 +22,7 @@ remlax (cpu) : logLik -937.637215 | 2.6 s | decrement 2.35e-24
   [note] component(s) at the boundary: dge_ige (r = -1.0000).  Expected at this size: asreml also ends on this edge
    (it returns NA as the standard error of three field parameters).
    For a meaningful comparison, enlarge: --nr=40 --nc=30.
-Online License checked out Fri Oct 30 15:31:06 2026
+Online License checked out Fri Oct 30 16:54:37 2026
 
 --- asreml, same model ---
                         component std.error

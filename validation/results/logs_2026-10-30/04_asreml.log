@@ -1,5 +1,5 @@
-Online License checked out Fri Oct 30 15:40:14 2026
-remlax 0.1.0 installed in /scratch/users/salasn/validation_2026-10-30_bc2af0c/rlib 
+Online License checked out Fri Oct 30 16:44:57 2026
+remlax 0.1.0 installed in /scratch/users/salasn/validation_2026-10-30_6dbada5/rlib 
 
 === 1. one-dimensional AR1 ===
   AR1 : rho                                            OK  0.6276741 vs 0.6276741
@@ -38,9 +38,9 @@ remlax 0.1.0 installed in /scratch/users/salasn/validation_2026-10-30_bc2af0c/rl
   Wald : p-value of the last term (seq == cond)        OK  8.776e-09 vs 8.776e-09
 
 === 6. SATURATED parametrisations: chol(t-1), ante(t-1), fa(t), rr(t) ===
-  chol(gid, rank=3)  == us                             OK  diff 4.55e-13
-  ante(gid, rank=3)  == us                             OK  diff 2.27e-13
-  fa(gid, rank=4)    == us                             OK  diff 5.68e-13
+  chol(gid, rank=3)  == us                             OK  diff 1.14e-13
+  ante(gid, rank=3)  == us                             OK  diff 1.14e-13
+  fa(gid, rank=4)    == us                             OK  diff 1.14e-13
   rr(gid, rank=4)    == us                             OK  diff 7.96e-13
 
 ====================================================================

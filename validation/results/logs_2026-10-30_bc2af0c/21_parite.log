@@ -1,0 +1,53 @@
+E1030 14:55:55.437349   65875 numa_hwloc.cc:121] Call to hwloc_set_cpubind() failed: Invalid argument [22]
+peripheriques : [{'platform': 'cpu', 'kind': 'cpu'}, {'platform': 'gpu', 'kind': 'NVIDIA A100 80GB PCIe MIG 1g.10gb'}]
+34 paquet(s) dans /scratch/users/salasn/validation_2026-10-30_bc2af0c/bundles
+
+modele               -2logL CPU       -2logL GPU       ecart max|dtheta|    s CPU    s GPU
+--------------------------------------------------------------------------------------------
+aexp               560.16430238     560.16430238    2.03e-16    2.78e-16      1.1      8.6
+ante1_mv          1284.22057669    1284.22057669    1.77e-16    2.67e-08      1.5      5.1
+ar1                585.15663362     585.15663362    0.00e+00    2.78e-16      0.4      2.3
+ar1ar1_res         513.75395410     513.75395410    0.00e+00    4.37e-16      0.5      2.7
+ar2                583.38706024     583.38706024    0.00e+00    6.66e-16      0.8      1.4
+ar3                581.02165146     581.02165146    0.00e+00    3.22e-15      1.0      1.5
+arma               583.22954846     583.22954846    0.00e+00    1.04e-04      0.6      0.8
+chol2_mv          1281.59614340    1281.59614340    1.77e-16    3.00e-14      1.1      1.2
+cir                591.99572228     591.99572228    0.00e+00    5.07e-09      0.5      0.8
+cor                585.55424610     585.55424610    1.94e-16    5.70e-15      0.4      0.6
+corb2              583.42821102     583.42821102    3.90e-16    3.22e-15      0.4      0.6
+corg               601.62640596     601.62640596    1.89e-16    8.48e-10      0.8      2.8
+corh_mv           1281.60150032    1281.60150032    1.77e-16    1.72e-15      1.1      1.1
+dsum               515.18686079     515.18686079    2.21e-16    1.18e-16      0.3      0.5
+dsum_ar1            52.15394381      52.15394381    6.81e-16    1.55e-15      0.5      0.9
+expo               585.55424610     585.55424610    0.00e+00    6.37e-15      0.5      1.2
+fa2_mv            1281.59614340    1281.59614340    0.00e+00    1.21e-08      1.5      3.7
+gau                585.55424610     585.55424610    0.00e+00    2.07e-14      0.5      0.6
+ieuc               590.00207600     590.00207600    0.00e+00    9.19e-07      1.0      0.9
+iexp               578.64147976     578.64147976    1.96e-16    5.55e-16      0.4      0.6
+iid                498.81465569     498.81465569    5.70e-16    7.49e-16      0.3      1.1
+lvr                585.55424610     585.55424610    3.88e-16    7.86e-12      0.5      0.7
+ma1                583.30849572     583.30849572    3.90e-16    1.13e-06      0.6      0.8
+mtrn_aniso     ECHEC : -2logL or its gradient is not finite at the starting point (value 629.5077869074553, 2 non-finite gradient component(s)). The optimiser cannot start. Check the kernel or supply theta_init.
+E1030 14:59:00.294156   65895 slow_operation_alarm.cc:73] 
+********************************
+[Compiling module input_reduce_fusion.5 for GPU] Very slow compile? If you want to file a bug, run with envvar XLA_FLAGS=--xla_dump_to=/tmp/foo and attach the results.
+********************************
+E1030 15:01:47.474279   65878 slow_operation_alarm.cc:140] The operation took 4m47.180183811s
+
+********************************
+[Compiling module input_reduce_fusion.5 for GPU] Very slow compile? If you want to file a bug, run with envvar XLA_FLAGS=--xla_dump_to=/tmp/foo and attach the results.
+********************************
+mtrn_iso           589.40743274     589.40743274    1.93e-16    1.60e-12      6.7    288.1
+own_2par           607.25006661     607.25006661    0.00e+00    0.00e+00      0.5      0.8
+own_exp            585.55424610     585.55424610    0.00e+00    4.43e-07      0.6      0.8
+rr2_mv            1343.60530125    1343.60530125    1.69e-16    2.34e-08      0.9      3.2
+sar                585.04086512     585.04086512    1.94e-16    2.52e-08      0.7      0.9
+sph                587.42826916     587.42826916    1.94e-16    5.07e-09      1.0      1.0
+str_2              512.47455420     512.47455420    0.00e+00    2.64e-16      0.7      3.8
+us_mv             1281.59614340    1281.59614340    0.00e+00    9.30e-16      1.2      1.0
+us_res_mv         1395.95209251    1395.95209251    0.00e+00    8.88e-16      0.8      2.6
+vm_kin             494.64877180     494.64877180    5.75e-16    3.05e-09      0.3      0.5
+--------------------------------------------------------------------------------------------
+
+1 paquet(s) en erreur :
+   mtrn_aniso     ValueError: -2logL or its gradient is not finite at the starting point (value 629.5077869074553, 2 non-finite gradient component(s)). The optimiser cannot start. Check the kernel or supply theta_init.

@@ -846,7 +846,7 @@ degrees of freedom completed the list.
 
 Table~\ref{tab:validation} summarises the 381 checks of the campaign of 30
 October 2026, run on the released interface with the mixed model engine and
-the AI optimiser. Of these, 364 passed. Kenward--Roger
+the AI optimiser. Of these, 365 passed. Kenward--Roger
 denominator degrees of freedom were 21.76897 against 21.76896 for
 \pkg{pbkrtest}. Prediction error variances agreed with the formula of the
 mixed model equations to $1.0 \times 10^{-14}$. Figure~\ref{fig:validation}
@@ -865,10 +865,10 @@ Reference & Checks & Passed & log-likelihood & estimates \\
 \pkg{nlme}        &  61 &  61 & $9 \times 10^{-9}$   & $3.1 \times 10^{-6}$ \\
 \pkg{sommer}      &  19 &  19 & differences only     & $9.6 \times 10^{-5}$ \\
 closed forms      &  26 &  26 &                      & \\
-other device (GPU) &  34 &  33 & $6.8 \times 10^{-16}$ (relative) & \\
+other device (GPU) &  34 &  34 & $6.8 \times 10^{-13}$ (relative) & \\
 properties only   &   3 &   2 &                      & \\
 \midrule
-Total             & 381 & 364 &                      & \\
+Total             & 381 & 365 &                      & \\
 \bottomrule
 \end{tabular}
 \caption{\label{tab:validation}Checks of the validation campaign of 30
@@ -894,7 +894,7 @@ $10^{-5}$ are \code{ma2}, \code{sph} and \code{cir} against \pkg{asreml} and
 $4.3 \times 10^{-5}$ is \code{rr(1)}.}
 \end{figure}
 
-Twelve of the 17 failures came from the \pkg{asreml} suite, on the moving-average
+Twelve of the 16 failures came from the \pkg{asreml} suite, on the moving-average
 residual \code{ma2} and on the spherical and circular kernels fitted to an
 irregular field of 90 positions. Each model was handed to an independent
 REML written in dense \proglang{R} algebra, and \pkg{asreml} was held at the
@@ -909,15 +909,13 @@ units below \pkg{remlax}. In each case, the independent REML reproduced the
 value of \pkg{remlax}. The rows are left as failures, since the criterion is
 agreement with what \pkg{asreml} reports.
 
-Five failures remain. On the two-dimensional P-spline, \pkg{asreml} received
+Four failures remain. On the two-dimensional P-spline, \pkg{asreml} received
 the five basis matrices of the PS-ANOVA and stopped $1.4 \times 10^{-5}$
 below \pkg{remlax}, with one variance 0.5\,\% apart. It stayed at that point
 when allowed to iterate further. The truncated tent \code{lvr} has a
 likelihood with one local maximum per integer range. \pkg{remlax} stopped at
 a range of 1.51, 0.76 units below the maximum found by a fine grid in
-\proglang{R}, and \pkg{asreml} stopped lower still. On the anisotropic
-Mat\'ern, the CPU/GPU check could not run, because the gradient is not finite
-at zero distance and the fit is refused at its start. Finally, one of the 600
+\proglang{R}, and \pkg{asreml} stopped lower still. Finally, one of the 600
 configurations of the random sweep ended with a Newton decrement of 0.011,
 above the threshold of 0.01.
 
@@ -940,9 +938,9 @@ values of Section~\ref{sec:optim}.
 The mixed model engine and the AI optimiser were also checked directly. Their agreement with the dense engine was checked directly. The mixed model
 engine returns the likelihood, gradient and AI matrix of the dense engine to
 $10^{-13}$, and its prediction error variances to $3 \times 10^{-15}$. On
-33 of 34 serialised designs fitted on both devices, the CPU and GPU values of
-$-2\ell_R$ differed by at most $6.8 \times 10^{-16}$ in relative value, on
-30 October 2026. A later check on an NVIDIA L40S, on 27 October 2026, found
+34 serialised designs fitted on both devices, the CPU and GPU values of
+$-2\ell_R$ differed by at most $6.8 \times 10^{-13}$ in relative value, on
+30 October 2026, and by at most $6.8 \times 10^{-16}$ on 33 of them. A later check on an NVIDIA L40S, on 27 October 2026, found
 seven benchmark designs in agreement to $10^{-13}$ at a common $\theta$, and
 complete fits to $2 \times 10^{-10}$.
 
@@ -1013,7 +1011,7 @@ the same container image.
 %% TODO: CPU model of the A100 node (gpu01) and of the reserved meso node;
 %% versions of kmmr (commit), ASReml-R, JAX and CUDA in the benchmark image;
 %% remlax revision of the v14 runs.
-At the time of writing, \pkg{ASReml-R} had completed 21 of the 30 problems,
+At the time of writing, \pkg{ASReml-R} had completed 22 of the 30 problems,
 since its licence forced the runs in series.
 %% TODO: update when the remaining ASReml-R runs on meso have finished.
 
@@ -1136,13 +1134,13 @@ A100 is faster. A point is missing when either device failed.}
 
 \subsection{remlax against ASReml-R}
 
-Figure~\ref{fig:asreml} pairs each of the 21 problems completed by
+Figure~\ref{fig:asreml} pairs each of the 22 problems completed by
 \pkg{ASReml-R} with the MME route of \pkg{remlax}. On the A100, \pkg{remlax}
-was faster on 17 of them, by factors up to 49 on \code{us(8)} and 64 at
+was faster on 18 of them, by factors up to 74 on \code{us(12)} and 64 at
 $\dimC(C)/n = 16$. It was slower on three single-trait problems that
 \pkg{ASReml-R} fitted in 4.3 to 5.4\,s, below the fixed cost of about 7\,s of
 \pkg{remlax}, and on the \code{diag} model with $t = 8$. On CPU,
-\pkg{remlax} was faster on 18 of the 21 problems, despite the slower node.
+\pkg{remlax} was faster on 19 of the 22 problems, despite the slower node.
 
 \begin{figure}[t]
 \centering

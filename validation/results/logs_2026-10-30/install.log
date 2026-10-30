@@ -6,7 +6,7 @@ using C compiler: ‘gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0’
 gcc -std=gnu2x -I"/usr/local/lib/R/include" -DNDEBUG   -I/usr/local/include    -fpic  -g -O2 -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -g  -c init.c -o init.o
 gcc -std=gnu2x -I"/usr/local/lib/R/include" -DNDEBUG   -I/usr/local/include    -fpic  -g -O2 -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -g  -c selinv_c.c -o selinv_c.o
 gcc -std=gnu2x -shared -L/usr/local/lib/R/lib -L/usr/local/lib -o remlax.so init.o selinv_c.o -L/usr/local/lib/R/lib -lR
-installing to /scratch/users/salasn/validation_2026-10-30_bc2af0c/rlib/00LOCK-remlax/00new/remlax/libs
+installing to /scratch/users/salasn/validation_2026-10-30_6dbada5/rlib/00LOCK-remlax/00new/remlax/libs
 ** R
 ** inst
 ** byte-compile and prepare package for lazy loading

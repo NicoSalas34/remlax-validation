@@ -1,0 +1,40 @@
+
+=== 1. structures : nombre de parametres, positivite, aller-retour ===
+  iid(t=1,r=0) : p=1, symetrique, PSD                        OK  min eig 1.70e+00
+  iid(t=4,r=0) : p=1, symetrique, PSD                        OK  min eig 1.70e+00
+  diag(t=4,r=0) : p=4, symetrique, PSD                       OK  min eig 1.70e+00
+  us(t=2,r=0) : p=3, symetrique, PSD                         OK  min eig 1.70e+00
+  us(t=6,r=0) : p=21, symetrique, PSD                        OK  min eig 1.70e+00
+  fa(t=5,r=1) : p=10, symetrique, PSD                        OK  min eig 1.70e+00
+  fa(t=5,r=3) : p=17, symetrique, PSD                        OK  min eig 1.70e+00
+  fa(t=8,r=4) : p=34, symetrique, PSD                        OK  min eig 1.70e+00
+  us(t=2) represente n'importe quelle matrice PSD            OK  ecart 1.78e-15
+  us(t=5) represente n'importe quelle matrice PSD            OK  ecart 8.88e-16
+  us(t=9) represente n'importe quelle matrice PSD            OK  ecart 1.78e-15
+
+=== 2. gradient autodiff contre differences finies centrees ===
+  gradient exact (t=1, K=False)                              OK  ecart relatif 3.91e-09
+  gradient exact (t=1, K=True)                               OK  ecart relatif 7.82e-10
+  gradient exact (t=3, K=False)                              OK  ecart relatif 1.88e-08
+  gradient exact (t=3, K=True)                               OK  ecart relatif 3.71e-08
+
+=== 3. assemblage de V : symetrie, positivite, coherence Kronecker ===
+  V symetrique                                               OK  
+  V definie positive                                         OK  min eig 4.000e-01
+  V == Z (Sigma (x) K) Z' + R  (voie independante)           OK  ecart max 5.33e-15
+
+=== 4. REML analytique : plan a un facteur, equilibre ===
+  a=20 m=6 : sigma2 analytiques retrouvees                   OK  ecarts 7.2e-10 / 6.4e-10, decrement 3.2e-17
+  a=12 m=10 : sigma2 analytiques retrouvees                  OK  ecarts 4.0e-11 / 3.7e-11, decrement 1.2e-19
+  a=40 m=3 : sigma2 analytiques retrouvees                   OK  ecarts 4.1e-10 / 3.8e-09, decrement 5.5e-16
+
+=== 5. reproductibilite et invariance au peripherique ===
+  deux appels identiques donnent le meme optimum             OK  ecart 0.00e+00
+  depart perturbe -> meme optimum                            OK  ecart 0.00e+00
+
+=== 6. cas degeneres : le solveur refuse plutot que de mentir ===
+  structure inconnue rejetee                                 OK  
+  X singuliere : erreur explicite                            OK  ValueError
+
+======================================================================
+Tous les tests du noyau passent.

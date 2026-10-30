@@ -1,0 +1,55 @@
+remlax 0.1.0 installed in /scratch/users/salasn/validation_2026-10-30_bc2af0c/rlib 
+
+=== 1. one random factor, against lme4 ===
+  a=25 m=5 : identical -2logL                              OK  451.397867339 vs 451.397867339
+  a=25 m=5 : variance components                           OK  s2g 1.361456/1.361456
+  a=25 m=5 : fixed effects                                 OK  beta 1.7588 0.80093
+  a=25 m=5 : BLUPs                                         OK  max diff 7.47e-09
+  a=10 m=12 : identical -2logL                             OK  391.341158079 vs 391.341158079
+  a=10 m=12 : variance components                          OK  s2g 2.231905/2.231905
+  a=10 m=12 : fixed effects                                OK  beta 1.70765 0.74394
+  a=10 m=12 : BLUPs                                        OK  max diff 5.01e-10
+  a=60 m=3 : identical -2logL                              OK  653.887073882 vs 653.887073882
+  a=60 m=3 : variance components                           OK  s2g 2.502726/2.502726
+  a=60 m=3 : fixed effects                                 OK  beta 2.30711 0.79389
+  a=60 m=3 : BLUPs                                         OK  max diff 1.96e-09
+
+=== 2. two crossed factors, against lme4 ===
+  crossed : identical -2logL                               OK  380.944211187 vs 380.944211187
+  crossed : the three variances                            OK  1.94207 0.20123 0.90019
+
+=== 3. kinship matrix, against sommer ===
+  kinship : variance components vs sommer                  OK  s2g 0.99215/0.99211 | s2e 0.98662/0.98663
+  kinship : the GRM improves the fit (K vs I)              OK  515.7869 vs 516.7093
+
+=== 4. two traits, us structure, against sommer ===
+  us : 2x2 genetic covariance vs sommer                    OK  remlax 1.3169 0.8723 0.8723 1.0382 | sommer 1.3169 0.8723 0.8723 1.0381
+  us : 2x2 residual covariance vs sommer                   OK  remlax 0.849 0.1019 0.1019 1.2783 | sommer 0.849 0.1019 0.1019 1.2783
+  us : genetic correlation recovered                       OK  r 0.7460 vs 0.7460
+
+=== 5. nested structures: us must dominate diag, which dominates iid ===
+term 'gid': struct='iid' with t=2 -> one variance shared by the 2 columns.
+  nesting : -2logL decreasing iid >= diag >= us            OK  iid=1324.4543 diag=1324.0042 us=1299.9284
+
+=== 6. WEIGHTED incidence (the case a formula cannot express) ===
+  weighted incidence : finite and defined fit              OK  s2 1.5621 (true 1.21) | s2e 0.6332 (true 0.64) | decrement 1.9e-15
+
+=== 7. formula interface: same result as the explicit route ===
+  formula ~ g : -2logL identical to lme4                   OK  diff 0.00e+00
+  formula ~ iid(g)+iid(b) : -2logL identical to lme4       OK  diff 5.68e-14
+  formula us(gid) == explicit route rx_term/rx_model       OK  diff 0.00e+00
+
+=== 8. backend switch: the model does not change with the machine ===
+  backend auto and cpu give the same fit                   OK  cpu vs cpu, diff 0.00e+00
+  the chosen backend is reported in the result             OK  cpu
+
+=== 9. errors: usable messages instead of doubtful results ===
+  unknown term rejected                                    OK  
+  missing column rejected                                  OK  
+  multi-trait structure without trait rejected             OK  
+  rank-deficient X rejected                                OK  
+  level missing from K rejected                            OK  
+
+======================================================================
+Cross-validation complete: remlax computes the same restricted likelihood
+as lme4 and sommer, on every case tested.

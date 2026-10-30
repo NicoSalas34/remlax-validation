@@ -1,5 +1,5 @@
-remlax 0.1.0 installed in /scratch/users/salasn/validation_2026-10-30_bc2af0c/rlib 
-Online License checked out Fri Oct 30 15:24:45 2026
+remlax 0.1.0 installed in /scratch/users/salasn/validation_2026-10-30_6dbada5/rlib 
+Online License checked out Fri Oct 30 16:47:48 2026
 
 === 1. lvr: truncated tent max(0, 1 - d/phi) ===
   lvr : logLik = independent R profile                 FAIL  remlax -2.6786173 | R -1.9143976 | range 1.5055 vs 5.8896

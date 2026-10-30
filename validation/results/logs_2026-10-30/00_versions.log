@@ -1,5 +1,5 @@
 [R] R version 4.6.0 (2026-04-24) | asreml 4.2.0.480 | lme4 2.0.1 | sommer 4.4.5 | nlme 3.1.169 | pbkrtest 0.5.5 | remlax 0.1.0
 [jax] 0.11.1
-remlax commit bc2af0c
-remlax-validation commit d2e3603
+remlax commit 6dbada5
+remlax-validation commit e8ed9d9
 image /scratch/users/salasn/ige_reml_v3.sif

@@ -1,25 +1,25 @@
 {
  "versions": {
   "R": {
-   "re-measured 2026-10-30, ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax bc2af0c": "4.6.0"
+   "re-measured 2026-10-30, ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax 6dbada5": "4.6.0"
   },
   "nlme": {
-   "re-measured 2026-10-30, ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax bc2af0c": "3.1.169"
+   "re-measured 2026-10-30, ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax 6dbada5": "3.1.169"
   },
   "lme4": {
-   "re-measured 2026-10-30, ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax bc2af0c": "2.0.1"
+   "re-measured 2026-10-30, ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax 6dbada5": "2.0.1"
   },
   "sommer": {
-   "re-measured 2026-10-30, ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax bc2af0c": "4.4.5"
+   "re-measured 2026-10-30, ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax 6dbada5": "4.4.5"
   },
   "asreml": {
-   "re-measured 2026-10-30, ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax bc2af0c": "4.2.0.480"
+   "re-measured 2026-10-30, ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax 6dbada5": "4.2.0.480"
   },
   "pbkrtest": {
-   "re-measured 2026-10-30, ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax bc2af0c": "0.5.5"
+   "re-measured 2026-10-30, ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax 6dbada5": "0.5.5"
   },
   "jax": {
-   "re-measured 2026-10-30, ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax bc2af0c": "0.11.1"
+   "re-measured 2026-10-30, ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax 6dbada5": "0.11.1"
   }
  },
  "logs": {

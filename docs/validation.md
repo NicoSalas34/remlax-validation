@@ -1,22 +1,22 @@
 # Validation
 
-Every number on this page was produced on 2026-10-30 by the test suites of this repository and of remlax, with remlax at git revision `bc2af0c`. The campaign ran on the user's SLURM cluster inside the apptainer image `ige_reml_v3.sif`, launched by `campaign/prepare.sh`: every suite on CPU, the CPU/GPU parity on a slice of an A100. The measurements were extracted from the logs (`validation/results/logs_2026-10-30/`) by `validation/parse_logs.py`, and this page is generated from the resulting table (`validation/results/checks_2026-10-30.csv`) by `validation/make_validation_md.py`. No value here was typed by hand.
+Every number on this page was produced on 2026-10-30 by the test suites of this repository and of remlax, with remlax at git revision `6dbada5`. The campaign ran on the user's SLURM cluster inside the apptainer image `ige_reml_v3.sif`, launched by `campaign/prepare.sh`: every suite on CPU, the CPU/GPU parity on a slice of an A100. The measurements were extracted from the logs (`validation/results/logs_2026-10-30/`) by `validation/parse_logs.py`, and this page is generated from the resulting table (`validation/results/checks_2026-10-30.csv`) by `validation/make_validation_md.py`. No value here was typed by hand.
 
-**381 checks, 364 passed, 17 failed.**
+**381 checks, 365 passed, 16 failed.**
 
 Provenance of the rows:
 
-- re-measured 2026-10-30, ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax bc2af0c: 381 checks
+- re-measured 2026-10-30, ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax 6dbada5: 381 checks
 
 Software versions read from the log headers:
 
-- R: 4.6.0 (ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax bc2af0c)
-- nlme: 3.1.169 (ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax bc2af0c)
-- lme4: 2.0.1 (ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax bc2af0c)
-- sommer: 4.4.5 (ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax bc2af0c)
-- asreml: 4.2.0.480 (ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax bc2af0c)
-- pbkrtest: 0.5.5 (ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax bc2af0c)
-- jax: 0.11.1 (ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax bc2af0c)
+- R: 4.6.0 (ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax 6dbada5)
+- nlme: 3.1.169 (ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax 6dbada5)
+- lme4: 2.0.1 (ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax 6dbada5)
+- sommer: 4.4.5 (ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax 6dbada5)
+- asreml: 4.2.0.480 (ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax 6dbada5)
+- pbkrtest: 0.5.5 (ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax 6dbada5)
+- jax: 0.11.1 (ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax 6dbada5)
 
 The check labels in the tables below are the strings the test suites printed, quoted verbatim. Suites run before their English translation printed French labels, and those labels are kept as they are. Translating them would give a more readable table and a trace that no longer matches the logs. The section headings and the commentary are in English.
 
@@ -38,7 +38,7 @@ Suites whose log was not available for this run, and therefore absent from the t
 | Against asreml, the remaining structures | 111 | the field reference | 99/111 |
 | Against asreml, BLUPs | 4 | the field reference | 4/4 |
 | A full model of known truth | 11 | asreml, and the simulated parameters | 11/11 |
-| CPU against GPU | 34 | the other backend, on the same input | 33/34 |
+| CPU against GPU | 34 | the other backend, on the same input | 34/34 |
 
 ## Internal algebra
 
@@ -107,7 +107,7 @@ The pytest suite of remlax (tests-python): one test per feature, each against an
 
 | Check | Measured | Verdict |
 |---|---|---|
-| 274 tests collected by pytest | 273 passed, 1 skipped, 0 failed, 0 errors in 368.87 s | pass |
+| 277 tests collected by pytest | 276 passed, 1 skipped, 0 failed, 0 errors in 429.95 s | pass |
 
 ## Random sweep
 
@@ -501,9 +501,9 @@ The structures a plant breeder actually writes: a one-dimensional AR1, a separab
 
 | Check | Measured | Verdict |
 |---|---|---|
-| chol(gid, rank=3)  == us | diff 4.55e-13 | pass |
-| ante(gid, rank=3)  == us | diff 2.27e-13 | pass |
-| fa(gid, rank=4)    == us | diff 5.68e-13 | pass |
+| chol(gid, rank=3)  == us | diff 1.14e-13 | pass |
+| ante(gid, rank=3)  == us | diff 1.14e-13 | pass |
+| fa(gid, rank=4)    == us | diff 1.14e-13 | pass |
 | rr(gid, rank=4)    == us | diff 7.96e-13 | pass |
 
 ## Against asreml, the rest of the catalogue
@@ -863,38 +863,38 @@ Every design of the structure catalogue is serialised once, then fitted twice in
 |---|---|---|
 | design 'aexp': same -2logL on CPU and on an A100 MIG slice | -2logL 560.16430238 vs 560.16430238 \| rel gap 2.03e-16 \| max\|dtheta\| 2.78e-16 \| 1.1 s CPU vs 8.6 s MIG | pass |
 | design 'ante1_mv': same -2logL on CPU and on an A100 MIG slice | -2logL 1284.22057669 vs 1284.22057669 \| rel gap 1.77e-16 \| max\|dtheta\| 2.67e-08 \| 1.5 s CPU vs 5.1 s MIG | pass |
-| design 'ar1': same -2logL on CPU and on an A100 MIG slice | -2logL 585.15663362 vs 585.15663362 \| rel gap 0.00e+00 \| max\|dtheta\| 2.78e-16 \| 0.4 s CPU vs 2.3 s MIG | pass |
-| design 'ar1ar1_res': same -2logL on CPU and on an A100 MIG slice | -2logL 513.75395410 vs 513.75395410 \| rel gap 0.00e+00 \| max\|dtheta\| 4.37e-16 \| 0.5 s CPU vs 2.7 s MIG | pass |
-| design 'ar2': same -2logL on CPU and on an A100 MIG slice | -2logL 583.38706024 vs 583.38706024 \| rel gap 0.00e+00 \| max\|dtheta\| 6.66e-16 \| 0.8 s CPU vs 1.4 s MIG | pass |
-| design 'ar3': same -2logL on CPU and on an A100 MIG slice | -2logL 581.02165146 vs 581.02165146 \| rel gap 0.00e+00 \| max\|dtheta\| 3.22e-15 \| 1.0 s CPU vs 1.5 s MIG | pass |
-| design 'arma': same -2logL on CPU and on an A100 MIG slice | -2logL 583.22954846 vs 583.22954846 \| rel gap 0.00e+00 \| max\|dtheta\| 1.04e-04 \| 0.6 s CPU vs 0.8 s MIG | pass |
-| design 'chol2_mv': same -2logL on CPU and on an A100 MIG slice | -2logL 1281.59614340 vs 1281.59614340 \| rel gap 1.77e-16 \| max\|dtheta\| 3.00e-14 \| 1.1 s CPU vs 1.2 s MIG | pass |
-| design 'cir': same -2logL on CPU and on an A100 MIG slice | -2logL 591.99572228 vs 591.99572228 \| rel gap 0.00e+00 \| max\|dtheta\| 5.07e-09 \| 0.5 s CPU vs 0.8 s MIG | pass |
-| design 'cor': same -2logL on CPU and on an A100 MIG slice | -2logL 585.55424610 vs 585.55424610 \| rel gap 1.94e-16 \| max\|dtheta\| 5.70e-15 \| 0.4 s CPU vs 0.6 s MIG | pass |
-| design 'corb2': same -2logL on CPU and on an A100 MIG slice | -2logL 583.42821102 vs 583.42821102 \| rel gap 3.90e-16 \| max\|dtheta\| 3.22e-15 \| 0.4 s CPU vs 0.6 s MIG | pass |
+| design 'ar1': same -2logL on CPU and on an A100 MIG slice | -2logL 585.15663362 vs 585.15663362 \| rel gap 0.00e+00 \| max\|dtheta\| 2.78e-16 \| 0.4 s CPU vs 2.4 s MIG | pass |
+| design 'ar1ar1_res': same -2logL on CPU and on an A100 MIG slice | -2logL 513.75395410 vs 513.75395410 \| rel gap 2.21e-16 \| max\|dtheta\| 4.27e-16 \| 0.5 s CPU vs 2.8 s MIG | pass |
+| design 'ar2': same -2logL on CPU and on an A100 MIG slice | -2logL 583.38706024 vs 583.38706024 \| rel gap 0.00e+00 \| max\|dtheta\| 1.33e-15 \| 0.9 s CPU vs 1.5 s MIG | pass |
+| design 'ar3': same -2logL on CPU and on an A100 MIG slice | -2logL 581.02165146 vs 581.02165146 \| rel gap 5.87e-16 \| max\|dtheta\| 4.08e-09 \| 1.0 s CPU vs 1.6 s MIG | pass |
+| design 'arma': same -2logL on CPU and on an A100 MIG slice | -2logL 583.22954846 vs 583.22954846 \| rel gap 3.90e-16 \| max\|dtheta\| 1.05e-03 \| 0.6 s CPU vs 0.9 s MIG | pass |
+| design 'chol2_mv': same -2logL on CPU and on an A100 MIG slice | -2logL 1281.59614340 vs 1281.59614340 \| rel gap 1.77e-16 \| max\|dtheta\| 1.50e-14 \| 1.2 s CPU vs 1.2 s MIG | pass |
+| design 'cir': same -2logL on CPU and on an A100 MIG slice | -2logL 591.99572228 vs 591.99572228 \| rel gap 1.92e-16 \| max\|dtheta\| 4.95e-09 \| 0.6 s CPU vs 1.0 s MIG | pass |
+| design 'cor': same -2logL on CPU and on an A100 MIG slice | -2logL 585.55424610 vs 585.55424610 \| rel gap 1.94e-16 \| max\|dtheta\| 5.46e-15 \| 0.4 s CPU vs 0.6 s MIG | pass |
+| design 'corb2': same -2logL on CPU and on an A100 MIG slice | -2logL 583.42821102 vs 583.42821102 \| rel gap 3.90e-16 \| max\|dtheta\| 9.60e-15 \| 0.4 s CPU vs 0.7 s MIG | pass |
 | design 'corg': same -2logL on CPU and on an A100 MIG slice | -2logL 601.62640596 vs 601.62640596 \| rel gap 1.89e-16 \| max\|dtheta\| 8.48e-10 \| 0.8 s CPU vs 2.8 s MIG | pass |
-| design 'corh_mv': same -2logL on CPU and on an A100 MIG slice | -2logL 1281.60150032 vs 1281.60150032 \| rel gap 1.77e-16 \| max\|dtheta\| 1.72e-15 \| 1.1 s CPU vs 1.1 s MIG | pass |
-| design 'dsum': same -2logL on CPU and on an A100 MIG slice | -2logL 515.18686079 vs 515.18686079 \| rel gap 2.21e-16 \| max\|dtheta\| 1.18e-16 \| 0.3 s CPU vs 0.5 s MIG | pass |
-| design 'dsum_ar1': same -2logL on CPU and on an A100 MIG slice | -2logL 52.15394381 vs 52.15394381 \| rel gap 6.81e-16 \| max\|dtheta\| 1.55e-15 \| 0.5 s CPU vs 0.9 s MIG | pass |
-| design 'expo': same -2logL on CPU and on an A100 MIG slice | -2logL 585.55424610 vs 585.55424610 \| rel gap 0.00e+00 \| max\|dtheta\| 6.37e-15 \| 0.5 s CPU vs 1.2 s MIG | pass |
-| design 'fa2_mv': same -2logL on CPU and on an A100 MIG slice | -2logL 1281.59614340 vs 1281.59614340 \| rel gap 0.00e+00 \| max\|dtheta\| 1.21e-08 \| 1.5 s CPU vs 3.7 s MIG | pass |
-| design 'gau': same -2logL on CPU and on an A100 MIG slice | -2logL 585.55424610 vs 585.55424610 \| rel gap 0.00e+00 \| max\|dtheta\| 2.07e-14 \| 0.5 s CPU vs 0.6 s MIG | pass |
-| design 'ieuc': same -2logL on CPU and on an A100 MIG slice | -2logL 590.00207600 vs 590.00207600 \| rel gap 0.00e+00 \| max\|dtheta\| 9.19e-07 \| 1.0 s CPU vs 0.9 s MIG | pass |
-| design 'iexp': same -2logL on CPU and on an A100 MIG slice | -2logL 578.64147976 vs 578.64147976 \| rel gap 1.96e-16 \| max\|dtheta\| 5.55e-16 \| 0.4 s CPU vs 0.6 s MIG | pass |
+| design 'corh_mv': same -2logL on CPU and on an A100 MIG slice | -2logL 1281.60150032 vs 1281.60150032 \| rel gap 1.77e-16 \| max\|dtheta\| 1.67e-15 \| 1.1 s CPU vs 1.1 s MIG | pass |
+| design 'dsum': same -2logL on CPU and on an A100 MIG slice | -2logL 515.18686079 vs 515.18686079 \| rel gap 2.21e-16 \| max\|dtheta\| 1.18e-16 \| 0.3 s CPU vs 0.6 s MIG | pass |
+| design 'dsum_ar1': same -2logL on CPU and on an A100 MIG slice | -2logL 52.15394381 vs 52.15394381 \| rel gap 6.81e-16 \| max\|dtheta\| 1.55e-15 \| 0.5 s CPU vs 1.0 s MIG | pass |
+| design 'expo': same -2logL on CPU and on an A100 MIG slice | -2logL 585.55424610 vs 585.55424610 \| rel gap 0.00e+00 \| max\|dtheta\| 2.55e-14 \| 0.5 s CPU vs 1.3 s MIG | pass |
+| design 'fa2_mv': same -2logL on CPU and on an A100 MIG slice | -2logL 1281.59614340 vs 1281.59614340 \| rel gap 0.00e+00 \| max\|dtheta\| 2.42e-08 \| 1.5 s CPU vs 3.7 s MIG | pass |
+| design 'gau': same -2logL on CPU and on an A100 MIG slice | -2logL 585.55424610 vs 585.55424610 \| rel gap 0.00e+00 \| max\|dtheta\| 3.12e-15 \| 0.5 s CPU vs 0.7 s MIG | pass |
+| design 'ieuc': same -2logL on CPU and on an A100 MIG slice | -2logL 590.00207600 vs 590.00207600 \| rel gap 0.00e+00 \| max\|dtheta\| 9.19e-07 \| 1.0 s CPU vs 1.0 s MIG | pass |
+| design 'iexp': same -2logL on CPU and on an A100 MIG slice | -2logL 578.64147976 vs 578.64147976 \| rel gap 1.96e-16 \| max\|dtheta\| 5.55e-16 \| 0.4 s CPU vs 0.7 s MIG | pass |
 | design 'iid': same -2logL on CPU and on an A100 MIG slice | -2logL 498.81465569 vs 498.81465569 \| rel gap 5.70e-16 \| max\|dtheta\| 7.49e-16 \| 0.3 s CPU vs 1.1 s MIG | pass |
-| design 'lvr': same -2logL on CPU and on an A100 MIG slice | -2logL 585.55424610 vs 585.55424610 \| rel gap 3.88e-16 \| max\|dtheta\| 7.86e-12 \| 0.5 s CPU vs 0.7 s MIG | pass |
-| design 'ma1': same -2logL on CPU and on an A100 MIG slice | -2logL 583.30849572 vs 583.30849572 \| rel gap 3.90e-16 \| max\|dtheta\| 1.13e-06 \| 0.6 s CPU vs 0.8 s MIG | pass |
-| design 'mtrn_iso': same -2logL on CPU and on an A100 MIG slice | -2logL 589.40743274 vs 589.40743274 \| rel gap 1.93e-16 \| max\|dtheta\| 1.60e-12 \| 6.7 s CPU vs 288.1 s MIG | pass |
-| design 'own_2par': same -2logL on CPU and on an A100 MIG slice | -2logL 607.25006661 vs 607.25006661 \| rel gap 0.00e+00 \| max\|dtheta\| 0.00e+00 \| 0.5 s CPU vs 0.8 s MIG | pass |
-| design 'own_exp': same -2logL on CPU and on an A100 MIG slice | -2logL 585.55424610 vs 585.55424610 \| rel gap 0.00e+00 \| max\|dtheta\| 4.43e-07 \| 0.6 s CPU vs 0.8 s MIG | pass |
-| design 'rr2_mv': same -2logL on CPU and on an A100 MIG slice | -2logL 1343.60530125 vs 1343.60530125 \| rel gap 1.69e-16 \| max\|dtheta\| 2.34e-08 \| 0.9 s CPU vs 3.2 s MIG | pass |
-| design 'sar': same -2logL on CPU and on an A100 MIG slice | -2logL 585.04086512 vs 585.04086512 \| rel gap 1.94e-16 \| max\|dtheta\| 2.52e-08 \| 0.7 s CPU vs 0.9 s MIG | pass |
-| design 'sph': same -2logL on CPU and on an A100 MIG slice | -2logL 587.42826916 vs 587.42826916 \| rel gap 1.94e-16 \| max\|dtheta\| 5.07e-09 \| 1.0 s CPU vs 1.0 s MIG | pass |
+| design 'lvr': same -2logL on CPU and on an A100 MIG slice | -2logL 585.55424610 vs 585.55424610 \| rel gap 3.88e-16 \| max\|dtheta\| 7.86e-12 \| 0.5 s CPU vs 0.8 s MIG | pass |
+| design 'ma1': same -2logL on CPU and on an A100 MIG slice | -2logL 583.30849572 vs 583.30849572 \| rel gap 0.00e+00 \| max\|dtheta\| 8.83e-07 \| 0.6 s CPU vs 0.9 s MIG | pass |
+| design 'mtrn_aniso': same -2logL on CPU and on an A100 MIG slice | -2logL 553.12375491 vs 553.12375491 \| rel gap 6.80e-13 \| max\|dtheta\| 4.38e-04 \| 26.5 s CPU vs 286.5 s MIG | pass |
+| design 'mtrn_iso': same -2logL on CPU and on an A100 MIG slice | -2logL 589.40743274 vs 589.40743274 \| rel gap 0.00e+00 \| max\|dtheta\| 2.48e-09 \| 7.1 s CPU vs 1.0 s MIG | pass |
+| design 'own_2par': same -2logL on CPU and on an A100 MIG slice | -2logL 607.25006661 vs 607.25006661 \| rel gap 0.00e+00 \| max\|dtheta\| 0.00e+00 \| 0.5 s CPU vs 0.9 s MIG | pass |
+| design 'own_exp': same -2logL on CPU and on an A100 MIG slice | -2logL 585.55424610 vs 585.55424610 \| rel gap 1.94e-16 \| max\|dtheta\| 1.26e-06 \| 0.6 s CPU vs 0.8 s MIG | pass |
+| design 'rr2_mv': same -2logL on CPU and on an A100 MIG slice | -2logL 1343.60530125 vs 1343.60530125 \| rel gap 1.69e-16 \| max\|dtheta\| 1.36e-15 \| 1.0 s CPU vs 3.3 s MIG | pass |
+| design 'sar': same -2logL on CPU and on an A100 MIG slice | -2logL 585.04086512 vs 585.04086512 \| rel gap 0.00e+00 \| max\|dtheta\| 2.52e-08 \| 0.6 s CPU vs 1.0 s MIG | pass |
+| design 'sph': same -2logL on CPU and on an A100 MIG slice | -2logL 587.42826916 vs 587.42826916 \| rel gap 0.00e+00 \| max\|dtheta\| 2.56e-08 \| 1.0 s CPU vs 1.1 s MIG | pass |
 | design 'str_2': same -2logL on CPU and on an A100 MIG slice | -2logL 512.47455420 vs 512.47455420 \| rel gap 0.00e+00 \| max\|dtheta\| 2.64e-16 \| 0.7 s CPU vs 3.8 s MIG | pass |
-| design 'us_mv': same -2logL on CPU and on an A100 MIG slice | -2logL 1281.59614340 vs 1281.59614340 \| rel gap 0.00e+00 \| max\|dtheta\| 9.30e-16 \| 1.2 s CPU vs 1.0 s MIG | pass |
-| design 'us_res_mv': same -2logL on CPU and on an A100 MIG slice | -2logL 1395.95209251 vs 1395.95209251 \| rel gap 0.00e+00 \| max\|dtheta\| 8.88e-16 \| 0.8 s CPU vs 2.6 s MIG | pass |
+| design 'us_mv': same -2logL on CPU and on an A100 MIG slice | -2logL 1281.59614340 vs 1281.59614340 \| rel gap 0.00e+00 \| max\|dtheta\| 2.22e-15 \| 1.2 s CPU vs 1.1 s MIG | pass |
+| design 'us_res_mv': same -2logL on CPU and on an A100 MIG slice | -2logL 1395.95209251 vs 1395.95209251 \| rel gap 0.00e+00 \| max\|dtheta\| 1.25e-15 \| 0.8 s CPU vs 2.6 s MIG | pass |
 | design 'vm_kin': same -2logL on CPU and on an A100 MIG slice | -2logL 494.64877180 vs 494.64877180 \| rel gap 5.75e-16 \| max\|dtheta\| 3.05e-09 \| 0.3 s CPU vs 0.5 s MIG | pass |
-| design 'mtrn_aniso': same -2logL on CPU and on an A100 MIG slice | fit error: ValueError: -2logL or its gradient is not finite at the starting point (value 629.5077869074553, 2 non-finite gradient component(s)). The optimiser cannot start. Check the kernel or supply theta_init. | FAIL |
 
 ## The failed checks
 
@@ -906,9 +906,9 @@ A failed check stays failed on purpose: each one is a documented disagreement, n
 
 **lvr, truncated tent (1 check).** The likelihood is not unimodal: its support changes each time the range crosses an integer distance. remlax stops at a local optimum (range 1.51, log-likelihood -2.679) while a fine grid in R finds range 5.89 and -1.914. asreml stops at a worse point (-2.820). The remlax revision of 2026-09-28, which passed this check on the cluster then, gives the same local optimum on the authors' workstation: the outcome depends on the start, not on a change of the code.
 
-**CPU/GPU parity, anisotropic Matern (1 check).** The fit of `mtrn_aniso` stops before its first iteration: two components of the gradient are not finite at the starting point. The anisotropic distance and the Matern function have an infinite derivative at zero distance, where the diagonal of the kernel sits. The check that refuses a non-finite start was added on 2026-09-28, after the parity of 2026-09-01 (34/34), which therefore did not see it. The 33 other designs agree to at most 6.8e-16 in relative value.
-
 **Random sweep, seed 0 (1 check).** One configuration out of 200 ends with a Newton decrement of 0.011, above the threshold of 0.01. Two others reach a better optimum after a restart, with gains of 0.004 and 0.27 on -2logL. Seeds 50 and 100 have no unconverged configuration.
+
+**Corrected during the campaign.** The first run, on remlax `bc2af0c` (logs in `validation/results/logs_2026-10-30_bc2af0c/`), refused the fit of the anisotropic Matern design `mtrn_aniso` of the CPU/GPU parity at its start: the anisotropic distance and the Matern function had an infinite derivative at zero distance, where the diagonal of the kernel sits. remlax `6dbada5` evaluates them on a placeholder there, with unchanged values, and the design now agrees to 6.8e-13 in relative value on the two devices. Every other check gave the same verdict in both runs.
 
 ## What could not be measured here
 

@@ -1,0 +1,91 @@
+remlax 0.1.0 installed in /scratch/users/salasn/validation_2026-10-30_bc2af0c/rlib 
+nlme 3.1.169 | R 4 6.0 
+
+=== 1. corAR1: AR1 within each group, against gls ===
+  logLik constant : nlme = remlax$logLik                   OK  nlme -182.486858 | remlax -182.486858 | logLik_asreml -74.052112 (+(n-p)/2 log 2pi = 108.4347)
+  corAR1 : identical -2logL                                OK  364.973716966 vs 364.973716966
+  corAR1 : residual variance                               OK  1.627385 vs 1.627385
+  corAR1 : fixed effects                                   OK  max rel diff 1.45e-09
+  corAR1 : standard errors of the fixed effects            OK  max rel diff 1.67e-08
+  corAR1 : rho                                             OK  0.5338496 vs 0.5338496
+
+=== 2. corCAR1: continuous AR1 at irregular times, against gls ===
+  corCAR1 : identical -2logL                               OK  232.839518984 vs 232.839518984
+  corCAR1 : residual variance                              OK  1.152159 vs 1.152159
+  corCAR1 : fixed effects                                  OK  max rel diff 5.27e-09
+  corCAR1 : standard errors of the fixed effects           OK  max rel diff 3.40e-08
+  corCAR1 : phi (correlation per time unit)                OK  0.7287346 vs 0.7287346 (true 0.7)
+
+=== 3. corARMA(p=2): AR2, against gls ===
+  ar2 : identical -2logL                                   OK  364.591914889 vs 364.591914889
+  ar2 : residual variance                                  OK  1.899831 vs 1.899831
+  ar2 : fixed effects                                      OK  max rel diff 1.30e-09
+  ar2 : standard errors of the fixed effects               OK  max rel diff 1.02e-08
+  ar2 : phi1 and phi2                                      OK  remlax 0.526414 0.145188 | nlme 0.526414 0.145188
+
+=== 4. corARMA(p=1, q=1): ARMA(1,1), against gls ===
+  arma : identical -2logL                                  OK  348.507672823 vs 348.507672823
+  arma : residual variance                                 OK  1.461911 vs 1.461911
+  arma : fixed effects                                     OK  max rel diff 1.43e-08
+  arma : standard errors of the fixed effects              OK  max rel diff 2.45e-08
+  arma : phi and theta (remlax order: theta, phi)          OK  remlax theta 0.389765 phi 0.259672 | nlme phi 0.259672 theta 0.389765
+
+=== 5. corCompSymm: uniform correlation, against gls ===
+  cor : identical -2logL                                   OK  365.567018442 vs 365.567018442
+  cor : residual variance                                  OK  1.481197 vs 1.481197
+  cor : fixed effects                                      OK  max rel diff 1.81e-10
+  cor : standard errors of the fixed effects               OK  max rel diff 4.87e-09
+  cor : uniform rho                                        OK  0.2951065 vs 0.2951065
+
+=== 6. corExp: exponential decay in 1D, against gls ===
+  exp : identical -2logL                                   OK  229.403629489 vs 229.403629489
+  exp : residual variance                                  OK  0.633634 vs 0.633633
+  exp : fixed effects                                      OK  max rel diff 6.23e-08
+  exp : standard errors of the fixed effects               OK  max rel diff 9.81e-07
+  exp : rho = exp(-1/nlme range)                           OK  0.6429754 vs 0.6429748 (range 2.2642, true 4)
+  exp : the fit moved from its starting point              OK  8 iterations, rho 0.6430
+
+=== 7. corGaus: Gaussian decay in 1D, against gls ===
+  gau : identical -2logL                                   OK  235.903503011 vs 235.903503011
+  gau : residual variance                                  OK  1.106024 vs 1.106024
+  gau : fixed effects                                      OK  max rel diff 5.05e-13
+  gau : standard errors of the fixed effects               OK  max rel diff 5.76e-10
+  gau : rho = exp(-1/range^2)                              OK  0.8895193 vs 0.8895193 (range 2.9226, true 3)
+
+=== 8. corLin: truncated linear tent (lvr), against gls ===
+  lvr (gls range) : identical -2logL                       OK  188.616692460 vs 188.616692460
+  lvr (gls range) : residual variance                      OK  0.780188 vs 0.780188
+  lvr (gls range) : fixed effects                          OK  max rel diff 1.33e-14
+  lvr (gls range) : standard errors of the fixed effects   OK  max rel diff 1.93e-14
+  lvr : range read = range imposed                         OK  6.02241 vs 6.02241 (true 6)
+  lvr : free remlax optimum no worse than gls              OK  remlax 188.616692 (range 6.0224, 4 restarts) | best gls over 2 starts 188.616692 (range 6.0224)
+
+=== 9. corSpher: spherical in 2D, against gls ===
+  sph : identical -2logL                                   OK  297.607416797 vs 297.607416797
+  sph : residual variance                                  OK  0.982703 vs 0.982703
+  sph : fixed effects                                      OK  max rel diff 4.67e-10
+  sph : standard errors of the fixed effects               OK  max rel diff 5.43e-09
+  sph : range                                              OK  7.32780 vs 7.32780 (true 8)
+
+=== 10. corSymm + varIdent: unstructured covariance (us), against gls ===
+  us : identical -2logL                                    OK  458.854629436 vs 458.854629445
+  us : the 10 components of Sigma                          OK  max abs diff / max var 5.79e-06 | diag remlax 0.8898 1.5638 2.2088 0.953 | nlme 0.8898 1.5638 2.2088 0.953
+  us : fixed effects                                       OK  max rel diff 6.47e-07
+
+=== 11. varIdent alone: one residual variance per group (diag), against gls ===
+  diag : identical -2logL                                  OK  508.562150916 vs 508.562150916
+  diag : the five variances                                OK  remlax 0.206 0.9976 1.8157 4.1048 8.9001 | nlme 0.206 0.9976 1.8157 4.1048 8.9001
+  diag : fixed effects                                     OK  max rel diff 1.81e-07
+
+=== 12. lme: random intercept + within-group corAR1, against lme ===
+  lme AR1 : identical -2logL                               OK  348.881810570 vs 348.881810570
+  lme AR1 : group variance                                 OK  1.545201 vs 1.545200
+  lme AR1 : residual variance                              OK  0.888761 vs 0.888762
+  lme AR1 : rho                                            OK  0.3242477 vs 0.3242487
+  lme AR1 : fixed effects                                  OK  max rel diff 3.65e-07
+  lme AR1 : standard errors of the fixed effects           OK  max rel diff 2.90e-07
+  lme AR1 : BLUPs                                          OK  max diff 8.76e-07
+
+==============================================================
+ALL CHECKS PASS: remlax returns the same restricted likelihood
+ as nlme::gls and nlme::lme on the correlation structures tested.

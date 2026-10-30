@@ -1,0 +1,8 @@
+remlax 0.1.0 installed in /scratch/users/salasn/validation_2026-10-30_bc2af0c/rlib 
+n_par of the term: 3  (expected 3: one variance + two correlations)
+logLik : -160.2036 
+theta  : -1.7534 1.4905 -12 -0.1057 
+reported correlations: field!ar1_2_phi 0.9034 | field!ar1_3_phi -1 
+rho columns = 0.9034 | rho rows = -1.0000
+
+ok: the three-factor product reaches the solver

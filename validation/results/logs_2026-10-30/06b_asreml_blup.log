@@ -1,7 +1,7 @@
-Online License checked out Fri Oct 30 15:30:36 2026
-remlax 0.1.0 installed in /scratch/users/salasn/validation_2026-10-30_bc2af0c/rlib 
+Online License checked out Fri Oct 30 16:54:05 2026
+remlax 0.1.0 installed in /scratch/users/salasn/validation_2026-10-30_6dbada5/rlib 
 === 1. fit on both sides, time measured ===
-  asreml    0.07 s | remlax    3.59 s | ratio 52.78
+  asreml    0.12 s | remlax    3.66 s | ratio 29.76
   OK    logLik in the asreml convention              -260.296848172 vs -260.296848182
 
 === 2. what each side exposes (diagnostic before comparison) ===
@@ -19,4 +19,4 @@ remlax 0.1.0 installed in /scratch/users/salasn/validation_2026-10-30_bc2af0c/rl
 === 4. fixed effects and their variance ===
   OK    fixed effect (intercept)                     5.110533510 vs 5.110533510
 
-=== 4 checks, 0 failure(s) | time asreml 0.07 s, remlax 3.59 s ===
+=== 4 checks, 0 failure(s) | time asreml 0.12 s, remlax 3.66 s ===

@@ -252,18 +252,18 @@ def main(argv=None):
       "optimum on the authors' workstation: the outcome depends on the start, not on a "
       "change of the code.")
     A("")
-    A("**CPU/GPU parity, anisotropic Matern (1 check).** The fit of `mtrn_aniso` stops "
-      "before its first iteration: two components of the gradient are not finite at the "
-      "starting point. The anisotropic distance and the Matern function have an infinite "
-      "derivative at zero distance, where the diagonal of the kernel sits. The check that "
-      "refuses a non-finite start was added on 2026-09-28, after the parity of 2026-09-01 "
-      "(34/34), which therefore did not see it. The 33 other designs agree to at most "
-      "6.8e-16 in relative value.")
-    A("")
     A("**Random sweep, seed 0 (1 check).** One configuration out of 200 ends with a "
       "Newton decrement of 0.011, above the threshold of 0.01. Two others reach a better "
       "optimum after a restart, with gains of 0.004 and 0.27 on -2logL. Seeds 50 and 100 "
       "have no unconverged configuration.")
+    A("")
+    A("**Corrected during the campaign.** The first run, on remlax `bc2af0c` (logs in "
+      "`validation/results/logs_2026-10-30_bc2af0c/`), refused the fit of the anisotropic "
+      "Matern design `mtrn_aniso` of the CPU/GPU parity at its start: the anisotropic "
+      "distance and the Matern function had an infinite derivative at zero distance, where "
+      "the diagonal of the kernel sits. remlax `6dbada5` evaluates them on a placeholder "
+      "there, with unchanged values, and the design now agrees to 6.8e-13 in relative value "
+      "on the two devices. Every other check gave the same verdict in both runs.")
     A("")
     A("## What could not be measured here")
     A("")

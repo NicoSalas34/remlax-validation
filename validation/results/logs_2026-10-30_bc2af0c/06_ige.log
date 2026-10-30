@@ -1,0 +1,60 @@
+remlax 0.1.0 installed in /scratch/users/salasn/validation_2026-10-30_bc2af0c/rlib 
+Design: 40 x 30, kernel power (order 6) | 600 obs, 90 genotypes A, 60 B
+Truth  : var_DGE 0.90  var_IGEintra 0.30  cov -0.35  (r = -0.674)
+         var_IGEinter 0.22 | AR1 var 0.45 rho 0.65/0.40 | nugget 0.50
+
+REML model 'model': 600 observations, 1 fixed effects
+  term  dge_ige        us    t=2   q=90    K=I        (3 parameters)
+  term  ige_inter      iid   t=1   q=60    K=I        (1 parameter)
+  term  field          iid   t=1   q=600   AR1xAR1    (3 parameters)
+  residual       iid   t=1  (1 parameter)
+  total: 8 parameters
+
+remlax (cpu) : logLik -937.637215 | 2.6 s | decrement 2.35e-24
+  var_DGE      1.0952   (true 0.90)
+  var_IGEintra 0.1627   (true 0.30)
+  cov          -0.4221   (true -0.35)   r = -1.0000 (true -0.674)
+  var_IGEinter 0.5437   (true 0.22)
+  field var    0.6101   rho 0.5338 / 0.1193   (true 0.45, 0.65/0.40)
+  nugget       0.3982   (true 0.50)
+  the sign of cov(DGE, IGE intra) is recovered       OK  -0.4221 vs -0.35
+  the fit is at an optimum                           OK  decrement 2.4e-24
+  [note] component(s) at the boundary: dge_ige (r = -1.0000).  Expected at this size: asreml also ends on this edge
+   (it returns NA as the standard error of three field parameters).
+   For a meaningful comparison, enlarge: --nr=40 --nc=30.
+Online License checked out Fri Oct 30 15:31:06 2026
+
+--- asreml, same model ---
+                        component std.error
+grp(xb)                 0.5374754 0.3414078
+geno+grp(nb)!us(2)_1:1  1.0959178 0.1890349
+geno+grp(nb)!us(2)_2:1 -0.4193933 0.1799587
+geno+grp(nb)!us(2)_2:2  0.1762681 0.3540774
+row:col                 0.6102212 0.1640874
+row:col!row!cor         0.5321497 0.1309890
+row:col!col!cor         0.1185010 0.1111572
+units!R                 0.3969385 0.1559678
+logLik asreml -387.213535744 | remlax -387.193033403 | diff 2.05e-02
+  remlax is no worse than asreml                     OK  diff +2.05e-02 in favour of remlax
+
+  component         remlax     asreml    diff    (SE asreml)
+  var_DGE          1.09524    1.09592  6.7e-04   (0.189)
+  var_DGE : agreement with asreml                    OK  1.09524 vs 1.09592 (SE 0.189)
+  cov_DGE_IGE     -0.42211   -0.41939  2.7e-03   (0.180)
+  cov_DGE_IGE : agreement with asreml                OK  -0.42211 vs -0.41939 (SE 0.180)
+  var_IGEintra     0.16268    0.17627  1.4e-02   (0.354)
+  var_IGEintra : agreement with asreml               OK  0.16268 vs 0.17627 (SE 0.354)
+  var_IGEinter     0.54369    0.53748  6.2e-03   (0.341)
+  var_IGEinter : agreement with asreml               OK  0.54369 vs 0.53748 (SE 0.341)
+  var_field        0.61009    0.61022  1.3e-04   (0.164)
+  var_field : agreement with asreml                  OK  0.61009 vs 0.61022 (SE 0.164)
+  rho_row          0.53375    0.53215  1.6e-03   (0.131)
+  rho_row : agreement with asreml                    OK  0.53375 vs 0.53215 (SE 0.131)
+  rho_column       0.11931    0.11850  8.1e-04   (0.111)
+  rho_column : agreement with asreml                 OK  0.11931 vs 0.11850 (SE 0.111)
+  nugget           0.39824    0.39694  1.3e-03   (0.156)
+  nugget : agreement with asreml                     OK  0.39824 vs 0.39694 (SE 0.156)
+There were 33 warnings (use warnings() to see them)
+
+==================================================================
+Full IGE model: fitted, and consistent with the simulated truth.

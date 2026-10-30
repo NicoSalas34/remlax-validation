@@ -1,0 +1,54 @@
+remlax 0.1.0 installed in /scratch/users/salasn/validation_2026-10-30_bc2af0c/rlib 
+Online License checked out Fri Oct 30 15:24:45 2026
+
+=== 1. lvr: truncated tent max(0, 1 - d/phi) ===
+  lvr : logLik = independent R profile                 FAIL  remlax -2.6786173 | R -1.9143976 | range 1.5055 vs 5.8896
+  lvr : asreml does not reach a better optimum         OK   asreml -2.819575 <= remlax -2.678617
+
+=== 2. mtrn: anisotropic Matern, parameters FIXED on both sides ===
+  mtrn isotropic nu=0.8 : logLik = besselK reference   OK   remlax 5.1067110 | R 5.1067110
+  mtrn isotropic nu=0.8 : logLik = asreml              OK   asreml 5.1067110 | remlax 5.1067110
+  mtrn nu=1.5 delta=2 : logLik = besselK reference     OK   remlax -6.9636274 | R -6.9636274
+  mtrn nu=1.5 delta=2 : logLik = asreml                OK   asreml -6.9636274 | remlax -6.9636274
+  mtrn delta=2 alpha=.6 : logLik = besselK reference   OK   remlax 4.9300437 | R 4.9300437
+  mtrn nu=0.5 lambda=1 : logLik = besselK reference    OK   remlax -1.0246717 | R -1.0246717
+  mtrn nu=0.5 lambda=1 : logLik = asreml               OK   asreml -1.0246717 | remlax -1.0246717
+Warning messages:
+1: In asreml(resp ~ 1, residual = fml, data = g2, maxit = 30) :
+  Error   : ASReml failed to invert a spatially indexed corelation structure.
+2: In asreml(resp ~ 1, residual = fml, data = g2, maxit = 30) :
+  Warning : Likelihood evaluation failed with fault 1006; trying with reduced updates
+
+=== 3. mtrn: the range is indeed ESTIMATED when freed ===
+  mtrn : estimated phi = argmax of the R profile       OK   phi 0.62086 vs 0.62086 (true 2.5) | logLik 4.9738738 vs 4.9738738
+
+=== 4. own: a user-written structure reproduces exp() ===
+  own : phi^d written as exp(-d*exp(p)) gives the same logLik OK   exp() -15.56472535 | own() -15.56472535
+
+=== 5. dsum: one residual per section ===
+  dsum : two sections improve the likelihood           OK   1 section -146.2015 -> 2 sections -127.2089 (+18.99)
+  dsum : the two residual variances are separated      OK   0.1388 / 1.2999 (true 0.25 and 1.96)
+  dsum : logLik = asreml                               OK   asreml -39.909705 | remlax -39.909705
+
+=== 5b. dsum: DIFFERENT structures by section ===
+  dsum : three sections, two AR1 and one iid           OK   3 sections | 6 parameters | rho on A+B
+  dsum : duplicated units in a section -> explicit refusal OK   error raised instead of -2logL = NaN
+
+=== 6. predict: adjusted means and their standard errors ===
+  predict : values = asreml                            OK   max diff 1.31e-13
+  predict : standard errors = asreml                   OK   max diff 1.34e-10
+  predict : covariate at its mean, predictions estimable OK   A=4.4221(0.3377) B=5.7697(0.3378) C=4.2901(0.3378)
+  predict : standard error of differences available    OK   mean sed 0.18922
+
+=== 7. Kenward-Roger vs pbkrtest ===
+  K-R : denominator df = pbkrtest                      OK   remlax 21.76897 | pbkrtest 21.76896
+  K-R : F statistic = pbkrtest                         OK   remlax 2.790148 | pbkrtest 2.790148
+  K-R : adjusted standard errors = pbkrtest            OK   max diff 1.31e-07
+  K-R : the adjustment INFLATES the standard errors    OK   mean ratio 1.03753
+
+=== 8. predict with the random part (BLUP + prediction error) ===
+  predict : the BLUP enters the mean by block          OK   standard deviation with BLUP 0.69886, without 0.00e+00
+  predict : the PREDICTION error stays finite and positive OK   SE 0.2474 0.2476 0.2496 0.2473 0.2487 0.2485
+
+======================================================================
+25 test(s) OK, 1 failure(s)
