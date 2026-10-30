@@ -792,15 +792,23 @@ fit <- rx_reml(fixed = y ~ 1, random = ~ gid + iid(bloc), data = d,
                vpredict = c(h2 = "V1/(V1+V2+V3)"), backend = "cpu")
 print(fit)
 \end{Code}
-%% TODO: the print method currently writes its labels in French. Paste the
-%% printed output here once it is in English. The numbers below are those of
-%% the README output.
+The printed fit reads as follows.
+\begin{CodeOutput}
+REML fit (cpu): logLik -388.088838 | 3 parameters | 240 obs | 0.3 s
+  max|grad| 5.76e-13 | Newton decrement 1.89e-27 | 0 negative eigenvalue(s)
+  Sigma[gid] 1x1, diagonal: 1.401
+  Sigma[bloc] 1x1, diagonal: 0.00722
+  residual: 0.8988
+  components (vpredict): V1 = gid, V2 = bloc, V3 = residual
+  vpredict:
+    h2            0.60735   SE  0.05871   [V1/(V1+V2+V3)]
+\end{CodeOutput}
 The fit reached a log-likelihood of $-388.088838$ with 3 parameters and 240
-observations, in 1.6\,s on CPU. Its largest gradient component was $3.42
-\times 10^{-14}$, its Newton decrement $1.43 \times 10^{-28}$, and the Hessian
-had no negative eigenvalue. Estimates were 1.401 for the genotypes, 0.00722 for
-the blocks and 0.8988 for the residual, and the heritability was 0.60735 with a
-standard error of 0.05871. Four levels carry all the information on the block
+observations, in 0.3\,s on the CPU of a laptop. Its largest gradient component
+was $5.8 \times 10^{-13}$, its Newton decrement $1.9 \times 10^{-27}$, and the
+Hessian had no negative eigenvalue. Estimates were 1.401 for the genotypes,
+0.00722 for the blocks and 0.8988 for the residual. The heritability was 0.607
+with a standard error of 0.059. Four levels carry all the information on the block
 variance, hence its distance from the true value. Beyond these estimates, the
 fit object holds the BLUPs
 (\code{fit\$blups}), the component names in the order of \code{V1, V2, V3},
