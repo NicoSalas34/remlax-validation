@@ -1,0 +1,17 @@
+"cas","champ","ecart"
+"fa1_ai.rds","$affichage",Inf
+"fa1_mme.rds","$valeur$varcomp$se",Inf
+"fa1_mme.rds","$valeur$varcomp$contrainte",Inf
+"fa1_mme.rds","$affichage",Inf
+"gblup_econome_ai.rds","$affichage",Inf
+"gblup_mme_ai.rds","$affichage",Inf
+"gblup_mme_creux.rds","$affichage",Inf
+"ige_mme.rds","$valeur$varcomp$se",Inf
+"ige_mme.rds","$valeur$varcomp$contrainte",Inf
+"ige_mme.rds","$affichage",Inf
+"ige_mme.rds","$valeur$n_iter",0.55
+"fa1_ai.rds","$valeur$n_iter",0.444444444444444
+"fa1_mme.rds","$valeur$n_iter",0.444444444444444
+"gblup_econome_ai.rds","$valeur$n_iter",0.2
+"gblup_mme_ai.rds","$valeur$n_iter",0.2
+"gblup_mme_creux.rds","$valeur$n_iter",0.2
