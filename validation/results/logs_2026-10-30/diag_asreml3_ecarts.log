@@ -1,0 +1,176 @@
+Online License checked out Fri Oct 30 15:31:35 2026
+remlax 0.1.0 installed in /scratch/users/salasn/validation_2026-10-30_bc2af0c/rlib 
+asreml 4.2.0.480 
+
+=== ma2 ===
+remlax : logLik_asreml -72.524782986 | s2 1.40023 | theta MA -0.580111 -0.449306 | n_obs 144 | p 2 | beta 0.898295 0.497681 | decrement 1.385502e-18 
+
+[ ma2, first call ] asreml: converge = TRUE | loglik = -72.557259628 | nedf = 142 | noeff = 1,1 
+              component  std.error   z.ratio bound %ch
+g:tf!R        1.3700823 0.19735234  6.942316     P 0.0
+g:tf!tf!cor1 -0.5792452 0.08458586 -6.848015     U 3.5
+g:tf!tf!cor2 -0.4471110 0.10125367 -4.415751     U 3.6
+  vparameters : g:tf!R=1.000000 | g:tf!tf!cor1=-0.579245 | g:tf!tf!cor2=-0.447111 
+  vparameters.con : P U U 
+  fixed coef: 0.899385 0.496317 
+  logLik after each update ( 20 ): -72.558030 -72.558052 -72.558053 -72.558054 -72.558054 -72.558054 -72.558054 -72.558054 -72.558054 -72.558054 -72.558054 -72.558054 -72.558054 -72.558054 -72.558054 -72.558054 -72.558054 -72.558054 -72.558054 -72.558054 
+
+[ ma2, after 20 updates ] asreml: converge = TRUE | loglik = -72.558053561 | nedf = 142 | noeff = 1,1 
+              component std.error   z.ratio bound %ch
+g:tf!R        1.3698307 0.1972784  6.943642     P 0.0
+g:tf!tf!cor1 -0.5792369 0.0845946 -6.847209     U 3.5
+g:tf!tf!cor2 -0.4471388 0.1012435 -4.416470     U 3.5
+  vparameters : g:tf!R=1.000000 | g:tf!tf!cor1=-0.579237 | g:tf!tf!cor2=-0.447139 
+  vparameters.con : P U U 
+  fixed coef: 0.8994 0.496215 
+asreml read: s2 1.369831  theta -0.579236862295449 -0.447138767407872 
+  R arbiter (sign +1): at asreml params -309.985994288 [asreml says -72.558053561] | at remlax params -304.343731674 [remlax says -72.524782986]
+     pieces at asreml params: log|V| 11.464127  log|X'V-1X| 12.515646  y'Py 595.992215
+  R arbiter (sign -1): at asreml params -72.539905665 [asreml says -72.558053561] | at remlax params -72.524782986 [remlax says -72.524782986]
+     pieces at asreml params: log|V| -8.987099  log|X'V-1X| 9.135303  y'Py 144.931607
+  structure of R.param:
+List of 1
+ $ g:tf:List of 3
+  ..$ variance:List of 5
+  .. ..$ size   : num 144
+  .. ..$ model  : Named chr "idv"
+  .. ..$ initial: Named num 1
+  .. ..$ tgamma : chr "V"
+  .. ..$ con    : chr "P"
+  ..$ g       :List of 8
+  .. ..$ facnam : chr "g"
+  .. ..$ model  : Named chr "id"
+  .. ..$ call   : chr "id(obj = \"g\")"
+  .. ..$ levels : chr [1:12] "1" "2" "3" "4" ...
+  .. ..$ uniq   : num [1:12] 1 2 3 4 5 6 7 8 9 10 ...
+  .. ..$ initial: Named num NA
+  .. ..$ tgamma : chr(0) 
+  .. ..$ con    : chr ""
+  ..$ tf      :List of 8
+  .. ..$ facnam : chr "tf"
+  .. ..$ model  : Named chr "ma2"
+  .. ..$ call   : chr "ma2(tf)"
+  .. ..$ levels : chr [1:12] "1" "2" "3" "4" ...
+  .. ..$ uniq   : num [1:12] 1 2 3 4 5 6 7 8 9 10 ...
+  .. ..$ initial: Named num [1:2] -0.579 -0.447
+  .. ..$ tgamma : chr [1:2] "R" "R"
+  .. ..$ con    : chr [1:2] "U" "U"
+    fixed /g:tf/variance = 1.40022969320062 
+    fixed /g:tf/tf = -0.580111155098173 -0.449305998471205 
+  asreml at the remlax params (fixed): -72.576238749  [remlax says -72.524782986; arbiter sign -1 says -72.524782986]
+              component std.error z.ratio bound %ch
+g:tf!R        1.4002297        NA      NA     F   0
+g:tf!tf!cor1 -0.5581120        NA      NA     F   0
+g:tf!tf!cor2 -0.4322673        NA      NA     F   0
+
+=== sph ===
+remlax : logLik_asreml 3.823231014 | s2 1.024529 | range 8.651398 | n_iter 3 | decrement 1.850663e-25 
+
+[ sph first call ] asreml: converge = FALSE | loglik = 3.753094938 | nedf = 89 | noeff = 1 
+                component std.error  z.ratio bound %ch
+sph(cx, cy)!R    1.006357 0.1748445 5.755726     P 0.0
+sph(cx, cy)!pow  8.754470 0.9119364 9.599869     P 3.2
+  vparameters : sph(cx, cy)!R=1.000000 | sph(cx, cy)!pow=8.754470 
+  vparameters.con : P P 
+  fixed coef: 1.858426 
+  logLik after each update ( 20 ): 3.823207 3.753095 3.823207 3.753095 3.823207 3.753095 3.823207 3.753095 3.823207 3.753095 3.823207 3.753095 3.823207 3.753095 3.823207 3.753095 3.823207 3.753095 3.823207 3.753095 
+
+[ sph after 20 updates ] asreml: converge = FALSE | loglik = 3.753094938 | nedf = 89 | noeff = 1 
+                component std.error  z.ratio bound %ch
+sph(cx, cy)!R    1.006357 0.1748445 5.755726     P 0.0
+sph(cx, cy)!pow  8.754470 0.9119364 9.599869     P 3.2
+  vparameters : sph(cx, cy)!R=1.000000 | sph(cx, cy)!pow=8.754470 
+  vparameters.con : P P 
+  fixed coef: 1.858426 
+asreml read: s2 1.006357  range 8.75447 
+  R arbiter, distance euclidean   at params asreml : 3.783476207  (log|V| -101.73613, log|X'V-1X| 2.49748, y'Py 91.67170)
+  R arbiter, distance euclidean   at params remlax : 3.823231029  (log|V| -99.14205, log|X'V-1X| 2.49559, y'Py 89.00000)
+  R arbiter, distance city-block  at params asreml : NA  (log|V| NA, log|X'V-1X| NA, y'Py NA)
+  R arbiter, distance city-block  at params remlax : NA  (log|V| NA, log|X'V-1X| NA, y'Py NA)
+  reminder: asreml says 3.753094938 at its params; remlax says 3.823231014 at its params
+  Euclidean R arbiter, asreml range x 1.000 : 3.783476207
+  Euclidean R arbiter, asreml range x 3.000 : -38.547706421
+  Euclidean R arbiter, asreml range x 0.333 : -20.386019039
+  Euclidean R arbiter, asreml range x 1.732 : -5.514715484
+  remlax at the asreml params: 3.783476190
+  structure of R.param:
+List of 1
+ $ sph(cx, cy):List of 2
+  ..$ variance   :List of 5
+  .. ..$ size   : num 90
+  .. ..$ model  : Named chr "idv"
+  .. ..$ initial: Named num 1
+  .. ..$ tgamma : chr "V"
+  .. ..$ con    : chr "P"
+  ..$ sph(cx, cy):List of 8
+  .. ..$ facnam : chr "sph(cx, cy)"
+  .. ..$ model  : Named chr "sph"
+  .. ..$ call   : chr "sph(cx, cy)"
+  .. ..$ levels : chr [1:90] "10.68,9.49" "11.68,4.4" "11.79,0.62" "13.82,4.59" ...
+  .. ..$ uniq   : num [1:90] 1 2 3 4 5 6 7 8 9 10 ...
+  .. ..$ initial: Named num 8.75
+  .. ..$ tgamma : chr "R"
+  .. ..$ con    : chr "P"
+    fixed /sph(cx, cy)/variance = 1.02452856389933 
+    fixed /sph(cx, cy)/sph(cx, cy) = 8.65139845803868 
+  asreml at the remlax params (fixed): 3.823231014
+                component std.error z.ratio bound %ch
+sph(cx, cy)!R    1.024529        NA      NA     F   0
+sph(cx, cy)!pow  8.651398        NA      NA     F   0
+
+=== cir ===
+remlax : logLik_asreml 13.875897073 | s2 0.8466009 | range 7.407676 | n_iter 3 | decrement 3.25417e-23 
+
+[ cir first call ] asreml: converge = FALSE | loglik = 10.848194222 | nedf = 89 | noeff = 1 
+                component std.error   z.ratio bound %ch
+cir(cx, cy)!R   0.6230485 0.1037976  6.002532     P 0.0
+cir(cx, cy)!pow 4.9930128 0.3843544 12.990647     P 0.4
+  vparameters : cir(cx, cy)!R=1.000000 | cir(cx, cy)!pow=4.993013 
+  vparameters.con : P P 
+  fixed coef: 2.081985 
+  logLik after each update ( 20 ): 10.844835 10.847517 10.847517 10.847517 10.847517 10.847517 10.847517 10.847517 10.847517 10.847517 10.847517 10.847517 10.847517 10.847517 10.847517 10.847517 10.847517 10.847517 10.847517 10.847517 
+
+[ cir after 20 updates ] asreml: converge = FALSE | loglik = 10.847517451 | nedf = 89 | noeff = 1 
+                component std.error   z.ratio bound %ch
+cir(cx, cy)!R   0.6235171 0.1040331  5.993447     P 0.0
+cir(cx, cy)!pow 4.9834526 0.3835045 12.994509     P 0.6
+  vparameters : cir(cx, cy)!R=1.000000 | cir(cx, cy)!pow=4.983453 
+  vparameters.con : P P 
+  fixed coef: 2.081906 
+asreml read: s2 0.6235171  range 4.983453 
+  R arbiter, distance euclidean   at params asreml : 10.844976345  (log|V| -113.76174, log|X'V-1X| 3.59456, y'Py 88.47723)
+  R arbiter, distance euclidean   at params remlax : 13.875897086  (log|V| -119.50436, log|X'V-1X| 2.75256, y'Py 89.00000)
+  R arbiter, distance city-block  at params asreml : NA  (log|V| NA, log|X'V-1X| NA, y'Py NA)
+  R arbiter, distance city-block  at params remlax : NA  (log|V| NA, log|X'V-1X| NA, y'Py NA)
+  reminder: asreml says 10.847517451 at its params; remlax says 13.875897073 at its params
+  Euclidean R arbiter, asreml range x 1.000 : 10.844976345
+  Euclidean R arbiter, asreml range x 3.000 : -34.653058452
+  Euclidean R arbiter, asreml range x 0.333 : -14.194977379
+  Euclidean R arbiter, asreml range x 1.732 : 4.156458532
+  remlax at the asreml params: 10.844976334
+  structure of R.param:
+List of 1
+ $ cir(cx, cy):List of 2
+  ..$ variance   :List of 5
+  .. ..$ size   : num 90
+  .. ..$ model  : Named chr "idv"
+  .. ..$ initial: Named num 1
+  .. ..$ tgamma : chr "V"
+  .. ..$ con    : chr "P"
+  ..$ cir(cx, cy):List of 8
+  .. ..$ facnam : chr "cir(cx, cy)"
+  .. ..$ model  : Named chr "cir"
+  .. ..$ call   : chr "cir(cx, cy)"
+  .. ..$ levels : chr [1:90] "10.68,9.49" "11.68,4.4" "11.79,0.62" "13.82,4.59" ...
+  .. ..$ uniq   : num [1:90] 1 2 3 4 5 6 7 8 9 10 ...
+  .. ..$ initial: Named num 4.98
+  .. ..$ tgamma : chr "R"
+  .. ..$ con    : chr "P"
+    fixed /cir(cx, cy)/variance = 0.846600893710467 
+    fixed /cir(cx, cy)/cir(cx, cy) = 7.40767639295912 
+  asreml at the remlax params (fixed): 13.875897068
+                component std.error z.ratio bound %ch
+cir(cx, cy)!R   0.8466009        NA      NA     F   0
+cir(cx, cy)!pow 7.4076764        NA      NA     F   0
+
+end of diagnostic

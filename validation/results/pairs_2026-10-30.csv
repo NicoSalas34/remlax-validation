@@ -1,0 +1,288 @@
+kind,software,suite,check,remlax,reference
+estimate,lme4,lme4_sommer,a=25 m=5 : variance components,1.361456,1.361456
+estimate,lme4,lme4_sommer,a=10 m=12 : variance components,2.231905,2.231905
+estimate,lme4,lme4_sommer,a=60 m=3 : variance components,2.502726,2.502726
+estimate,sommer,lme4_sommer,kinship : variance components vs sommer,0.99215,0.99211
+estimate,sommer,lme4_sommer,kinship : variance components vs sommer,0.98662,0.98663
+estimate,sommer,lme4_sommer,us : 2x2 genetic covariance vs sommer,1.3169,1.3169
+estimate,sommer,lme4_sommer,us : 2x2 genetic covariance vs sommer,0.8723,0.8723
+estimate,sommer,lme4_sommer,us : 2x2 genetic covariance vs sommer,0.8723,0.8723
+estimate,sommer,lme4_sommer,us : 2x2 genetic covariance vs sommer,1.0382,1.0381
+estimate,sommer,lme4_sommer,us : 2x2 residual covariance vs sommer,0.849,0.849
+estimate,sommer,lme4_sommer,us : 2x2 residual covariance vs sommer,0.1019,0.1019
+estimate,sommer,lme4_sommer,us : 2x2 residual covariance vs sommer,0.1019,0.1019
+estimate,sommer,lme4_sommer,us : 2x2 residual covariance vs sommer,1.2783,1.2783
+estimate,lme4,lme4_sommer,us : genetic correlation recovered,0.746,0.746
+estimate,nlme,nlme,corAR1 : residual variance,1.627385,1.627385
+estimate,nlme,nlme,corAR1 : rho,0.5338496,0.5338496
+estimate,nlme,nlme,corCAR1 : residual variance,1.152159,1.152159
+estimate,nlme,nlme,corCAR1 : phi (correlation per time unit),0.7287346,0.7287346
+estimate,nlme,nlme,ar2 : residual variance,1.899831,1.899831
+estimate,nlme,nlme,ar2 : phi1 and phi2,0.526414,0.526414
+estimate,nlme,nlme,ar2 : phi1 and phi2,0.145188,0.145188
+estimate,nlme,nlme,arma : residual variance,1.461911,1.461911
+estimate,nlme,nlme,cor : residual variance,1.481197,1.481197
+estimate,nlme,nlme,cor : uniform rho,0.2951065,0.2951065
+estimate,nlme,nlme,exp : residual variance,0.633634,0.633633
+estimate,nlme,nlme,exp : rho = exp(-1/nlme range),0.6429754,0.6429748
+estimate,nlme,nlme,gau : residual variance,1.106024,1.106024
+estimate,nlme,nlme,gau : rho = exp(-1/range^2),0.8895193,0.8895193
+estimate,nlme,nlme,lvr (gls range) : residual variance,0.780188,0.780188
+estimate,nlme,nlme,lvr : range read = range imposed,6.02241,6.02241
+estimate,nlme,nlme,sph : residual variance,0.982703,0.982703
+estimate,nlme,nlme,sph : range,7.3278,7.3278
+estimate,nlme,nlme,us : the 10 components of Sigma,0.8898,0.8898
+estimate,nlme,nlme,us : the 10 components of Sigma,1.5638,1.5638
+estimate,nlme,nlme,us : the 10 components of Sigma,2.2088,2.2088
+estimate,nlme,nlme,us : the 10 components of Sigma,0.953,0.953
+estimate,nlme,nlme,diag : the five variances,0.206,0.206
+estimate,nlme,nlme,diag : the five variances,0.9976,0.9976
+estimate,nlme,nlme,diag : the five variances,1.8157,1.8157
+estimate,nlme,nlme,diag : the five variances,4.1048,4.1048
+estimate,nlme,nlme,diag : the five variances,8.9001,8.9001
+estimate,nlme,nlme,lme AR1 : group variance,1.545201,1.5452
+estimate,nlme,nlme,lme AR1 : residual variance,0.888761,0.888762
+estimate,nlme,nlme,lme AR1 : rho,0.3242477,0.3242487
+estimate,lme4,lme4_extra,us slopes : the three components of Sigma,1.04933,1.04933
+estimate,lme4,lme4_extra,us slopes : the three components of Sigma,0.31753,0.31753
+estimate,lme4,lme4_extra,us slopes : the three components of Sigma,0.51161,0.51161
+estimate,lme4,lme4_extra,us slopes : residual variance,0.649963,0.649963
+estimate,lme4,lme4_extra,diag slopes : the two variances,1.18772,1.18772
+estimate,lme4,lme4_extra,diag slopes : the two variances,0.49438,0.49438
+estimate,lme4,lme4_extra,nested : variances of g and of h within g,1.53208,1.53208
+estimate,lme4,lme4_extra,nested : variances of g and of h within g,0.26695,0.26695
+estimate,lme4,lme4_extra,nested : variances of g and of h within g,1.05729,1.05729
+estimate,lme4,lme4_extra,3 crossed : the four variances,0.81044,0.81044
+estimate,lme4,lme4_extra,3 crossed : the four variances,0.69056,0.69056
+estimate,lme4,lme4_extra,3 crossed : the four variances,0.18664,0.18664
+estimate,lme4,lme4_extra,3 crossed : the four variances,1.02067,1.02067
+estimate,lme4,lme4_extra,unbalanced : variance components,1.603755,1.603755
+estimate,lme4,lme4_extra,unbalanced : variance components,1.214474,1.214474
+estimate,sommer,sommer_extra,GRM : variance components,1.350769,1.350769
+estimate,sommer,sommer_extra,GRM : variance components,0.844907,0.844907
+estimate,sommer,sommer_extra,us3 + GRM : the 6 genetic components,1.3404,1.3404
+estimate,sommer,sommer_extra,us3 + GRM : the 6 genetic components,1.0058,1.0058
+estimate,sommer,sommer_extra,us3 + GRM : the 6 genetic components,1.0875,1.0875
+estimate,sommer,sommer_extra,us3 + GRM : the 3 genetic correlations,0.5164,0.5164
+estimate,sommer,sommer_extra,us3 + GRM : the 3 genetic correlations,0.1735,0.1735
+estimate,sommer,sommer_extra,us3 + GRM : the 3 genetic correlations,0.6232,0.6232
+estimate,sommer,sommer_extra,diag3 + GRM : the 3 genetic variances,1.3399,1.3399
+estimate,sommer,sommer_extra,diag3 + GRM : the 3 genetic variances,0.9738,0.9738
+estimate,sommer,sommer_extra,diag3 + GRM : the 3 genetic variances,1.0889,1.0889
+estimate,sommer,sommer_extra,diag3 + GRM : the 3 residual variances,0.7849,0.7849
+estimate,sommer,sommer_extra,diag3 + GRM : the 3 residual variances,1.3983,1.3983
+estimate,sommer,sommer_extra,diag3 + GRM : the 3 residual variances,0.6668,0.6668
+estimate,sommer,sommer_extra,A + D : the three components,0.93906,0.93906
+estimate,sommer,sommer_extra,A + D : the three components,0.76455,0.76455
+estimate,sommer,sommer_extra,A + D : the three components,0.78469,0.78469
+estimate,sommer,sommer_extra,MET : the 4 genetic variances,0.5255,0.5255
+estimate,sommer,sommer_extra,MET : the 4 genetic variances,0.8048,0.8048
+estimate,sommer,sommer_extra,MET : the 4 genetic variances,1.1331,1.1331
+estimate,sommer,sommer_extra,MET : the 4 genetic variances,0.9474,0.9474
+estimate,sommer,sommer_extra,MET : the 4 residual variances,0.7188,0.7188
+estimate,sommer,sommer_extra,MET : the 4 residual variances,1.1889,1.1889
+estimate,sommer,sommer_extra,MET : the 4 residual variances,1.5606,1.5606
+estimate,sommer,sommer_extra,MET : the 4 residual variances,0.3662,0.3662
+estimate,asreml,asreml_structures,AR1 : rho,0.6276741,0.6276741
+estimate,asreml,asreml_structures,AR1 : variance,1.1690526,1.1690526
+estimate,asreml,asreml_structures,AR1xAR1 : field variance,1.2088279,1.2088279
+estimate,asreml,asreml_structures,AR1xAR1 : row rho,0.5940549,0.5940549
+estimate,asreml,asreml_structures,AR1xAR1 : column rho,0.33971,0.33971
+estimate,asreml,asreml_structures,spline 2D : variance spl_fx,10.63175,10.6318
+estimate,asreml,asreml_structures,spline 2D : variance spl_fy,15.52303,15.45232
+estimate,asreml,asreml_structures,spline 2D : variance spl_fx_y,6.737911e-11,5.425611e-07
+estimate,asreml,asreml_structures,spline 2D : variance spl_x_fy,3.775135e-11,8.655429e-11
+estimate,asreml,asreml_structures,spline 2D : variance spl_fx_fy,3.775135e-11,3.454338e-11
+estimate,asreml,asreml_structures,str : var term 1,1.1103369,1.1103369
+estimate,asreml,asreml_structures,str : covariance,0.5137383,0.5137383
+estimate,asreml,asreml_structures,str : var term 2,0.6966671,0.6966671
+estimate,asreml,asreml_structures,vpredict : estimate of h2,0.6685333,0.6685333
+estimate,asreml,asreml_structures,vpredict : STANDARD ERROR of h2 (delta method),0.0500972,0.0500998
+estimate,asreml,asreml_rest,ar2 : residual variance,1.675628,1.675628
+estimate,asreml,asreml_rest,ar2 : correlation parameters (as a set),0.5325,0.5325
+estimate,asreml,asreml_rest,ar2 : correlation parameters (as a set),0.19233,0.19233
+estimate,asreml,asreml_rest,ar2 : fixed effects (up to order),0.6225,0.6225
+estimate,asreml,asreml_rest,ar2 : fixed effects (up to order),0.4419,0.4419
+estimate,asreml,asreml_rest,ar3 : residual variance,1.658159,1.658159
+estimate,asreml,asreml_rest,ar3 : correlation parameters (as a set),0.4335,0.4335
+estimate,asreml,asreml_rest,ar3 : correlation parameters (as a set),0.10803,0.10803
+estimate,asreml,asreml_rest,ar3 : correlation parameters (as a set),0.21949,0.21949
+estimate,asreml,asreml_rest,ar3 : fixed effects (up to order),1.0652,1.0652
+estimate,asreml,asreml_rest,ar3 : fixed effects (up to order),0.4518,0.4518
+estimate,asreml,asreml_rest,ma1 : residual variance,1.17308,1.17308
+estimate,asreml,asreml_rest,ma1 : correlation parameters (as a set),-0.52845,-0.52845
+estimate,asreml,asreml_rest,ma1 : fixed effects (up to order),1.0329,1.0329
+estimate,asreml,asreml_rest,ma1 : fixed effects (up to order),0.6044,0.6044
+estimate,asreml,asreml_rest,ma2 : residual variance,1.40023,1.369831
+estimate,asreml,asreml_rest,ma2 : correlation parameters (as a set),-0.58011,-0.57924
+estimate,asreml,asreml_rest,ma2 : correlation parameters (as a set),-0.44931,-0.44714
+estimate,asreml,asreml_rest,ma2 : fixed effects (up to order),0.8983,0.8994
+estimate,asreml,asreml_rest,ma2 : fixed effects (up to order),0.4977,0.4962
+estimate,asreml,asreml_rest,arma : residual variance,1.376202,1.376202
+estimate,asreml,asreml_rest,arma : correlation parameters (as a set),0.28594,0.35587
+estimate,asreml,asreml_rest,arma : correlation parameters (as a set),0.35587,0.28594
+estimate,asreml,asreml_rest,arma : fixed effects (up to order),0.8109,0.8109
+estimate,asreml,asreml_rest,arma : fixed effects (up to order),0.3658,0.3658
+estimate,asreml,asreml_rest,sar : residual variance,1.369386,1.369386
+estimate,asreml,asreml_rest,sar : correlation parameters (as a set),0.63555,0.63555
+estimate,asreml,asreml_rest,sar : fixed effects (up to order),1.0847,1.0847
+estimate,asreml,asreml_rest,sar : fixed effects (up to order),0.3773,0.3773
+estimate,asreml,asreml_rest,cor : residual variance,1.515622,1.515622
+estimate,asreml,asreml_rest,cor : correlation parameters (as a set),0.21775,0.21775
+estimate,asreml,asreml_rest,cor : fixed effects (up to order),0.9673,0.9673
+estimate,asreml,asreml_rest,cor : fixed effects (up to order),0.6452,0.6452
+estimate,asreml,asreml_rest,corb : residual variance,1.092528,1.092528
+estimate,asreml,asreml_rest,corb : correlation parameters (as a set),0.41316,0.41316
+estimate,asreml,asreml_rest,corb : correlation parameters (as a set),0.14577,0.14577
+estimate,asreml,asreml_rest,corb : fixed effects (up to order),0.9803,0.9803
+estimate,asreml,asreml_rest,corb : fixed effects (up to order),0.4266,0.4266
+estimate,asreml,asreml_rest,corg : residual variance,0.905272,0.905272
+estimate,asreml,asreml_rest,corg : correlation parameters (as a set),0.38785,0.38785
+estimate,asreml,asreml_rest,corg : correlation parameters (as a set),0.16896,0.16896
+estimate,asreml,asreml_rest,corg : correlation parameters (as a set),0.22701,0.22701
+estimate,asreml,asreml_rest,corg : correlation parameters (as a set),-0.07416,-0.07416
+estimate,asreml,asreml_rest,corg : correlation parameters (as a set),0.19222,0.19222
+estimate,asreml,asreml_rest,corg : correlation parameters (as a set),0.43027,0.43027
+estimate,asreml,asreml_rest,corg : fixed effects (up to order),0.9558,0.9558
+estimate,asreml,asreml_rest,corg : fixed effects (up to order),0.4911,0.4911
+estimate,asreml,asreml_rest,iexp : variance,1.476882,1.476882
+estimate,asreml,asreml_rest,iexp : kernel parameters (as a set),0.87186,0.87186
+estimate,asreml,asreml_rest,igau : variance,1.287447,1.287447
+estimate,asreml,asreml_rest,igau : kernel parameters (as a set),0.80114,0.80114
+estimate,asreml,asreml_rest,ieuc : variance,0.769838,0.769838
+estimate,asreml,asreml_rest,ieuc : kernel parameters (as a set),0.70585,0.70585
+estimate,asreml,asreml_rest,aexp : variance,1.424754,1.424748
+estimate,asreml,asreml_rest,aexp : kernel parameters (as a set),0.75991,0.75991
+estimate,asreml,asreml_rest,aexp : kernel parameters (as a set),0.65095,0.65096
+estimate,asreml,asreml_rest,agau : variance,0.605183,0.605183
+estimate,asreml,asreml_rest,agau : kernel parameters (as a set),0.94404,0.94404
+estimate,asreml,asreml_rest,agau : kernel parameters (as a set),0.24205,0.24205
+estimate,asreml,asreml_rest,sph : variance,1.024529,1.006357
+estimate,asreml,asreml_rest,sph : kernel parameters (as a set),8.6514,8.75447
+estimate,asreml,asreml_rest,cir : variance,0.846601,0.623517
+estimate,asreml,asreml_rest,cir : kernel parameters (as a set),7.40768,4.98345
+estimate,asreml,asreml_rest,us : genetic Sigma,1.209,1.209
+estimate,asreml,asreml_rest,us : genetic Sigma,2.6058,2.6058
+estimate,asreml,asreml_rest,us : genetic Sigma,0.711,0.711
+estimate,asreml,asreml_rest,us : genetic Sigma,1.3245,1.3245
+estimate,asreml,asreml_rest,us : the 4 residual variances,0.798,0.798
+estimate,asreml,asreml_rest,us : the 4 residual variances,0.8956,0.8956
+estimate,asreml,asreml_rest,us : the 4 residual variances,0.5819,0.5819
+estimate,asreml,asreml_rest,us : the 4 residual variances,0.9622,0.9622
+estimate,asreml,asreml_rest,diag : genetic Sigma,1.2052,1.2052
+estimate,asreml,asreml_rest,diag : genetic Sigma,2.6244,2.6244
+estimate,asreml,asreml_rest,diag : genetic Sigma,0.7152,0.7152
+estimate,asreml,asreml_rest,diag : genetic Sigma,1.3477,1.3477
+estimate,asreml,asreml_rest,diag : the 4 residual variances,0.7998,0.7998
+estimate,asreml,asreml_rest,diag : the 4 residual variances,0.8921,0.8921
+estimate,asreml,asreml_rest,diag : the 4 residual variances,0.5804,0.5804
+estimate,asreml,asreml_rest,diag : the 4 residual variances,0.9565,0.9565
+estimate,asreml,asreml_rest,fa1 : the 4 residual variances,0.7967,0.7967
+estimate,asreml,asreml_rest,fa1 : the 4 residual variances,0.8955,0.8955
+estimate,asreml,asreml_rest,fa1 : the 4 residual variances,0.5807,0.5807
+estimate,asreml,asreml_rest,fa1 : the 4 residual variances,0.9543,0.9543
+estimate,asreml,asreml_rest,rr1 : the 4 residual variances,1.9695,1.9693
+estimate,asreml,asreml_rest,rr1 : the 4 residual variances,1.0314,1.0321
+estimate,asreml,asreml_rest,rr1 : the 4 residual variances,1.3332,1.3332
+estimate,asreml,asreml_rest,rr1 : the 4 residual variances,1.5949,1.5944
+estimate,asreml,asreml_rest,corh : the 4 residual variances,0.7972,0.7972
+estimate,asreml,asreml_rest,corh : the 4 residual variances,0.894,0.894
+estimate,asreml,asreml_rest,corh : the 4 residual variances,0.5795,0.5795
+estimate,asreml,asreml_rest,corh : the 4 residual variances,0.9562,0.9562
+estimate,asreml,asreml_rest,ante1 : the 4 residual variances,0.7999,0.7999
+estimate,asreml,asreml_rest,ante1 : the 4 residual variances,0.8922,0.8922
+estimate,asreml,asreml_rest,ante1 : the 4 residual variances,0.5821,0.5821
+estimate,asreml,asreml_rest,ante1 : the 4 residual variances,0.9573,0.9573
+estimate,asreml,asreml_rest,chol1 : the 4 residual variances,0.7999,0.7999
+estimate,asreml,asreml_rest,chol1 : the 4 residual variances,0.8922,0.8922
+estimate,asreml,asreml_rest,chol1 : the 4 residual variances,0.581,0.581
+estimate,asreml,asreml_rest,chol1 : the 4 residual variances,0.9575,0.9575
+estimate,asreml,asreml_rest,sep : field variance,1.742834,1.742834
+estimate,asreml,asreml_rest,sep : column rho and row rho,0.30873,0.30873
+estimate,asreml,asreml_rest,sep : column rho and row rho,0.59191,0.59191
+estimate,asreml,asreml_rest,sep : residual,0.772377,0.772377
+estimate,asreml,asreml_rest,us:ar1:ar1 : row and column rho,0.50089,0.50089
+estimate,asreml,asreml_rest,us:ar1:ar1 : row and column rho,0.36206,0.36206
+estimate,asreml,asreml_rest,us:ar1:ar1 : 2x2 residual Sigma,1.1591,1.1591
+estimate,asreml,asreml_rest,us:ar1:ar1 : 2x2 residual Sigma,0.6273,0.6273
+estimate,asreml,asreml_rest,us:ar1:ar1 : 2x2 residual Sigma,0.6273,0.6273
+estimate,asreml,asreml_rest,us:ar1:ar1 : 2x2 residual Sigma,0.8517,0.8517
+estimate,asreml,asreml_rest,us:ar1:ar1 : 2x2 genetic Sigma,0.5743,0.5743
+estimate,asreml,asreml_rest,us:ar1:ar1 : 2x2 genetic Sigma,0.1596,0.1596
+estimate,asreml,asreml_rest,us:ar1:ar1 : 2x2 genetic Sigma,0.1596,0.1596
+estimate,asreml,asreml_rest,us:ar1:ar1 : 2x2 genetic Sigma,0.4802,0.4802
+estimate,asreml,asreml_blup,fixed effect (intercept),5.11053351,5.11053351
+estimate,asreml,ige_model,var_DGE : agreement with asreml,1.09524,1.09592
+estimate,asreml,ige_model,cov_DGE_IGE : agreement with asreml,-0.42211,-0.41939
+estimate,asreml,ige_model,var_IGEintra : agreement with asreml,0.16268,0.17627
+estimate,asreml,ige_model,var_IGEinter : agreement with asreml,0.54369,0.53748
+estimate,asreml,ige_model,var_field : agreement with asreml,0.61009,0.61022
+estimate,asreml,ige_model,rho_row : agreement with asreml,0.53375,0.53215
+estimate,asreml,ige_model,rho_column : agreement with asreml,0.11931,0.1185
+estimate,asreml,ige_model,nugget : agreement with asreml,0.39824,0.39694
+logLik,lme4,lme4_sommer,a=25 m=5 : identical -2logL,451.397867339,451.397867339
+logLik,lme4,lme4_sommer,a=10 m=12 : identical -2logL,391.341158079,391.341158079
+logLik,lme4,lme4_sommer,a=60 m=3 : identical -2logL,653.887073882,653.887073882
+logLik,lme4,lme4_sommer,crossed : identical -2logL,380.944211187,380.944211187
+logLik,nlme,nlme,corAR1 : identical -2logL,364.973716966,364.973716966
+logLik,nlme,nlme,corCAR1 : identical -2logL,232.839518984,232.839518984
+logLik,nlme,nlme,ar2 : identical -2logL,364.591914889,364.591914889
+logLik,nlme,nlme,arma : identical -2logL,348.507672823,348.507672823
+logLik,nlme,nlme,cor : identical -2logL,365.567018442,365.567018442
+logLik,nlme,nlme,exp : identical -2logL,229.403629489,229.403629489
+logLik,nlme,nlme,gau : identical -2logL,235.903503011,235.903503011
+logLik,nlme,nlme,lvr (gls range) : identical -2logL,188.61669246,188.61669246
+logLik,nlme,nlme,sph : identical -2logL,297.607416797,297.607416797
+logLik,nlme,nlme,us : identical -2logL,458.854629436,458.854629445
+logLik,nlme,nlme,diag : identical -2logL,508.562150916,508.562150916
+logLik,nlme,nlme,lme AR1 : identical -2logL,348.88181057,348.88181057
+logLik,lme4,lme4_extra,us slopes : identical -2logL,708.105175507,708.105175507
+logLik,lme4,lme4_extra,diag slopes : identical -2logL,768.020691545,768.020691545
+logLik,lme4,lme4_extra,nested : identical -2logL,764.300248907,764.300248907
+logLik,lme4,lme4_extra,3 crossed : identical -2logL,1232.919208193,1232.919208193
+logLik,lme4,lme4_extra,unbalanced : identical -2logL,888.893080406,888.893080406
+logLik,sommer,sommer_extra,LRT us vs diag : same difference in -2logL,81.06687,81.06687
+logLik,asreml,asreml_structures,AR1 : logLik (asreml convention),-111.075133372,-111.075133372
+logLik,asreml,asreml_structures,AR1xAR1 : logLik,-154.818019348,-154.818019348
+logLik,asreml,asreml_structures,spline 2D : logLik,-5.014079566,-5.014093202
+logLik,asreml,asreml_structures,str : logLik,-133.657051701,-133.657051701
+logLik,asreml,asreml_catalogue,lvr : logLik = independent R profile,-2.6786173,-1.9143976
+logLik,asreml,asreml_catalogue,mtrn isotropic nu=0.8 : logLik = besselK reference,5.106711,5.106711
+logLik,asreml,asreml_catalogue,mtrn nu=1.5 delta=2 : logLik = besselK reference,-6.9636274,-6.9636274
+logLik,asreml,asreml_catalogue,mtrn delta=2 alpha=.6 : logLik = besselK reference,4.9300437,4.9300437
+logLik,asreml,asreml_catalogue,mtrn nu=0.5 lambda=1 : logLik = besselK reference,-1.0246717,-1.0246717
+logLik,asreml,asreml_catalogue,mtrn : estimated phi = argmax of the R profile,0.62086,0.62086
+logLik,asreml,asreml_catalogue,mtrn : estimated phi = argmax of the R profile,4.9738738,4.9738738
+logLik,asreml,asreml_rest,ar2 : logLik (asreml convention),-72.335196521,-72.335196521
+logLik,asreml,asreml_rest,ar3 : logLik (asreml convention),-75.186557795,-75.186557795
+logLik,asreml,asreml_rest,ma1 : logLik (asreml convention),-71.441165627,-71.441165627
+logLik,asreml,asreml_rest,ma2 : logLik (asreml convention),-72.524782986,-72.558053561
+logLik,asreml,asreml_rest,arma : logLik (asreml convention),-73.124116717,-73.124116717
+logLik,asreml,asreml_rest,sar : logLik (asreml convention),-70.706817237,-70.706817237
+logLik,asreml,asreml_rest,cor : logLik (asreml convention),-96.140426816,-96.140426816
+logLik,asreml,asreml_rest,corb : logLik (asreml convention),-69.307901067,-69.307901067
+logLik,asreml,asreml_rest,corg : logLik (asreml convention),-97.912513106,-97.912513106
+logLik,asreml,asreml_rest,iexp : logLik (asreml convention),-4.778255069,-4.778255069
+logLik,asreml,asreml_rest,iexp : same logLik at the asreml parameters,-4.778255069,-4.778255069
+logLik,asreml,asreml_rest,igau : logLik (asreml convention),-3.293847858,-3.293847858
+logLik,asreml,asreml_rest,igau : same logLik at the asreml parameters,-3.293847858,-3.293847858
+logLik,asreml,asreml_rest,ieuc : logLik (asreml convention),-4.016578104,-4.016578104
+logLik,asreml,asreml_rest,ieuc : same logLik at the asreml parameters,-4.016578104,-4.016578104
+logLik,asreml,asreml_rest,aexp : logLik (asreml convention),-37.151545485,-37.151545489
+logLik,asreml,asreml_rest,aexp : same logLik at the asreml parameters,-37.151545486,-37.151545489
+logLik,asreml,asreml_rest,agau : logLik (asreml convention),17.316795825,17.316795825
+logLik,asreml,asreml_rest,agau : same logLik at the asreml parameters,17.316795825,17.316795825
+logLik,asreml,asreml_rest,sph : logLik (asreml convention),3.823231014,3.753094938
+logLik,asreml,asreml_rest,sph : same logLik at the asreml parameters,3.78347619,3.753094938
+logLik,asreml,asreml_rest,cir : logLik (asreml convention),13.875897073,10.847517451
+logLik,asreml,asreml_rest,cir : same logLik at the asreml parameters,10.844976334,10.847517451
+logLik,asreml,asreml_rest,us : logLik (asreml convention),-475.359451222,-475.359451222
+logLik,asreml,asreml_rest,diag : logLik (asreml convention),-493.193233887,-493.193233887
+logLik,asreml,asreml_rest,fa1 : logLik (asreml convention),-480.160993199,-480.160993199
+logLik,asreml,asreml_rest,rr1 : logLik (asreml convention),-564.43998507,-564.440028141
+logLik,asreml,asreml_rest,corh : logLik (asreml convention),-492.756261237,-492.756261237
+logLik,asreml,asreml_rest,ante1 : logLik (asreml convention),-491.875918525,-491.875918525
+logLik,asreml,asreml_rest,chol1 : logLik (asreml convention),-492.112977719,-492.112977719
+logLik,asreml,asreml_rest,sep : logLik (asreml convention),-349.658684512,-349.658684512
+logLik,asreml,asreml_rest,us:ar1:ar1 : logLik (asreml convention),-97.11520124,-97.11520124
+logLik,asreml,asreml_blup,logLik in the asreml convention,-260.296848172,-260.296848182

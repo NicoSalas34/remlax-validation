@@ -1,0 +1,7 @@
+=== io-gpu-a100-01.io.internal | job 11746012 | Fri Oct 30 03:55:17 PM CET 2026 | /scratch/users/salasn/ige_reml_v3.sif ===
+NVIDIA A100 80GB PCIe, 81920 MiB
+vm_kin             494.64877180     494.64877180    5.75e-16    3.05e-09      0.3      0.5
+--------------------------------------------------------------------------------------------
+
+1 paquet(s) en erreur :
+   mtrn_aniso     ValueError: -2logL or its gradient is not finite at the starting point (value 629.5077869074553, 2 non-finite gradient component(s)). The optimiser cannot start. Check the kernel or supply theta_init.

@@ -1,27 +1,26 @@
 # Validation
 
-Every number on this page was produced on 2026-09-28 by the test suites of this repository at git revision `f576638 (+ working tree)` (working tree of that day, see the commit that follows it). The suites that need asreml or pbkrtest ran on the user's SLURM cluster inside the apptainer image `ige_reml.sif`; the others ran there too and, where noted, on a local CPU. The measurements were extracted from the logs by `validation/parse_logs.py` and this page is generated from the resulting table (`validation/results/checks_2026-09-28.csv`) by `validation/make_validation_md.py`. No value here was typed by hand.
+Every number on this page was produced on 2026-10-30 by the test suites of this repository and of remlax, with remlax at git revision `bc2af0c`. The campaign ran on the user's SLURM cluster inside the apptainer image `ige_reml_v3.sif`, launched by `campaign/prepare.sh`: every suite on CPU, the CPU/GPU parity on a slice of an A100. The measurements were extracted from the logs (`validation/results/logs_2026-10-30/`) by `validation/parse_logs.py`, and this page is generated from the resulting table (`validation/results/checks_2026-10-30.csv`) by `validation/make_validation_md.py`. No value here was typed by hand.
 
-**399 checks, 387 passed, 12 failed.**
+**381 checks, 364 passed, 17 failed.**
 
 Provenance of the rows:
 
-- re-measured 2026-09-28, ssh:cluster cpu-dedicated, ige_reml.sif: 343 checks
-- re-measured 2026-09-28, local CPU (conda remlax-r + remlax-jax): 56 checks
+- re-measured 2026-10-30, ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax bc2af0c: 381 checks
 
 Software versions read from the log headers:
 
-- R: 4.6.0 (ssh:cluster cpu-dedicated, ige_reml.sif)
-- nlme: 3.1.169 (ssh:cluster cpu-dedicated, ige_reml.sif)
-- lme4: 2.0.1 (ssh:cluster cpu-dedicated, ige_reml.sif)
-- sommer: 4.4.5 (ssh:cluster cpu-dedicated, ige_reml.sif)
-- asreml: 4.2.0.480 (ssh:cluster cpu-dedicated, ige_reml.sif)
-- pbkrtest: 0.5.5 (ssh:cluster cpu-dedicated, ige_reml.sif)
-- jax: 0.11.1 (ssh:cluster cpu-dedicated, ige_reml.sif)
+- R: 4.6.0 (ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax bc2af0c)
+- nlme: 3.1.169 (ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax bc2af0c)
+- lme4: 2.0.1 (ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax bc2af0c)
+- sommer: 4.4.5 (ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax bc2af0c)
+- asreml: 4.2.0.480 (ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax bc2af0c)
+- pbkrtest: 0.5.5 (ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax bc2af0c)
+- jax: 0.11.1 (ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax bc2af0c)
 
-The check labels in the tables below are in French. They are the strings the test suites print, quoted verbatim, and the suites are written in French like the rest of the code. Translating them would give a more readable table and a trace that no longer matches the logs, so they are left alone; the section headings and the commentary are in English.
+The check labels in the tables below are the strings the test suites printed, quoted verbatim. Suites run before their English translation printed French labels, and those labels are kept as they are. Translating them would give a more readable table and a trace that no longer matches the logs. The section headings and the commentary are in English.
 
-Suites whose log was not available for this run, and therefore absent from the table: `02_stress_s50.log`, `02_stress_s100.log`, `21_parite.log`. See the last section.
+Suites whose log was not available for this run, and therefore absent from the table: `10_tmb_parity.log`, `11_tmb_vs_dense.log`, `12_tmb_prec.log`. See the last section.
 
 ## Summary
 
@@ -29,19 +28,17 @@ Suites whose log was not available for this run, and therefore absent from the t
 |---|---|---|---|
 | Internal algebra | 25 | the solver against itself and against closed-form results | 25/25 |
 | Unit tests (pytest) | 1 | closed forms and independent numpy references | 1/1 |
-| Random sweep | 1 | properties over randomly drawn designs | 1/1 |
+| Random sweep | 3 | properties over randomly drawn designs | 2/3 |
 | Against lme4 and sommer | 31 | two open-source reference implementations | 31/31 |
 | Against nlme | 61 | the reference implementation for correlation structures | 61/61 |
 | Against lme4, random regressions, nesting and PEV | 30 | the reference implementation for crossed and nested random effects | 30/30 |
 | Against sommer, genomic and multi-trait models | 19 | the reference implementation for genomic relationship matrices | 19/19 |
-| Against asreml, structures and inference | 28 | the field reference | 28/28 |
-| Against asreml, the rest of the catalogue | 22 | the field reference | 22/22 |
+| Against asreml, structures and inference | 29 | the field reference | 27/29 |
+| Against asreml, the rest of the catalogue | 22 | the field reference | 21/22 |
 | Against asreml, the remaining structures | 111 | the field reference | 99/111 |
 | Against asreml, BLUPs | 4 | the field reference | 4/4 |
 | A full model of known truth | 11 | asreml, and the simulated parameters | 11/11 |
-| Sparse engine: parameterisation parity | 30 | the dense engine, at a common theta | 30/30 |
-| Sparse engine: same likelihood as the dense engine | 16 | the dense engine, warm-started in both directions | 16/16 |
-| Sparse engine: precision path | 9 | an independent dense-algebra REML | 9/9 |
+| CPU against GPU | 34 | the other backend, on the same input | 33/34 |
 
 ## Internal algebra
 
@@ -67,10 +64,10 @@ Gradients against central finite differences, the Hessian against a second diffe
 
 | Check | Measured | Verdict |
 |---|---|---|
-| gradient exact (t=1, K=False) | ecart relatif 2.61e-09 | pass |
-| gradient exact (t=1, K=True) | ecart relatif 1.09e-09 | pass |
-| gradient exact (t=3, K=False) | ecart relatif 8.28e-09 | pass |
-| gradient exact (t=3, K=True) | ecart relatif 2.23e-08 | pass |
+| gradient exact (t=1, K=False) | ecart relatif 3.91e-09 | pass |
+| gradient exact (t=1, K=True) | ecart relatif 7.82e-10 | pass |
+| gradient exact (t=3, K=False) | ecart relatif 1.88e-08 | pass |
+| gradient exact (t=3, K=True) | ecart relatif 3.71e-08 | pass |
 
 **3. assemblage de V : symetrie, positivite, coherence Kronecker**
 
@@ -84,9 +81,9 @@ Gradients against central finite differences, the Hessian against a second diffe
 
 | Check | Measured | Verdict |
 |---|---|---|
-| a=20 m=6 : sigma2 analytiques retrouvees | ecarts 9.6e-10 / 8.3e-10, decrement 5.4e-17 | pass |
-| a=12 m=10 : sigma2 analytiques retrouvees | ecarts 1.5e-10 / 2.1e-10, decrement 3.5e-18 | pass |
-| a=40 m=3 : sigma2 analytiques retrouvees | ecarts 7.4e-10 / 4.1e-09, decrement 6.9e-16 | pass |
+| a=20 m=6 : sigma2 analytiques retrouvees | ecarts 7.2e-10 / 6.4e-10, decrement 3.2e-17 | pass |
+| a=12 m=10 : sigma2 analytiques retrouvees | ecarts 4.0e-11 / 3.7e-11, decrement 1.2e-19 | pass |
+| a=40 m=3 : sigma2 analytiques retrouvees | ecarts 4.1e-10 / 3.8e-09, decrement 5.5e-16 | pass |
 
 **5. reproductibilite et invariance au peripherique**
 
@@ -104,13 +101,13 @@ Gradients against central finite differences, the Hessian against a second diffe
 
 ## Unit tests (pytest)
 
-The pytest suite under tests/python: one test per feature, each against an independent reference (numpy Cholesky REML written out longhand, closed-form correlation matrices, finite differences). Collected here as a single line; docs/tests-matrix.md maps every feature to its test.
+The pytest suite of remlax (tests-python): one test per feature, each against an independent reference (numpy Cholesky REML written out longhand, closed-form correlation matrices, finite differences). Collected here as a single line.
 
 **pytest, tests/python**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| 169 tests collected by pytest | 168 passed, 1 skipped, 0 failed, 0 errors in 121.20 s | pass |
+| 274 tests collected by pytest | 273 passed, 1 skipped, 0 failed, 0 errors in 368.87 s | pass |
 
 ## Random sweep
 
@@ -120,710 +117,723 @@ Configurations are drawn at random (structure, dimensions, number of traits, see
 
 | Check | Measured | Verdict |
 |---|---|---|
-| 200 configurations: no exception, finite logLik, PSD Sigma, converged | clean 198/200; unstable optima 2 (best-of-restart gains 0.0085, 0.0902 in -2logL) | pass |
+| 200 configurations: no exception, finite logLik, PSD Sigma, converged | clean 197/200; unstable optima 2 (best-of-restart gains 0.0044, 0.2745 in -2logL) | FAIL |
+
+**random configuration sweep, seed 50**
+
+| Check | Measured | Verdict |
+|---|---|---|
+| 200 configurations: no exception, finite logLik, PSD Sigma, converged | clean 197/200; unstable optima 3 (best-of-restart gains 0.0012, 0.0035, 0.0044 in -2logL) | pass |
+
+**random configuration sweep, seed 100**
+
+| Check | Measured | Verdict |
+|---|---|---|
+| 200 configurations: no exception, finite logLik, PSD Sigma, converged | clean 199/200; unstable optima 1 (best-of-restart gains 0.0364 in -2logL) | pass |
 
 ## Against lme4 and sommer
 
 The models both packages can fit: a single random factor on three layouts, two crossed factors, a genomic relationship matrix, and a bivariate unstructured covariance. Agreement is required on the restricted log-likelihood first, then on the variance components, the fixed effects and the BLUPs.
 
-**1. un facteur aleatoire, contre lme4**
+**1. one random factor, against lme4**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| a=25 m=5 : -2logL identique | 451.397867339 vs 451.397867339 | pass |
-| a=25 m=5 : composantes de variance | s2g 1.361456/1.361456 | pass |
-| a=25 m=5 : effets fixes | beta 1.7588 0.80093 | pass |
-| a=25 m=5 : BLUPs | ecart max 7.46e-09 | pass |
-| a=10 m=12 : -2logL identique | 391.341158079 vs 391.341158079 | pass |
-| a=10 m=12 : composantes de variance | s2g 2.231905/2.231905 | pass |
-| a=10 m=12 : effets fixes | beta 1.70765 0.74394 | pass |
-| a=10 m=12 : BLUPs | ecart max 2.02e-10 | pass |
-| a=60 m=3 : -2logL identique | 653.887073882 vs 653.887073882 | pass |
-| a=60 m=3 : composantes de variance | s2g 2.502726/2.502726 | pass |
-| a=60 m=3 : effets fixes | beta 2.30711 0.79389 | pass |
-| a=60 m=3 : BLUPs | ecart max 7.71e-09 | pass |
+| a=25 m=5 : identical -2logL | 451.397867339 vs 451.397867339 | pass |
+| a=25 m=5 : variance components | s2g 1.361456/1.361456 | pass |
+| a=25 m=5 : fixed effects | beta 1.7588 0.80093 | pass |
+| a=25 m=5 : BLUPs | max diff 7.47e-09 | pass |
+| a=10 m=12 : identical -2logL | 391.341158079 vs 391.341158079 | pass |
+| a=10 m=12 : variance components | s2g 2.231905/2.231905 | pass |
+| a=10 m=12 : fixed effects | beta 1.70765 0.74394 | pass |
+| a=10 m=12 : BLUPs | max diff 5.01e-10 | pass |
+| a=60 m=3 : identical -2logL | 653.887073882 vs 653.887073882 | pass |
+| a=60 m=3 : variance components | s2g 2.502726/2.502726 | pass |
+| a=60 m=3 : fixed effects | beta 2.30711 0.79389 | pass |
+| a=60 m=3 : BLUPs | max diff 1.96e-09 | pass |
 
-**2. deux facteurs croises, contre lme4**
-
-| Check | Measured | Verdict |
-|---|---|---|
-| croise : -2logL identique | 380.944211187 vs 380.944211187 | pass |
-| croise : les trois variances | 1.94207 0.20123 0.90019 | pass |
-
-**3. matrice de parente, contre sommer**
+**2. two crossed factors, against lme4**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| parente : composantes de variance vs sommer | s2g 0.99215/0.99211 \| s2e 0.98662/0.98663 | pass |
-| parente : la GRM ameliore l'ajustement (K vs I) | 515.7869 vs 516.7093 | pass |
+| crossed : identical -2logL | 380.944211187 vs 380.944211187 | pass |
+| crossed : the three variances | 1.94207 0.20123 0.90019 | pass |
 
-**4. deux caracteres, structure us, contre sommer**
-
-| Check | Measured | Verdict |
-|---|---|---|
-| us : covariance genetique 2x2 vs sommer | remlax 1.3169 0.8723 0.8723 1.0382 \| sommer 1.3169 0.8723 0.8723 1.0381 | pass |
-| us : covariance residuelle 2x2 vs sommer | remlax 0.849 0.1019 0.1019 1.2783 \| sommer 0.849 0.1019 0.1019 1.2783 | pass |
-| us : correlation genetique retrouvee | r 0.7460 vs 0.7460 | pass |
-
-**5. structures emboitees : us doit dominer diag, qui domine iid**
+**3. kinship matrix, against sommer**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| emboitement : -2logL decroissante iid >= diag >= us | iid=1324.4543 diag=1324.0042 us=1299.9284 | pass |
+| kinship : variance components vs sommer | s2g 0.99215/0.99211 \| s2e 0.98662/0.98663 | pass |
+| kinship : the GRM improves the fit (K vs I) | 515.7869 vs 516.7093 | pass |
 
-**6. incidence PONDEREE (le cas qu'une formule ne sait pas dire)**
-
-| Check | Measured | Verdict |
-|---|---|---|
-| incidence ponderee : ajustement fini et defini | s2 1.5621 (vrai 1.21) \| s2e 0.6332 (vrai 0.64) \| decrement 1.0e-22 | pass |
-
-**7. interface par formule : meme resultat que la voie explicite**
+**4. two traits, us structure, against sommer**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| formule ~ g : -2logL identique a lme4 | ecart 2.27e-13 | pass |
-| formule ~ iid(g)+iid(b) : -2logL identique a lme4 | ecart 1.71e-13 | pass |
-| formule us(gid) == voie explicite rx_term/rx_model | ecart 0.00e+00 | pass |
+| us : 2x2 genetic covariance vs sommer | remlax 1.3169 0.8723 0.8723 1.0382 \| sommer 1.3169 0.8723 0.8723 1.0381 | pass |
+| us : 2x2 residual covariance vs sommer | remlax 0.849 0.1019 0.1019 1.2783 \| sommer 0.849 0.1019 0.1019 1.2783 | pass |
+| us : genetic correlation recovered | r 0.7460 vs 0.7460 | pass |
 
-**8. bascule de backend : le modele ne change pas avec la machine**
-
-| Check | Measured | Verdict |
-|---|---|---|
-| backend auto et cpu donnent le meme ajustement | cpu vs cpu, ecart 0.00e+00 | pass |
-| le backend retenu est annonce dans le resultat | cpu | pass |
-
-**9. erreurs : messages exploitables plutot que resultats douteux**
+**5. nested structures: us must dominate diag, which dominates iid**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| terme inconnu rejete | - | pass |
-| colonne absente rejetee | - | pass |
-| structure multi-caractere sans trait rejetee | - | pass |
-| X de rang deficient rejetee | - | pass |
-| niveau absent de K rejete | - | pass |
+| nesting : -2logL decreasing iid >= diag >= us | iid=1324.4543 diag=1324.0042 us=1299.9284 | pass |
+
+**6. WEIGHTED incidence (the case a formula cannot express)**
+
+| Check | Measured | Verdict |
+|---|---|---|
+| weighted incidence : finite and defined fit | s2 1.5621 (true 1.21) \| s2e 0.6332 (true 0.64) \| decrement 1.9e-15 | pass |
+
+**7. formula interface: same result as the explicit route**
+
+| Check | Measured | Verdict |
+|---|---|---|
+| formula ~ g : -2logL identical to lme4 | diff 0.00e+00 | pass |
+| formula ~ iid(g)+iid(b) : -2logL identical to lme4 | diff 5.68e-14 | pass |
+| formula us(gid) == explicit route rx_term/rx_model | diff 0.00e+00 | pass |
+
+**8. backend switch: the model does not change with the machine**
+
+| Check | Measured | Verdict |
+|---|---|---|
+| backend auto and cpu give the same fit | cpu vs cpu, diff 0.00e+00 | pass |
+| the chosen backend is reported in the result | cpu | pass |
+
+**9. errors: usable messages instead of doubtful results**
+
+| Check | Measured | Verdict |
+|---|---|---|
+| unknown term rejected | - | pass |
+| missing column rejected | - | pass |
+| multi-trait structure without trait rejected | - | pass |
+| rank-deficient X rejected | - | pass |
+| level missing from K rejected | - | pass |
 
 ## Against nlme
 
 nlme::gls and nlme::lme on the same data: corAR1, corCAR1, corARMA (AR2 and ARMA(1,1)), corCompSymm, corExp, corGaus, corLin, corSpher, corSymm with varIdent (an unstructured covariance) and varIdent alone (one residual variance per group), then a random intercept with an AR1 residual. A grouped corStruct is written in remlax by declaring the group as the trait of the residual, residual = ~ id(g):ar1(t) with trait = g. Agreement on -2logL, the residual variance, the correlation parameters, the fixed effects and their standard errors.
 
-**1. corAR1 : AR1 dans chaque groupe, contre gls**
+**1. corAR1: AR1 within each group, against gls**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| constante de logLik : nlme = remlax$logLik | nlme -182.486858 \| remlax -182.486858 \| logLik_asreml -74.052112 (+(n-p)/2 log 2pi = 108.4347) | pass |
-| corAR1 : -2logL identique | 364.973716966 vs 364.973716966 | pass |
-| corAR1 : variance residuelle | 1.627385 vs 1.627385 | pass |
-| corAR1 : effets fixes | ecart rel max 1.57e-09 | pass |
-| corAR1 : erreurs-types des effets fixes | ecart rel max 1.84e-08 | pass |
+| logLik constant : nlme = remlax$logLik | nlme -182.486858 \| remlax -182.486858 \| logLik_asreml -74.052112 (+(n-p)/2 log 2pi = 108.4347) | pass |
+| corAR1 : identical -2logL | 364.973716966 vs 364.973716966 | pass |
+| corAR1 : residual variance | 1.627385 vs 1.627385 | pass |
+| corAR1 : fixed effects | max rel diff 1.45e-09 | pass |
+| corAR1 : standard errors of the fixed effects | max rel diff 1.67e-08 | pass |
 | corAR1 : rho | 0.5338496 vs 0.5338496 | pass |
 
-**2. corCAR1 : AR1 continu a temps irreguliers, contre gls**
+**2. corCAR1: continuous AR1 at irregular times, against gls**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| corCAR1 : -2logL identique | 232.839518984 vs 232.839518984 | pass |
-| corCAR1 : variance residuelle | 1.152159 vs 1.152159 | pass |
-| corCAR1 : effets fixes | ecart rel max 2.04e-09 | pass |
-| corCAR1 : erreurs-types des effets fixes | ecart rel max 1.74e-08 | pass |
-| corCAR1 : phi (correlation par unite de temps) | 0.7287346 vs 0.7287346 (vrai 0.7) | pass |
+| corCAR1 : identical -2logL | 232.839518984 vs 232.839518984 | pass |
+| corCAR1 : residual variance | 1.152159 vs 1.152159 | pass |
+| corCAR1 : fixed effects | max rel diff 5.27e-09 | pass |
+| corCAR1 : standard errors of the fixed effects | max rel diff 3.40e-08 | pass |
+| corCAR1 : phi (correlation per time unit) | 0.7287346 vs 0.7287346 (true 0.7) | pass |
 
-**3. corARMA(p=2) : AR2, contre gls**
-
-| Check | Measured | Verdict |
-|---|---|---|
-| ar2 : -2logL identique | 364.591914889 vs 364.591914889 | pass |
-| ar2 : variance residuelle | 1.899831 vs 1.899831 | pass |
-| ar2 : effets fixes | ecart rel max 1.60e-09 | pass |
-| ar2 : erreurs-types des effets fixes | ecart rel max 1.17e-08 | pass |
-| ar2 : phi1 et phi2 | remlax 0.526414 0.145188 \| nlme 0.526414 0.145188 | pass |
-
-**4. corARMA(p=1, q=1) : ARMA(1,1), contre gls**
+**3. corARMA(p=2): AR2, against gls**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| arma : -2logL identique | 348.507672823 vs 348.507672823 | pass |
-| arma : variance residuelle | 1.461911 vs 1.461911 | pass |
-| arma : effets fixes | ecart rel max 1.43e-08 | pass |
-| arma : erreurs-types des effets fixes | ecart rel max 2.44e-08 | pass |
-| arma : phi et theta (ordre remlax : theta, phi) | remlax theta 0.389765 phi 0.259672 \| nlme phi 0.259672 theta 0.389765 | pass |
+| ar2 : identical -2logL | 364.591914889 vs 364.591914889 | pass |
+| ar2 : residual variance | 1.899831 vs 1.899831 | pass |
+| ar2 : fixed effects | max rel diff 1.30e-09 | pass |
+| ar2 : standard errors of the fixed effects | max rel diff 1.02e-08 | pass |
+| ar2 : phi1 and phi2 | remlax 0.526414 0.145188 \| nlme 0.526414 0.145188 | pass |
 
-**5. corCompSymm : correlation uniforme, contre gls**
-
-| Check | Measured | Verdict |
-|---|---|---|
-| cor : -2logL identique | 365.567018442 vs 365.567018442 | pass |
-| cor : variance residuelle | 1.481197 vs 1.481197 | pass |
-| cor : effets fixes | ecart rel max 1.93e-10 | pass |
-| cor : erreurs-types des effets fixes | ecart rel max 5.00e-09 | pass |
-| cor : rho uniforme | 0.2951065 vs 0.2951065 | pass |
-
-**6. corExp : decroissance exponentielle en 1D, contre gls**
+**4. corARMA(p=1, q=1): ARMA(1,1), against gls**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| exp : -2logL identique | 229.403629489 vs 229.403629489 | pass |
-| exp : variance residuelle | 0.633634 vs 0.633633 | pass |
-| exp : effets fixes | ecart rel max 6.23e-08 | pass |
-| exp : erreurs-types des effets fixes | ecart rel max 9.81e-07 | pass |
-| exp : rho = exp(-1/portee nlme) | 0.6429754 vs 0.6429748 (portee 2.2642, vraie 4) | pass |
-| exp : l'ajustement a bouge de son point de depart | 9 iterations, rho 0.6430 | pass |
+| arma : identical -2logL | 348.507672823 vs 348.507672823 | pass |
+| arma : residual variance | 1.461911 vs 1.461911 | pass |
+| arma : fixed effects | max rel diff 1.43e-08 | pass |
+| arma : standard errors of the fixed effects | max rel diff 2.45e-08 | pass |
+| arma : phi and theta (remlax order: theta, phi) | remlax theta 0.389765 phi 0.259672 \| nlme phi 0.259672 theta 0.389765 | pass |
 
-**7. corGaus : decroissance gaussienne en 1D, contre gls**
-
-| Check | Measured | Verdict |
-|---|---|---|
-| gau : -2logL identique | 235.903503011 vs 235.903503011 | pass |
-| gau : variance residuelle | 1.106024 vs 1.106024 | pass |
-| gau : effets fixes | ecart rel max 1.41e-10 | pass |
-| gau : erreurs-types des effets fixes | ecart rel max 1.96e-09 | pass |
-| gau : rho = exp(-1/portee^2) | 0.8895193 vs 0.8895193 (portee 2.9226, vraie 3) | pass |
-
-**8. corLin : tente lineaire tronquee (lvr), contre gls**
+**5. corCompSymm: uniform correlation, against gls**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| lvr (portee gls) : -2logL identique | 188.616692460 vs 188.616692460 | pass |
-| lvr (portee gls) : variance residuelle | 0.780188 vs 0.780188 | pass |
-| lvr (portee gls) : effets fixes | ecart rel max 1.35e-14 | pass |
-| lvr (portee gls) : erreurs-types des effets fixes | ecart rel max 1.92e-14 | pass |
-| lvr : portee lue = portee imposee | 6.02241 vs 6.02241 (vraie 6) | pass |
-| lvr : optimum libre de remlax pas moins bon que gls | remlax 188.616692 (portee 6.0224, 4 redemarrages) \| meilleur gls sur 2 departs 188.616692 (portee 6.0224) | pass |
+| cor : identical -2logL | 365.567018442 vs 365.567018442 | pass |
+| cor : residual variance | 1.481197 vs 1.481197 | pass |
+| cor : fixed effects | max rel diff 1.81e-10 | pass |
+| cor : standard errors of the fixed effects | max rel diff 4.87e-09 | pass |
+| cor : uniform rho | 0.2951065 vs 0.2951065 | pass |
 
-**9. corSpher : spherique en 2D, contre gls**
-
-| Check | Measured | Verdict |
-|---|---|---|
-| sph : -2logL identique | 297.607416797 vs 297.607416797 | pass |
-| sph : variance residuelle | 0.982703 vs 0.982703 | pass |
-| sph : effets fixes | ecart rel max 4.22e-10 | pass |
-| sph : erreurs-types des effets fixes | ecart rel max 4.91e-09 | pass |
-| sph : portee | 7.32780 vs 7.32780 (vraie 8) | pass |
-
-**10. corSymm + varIdent : covariance non structuree (us), contre gls**
+**6. corExp: exponential decay in 1D, against gls**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| us : -2logL identique | 458.854629436 vs 458.854629445 | pass |
-| us : les 10 composantes de Sigma | ecart abs max / max var 5.78e-06 \| diag remlax 0.8898 1.5638 2.2088 0.953 \| nlme 0.8898 1.5638 2.2088 0.953 | pass |
-| us : effets fixes | ecart rel max 6.50e-07 | pass |
+| exp : identical -2logL | 229.403629489 vs 229.403629489 | pass |
+| exp : residual variance | 0.633634 vs 0.633633 | pass |
+| exp : fixed effects | max rel diff 6.23e-08 | pass |
+| exp : standard errors of the fixed effects | max rel diff 9.81e-07 | pass |
+| exp : rho = exp(-1/nlme range) | 0.6429754 vs 0.6429748 (range 2.2642, true 4) | pass |
+| exp : the fit moved from its starting point | 8 iterations, rho 0.6430 | pass |
 
-**11. varIdent seul : une variance residuelle par groupe (diag), contre gls**
-
-| Check | Measured | Verdict |
-|---|---|---|
-| diag : -2logL identique | 508.562150916 vs 508.562150916 | pass |
-| diag : les cinq variances | remlax 0.206 0.9976 1.8157 4.1048 8.9001 \| nlme 0.206 0.9976 1.8157 4.1048 8.9001 | pass |
-| diag : effets fixes | ecart rel max 1.81e-07 | pass |
-
-**12. lme : intercept aleatoire + corAR1 intra-groupe, contre lme**
+**7. corGaus: Gaussian decay in 1D, against gls**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| lme AR1 : -2logL identique | 348.881810570 vs 348.881810570 | pass |
-| lme AR1 : variance du groupe | 1.545201 vs 1.545200 | pass |
-| lme AR1 : variance residuelle | 0.888761 vs 0.888762 | pass |
+| gau : identical -2logL | 235.903503011 vs 235.903503011 | pass |
+| gau : residual variance | 1.106024 vs 1.106024 | pass |
+| gau : fixed effects | max rel diff 5.05e-13 | pass |
+| gau : standard errors of the fixed effects | max rel diff 5.76e-10 | pass |
+| gau : rho = exp(-1/range^2) | 0.8895193 vs 0.8895193 (range 2.9226, true 3) | pass |
+
+**8. corLin: truncated linear tent (lvr), against gls**
+
+| Check | Measured | Verdict |
+|---|---|---|
+| lvr (gls range) : identical -2logL | 188.616692460 vs 188.616692460 | pass |
+| lvr (gls range) : residual variance | 0.780188 vs 0.780188 | pass |
+| lvr (gls range) : fixed effects | max rel diff 1.33e-14 | pass |
+| lvr (gls range) : standard errors of the fixed effects | max rel diff 1.93e-14 | pass |
+| lvr : range read = range imposed | 6.02241 vs 6.02241 (true 6) | pass |
+| lvr : free remlax optimum no worse than gls | remlax 188.616692 (range 6.0224, 4 restarts) \| best gls over 2 starts 188.616692 (range 6.0224) | pass |
+
+**9. corSpher: spherical in 2D, against gls**
+
+| Check | Measured | Verdict |
+|---|---|---|
+| sph : identical -2logL | 297.607416797 vs 297.607416797 | pass |
+| sph : residual variance | 0.982703 vs 0.982703 | pass |
+| sph : fixed effects | max rel diff 4.67e-10 | pass |
+| sph : standard errors of the fixed effects | max rel diff 5.43e-09 | pass |
+| sph : range | 7.32780 vs 7.32780 (true 8) | pass |
+
+**10. corSymm + varIdent: unstructured covariance (us), against gls**
+
+| Check | Measured | Verdict |
+|---|---|---|
+| us : identical -2logL | 458.854629436 vs 458.854629445 | pass |
+| us : the 10 components of Sigma | max abs diff / max var 5.79e-06 \| diag remlax 0.8898 1.5638 2.2088 0.953 \| nlme 0.8898 1.5638 2.2088 0.953 | pass |
+| us : fixed effects | max rel diff 6.47e-07 | pass |
+
+**11. varIdent alone: one residual variance per group (diag), against gls**
+
+| Check | Measured | Verdict |
+|---|---|---|
+| diag : identical -2logL | 508.562150916 vs 508.562150916 | pass |
+| diag : the five variances | remlax 0.206 0.9976 1.8157 4.1048 8.9001 \| nlme 0.206 0.9976 1.8157 4.1048 8.9001 | pass |
+| diag : fixed effects | max rel diff 1.81e-07 | pass |
+
+**12. lme: random intercept + within-group corAR1, against lme**
+
+| Check | Measured | Verdict |
+|---|---|---|
+| lme AR1 : identical -2logL | 348.881810570 vs 348.881810570 | pass |
+| lme AR1 : group variance | 1.545201 vs 1.545200 | pass |
+| lme AR1 : residual variance | 0.888761 vs 0.888762 | pass |
 | lme AR1 : rho | 0.3242477 vs 0.3242487 | pass |
-| lme AR1 : effets fixes | ecart rel max 3.66e-07 | pass |
-| lme AR1 : erreurs-types des effets fixes | ecart rel max 2.92e-07 | pass |
-| lme AR1 : BLUPs | ecart max 8.76e-07 | pass |
+| lme AR1 : fixed effects | max rel diff 3.65e-07 | pass |
+| lme AR1 : standard errors of the fixed effects | max rel diff 2.90e-07 | pass |
+| lme AR1 : BLUPs | max diff 8.76e-07 | pass |
 
 ## Against lme4, random regressions, nesting and PEV
 
 Correlated and independent random slopes (a two-column us and diag term), a nested design, three crossed factors on an unbalanced layout, very unequal group sizes. Besides -2logL, components, fixed effects and their standard errors: the BLUPs, and the prediction error variance checked against the mixed-model-equations formula computed by hand (lme4's condVar follows a different convention, without the uncertainty on beta, and is checked against its own formula).
 
-**1. pentes aleatoires correlees (1 + x | g) : us a deux colonnes**
+**1. correlated random slopes (1 + x | g): us with two columns**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| pentes us : -2logL identique | 708.105175507 vs 708.105175507 | pass |
-| pentes us : effets fixes | ecart rel max 8.52e-10 | pass |
-| pentes us : erreurs-types des effets fixes | ecart rel max 4.55e-08 | pass |
-| pentes us : les trois composantes de Sigma | remlax 1.04933 0.31753 0.51161 \| lme4 1.04933 0.31753 0.51161 | pass |
-| pentes us : variance residuelle | 0.649963 vs 0.649963 | pass |
-| pentes us : BLUPs (intercepts et pentes) | ecart max 2.25e-08 sur 60 valeurs | pass |
-| pentes us : PEV remlax = formule des MME (avec beta) | ecart rel max 9.22e-15 \| PEV moyenne 0.10677 | pass |
-| pentes us : condVar lme4 = formule sans beta | ecart rel max 2.67e-08 \| condVar moyenne 0.08346 (les deux conventions different) | pass |
+| us slopes : identical -2logL | 708.105175507 vs 708.105175507 | pass |
+| us slopes : fixed effects | max rel diff 2.00e-09 | pass |
+| us slopes : standard errors of the fixed effects | max rel diff 6.00e-08 | pass |
+| us slopes : the three components of Sigma | remlax 1.04933 0.31753 0.51161 \| lme4 1.04933 0.31753 0.51161 | pass |
+| us slopes : residual variance | 0.649963 vs 0.649963 | pass |
+| us slopes : BLUPs (intercepts and slopes) | max diff 3.11e-08 over 60 values | pass |
+| us slopes : remlax PEV = MME formula (with beta) | max rel diff 1.02e-14 \| mean PEV 0.10677 | pass |
+| us slopes : lme4 condVar = formula without beta | max rel diff 3.12e-08 \| mean condVar 0.08346 (the two conventions differ) | pass |
 
-**2. pentes aleatoires independantes (1 + x || g) : diag a deux colonnes**
-
-| Check | Measured | Verdict |
-|---|---|---|
-| pentes diag : -2logL identique | 768.020691545 vs 768.020691545 | pass |
-| pentes diag : effets fixes | ecart rel max 9.72e-10 | pass |
-| pentes diag : erreurs-types des effets fixes | ecart rel max 9.51e-09 | pass |
-| pentes diag : les deux variances | remlax 1.18772 0.49438 \| lme4 1.18772 0.49438 | pass |
-| pentes diag : covariance nulle par construction | 0.0e+00 | pass |
-
-**3. emboitement (1 | g/h) : deux termes iid**
+**2. independent random slopes (1 + x || g): diag with two columns**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| emboite : -2logL identique | 764.300248907 vs 764.300248907 | pass |
-| emboite : effets fixes | ecart rel max 2.60e-14 | pass |
-| emboite : erreurs-types des effets fixes | ecart rel max 5.07e-08 | pass |
-| emboite : variances g et h dans g | g 1.53208/1.53208 \| h:g 0.26695/0.26695 \| res 1.05729/1.05729 | pass |
-| emboite : BLUPs des deux termes | ecart max 1.61e-08 / 2.46e-08 | pass |
+| diag slopes : identical -2logL | 768.020691545 vs 768.020691545 | pass |
+| diag slopes : fixed effects | max rel diff 6.07e-10 | pass |
+| diag slopes : standard errors of the fixed effects | max rel diff 7.50e-09 | pass |
+| diag slopes : the two variances | remlax 1.18772 0.49438 \| lme4 1.18772 0.49438 | pass |
+| diag slopes : covariance zero by construction | 0.0e+00 | pass |
 
-**4. trois facteurs croises, dispositif desequilibre**
-
-| Check | Measured | Verdict |
-|---|---|---|
-| 3 croises : -2logL identique | 1232.919208193 vs 1232.919208193 | pass |
-| 3 croises : effets fixes | ecart rel max 8.93e-10 | pass |
-| 3 croises : erreurs-types des effets fixes | ecart rel max 7.16e-08 | pass |
-| 3 croises : les quatre variances | remlax 0.81044 0.69056 0.18664 1.02067 \| lme4 0.81044 0.69056 0.18664 1.02067 | pass |
-| 3 croises : BLUPs des trois termes | ecart max 1.57e-08 | pass |
-| 3 croises : PEV des trois termes = formule des MME | ecart rel max 1.23e-14 | pass |
-| 3 croises : PEV de g decroit avec la replication | cor(PEV, n_rep) = -0.982 | pass |
-
-**5. un facteur, tailles de groupe tres inegales, deux covariables**
+**3. nesting (1 | g/h): two iid terms**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| desequilibre : -2logL identique | 888.893080406 vs 888.893080406 | pass |
-| desequilibre : effets fixes | ecart rel max 3.37e-11 | pass |
-| desequilibre : erreurs-types des effets fixes | ecart rel max 8.05e-10 | pass |
-| desequilibre : composantes de variance | s2g 1.603755/1.603755 \| s2e 1.214474/1.214474 | pass |
-| desequilibre : BLUPs | ecart max 8.85e-10 (tailles de 1 a 12) | pass |
+| nested : identical -2logL | 764.300248907 vs 764.300248907 | pass |
+| nested : fixed effects | max rel diff 2.58e-14 | pass |
+| nested : standard errors of the fixed effects | max rel diff 4.65e-08 | pass |
+| nested : variances of g and of h within g | g 1.53208/1.53208 \| h:g 0.26695/0.26695 \| res 1.05729/1.05729 | pass |
+| nested : BLUPs of both terms | max diff 9.93e-09 / 3.52e-08 | pass |
+
+**4. three crossed factors, unbalanced design**
+
+| Check | Measured | Verdict |
+|---|---|---|
+| 3 crossed : identical -2logL | 1232.919208193 vs 1232.919208193 | pass |
+| 3 crossed : fixed effects | max rel diff 1.01e-09 | pass |
+| 3 crossed : standard errors of the fixed effects | max rel diff 7.85e-08 | pass |
+| 3 crossed : the four variances | remlax 0.81044 0.69056 0.18664 1.02067 \| lme4 0.81044 0.69056 0.18664 1.02067 | pass |
+| 3 crossed : BLUPs of the three terms | max diff 1.75e-08 | pass |
+| 3 crossed : PEV of the three terms = MME formula | max rel diff 1.48e-14 | pass |
+| 3 crossed : PEV of g decreases with replication | cor(PEV, n_rep) = -0.982 | pass |
+
+**5. one factor, very unequal group sizes, two covariates**
+
+| Check | Measured | Verdict |
+|---|---|---|
+| unbalanced : identical -2logL | 888.893080406 vs 888.893080406 | pass |
+| unbalanced : fixed effects | max rel diff 2.66e-11 | pass |
+| unbalanced : standard errors of the fixed effects | max rel diff 4.94e-10 | pass |
+| unbalanced : variance components | s2g 1.603755/1.603755 \| s2e 1.214474/1.214474 | pass |
+| unbalanced : BLUPs | max diff 6.98e-10 (sizes 1 to 12) | pass |
 
 ## Against sommer, genomic and multi-trait models
 
 A GRM on one term with BLUPs and PEV; three traits with us genetic and us residual covariance and a GRM; the same with diag and the likelihood ratio between the two; additive plus dominance (two relationship matrices on the same factor); a multi-environment trial with one genetic variance per environment. sommer is tightened to tolParConvLL = 1e-12; its log-likelihood carries a data-dependent constant, so only differences of -2logL are compared.
 
-**1. une GRM, univarie : composantes, effets fixes, BLUP, PEV**
+**1. one GRM, univariate: components, fixed effects, BLUP, PEV**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| GRM : composantes de variance | s2g 1.350769/1.350769 \| s2e 0.844907/0.844907 | pass |
-| GRM : effets fixes | ecart rel max 2.15e-12 | pass |
-| GRM : erreurs-types des effets fixes | ecart rel max 3.21e-10 | pass |
-| GRM : BLUPs | ecart max 2.67e-10 | pass |
-| GRM : PEV des BLUPs | ecart rel max 7.24e-10 \| PEV moyenne 0.17607 | pass |
-| GRM : constante de logLik de sommer (mesuree) | sommer -42.2549 \| remlax logLik_asreml -135.2526 \| ecart 92.9977 ((n-p)/2 log var(y) = 87.6572) | pass |
+| GRM : variance components | s2g 1.350769/1.350769 \| s2e 0.844907/0.844907 | pass |
+| GRM : fixed effects | max rel diff 1.61e-13 | pass |
+| GRM : standard errors of the fixed effects | max rel diff 1.33e-10 | pass |
+| GRM : BLUPs | max diff 2.00e-11 | pass |
+| GRM : PEV of the BLUPs | max rel diff 2.60e-10 \| mean PEV 0.17607 | pass |
+| GRM : sommer logLik constant (measured) | sommer -42.2549 \| remlax logLik_asreml -135.2526 \| diff 92.9977 ((n-p)/2 log var(y) = 87.6572) | pass |
 
-**2. trois caracteres, us genetique avec GRM et us residuelle**
-
-| Check | Measured | Verdict |
-|---|---|---|
-| us3 + GRM : les 6 composantes genetiques | ecart rel max 2.33e-09 \| diag remlax 1.3404 1.0058 1.0875 \| sommer 1.3404 1.0058 1.0875 | pass |
-| us3 + GRM : les 6 composantes residuelles | ecart rel max 5.14e-10 | pass |
-| us3 + GRM : les 3 correlations genetiques | remlax 0.5164 0.1735 0.6232 \| sommer 0.5164 0.1735 0.6232 | pass |
-| us3 + GRM : effets fixes (3 moyennes) | ecart rel max 2.15e-15 | pass |
-| us3 + GRM : BLUPs des 3 caracteres | ecart max 1.66e-09 sur 180 valeurs | pass |
-
-**3. trois caracteres, diag genetique avec GRM et diag residuelle ; LRT us vs diag**
+**2. three traits, genetic us with GRM and residual us**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| diag3 + GRM : les 3 variances genetiques | remlax 1.3399 0.9738 1.0889 \| sommer 1.3399 0.9738 1.0889 | pass |
-| diag3 + GRM : les 3 variances residuelles | remlax 0.7849 1.3983 0.6668 \| sommer 0.7849 1.3983 0.6668 | pass |
-| LRT us vs diag : meme difference de -2logL | remlax 81.06687 \| sommer 81.06687 (6 ddl) | pass |
+| us3 + GRM : the 6 genetic components | max rel diff 7.74e-08 \| diag remlax 1.3404 1.0058 1.0875 \| sommer 1.3404 1.0058 1.0875 | pass |
+| us3 + GRM : the 6 residual components | max rel diff 1.94e-08 | pass |
+| us3 + GRM : the 3 genetic correlations | remlax 0.5164 0.1735 0.6232 \| sommer 0.5164 0.1735 0.6232 | pass |
+| us3 + GRM : fixed effects (3 means) | max rel diff 1.91e-15 | pass |
+| us3 + GRM : BLUPs of the 3 traits | max diff 6.65e-08 over 180 values | pass |
 
-**4. additif + dominance : deux matrices de parente sur le meme facteur**
-
-| Check | Measured | Verdict |
-|---|---|---|
-| A + D : les trois composantes | remlax 0.93906 0.76455 0.78469 \| sommer 0.93906 0.76455 0.78469 | pass |
-| A + D : BLUPs additifs et de dominance | ecart max 6.78e-08 | pass |
-
-**5. multi-environnement : une variance genetique par milieu avec GRM**
+**3. three traits, genetic diag with GRM and residual diag; LRT us vs diag**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| MET : les 4 variances genetiques | remlax 0.5255 0.8048 1.1331 0.9474 \| sommer 0.5255 0.8048 1.1331 0.9474 | pass |
-| MET : les 4 variances residuelles | remlax 0.7188 1.1889 1.5606 0.3662 \| sommer 0.7188 1.1889 1.5606 0.3662 | pass |
-| MET : effets fixes | ecart rel max 2.12e-10 | pass |
+| diag3 + GRM : the 3 genetic variances | remlax 1.3399 0.9738 1.0889 \| sommer 1.3399 0.9738 1.0889 | pass |
+| diag3 + GRM : the 3 residual variances | remlax 0.7849 1.3983 0.6668 \| sommer 0.7849 1.3983 0.6668 | pass |
+| LRT us vs diag : same difference in -2logL | remlax 81.06687 \| sommer 81.06687 (6 df) | pass |
+
+**4. additive + dominance: two kinship matrices on the same factor**
+
+| Check | Measured | Verdict |
+|---|---|---|
+| A + D : the three components | remlax 0.93906 0.76455 0.78469 \| sommer 0.93906 0.76455 0.78469 | pass |
+| A + D : additive and dominance BLUPs | max diff 6.47e-08 | pass |
+
+**5. multi-environment: one genetic variance per environment with GRM**
+
+| Check | Measured | Verdict |
+|---|---|---|
+| MET : the 4 genetic variances | remlax 0.5255 0.8048 1.1331 0.9474 \| sommer 0.5255 0.8048 1.1331 0.9474 | pass |
+| MET : the 4 residual variances | remlax 0.7188 1.1889 1.5606 0.3662 \| sommer 0.7188 1.1889 1.5606 0.3662 | pass |
+| MET : fixed effects | max rel diff 7.46e-11 | pass |
 
 ## Against asreml, structures and inference
 
 The structures a plant breeder actually writes: a one-dimensional AR1, a separable AR1xAR1 field, two-dimensional splines, and a covariance shared between two terms through str(). Then the inference layer: heritability and its delta-method standard error, Wald tests, and the equivalences between saturated parameterisations.
 
-**1. AR1 unidimensionnel**
+**1. one-dimensional AR1**
 
 | Check | Measured | Verdict |
 |---|---|---|
 | AR1 : rho | 0.6276741 vs 0.6276741 | pass |
 | AR1 : variance | 1.1690526 vs 1.1690526 | pass |
-| AR1 : residuelle | - | pass |
-| AR1 : logLik (convention asreml) | -111.075133372 vs -111.075133372 | pass |
+| AR1 : residual | - | pass |
+| AR1 : logLik (asreml convention) | -111.075133372 vs -111.075133372 | pass |
 
-**2. AR1 x AR1 separable (champ spatial)**
+**2. separable AR1 x AR1 (spatial field)**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| AR1xAR1 : variance du champ | 1.2088279 vs 1.2088279 | pass |
-| AR1xAR1 : rho ligne | 0.5940549 vs 0.5940549 | pass |
-| AR1xAR1 : rho colonne | 0.3397100 vs 0.3397100 | pass |
-| AR1xAR1 : residuelle | - | pass |
+| AR1xAR1 : field variance | 1.2088279 vs 1.2088279 | pass |
+| AR1xAR1 : row rho | 0.5940549 vs 0.5940549 | pass |
+| AR1xAR1 : column rho | 0.3397100 vs 0.3397100 | pass |
+| AR1xAR1 : residual | - | pass |
 | AR1xAR1 : logLik | -154.818019348 vs -154.818019348 | pass |
 
-**3. spline 2D (MEMES matrices de base des deux cotes)**
+**3. 2D spline (SAME basis matrices on both sides)**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| spline 2D : variance spl_x | 6.072477e+00 vs 6.072478e+00 | pass |
-| spline 2D : variance spl_y | 6.211014e+00 vs 6.210686e+00 | pass |
-| spline 2D : variance spl_xy | 3.775135e-11 vs 2.473758e-10 | pass |
-| spline 2D : residuelle | - | pass |
-| spline 2D : logLik | -13.508534360 vs -13.508534389 | pass |
-| spline 2D : composante nulle signalee degeneree | spl_xy | pass |
+| spline 2D : variance spl_fx | 1.063175e+01 vs 1.063180e+01 | pass |
+| spline 2D : variance spl_fy | 1.552303e+01 vs 1.545232e+01 | FAIL |
+| spline 2D : variance spl_fx_y | 6.737911e-11 vs 5.425611e-07 | pass |
+| spline 2D : variance spl_x_fy | 3.775135e-11 vs 8.655429e-11 | pass |
+| spline 2D : variance spl_fx_fy | 3.775135e-11 vs 3.454338e-11 | pass |
+| spline 2D : residual | - | pass |
+| spline 2D : logLik | -5.014079566 vs -5.014093202 | FAIL |
 
-**4. str() : covariance PARTAGEE entre deux termes**
+**4. str(): covariance SHARED between two terms**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| str : var terme 1 | 1.1103369 vs 1.1103369 | pass |
+| str : var term 1 | 1.1103369 vs 1.1103369 | pass |
 | str : covariance | 0.5137383 vs 0.5137383 | pass |
-| str : var terme 2 | 0.6966672 vs 0.6966671 | pass |
-| str : residuelle | - | pass |
+| str : var term 2 | 0.6966671 vs 0.6966671 | pass |
+| str : residual | - | pass |
 | str : logLik | -133.657051701 vs -133.657051701 | pass |
 
-**5. vpredict et Wald**
+**5. vpredict and Wald**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| vpredict : estimation de h2 | 0.6685333 vs 0.6685333 | pass |
-| vpredict : ERREUR-TYPE de h2 (delta method) | 0.0500972 vs 0.0500998 | pass |
-| Wald : ddl du terme trt | 2 | pass |
-| Wald : p-valeur du dernier terme (seq == cond) | 8.776e-09 vs 8.776e-09 | pass |
+| vpredict : estimate of h2 | 0.6685333 vs 0.6685333 | pass |
+| vpredict : STANDARD ERROR of h2 (delta method) | 0.0500972 vs 0.0500998 | pass |
+| Wald : df of the trt term | 2 | pass |
+| Wald : p-value of the last term (seq == cond) | 8.776e-09 vs 8.776e-09 | pass |
 
-**6. parametrisations SATUREES : chol(t-1), ante(t-1), fa(t), rr(t)**
+**6. SATURATED parametrisations: chol(t-1), ante(t-1), fa(t), rr(t)**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| chol(gid, rank=3)  == us | ecart 5.68e-13 | pass |
-| ante(gid, rank=3)  == us | ecart 2.27e-13 | pass |
-| fa(gid, rank=4)    == us | ecart 0.00e+00 | pass |
-| rr(gid, rank=4)    == us | ecart 1.14e-13 | pass |
+| chol(gid, rank=3)  == us | diff 4.55e-13 | pass |
+| ante(gid, rank=3)  == us | diff 2.27e-13 | pass |
+| fa(gid, rank=4)    == us | diff 5.68e-13 | pass |
+| rr(gid, rank=4)    == us | diff 7.96e-13 | pass |
 
 ## Against asreml, the rest of the catalogue
 
 The structures that were identified by matching asreml's output rather than from documentation - lvr, the anisotropic Matern, user-written structures, sectioned residuals - plus prediction and the Kenward-Roger denominator degrees of freedom against pbkrtest.
 
-**1. lvr : tente tronquee max(0, 1 - d/phi)**
+**1. lvr: truncated tent max(0, 1 - d/phi)**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| lvr : logLik = profil R independant | remlax -1.9143976 \| R -1.9143976 \| portee 5.8896 vs 5.8896 | pass |
-| lvr : asreml n'atteint pas un meilleur optimum | asreml -2.819575 <= remlax -1.914398 | pass |
+| lvr : logLik = independent R profile | remlax -2.6786173 \| R -1.9143976 \| range 1.5055 vs 5.8896 | FAIL |
+| lvr : asreml does not reach a better optimum | asreml -2.819575 <= remlax -2.678617 | pass |
 
-**2. mtrn : Matern anisotrope, parametres FIXES des deux cotes**
-
-| Check | Measured | Verdict |
-|---|---|---|
-| mtrn isotrope nu=0.8 : logLik = reference besselK | remlax 1.0419875 \| R 1.0419875 | pass |
-| mtrn isotrope nu=0.8 : logLik = asreml | asreml 1.0419875 \| remlax 1.0419875 | pass |
-| mtrn nu=1.5 delta=2 : logLik = reference besselK | remlax -16.5344994 \| R -16.5344994 | pass |
-| mtrn nu=1.5 delta=2 : logLik = asreml | asreml -16.5344994 \| remlax -16.5344994 | pass |
-| mtrn delta=2 alpha=.6 : logLik = reference besselK | remlax 2.5900227 \| R 2.5900227 | pass |
-| mtrn nu=0.5 lambda=1 : logLik = reference besselK | remlax -6.9246740 \| R -6.9246740 | pass |
-| mtrn nu=0.5 lambda=1 : logLik = asreml | asreml -6.9246740 \| remlax -6.9246740 | pass |
-
-**3. mtrn : la portee est bien ESTIMEE quand on la libere**
+**2. mtrn: anisotropic Matern, parameters FIXED on both sides**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| mtrn : phi estime = argmax du profil R | phi 0.39696 vs 0.39696 (vrai 2.5) \| logLik 5.3370863 vs 5.3370863 | pass |
+| mtrn isotropic nu=0.8 : logLik = besselK reference | remlax 5.1067110 \| R 5.1067110 | pass |
+| mtrn isotropic nu=0.8 : logLik = asreml | asreml 5.1067110 \| remlax 5.1067110 | pass |
+| mtrn nu=1.5 delta=2 : logLik = besselK reference | remlax -6.9636274 \| R -6.9636274 | pass |
+| mtrn nu=1.5 delta=2 : logLik = asreml | asreml -6.9636274 \| remlax -6.9636274 | pass |
+| mtrn delta=2 alpha=.6 : logLik = besselK reference | remlax 4.9300437 \| R 4.9300437 | pass |
+| mtrn nu=0.5 lambda=1 : logLik = besselK reference | remlax -1.0246717 \| R -1.0246717 | pass |
+| mtrn nu=0.5 lambda=1 : logLik = asreml | asreml -1.0246717 \| remlax -1.0246717 | pass |
 
-**5. dsum : une residuelle par section**
-
-| Check | Measured | Verdict |
-|---|---|---|
-| dsum : deux sections ameliorent la vraisemblance | 1 section -142.6365 -> 2 sections -130.4130 (+12.22) | pass |
-| dsum : les deux variances residuelles sont separees | 0.2203 / 1.2541 (vraies 0.25 et 1.96) | pass |
-| dsum : logLik = asreml | asreml -43.113853 \| remlax -43.113852 | pass |
-
-**5b. dsum : des structures DIFFERENTES selon la section**
+**3. mtrn: the range is indeed ESTIMATED when freed**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| dsum : trois sections, deux AR1 et une iid | 3 sections \| 6 parametres \| rho sur A+B | pass |
+| mtrn : estimated phi = argmax of the R profile | phi 0.62086 vs 0.62086 (true 2.5) \| logLik 4.9738738 vs 4.9738738 | pass |
 
-**6. predict : moyennes ajustees et leurs erreurs-types**
+**5. dsum: one residual per section**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| predict : valeurs = asreml | ecart max 1.95e-12 | pass |
-| predict : erreurs-types = asreml | ecart max 4.42e-10 | pass |
-| predict : erreur-type des differences disponible | sed moyen 0.18603 | pass |
+| dsum : two sections improve the likelihood | 1 section -146.2015 -> 2 sections -127.2089 (+18.99) | pass |
+| dsum : the two residual variances are separated | 0.1388 / 1.2999 (true 0.25 and 1.96) | pass |
+| dsum : logLik = asreml | asreml -39.909705 \| remlax -39.909705 | pass |
+
+**5b. dsum: DIFFERENT structures by section**
+
+| Check | Measured | Verdict |
+|---|---|---|
+| dsum : three sections, two AR1 and one iid | 3 sections \| 6 parameters \| rho on A+B | pass |
+
+**6. predict: adjusted means and their standard errors**
+
+| Check | Measured | Verdict |
+|---|---|---|
+| predict : values = asreml | max diff 1.31e-13 | pass |
+| predict : standard errors = asreml | max diff 1.34e-10 | pass |
+| predict : standard error of differences available | mean sed 0.18922 | pass |
 
 **7. Kenward-Roger vs pbkrtest**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| K-R : ddl du denominateur = pbkrtest | remlax 21.76897 \| pbkrtest 21.76896 | pass |
-| K-R : statistique F = pbkrtest | remlax 2.790148 \| pbkrtest 2.790148 | pass |
-| K-R : erreurs-types ajustees = pbkrtest | ecart max 1.30e-07 | pass |
-| K-R : l'ajustement GONFLE les erreurs-types | rapport moyen 1.03753 | pass |
+| K-R : denominator df = pbkrtest | remlax 21.76897 \| pbkrtest 21.76896 | pass |
+| K-R : F statistic = pbkrtest | remlax 2.790148 \| pbkrtest 2.790148 | pass |
+| K-R : adjusted standard errors = pbkrtest | max diff 1.31e-07 | pass |
+| K-R : the adjustment INFLATES the standard errors | mean ratio 1.03753 | pass |
 
-**8. predict avec la part aleatoire (BLUP + erreur de prediction)**
+**8. predict with the random part (BLUP + prediction error)**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| predict : le BLUP entre dans la moyenne par bloc | ecart-type avec BLUP 0.45961, sans 0.00e+00 | pass |
+| predict : the BLUP enters the mean by block | standard deviation with BLUP 0.69886, without 0.00e+00 | pass |
 
 ## Against asreml, the remaining structures
 
 Grouped residual series ar2, ar3, ma1, ma2, arma, sar, cor, corb and corg; the two-dimensional metric kernels iexp, igau, ieuc, aexp, agau, sph and cir on an irregular field; the non-saturated multi-trait structures fa(1), rr(1), corh, ante(1), chol(1) and diag on four traits with a GRM; the separable product id x ar1 x ar1 with shared correlations; and the multi-trait spatial residual us(trait):ar1(row):ar1(col).
 
-**A1. ar2 : residuelle groupee, contre asreml**
+**A1. ar2: grouped residual, against asreml**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| ar2 : logLik (convention asreml) | -72.335196521 vs -72.335196521 | pass |
-| ar2 : variance residuelle | 1.675628 vs 1.675628 | pass |
-| ar2 : parametres de correlation (ensemble) | remlax 0.5325 0.19233 \| asreml 0.5325 0.19233 | pass |
-| ar2 : remlax pas moins bon qu'asreml | -72.335197 vs -72.335197 (ecart -5.68e-14) | pass |
-| ar2 : effets fixes (a l'ordre pres) | remlax 0.6225 0.4419 \| asreml 0.6225 0.4419 | pass |
+| ar2 : logLik (asreml convention) | -72.335196521 vs -72.335196521 | pass |
+| ar2 : residual variance | 1.675628 vs 1.675628 | pass |
+| ar2 : correlation parameters (as a set) | remlax 0.5325 0.19233 \| asreml 0.5325 0.19233 | pass |
+| ar2 : remlax no worse than asreml | -72.335197 vs -72.335197 (diff -2.84e-14) | pass |
+| ar2 : fixed effects (up to order) | remlax 0.6225 0.4419 \| asreml 0.6225 0.4419 | pass |
 
-**A2. ar3 : residuelle groupee, contre asreml**
-
-| Check | Measured | Verdict |
-|---|---|---|
-| ar3 : logLik (convention asreml) | -75.186557795 vs -75.186557795 | pass |
-| ar3 : variance residuelle | 1.658159 vs 1.658159 | pass |
-| ar3 : parametres de correlation (ensemble) | remlax 0.4335 0.10803 0.21949 \| asreml 0.4335 0.10803 0.21949 | pass |
-| ar3 : remlax pas moins bon qu'asreml | -75.186558 vs -75.186558 (ecart +4.26e-14) | pass |
-| ar3 : effets fixes (a l'ordre pres) | remlax 1.0652 0.4518 \| asreml 1.0652 0.4518 | pass |
-
-**A3. ma1 : residuelle groupee, contre asreml**
+**A2. ar3: grouped residual, against asreml**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| ma1 : logLik (convention asreml) | -71.441165627 vs -71.441165627 | pass |
-| ma1 : variance residuelle | 1.173080 vs 1.173080 | pass |
-| ma1 : parametres de correlation (ensemble) | remlax -0.52845 \| asreml -0.52845 | pass |
-| ma1 : remlax pas moins bon qu'asreml | -71.441166 vs -71.441166 (ecart -2.84e-14) | pass |
-| ma1 : effets fixes (a l'ordre pres) | remlax 1.0329 0.6044 \| asreml 1.0329 0.6044 | pass |
+| ar3 : logLik (asreml convention) | -75.186557795 vs -75.186557795 | pass |
+| ar3 : residual variance | 1.658159 vs 1.658159 | pass |
+| ar3 : correlation parameters (as a set) | remlax 0.4335 0.10803 0.21949 \| asreml 0.4335 0.10803 0.21949 | pass |
+| ar3 : remlax no worse than asreml | -75.186558 vs -75.186558 (diff +1.42e-14) | pass |
+| ar3 : fixed effects (up to order) | remlax 1.0652 0.4518 \| asreml 1.0652 0.4518 | pass |
 
-**A4. ma2 : residuelle groupee, contre asreml**
-
-| Check | Measured | Verdict |
-|---|---|---|
-| ma2 : logLik (convention asreml) | -72.524782986 vs -72.558053561 | FAIL |
-| ma2 : variance residuelle | 1.400230 vs 1.369831 | FAIL |
-| ma2 : parametres de correlation (ensemble) | remlax -0.58011 -0.44931 \| asreml -0.57924 -0.44714 | FAIL |
-| ma2 : remlax pas moins bon qu'asreml | -72.524783 vs -72.558054 (ecart +3.33e-02) | pass |
-| ma2 : effets fixes (a l'ordre pres) | remlax 0.8983 0.4977 \| asreml 0.8994 0.4962 | FAIL |
-
-**A5. arma : residuelle groupee, contre asreml**
+**A3. ma1: grouped residual, against asreml**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| arma : logLik (convention asreml) | -73.124116717 vs -73.124116717 | pass |
-| arma : variance residuelle | 1.376202 vs 1.376202 | pass |
-| arma : parametres de correlation (ensemble) | remlax 0.28594 0.35587 \| asreml 0.35587 0.28594 | pass |
-| arma : remlax pas moins bon qu'asreml | -73.124117 vs -73.124117 (ecart -5.68e-14) | pass |
-| arma : effets fixes (a l'ordre pres) | remlax 0.8109 0.3658 \| asreml 0.8109 0.3658 | pass |
+| ma1 : logLik (asreml convention) | -71.441165627 vs -71.441165627 | pass |
+| ma1 : residual variance | 1.173080 vs 1.173080 | pass |
+| ma1 : correlation parameters (as a set) | remlax -0.52845 \| asreml -0.52845 | pass |
+| ma1 : remlax no worse than asreml | -71.441166 vs -71.441166 (diff +0.00e+00) | pass |
+| ma1 : fixed effects (up to order) | remlax 1.0329 0.6044 \| asreml 1.0329 0.6044 | pass |
 
-**A6. sar : residuelle groupee, contre asreml**
-
-| Check | Measured | Verdict |
-|---|---|---|
-| sar : logLik (convention asreml) | -70.706817237 vs -70.706817237 | pass |
-| sar : variance residuelle | 1.369386 vs 1.369386 | pass |
-| sar : parametres de correlation (ensemble) | remlax 0.63555 \| asreml 0.63555 | pass |
-| sar : remlax pas moins bon qu'asreml | -70.706817 vs -70.706817 (ecart -2.84e-14) | pass |
-| sar : effets fixes (a l'ordre pres) | remlax 1.0847 0.3773 \| asreml 1.0847 0.3773 | pass |
-
-**A7. cor : residuelle groupee, contre asreml**
+**A4. ma2: grouped residual, against asreml**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| cor : logLik (convention asreml) | -96.140426816 vs -96.140426816 | pass |
-| cor : variance residuelle | 1.515622 vs 1.515622 | pass |
-| cor : parametres de correlation (ensemble) | remlax 0.21775 \| asreml 0.21775 | pass |
-| cor : remlax pas moins bon qu'asreml | -96.140427 vs -96.140427 (ecart +4.26e-14) | pass |
-| cor : effets fixes (a l'ordre pres) | remlax 0.9673 0.6452 \| asreml 0.9673 0.6452 | pass |
+| ma2 : logLik (asreml convention) | -72.524782986 vs -72.558053561 | FAIL |
+| ma2 : residual variance | 1.400230 vs 1.369831 | FAIL |
+| ma2 : correlation parameters (as a set) | remlax -0.58011 -0.44931 \| asreml -0.57924 -0.44714 | FAIL |
+| ma2 : remlax no worse than asreml | -72.524783 vs -72.558054 (diff +3.33e-02) | pass |
+| ma2 : fixed effects (up to order) | remlax 0.8983 0.4977 \| asreml 0.8994 0.4962 | FAIL |
 
-**A8. corb : residuelle groupee, contre asreml**
-
-| Check | Measured | Verdict |
-|---|---|---|
-| corb : logLik (convention asreml) | -69.307901067 vs -69.307901067 | pass |
-| corb : variance residuelle | 1.092528 vs 1.092528 | pass |
-| corb : parametres de correlation (ensemble) | remlax 0.41316 0.14577 \| asreml 0.41316 0.14577 | pass |
-| corb : remlax pas moins bon qu'asreml | -69.307901 vs -69.307901 (ecart -1.42e-14) | pass |
-| corb : effets fixes (a l'ordre pres) | remlax 0.9803 0.4266 \| asreml 0.9803 0.4266 | pass |
-
-**A9. corg : residuelle groupee, contre asreml**
+**A5. arma: grouped residual, against asreml**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| corg : logLik (convention asreml) | -97.912513106 vs -97.912513106 | pass |
-| corg : variance residuelle | 0.905272 vs 0.905272 | pass |
-| corg : parametres de correlation (ensemble) | remlax 0.38785 0.16896 0.22701 -0.07416 0.19222 0.43027 \| asreml 0.38785 0.16896 0.22701 -0.07416 0.19222 0.43027 | pass |
-| corg : remlax pas moins bon qu'asreml | -97.912513 vs -97.912513 (ecart +1.85e-13) | pass |
-| corg : effets fixes (a l'ordre pres) | remlax 0.9558 0.4911 \| asreml 0.9558 0.4911 | pass |
+| arma : logLik (asreml convention) | -73.124116717 vs -73.124116717 | pass |
+| arma : residual variance | 1.376202 vs 1.376202 | pass |
+| arma : correlation parameters (as a set) | remlax 0.28594 0.35587 \| asreml 0.35587 0.28594 | pass |
+| arma : remlax no worse than asreml | -73.124117 vs -73.124117 (diff -8.53e-14) | pass |
+| arma : fixed effects (up to order) | remlax 0.8109 0.3658 \| asreml 0.8109 0.3658 | pass |
 
-**B1. iexp : noyau metrique 2D, contre asreml**
+**A6. sar: grouped residual, against asreml**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| iexp : logLik (convention asreml) | -4.778255069 vs -4.778255069 | pass |
+| sar : logLik (asreml convention) | -70.706817237 vs -70.706817237 | pass |
+| sar : residual variance | 1.369386 vs 1.369386 | pass |
+| sar : correlation parameters (as a set) | remlax 0.63555 \| asreml 0.63555 | pass |
+| sar : remlax no worse than asreml | -70.706817 vs -70.706817 (diff -8.53e-14) | pass |
+| sar : fixed effects (up to order) | remlax 1.0847 0.3773 \| asreml 1.0847 0.3773 | pass |
+
+**A7. cor: grouped residual, against asreml**
+
+| Check | Measured | Verdict |
+|---|---|---|
+| cor : logLik (asreml convention) | -96.140426816 vs -96.140426816 | pass |
+| cor : residual variance | 1.515622 vs 1.515622 | pass |
+| cor : correlation parameters (as a set) | remlax 0.21775 \| asreml 0.21775 | pass |
+| cor : remlax no worse than asreml | -96.140427 vs -96.140427 (diff +1.42e-14) | pass |
+| cor : fixed effects (up to order) | remlax 0.9673 0.6452 \| asreml 0.9673 0.6452 | pass |
+
+**A8. corb: grouped residual, against asreml**
+
+| Check | Measured | Verdict |
+|---|---|---|
+| corb : logLik (asreml convention) | -69.307901067 vs -69.307901067 | pass |
+| corb : residual variance | 1.092528 vs 1.092528 | pass |
+| corb : correlation parameters (as a set) | remlax 0.41316 0.14577 \| asreml 0.41316 0.14577 | pass |
+| corb : remlax no worse than asreml | -69.307901 vs -69.307901 (diff +1.42e-14) | pass |
+| corb : fixed effects (up to order) | remlax 0.9803 0.4266 \| asreml 0.9803 0.4266 | pass |
+
+**A9. corg: grouped residual, against asreml**
+
+| Check | Measured | Verdict |
+|---|---|---|
+| corg : logLik (asreml convention) | -97.912513106 vs -97.912513106 | pass |
+| corg : residual variance | 0.905272 vs 0.905272 | pass |
+| corg : correlation parameters (as a set) | remlax 0.38785 0.16896 0.22701 -0.07416 0.19222 0.43027 \| asreml 0.38785 0.16896 0.22701 -0.07416 0.19222 0.43027 | pass |
+| corg : remlax no worse than asreml | -97.912513 vs -97.912513 (diff +7.11e-14) | pass |
+| corg : fixed effects (up to order) | remlax 0.9558 0.4911 \| asreml 0.9558 0.4911 | pass |
+
+**B1. iexp: 2D metric kernel, against asreml**
+
+| Check | Measured | Verdict |
+|---|---|---|
+| iexp : logLik (asreml convention) | -4.778255069 vs -4.778255069 | pass |
 | iexp : variance | 1.476882 vs 1.476882 | pass |
-| iexp : parametres du noyau (ensemble) | remlax 0.87186 \| asreml 0.87186 | pass |
-| iexp : remlax pas moins bon qu'asreml | -4.778255 vs -4.778255 (ecart +8.88e-14) | pass |
-| iexp : meme logLik aux parametres d'asreml | -4.778255069 vs -4.778255069 (remlax evalue aux parametres d'asreml) | pass |
+| iexp : kernel parameters (as a set) | remlax 0.87186 \| asreml 0.87186 | pass |
+| iexp : remlax no worse than asreml | -4.778255 vs -4.778255 (diff +5.33e-14) | pass |
+| iexp : same logLik at the asreml parameters | -4.778255069 vs -4.778255069 (remlax evaluated at the asreml parameters) | pass |
 
-**B2. igau : noyau metrique 2D, contre asreml**
+**B2. igau: 2D metric kernel, against asreml**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| igau : logLik (convention asreml) | -3.293847858 vs -3.293847858 | pass |
+| igau : logLik (asreml convention) | -3.293847858 vs -3.293847858 | pass |
 | igau : variance | 1.287447 vs 1.287447 | pass |
-| igau : parametres du noyau (ensemble) | remlax 0.80114 \| asreml 0.80114 | pass |
-| igau : remlax pas moins bon qu'asreml | -3.293848 vs -3.293848 (ecart +4.25e-12) | pass |
-| igau : meme logLik aux parametres d'asreml | -3.293847858 vs -3.293847858 (remlax evalue aux parametres d'asreml) | pass |
+| igau : kernel parameters (as a set) | remlax 0.80114 \| asreml 0.80114 | pass |
+| igau : remlax no worse than asreml | -3.293848 vs -3.293848 (diff +3.90e-12) | pass |
+| igau : same logLik at the asreml parameters | -3.293847858 vs -3.293847858 (remlax evaluated at the asreml parameters) | pass |
 
-**B3. ieuc : noyau metrique 2D, contre asreml**
+**B3. ieuc: 2D metric kernel, against asreml**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| ieuc : logLik (convention asreml) | -4.016578104 vs -4.016578104 | pass |
+| ieuc : logLik (asreml convention) | -4.016578104 vs -4.016578104 | pass |
 | ieuc : variance | 0.769838 vs 0.769838 | pass |
-| ieuc : parametres du noyau (ensemble) | remlax 0.70585 \| asreml 0.70585 | pass |
-| ieuc : remlax pas moins bon qu'asreml | -4.016578 vs -4.016578 (ecart +2.13e-14) | pass |
-| ieuc : meme logLik aux parametres d'asreml | -4.016578104 vs -4.016578104 (remlax evalue aux parametres d'asreml) | pass |
+| ieuc : kernel parameters (as a set) | remlax 0.70585 \| asreml 0.70585 | pass |
+| ieuc : remlax no worse than asreml | -4.016578 vs -4.016578 (diff +1.42e-14) | pass |
+| ieuc : same logLik at the asreml parameters | -4.016578104 vs -4.016578104 (remlax evaluated at the asreml parameters) | pass |
 
-**B4. aexp : noyau metrique 2D, contre asreml**
+**B4. aexp: 2D metric kernel, against asreml**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| aexp : logLik (convention asreml) | -37.151545485 vs -37.151545489 | pass |
+| aexp : logLik (asreml convention) | -37.151545485 vs -37.151545489 | pass |
 | aexp : variance | 1.424754 vs 1.424748 | pass |
-| aexp : parametres du noyau (ensemble) | remlax 0.75991 0.65095 \| asreml 0.75991 0.65096 | pass |
-| aexp : remlax pas moins bon qu'asreml | -37.151545 vs -37.151545 (ecart +4.57e-09) | pass |
-| aexp : meme logLik aux parametres d'asreml | -37.151545486 vs -37.151545489 (remlax evalue aux parametres d'asreml) | pass |
+| aexp : kernel parameters (as a set) | remlax 0.75991 0.65095 \| asreml 0.75991 0.65096 | pass |
+| aexp : remlax no worse than asreml | -37.151545 vs -37.151545 (diff +4.57e-09) | pass |
+| aexp : same logLik at the asreml parameters | -37.151545486 vs -37.151545489 (remlax evaluated at the asreml parameters) | pass |
 
-**B5. agau : noyau metrique 2D, contre asreml**
+**B5. agau: 2D metric kernel, against asreml**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| agau : logLik (convention asreml) | 17.316795826 vs 17.316795825 | pass |
+| agau : logLik (asreml convention) | 17.316795825 vs 17.316795825 | pass |
 | agau : variance | 0.605183 vs 0.605183 | pass |
-| agau : parametres du noyau (ensemble) | remlax 0.94404 0.24205 \| asreml 0.94404 0.24205 | pass |
-| agau : remlax pas moins bon qu'asreml | 17.316796 vs 17.316796 (ecart +1.44e-10) | pass |
-| agau : meme logLik aux parametres d'asreml | 17.316795826 vs 17.316795825 (remlax evalue aux parametres d'asreml) | pass |
+| agau : kernel parameters (as a set) | remlax 0.94404 0.24205 \| asreml 0.94404 0.24205 | pass |
+| agau : remlax no worse than asreml | 17.316796 vs 17.316796 (diff +1.42e-10) | pass |
+| agau : same logLik at the asreml parameters | 17.316795825 vs 17.316795825 (remlax evaluated at the asreml parameters) | pass |
 
-**B6. sph : noyau metrique 2D, contre asreml**
+**B6. sph: 2D metric kernel, against asreml**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| sph : logLik (convention asreml) | 3.823231014 vs 3.753094938 | FAIL |
+| sph : logLik (asreml convention) | 3.823231014 vs 3.753094938 | FAIL |
 | sph : variance | 1.024529 vs 1.006357 | FAIL |
-| sph : parametres du noyau (ensemble) | remlax 8.6514 \| asreml 8.75447 | FAIL |
-| sph : remlax pas moins bon qu'asreml | 3.823231 vs 3.753095 (ecart +7.01e-02) | pass |
-| sph : meme logLik aux parametres d'asreml | 3.783476190 vs 3.753094938 (remlax evalue aux parametres d'asreml) | FAIL |
+| sph : kernel parameters (as a set) | remlax 8.6514 \| asreml 8.75447 | FAIL |
+| sph : remlax no worse than asreml | 3.823231 vs 3.753095 (diff +7.01e-02) | pass |
+| sph : same logLik at the asreml parameters | 3.783476190 vs 3.753094938 (remlax evaluated at the asreml parameters) | FAIL |
 
-**B7. cir : noyau metrique 2D, contre asreml**
+**B7. cir: 2D metric kernel, against asreml**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| cir : logLik (convention asreml) | 13.875897073 vs 10.847517451 | FAIL |
+| cir : logLik (asreml convention) | 13.875897073 vs 10.847517451 | FAIL |
 | cir : variance | 0.846601 vs 0.623517 | FAIL |
-| cir : parametres du noyau (ensemble) | remlax 7.40768 \| asreml 4.98345 | FAIL |
-| cir : remlax pas moins bon qu'asreml | 13.875897 vs 10.847517 (ecart +3.03e+00) | pass |
-| cir : meme logLik aux parametres d'asreml | 10.844976334 vs 10.847517451 (remlax evalue aux parametres d'asreml) | FAIL |
+| cir : kernel parameters (as a set) | remlax 7.40768 \| asreml 4.98345 | FAIL |
+| cir : remlax no worse than asreml | 13.875897 vs 10.847517 (diff +3.03e+00) | pass |
+| cir : same logLik at the asreml parameters | 10.844976334 vs 10.847517451 (remlax evaluated at the asreml parameters) | FAIL |
 
-**C1. us(trait) x GRM, 4 caracteres, residuelle diag, contre asreml**
-
-| Check | Measured | Verdict |
-|---|---|---|
-| us : logLik (convention asreml) | -475.359451222 vs -475.359451222 | pass |
-| us : remlax pas moins bon qu'asreml | -475.359451 vs -475.359451 (ecart +6.93e-12) | pass |
-| us : Sigma genetique | ecart rel max 6.41e-08 \| diag remlax 1.209 2.6058 0.711 1.3245 \| asreml 1.209 2.6058 0.711 1.3245 | pass |
-| us : les 4 variances residuelles | remlax 0.798 0.8956 0.5819 0.9622 \| asreml 0.798 0.8956 0.5819 0.9622 | pass |
-
-**C2. diag(trait) x GRM, 4 caracteres, residuelle diag, contre asreml**
+**C1. us(trait) x GRM, 4 traits, diag residual, against asreml**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| diag : logLik (convention asreml) | -493.193233887 vs -493.193233887 | pass |
-| diag : remlax pas moins bon qu'asreml | -493.193234 vs -493.193234 (ecart -3.18e-12) | pass |
-| diag : Sigma genetique | ecart rel max 4.00e-08 \| diag remlax 1.2052 2.6244 0.7152 1.3477 \| asreml 1.2052 2.6244 0.7152 1.3477 | pass |
-| diag : les 4 variances residuelles | remlax 0.7998 0.8921 0.5804 0.9565 \| asreml 0.7998 0.8921 0.5804 0.9565 | pass |
+| us : logLik (asreml convention) | -475.359451222 vs -475.359451222 | pass |
+| us : remlax no worse than asreml | -475.359451 vs -475.359451 (diff +7.84e-12) | pass |
+| us : genetic Sigma | max rel diff 4.23e-08 \| diag remlax 1.209 2.6058 0.711 1.3245 \| asreml 1.209 2.6058 0.711 1.3245 | pass |
+| us : the 4 residual variances | remlax 0.798 0.8956 0.5819 0.9622 \| asreml 0.798 0.8956 0.5819 0.9622 | pass |
 
-**C3. fa1(trait) x GRM, 4 caracteres, residuelle diag, contre asreml**
-
-| Check | Measured | Verdict |
-|---|---|---|
-| fa1 : logLik (convention asreml) | -480.160993199 vs -480.160993199 | pass |
-| fa1 : remlax pas moins bon qu'asreml | -480.160993 vs -480.160993 (ecart -5.88e-11) | pass |
-| fa1 : les 4 variances residuelles | remlax 0.7967 0.8955 0.5807 0.9543 \| asreml 0.7967 0.8955 0.5807 0.9543 | pass |
-
-**C4. rr1(trait) x GRM, 4 caracteres, residuelle diag, contre asreml**
+**C2. diag(trait) x GRM, 4 traits, diag residual, against asreml**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| rr1 : logLik (convention asreml) | -564.439985070 vs -564.440028141 | pass |
-| rr1 : remlax pas moins bon qu'asreml | -564.439985 vs -564.440028 (ecart +4.31e-05) | pass |
-| rr1 : les 4 variances residuelles | remlax 1.9695 1.0314 1.3332 1.5949 \| asreml 1.9693 1.0321 1.3332 1.5944 | pass |
+| diag : logLik (asreml convention) | -493.193233887 vs -493.193233887 | pass |
+| diag : remlax no worse than asreml | -493.193234 vs -493.193234 (diff -9.09e-13) | pass |
+| diag : genetic Sigma | max rel diff 2.49e-08 \| diag remlax 1.2052 2.6244 0.7152 1.3477 \| asreml 1.2052 2.6244 0.7152 1.3477 | pass |
+| diag : the 4 residual variances | remlax 0.7998 0.8921 0.5804 0.9565 \| asreml 0.7998 0.8921 0.5804 0.9565 | pass |
 
-**C5. corh(trait) x GRM, 4 caracteres, residuelle diag, contre asreml**
-
-| Check | Measured | Verdict |
-|---|---|---|
-| corh : logLik (convention asreml) | -492.756261237 vs -492.756261237 | pass |
-| corh : remlax pas moins bon qu'asreml | -492.756261 vs -492.756261 (ecart -9.09e-13) | pass |
-| corh : les 4 variances residuelles | remlax 0.7972 0.894 0.5795 0.9562 \| asreml 0.7972 0.894 0.5795 0.9562 | pass |
-
-**C6. ante1(trait) x GRM, 4 caracteres, residuelle diag, contre asreml**
+**C3. fa1(trait) x GRM, 4 traits, diag residual, against asreml**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| ante1 : logLik (convention asreml) | -491.875918525 vs -491.875918525 | pass |
-| ante1 : remlax pas moins bon qu'asreml | -491.875919 vs -491.875919 (ecart +3.44e-11) | pass |
-| ante1 : les 4 variances residuelles | remlax 0.7999 0.8922 0.5821 0.9573 \| asreml 0.7999 0.8922 0.5821 0.9573 | pass |
+| fa1 : logLik (asreml convention) | -480.160993199 vs -480.160993199 | pass |
+| fa1 : remlax no worse than asreml | -480.160993 vs -480.160993 (diff -5.50e-11) | pass |
+| fa1 : the 4 residual variances | remlax 0.7967 0.8955 0.5807 0.9543 \| asreml 0.7967 0.8955 0.5807 0.9543 | pass |
 
-**C7. chol1(trait) x GRM, 4 caracteres, residuelle diag, contre asreml**
-
-| Check | Measured | Verdict |
-|---|---|---|
-| chol1 : logLik (convention asreml) | -492.112977719 vs -492.112977719 | pass |
-| chol1 : remlax pas moins bon qu'asreml | -492.112978 vs -492.112978 (ecart -4.87e-11) | pass |
-| chol1 : les 4 variances residuelles | remlax 0.7999 0.8922 0.581 0.9575 \| asreml 0.7999 0.8922 0.581 0.9575 | pass |
-
-**D. sep : id(bloc) x ar1(col) x ar1(row), correlations partagees, contre asreml**
+**C4. rr1(trait) x GRM, 4 traits, diag residual, against asreml**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| sep : logLik (convention asreml) | -349.658684512 vs -349.658684512 | pass |
-| sep : variance du champ | 1.742834 vs 1.742834 | pass |
-| sep : rho colonnes et rho lignes | remlax 0.30873 0.59191 \| asreml 0.30873 0.59191 | pass |
-| sep : residuelle | 0.772377 vs 0.772377 | pass |
+| rr1 : logLik (asreml convention) | -564.439985070 vs -564.440028141 | pass |
+| rr1 : remlax no worse than asreml | -564.439985 vs -564.440028 (diff +4.31e-05) | pass |
+| rr1 : the 4 residual variances | remlax 1.9695 1.0314 1.3332 1.5949 \| asreml 1.9693 1.0321 1.3332 1.5944 | pass |
 
-**E. residuelle multi-caractere spatiale us(trait):ar1(row):ar1(col), contre asreml**
+**C5. corh(trait) x GRM, 4 traits, diag residual, against asreml**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| us:ar1:ar1 : logLik (convention asreml) | -97.115201240 vs -97.115201240 | pass |
-| us:ar1:ar1 : rho ligne et colonne | remlax 0.50089 0.36206 \| asreml 0.50089 0.36206 | pass |
-| us:ar1:ar1 : Sigma residuelle 2x2 | remlax 1.1591 0.6273 0.6273 0.8517 \| asreml 1.1591 0.6273 0.6273 0.8517 | pass |
-| us:ar1:ar1 : Sigma genetique 2x2 | remlax 0.5743 0.1596 0.1596 0.4802 \| asreml 0.5743 0.1596 0.1596 0.4802 | pass |
+| corh : logLik (asreml convention) | -492.756261237 vs -492.756261237 | pass |
+| corh : remlax no worse than asreml | -492.756261 vs -492.756261 (diff +3.18e-12) | pass |
+| corh : the 4 residual variances | remlax 0.7972 0.894 0.5795 0.9562 \| asreml 0.7972 0.894 0.5795 0.9562 | pass |
+
+**C6. ante1(trait) x GRM, 4 traits, diag residual, against asreml**
+
+| Check | Measured | Verdict |
+|---|---|---|
+| ante1 : logLik (asreml convention) | -491.875918525 vs -491.875918525 | pass |
+| ante1 : remlax no worse than asreml | -491.875919 vs -491.875919 (diff +3.58e-11) | pass |
+| ante1 : the 4 residual variances | remlax 0.7999 0.8922 0.5821 0.9573 \| asreml 0.7999 0.8922 0.5821 0.9573 | pass |
+
+**C7. chol1(trait) x GRM, 4 traits, diag residual, against asreml**
+
+| Check | Measured | Verdict |
+|---|---|---|
+| chol1 : logLik (asreml convention) | -492.112977719 vs -492.112977719 | pass |
+| chol1 : remlax no worse than asreml | -492.112978 vs -492.112978 (diff -5.05e-11) | pass |
+| chol1 : the 4 residual variances | remlax 0.7999 0.8922 0.581 0.9575 \| asreml 0.7999 0.8922 0.581 0.9575 | pass |
+
+**D. sep: id(block) x ar1(col) x ar1(row), shared correlations, against asreml**
+
+| Check | Measured | Verdict |
+|---|---|---|
+| sep : logLik (asreml convention) | -349.658684512 vs -349.658684512 | pass |
+| sep : field variance | 1.742834 vs 1.742834 | pass |
+| sep : column rho and row rho | remlax 0.30873 0.59191 \| asreml 0.30873 0.59191 | pass |
+| sep : residual | 0.772377 vs 0.772377 | pass |
+
+**E. spatial multi-trait residual us(trait):ar1(row):ar1(col), against asreml**
+
+| Check | Measured | Verdict |
+|---|---|---|
+| us:ar1:ar1 : logLik (asreml convention) | -97.115201240 vs -97.115201240 | pass |
+| us:ar1:ar1 : row and column rho | remlax 0.50089 0.36206 \| asreml 0.50089 0.36206 | pass |
+| us:ar1:ar1 : 2x2 residual Sigma | remlax 1.1591 0.6273 0.6273 0.8517 \| asreml 1.1591 0.6273 0.6273 0.8517 | pass |
+| us:ar1:ar1 : 2x2 genetic Sigma | remlax 0.5743 0.1596 0.1596 0.4802 \| asreml 0.5743 0.1596 0.1596 0.4802 | pass |
 
 ## Against asreml, BLUPs
 
 BLUPs and their ordering on a one-factor model, level by level.
 
-**1. ajustement des deux cotes, temps mesure**
+**1. fit on both sides, time measured**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| logLik dans la convention asreml | -260.296848172 vs -260.296848182 | pass |
+| logLik in the asreml convention | -260.296848172 vs -260.296848182 | pass |
 
-**3. BLUP : les deux cotes predisent-ils les memes effets ?**
+**3. BLUP: do both sides predict the same effects?**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| BLUP : ecart maximal | max\|diff\| = 3.155e-06 | pass |
+| BLUP : maximum difference | max\|diff\| = 3.155e-06 | pass |
 | BLUP : correlation | r = 1.000000000000 | pass |
 
-**4. effets fixes et leur variance**
+**4. fixed effects and their variance**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| effet fixe (intercept) | 5.110533510 vs 5.110533510 | pass |
+| fixed effect (intercept) | 5.110533510 vs 5.110533510 | pass |
 
 ## A full model of known truth
 
@@ -831,163 +841,95 @@ The complete direct and indirect genetic effects model: a weighted neighbourhood
 
 | Check | Measured | Verdict |
 |---|---|---|
-| le signe de cov(DGE, IGE intra) est retrouve | -0.4221 vs -0.35 | pass |
-| l'ajustement est a un optimum | decrement 8.7e-23 | pass |
-| remlax n'est pas moins bon qu'asreml | ecart +2.05e-02 en faveur de remlax | pass |
-| var_DGE : accord avec asreml | 1.09524 vs 1.09592 (SE 0.189) | pass |
-| cov_DGE_IGE : accord avec asreml | -0.42211 vs -0.41939 (SE 0.180) | pass |
-| var_IGEintra : accord avec asreml | 0.16268 vs 0.17627 (SE 0.354) | pass |
-| var_IGEinter : accord avec asreml | 0.54369 vs 0.53748 (SE 0.341) | pass |
-| var_champ : accord avec asreml | 0.61009 vs 0.61022 (SE 0.164) | pass |
-| rho_ligne : accord avec asreml | 0.53375 vs 0.53215 (SE 0.131) | pass |
-| rho_colonne : accord avec asreml | 0.11931 vs 0.11850 (SE 0.111) | pass |
-| pepite : accord avec asreml | 0.39824 vs 0.39694 (SE 0.156) | pass |
+| the sign of cov(DGE, IGE intra) is recovered | -0.4221 vs -0.35 | pass |
+| the fit is at an optimum | decrement 2.4e-24 | pass |
+| remlax is no worse than asreml | diff +2.05e-02 in favour of remlax | pass |
+| var_DGE : agreement with asreml | 1.09524 vs 1.09592 (SE 0.189) | pass |
+| cov_DGE_IGE : agreement with asreml | -0.42211 vs -0.41939 (SE 0.180) | pass |
+| var_IGEintra : agreement with asreml | 0.16268 vs 0.17627 (SE 0.354) | pass |
+| var_IGEinter : agreement with asreml | 0.54369 vs 0.53748 (SE 0.341) | pass |
+| var_field : agreement with asreml | 0.61009 vs 0.61022 (SE 0.164) | pass |
+| rho_row : agreement with asreml | 0.53375 vs 0.53215 (SE 0.131) | pass |
+| rho_column : agreement with asreml | 0.11931 vs 0.11850 (SE 0.111) | pass |
+| nugget : agreement with asreml | 0.39824 vs 0.39694 (SE 0.156) | pass |
 
-## Sparse engine: parameterisation parity
+## CPU against GPU
 
-Sigma, level correlations and their closed-form sparse precisions read identically by the RTMB sparse engine and the JAX dense engine, including K^-1 K = I checked by product.
+Every design of the structure catalogue is serialised once, then fitted twice in the same process: on the CPU and on a slice of an A100. The model must not depend on the machine that fits it.
 
-**1. Sigma(theta), entre caracteres**
-
-| Check | Measured | Verdict |
-|---|---|---|
-| Sigma : iid, t = 1, 1 parametres | ecart 0.000e+00 | pass |
-| Sigma : iid, t = 2, 1 parametres | ecart 0.000e+00 | pass |
-| Sigma : iid, t = 3, 1 parametres | ecart 0.000e+00 | pass |
-| Sigma : iid, t = 5, 1 parametres | ecart 0.000e+00 | pass |
-| Sigma : diag, t = 1, 1 parametres | ecart 0.000e+00 | pass |
-| Sigma : diag, t = 2, 2 parametres | ecart 0.000e+00 | pass |
-| Sigma : diag, t = 3, 3 parametres | ecart 4.441e-16 | pass |
-| Sigma : diag, t = 5, 5 parametres | ecart 5.551e-17 | pass |
-| Sigma : us, t = 1, 1 parametres | ecart 2.220e-16 | pass |
-| Sigma : us, t = 2, 3 parametres | ecart 0.000e+00 | pass |
-| Sigma : us, t = 3, 6 parametres | ecart 0.000e+00 | pass |
-| Sigma : us, t = 5, 15 parametres | ecart 0.000e+00 | pass |
-
-**2. K^-1(theta) : forme close R contre inverse numerique Python**
+**structure catalogue, 34 serialised designs**
 
 | Check | Measured | Verdict |
 |---|---|---|
-| ar1 : q = 5, phi = -0.0261 : K^-1 K = I | ecart 4.571e-18 | pass |
-| ar1 : q = 5 : log\|K\| analytique contre numerique | ecart 0.000e+00 | pass |
-| ar1 : q = 12, phi = 0.5222 : K^-1 K = I | ecart 2.220e-16 | pass |
-| ar1 : q = 12 : log\|K\| analytique contre numerique | ecart 8.882e-16 | pass |
-| ar1 : q = 40, phi = -0.4347 : K^-1 K = I | ecart 5.551e-17 | pass |
-| ar1 : q = 40 : log\|K\| analytique contre numerique | ecart 5.329e-15 | pass |
-| ar1ar1 : 3x4, phi = (0.512, -0.049) : K^-1 K = I | ecart 7.772e-16 | pass |
-| ar1ar1 : 3x4 : log\|K\| analytique contre numerique | ecart 3.997e-15 | pass |
-| ar1ar1 : 5x6, phi = (0.303, 0.748) : K^-1 K = I | ecart 1.554e-15 | pass |
-| ar1ar1 : 5x6 : log\|K\| analytique contre numerique | ecart 2.487e-14 | pass |
+| design 'aexp': same -2logL on CPU and on an A100 MIG slice | -2logL 560.16430238 vs 560.16430238 \| rel gap 2.03e-16 \| max\|dtheta\| 2.78e-16 \| 1.1 s CPU vs 8.6 s MIG | pass |
+| design 'ante1_mv': same -2logL on CPU and on an A100 MIG slice | -2logL 1284.22057669 vs 1284.22057669 \| rel gap 1.77e-16 \| max\|dtheta\| 2.67e-08 \| 1.5 s CPU vs 5.1 s MIG | pass |
+| design 'ar1': same -2logL on CPU and on an A100 MIG slice | -2logL 585.15663362 vs 585.15663362 \| rel gap 0.00e+00 \| max\|dtheta\| 2.78e-16 \| 0.4 s CPU vs 2.3 s MIG | pass |
+| design 'ar1ar1_res': same -2logL on CPU and on an A100 MIG slice | -2logL 513.75395410 vs 513.75395410 \| rel gap 0.00e+00 \| max\|dtheta\| 4.37e-16 \| 0.5 s CPU vs 2.7 s MIG | pass |
+| design 'ar2': same -2logL on CPU and on an A100 MIG slice | -2logL 583.38706024 vs 583.38706024 \| rel gap 0.00e+00 \| max\|dtheta\| 6.66e-16 \| 0.8 s CPU vs 1.4 s MIG | pass |
+| design 'ar3': same -2logL on CPU and on an A100 MIG slice | -2logL 581.02165146 vs 581.02165146 \| rel gap 0.00e+00 \| max\|dtheta\| 3.22e-15 \| 1.0 s CPU vs 1.5 s MIG | pass |
+| design 'arma': same -2logL on CPU and on an A100 MIG slice | -2logL 583.22954846 vs 583.22954846 \| rel gap 0.00e+00 \| max\|dtheta\| 1.04e-04 \| 0.6 s CPU vs 0.8 s MIG | pass |
+| design 'chol2_mv': same -2logL on CPU and on an A100 MIG slice | -2logL 1281.59614340 vs 1281.59614340 \| rel gap 1.77e-16 \| max\|dtheta\| 3.00e-14 \| 1.1 s CPU vs 1.2 s MIG | pass |
+| design 'cir': same -2logL on CPU and on an A100 MIG slice | -2logL 591.99572228 vs 591.99572228 \| rel gap 0.00e+00 \| max\|dtheta\| 5.07e-09 \| 0.5 s CPU vs 0.8 s MIG | pass |
+| design 'cor': same -2logL on CPU and on an A100 MIG slice | -2logL 585.55424610 vs 585.55424610 \| rel gap 1.94e-16 \| max\|dtheta\| 5.70e-15 \| 0.4 s CPU vs 0.6 s MIG | pass |
+| design 'corb2': same -2logL on CPU and on an A100 MIG slice | -2logL 583.42821102 vs 583.42821102 \| rel gap 3.90e-16 \| max\|dtheta\| 3.22e-15 \| 0.4 s CPU vs 0.6 s MIG | pass |
+| design 'corg': same -2logL on CPU and on an A100 MIG slice | -2logL 601.62640596 vs 601.62640596 \| rel gap 1.89e-16 \| max\|dtheta\| 8.48e-10 \| 0.8 s CPU vs 2.8 s MIG | pass |
+| design 'corh_mv': same -2logL on CPU and on an A100 MIG slice | -2logL 1281.60150032 vs 1281.60150032 \| rel gap 1.77e-16 \| max\|dtheta\| 1.72e-15 \| 1.1 s CPU vs 1.1 s MIG | pass |
+| design 'dsum': same -2logL on CPU and on an A100 MIG slice | -2logL 515.18686079 vs 515.18686079 \| rel gap 2.21e-16 \| max\|dtheta\| 1.18e-16 \| 0.3 s CPU vs 0.5 s MIG | pass |
+| design 'dsum_ar1': same -2logL on CPU and on an A100 MIG slice | -2logL 52.15394381 vs 52.15394381 \| rel gap 6.81e-16 \| max\|dtheta\| 1.55e-15 \| 0.5 s CPU vs 0.9 s MIG | pass |
+| design 'expo': same -2logL on CPU and on an A100 MIG slice | -2logL 585.55424610 vs 585.55424610 \| rel gap 0.00e+00 \| max\|dtheta\| 6.37e-15 \| 0.5 s CPU vs 1.2 s MIG | pass |
+| design 'fa2_mv': same -2logL on CPU and on an A100 MIG slice | -2logL 1281.59614340 vs 1281.59614340 \| rel gap 0.00e+00 \| max\|dtheta\| 1.21e-08 \| 1.5 s CPU vs 3.7 s MIG | pass |
+| design 'gau': same -2logL on CPU and on an A100 MIG slice | -2logL 585.55424610 vs 585.55424610 \| rel gap 0.00e+00 \| max\|dtheta\| 2.07e-14 \| 0.5 s CPU vs 0.6 s MIG | pass |
+| design 'ieuc': same -2logL on CPU and on an A100 MIG slice | -2logL 590.00207600 vs 590.00207600 \| rel gap 0.00e+00 \| max\|dtheta\| 9.19e-07 \| 1.0 s CPU vs 0.9 s MIG | pass |
+| design 'iexp': same -2logL on CPU and on an A100 MIG slice | -2logL 578.64147976 vs 578.64147976 \| rel gap 1.96e-16 \| max\|dtheta\| 5.55e-16 \| 0.4 s CPU vs 0.6 s MIG | pass |
+| design 'iid': same -2logL on CPU and on an A100 MIG slice | -2logL 498.81465569 vs 498.81465569 \| rel gap 5.70e-16 \| max\|dtheta\| 7.49e-16 \| 0.3 s CPU vs 1.1 s MIG | pass |
+| design 'lvr': same -2logL on CPU and on an A100 MIG slice | -2logL 585.55424610 vs 585.55424610 \| rel gap 3.88e-16 \| max\|dtheta\| 7.86e-12 \| 0.5 s CPU vs 0.7 s MIG | pass |
+| design 'ma1': same -2logL on CPU and on an A100 MIG slice | -2logL 583.30849572 vs 583.30849572 \| rel gap 3.90e-16 \| max\|dtheta\| 1.13e-06 \| 0.6 s CPU vs 0.8 s MIG | pass |
+| design 'mtrn_iso': same -2logL on CPU and on an A100 MIG slice | -2logL 589.40743274 vs 589.40743274 \| rel gap 1.93e-16 \| max\|dtheta\| 1.60e-12 \| 6.7 s CPU vs 288.1 s MIG | pass |
+| design 'own_2par': same -2logL on CPU and on an A100 MIG slice | -2logL 607.25006661 vs 607.25006661 \| rel gap 0.00e+00 \| max\|dtheta\| 0.00e+00 \| 0.5 s CPU vs 0.8 s MIG | pass |
+| design 'own_exp': same -2logL on CPU and on an A100 MIG slice | -2logL 585.55424610 vs 585.55424610 \| rel gap 0.00e+00 \| max\|dtheta\| 4.43e-07 \| 0.6 s CPU vs 0.8 s MIG | pass |
+| design 'rr2_mv': same -2logL on CPU and on an A100 MIG slice | -2logL 1343.60530125 vs 1343.60530125 \| rel gap 1.69e-16 \| max\|dtheta\| 2.34e-08 \| 0.9 s CPU vs 3.2 s MIG | pass |
+| design 'sar': same -2logL on CPU and on an A100 MIG slice | -2logL 585.04086512 vs 585.04086512 \| rel gap 1.94e-16 \| max\|dtheta\| 2.52e-08 \| 0.7 s CPU vs 0.9 s MIG | pass |
+| design 'sph': same -2logL on CPU and on an A100 MIG slice | -2logL 587.42826916 vs 587.42826916 \| rel gap 1.94e-16 \| max\|dtheta\| 5.07e-09 \| 1.0 s CPU vs 1.0 s MIG | pass |
+| design 'str_2': same -2logL on CPU and on an A100 MIG slice | -2logL 512.47455420 vs 512.47455420 \| rel gap 0.00e+00 \| max\|dtheta\| 2.64e-16 \| 0.7 s CPU vs 3.8 s MIG | pass |
+| design 'us_mv': same -2logL on CPU and on an A100 MIG slice | -2logL 1281.59614340 vs 1281.59614340 \| rel gap 0.00e+00 \| max\|dtheta\| 9.30e-16 \| 1.2 s CPU vs 1.0 s MIG | pass |
+| design 'us_res_mv': same -2logL on CPU and on an A100 MIG slice | -2logL 1395.95209251 vs 1395.95209251 \| rel gap 0.00e+00 \| max\|dtheta\| 8.88e-16 \| 0.8 s CPU vs 2.6 s MIG | pass |
+| design 'vm_kin': same -2logL on CPU and on an A100 MIG slice | -2logL 494.64877180 vs 494.64877180 \| rel gap 5.75e-16 \| max\|dtheta\| 3.05e-09 \| 0.3 s CPU vs 0.5 s MIG | pass |
+| design 'mtrn_aniso': same -2logL on CPU and on an A100 MIG slice | fit error: ValueError: -2logL or its gradient is not finite at the starting point (value 629.5077869074553, 2 non-finite gradient component(s)). The optimiser cannot start. Check the kernel or supply theta_init. | FAIL |
 
-**3. forme quadratique ecrite en vecteurs contre u' K^-1 u**
+## The failed checks
 
-| Check | Measured | Verdict |
-|---|---|---|
-| ar1 : q = 6 | ecart 2.665e-15 | pass |
-| ar1 : q = 25 | ecart 3.553e-15 | pass |
-| ar1ar1 : 4x5 | ecart 0.000e+00 | pass |
-| ar1ar1 : 7x3 | ecart 0.000e+00 | pass |
+A failed check stays failed on purpose: each one is a documented disagreement, not a reason to widen a tolerance.
 
-**4. perimetre**
+**ma2, sph and cir against asreml (12 checks, as in 2026-09).** `tests/R/diag_asreml3_ecarts.R` settles them (its log sits with the others). A dense REML arbiter written in R finds the remlax value to the last digit, and asreml held at the parameters of remlax returns the remlax value. For sph and cir, asreml reports converge = FALSE (it oscillates between hills of a multimodal surface). For ma2, asreml declares convergence while its parameters still change by several per cent per iteration, and its two correlation parameters are not the MA coefficients of the standard form.
 
-| Check | Measured | Verdict |
-|---|---|---|
-| refuse noyau metrique iexp | : terme 's' : structure entre niveaux 'iexp' a un inverse plein, le creux n'y ga | pass |
-| refuse parente dense LK | : terme 'g' : structure entre niveaux 'fixed' a un inverse plein, le creux n'y g | pass |
-| refuse fa entre caracteres | : terme 'g' : structure entre caracteres 'fa' hors perimetre creux (retenues : i | pass |
-| accepte us(2) + ar1 + residuelle diag | - | pass |
+**2D P-spline against asreml (2 checks).** `rx_spl2d()` builds the PS-ANOVA of SpATS, five smooth components, and asreml receives the same five basis matrices. remlax reaches a restricted log-likelihood higher than asreml by 1.4e-5. asreml declares convergence and stays at its point when it is allowed to iterate further, so the two programs stop at different points of a flat direction. The variance of f(y) differs by 0.5 per cent, and the three components at the floor agree.
 
-## Sparse engine: same likelihood as the dense engine
+**lvr, truncated tent (1 check).** The likelihood is not unimodal: its support changes each time the range crosses an integer distance. remlax stops at a local optimum (range 1.51, log-likelihood -2.679) while a fine grid in R finds range 5.89 and -1.914. asreml stops at a worse point (-2.820). The remlax revision of 2026-09-28, which passed this check on the cluster then, gives the same local optimum on the authors' workstation: the outcome depends on the start, not on a change of the code.
 
-Each engine is evaluated at the other's optimum; comparing two optima alone would only show where each stopped.
+**CPU/GPU parity, anisotropic Matern (1 check).** The fit of `mtrn_aniso` stops before its first iteration: two components of the gradient are not finite at the starting point. The anisotropic distance and the Matern function have an infinite derivative at zero distance, where the diagonal of the kernel sits. The check that refuses a non-finite start was added on 2026-09-28, after the parity of 2026-09-01 (34/34), which therefore did not see it. The 33 other designs agree to at most 6.8e-16 in relative value.
 
-| Check | Measured | Verdict |
-|---|---|---|
-| 0 : dense reevalue a son propre theta | ecart 0.000e+00 | pass |
-| A : creux evalue au theta du dense | ecart 2.274e-13 | pass |
-| B : dense evalue au theta du creux | ecart -2.274e-13 | pass |
-| C : les deux optima a moins de 1e-4 | ecart -1.137e-13 | pass |
-| 0 : dense reevalue a son propre theta | ecart 0.000e+00 | pass |
-| A : creux evalue au theta du dense | ecart 2.046e-12 | pass |
-| B : dense evalue au theta du creux | ecart 9.095e-13 | pass |
-| C : les deux optima a moins de 1e-4 | ecart -2.559e-09 | pass |
-| 0 : dense reevalue a son propre theta | ecart 0.000e+00 | pass |
-| A : creux evalue au theta du dense | ecart 1.819e-12 | pass |
-| B : dense evalue au theta du creux | ecart 5.684e-13 | pass |
-| C : les deux optima a moins de 1e-4 | ecart -3.623e-10 | pass |
-| 0 : dense reevalue a son propre theta | ecart 0.000e+00 | pass |
-| A : creux evalue au theta du dense | ecart 1.023e-12 | pass |
-| B : dense evalue au theta du creux | ecart 1.137e-13 | pass |
-| C : les deux optima a moins de 1e-4 | ecart -6.118e-09 | pass |
-
-## Sparse engine: precision path
-
-A term declared by its precision matrix gives the same likelihood as the same term declared by its relationship matrix, arbitrated by a REML written out longhand in the test file.
-
-**1. la fente accepte une precision creuse, et refuse les melanges**
-
-| Check | Measured | Verdict |
-|---|---|---|
-| Kinv portee par le terme | ecart +0.000e+00 | pass |
-| niveau resolu en 'prec' | ecart +0.000e+00 | pass |
-| dans le perimetre creux | ecart +0.000e+00 | pass |
-| refuse K et Kinv ensemble | ecart +0.000e+00 | pass |
-
-**2. la MEME parente par deux voies donne la MEME vraisemblance**
-
-| Check | Measured | Verdict |
-|---|---|---|
-| arbitre contre moteur dense, au theta du dense | ecart -1.137e-13 | pass |
-| arbitre contre moteur creux, au theta du dense | ecart +0.000e+00 | pass |
-| les deux moteurs, au theta du dense | ecart +1.137e-13 | pass |
-| optima des deux moteurs | ecart +5.684e-13 | pass |
-
-**3. log|K| fourni par l'utilisateur : meme resultat**
-
-| Check | Measured | Verdict |
-|---|---|---|
-| log\|K\| fourni contre log\|K\| calcule | ecart +0.000e+00 | pass |
+**Random sweep, seed 0 (1 check).** One configuration out of 200 ends with a Newton decrement of 0.011, above the threshold of 0.01. Two others reach a better optimum after a restart, with gains of 0.004 and 0.27 on -2logL. Seeds 50 and 100 have no unconverged configuration.
 
 ## What could not be measured here
 
-This section exists so that nothing on the page above is mistaken for something it is not.
-
-**CPU against GPU.** The 34-design parity sweep (`tests-python/parite_gpu.py` of remlax, evaluation at a common theta on both devices) was not replayed on this date: the whole A100 became free late in the day and the time went to the speed benchmark, which fitted the same ten models on 4 CPU cores and on the whole card and reached the same optimum on each (|logLik gap| at most 1e-6 at six printed decimals, `benchmarks/results/bench_2026-09-28_*.csv`). The parity recorded on 2026-09-01 (34/34, relative gap at most 6.4e-15) stands for the code of that date. `campaign/run_gpu.sbatch` replays it.
-
-**Structures with no external reference.** `mtrn` with all four parameters free, `own` (user-written kernels) and `sep` beyond three factors have no counterpart in asreml, lme4, sommer or nlme; they are checked against closed forms (besselK profile, the same kernel written as `exp`) and against the dense reference. The sparse RTMB engine is compared to the dense engine, never to a third program.
+**Structures with no external reference.** `mtrn` with all four parameters free, `own` (user-written kernels) and `sep` beyond three factors have no counterpart in asreml, lme4, sommer or nlme; they are checked against closed forms (besselK profile, the same kernel written as `exp`) and against the dense reference.
 
 **What agreement means here.** Two REML implementations agree on the restricted log-likelihood at the optimum to 1e-6 absolute, on the variance components to 1e-4 relative (looser on purpose: on a flat surface two optimisers stop at slightly different theta for the same likelihood) and on fixed effects to 1e-6 relative. asreml stops on its own criterion and is compared at 1e-5 on the log-likelihood and 1e-3 on components; sommer is tightened to tolParConvLL = 1e-12 and compared at 1e-4. Iteration counts are never compared: average information, quasi-Newton and derivative-free optimisers do not count the same thing.
-
-**The comparison against the project's own RTMB engine at full scale.** The figure of roughly 36 hours for RTMB against roughly 15 minutes on a full A100, at n = 16211, was measured in the originating project (IGE_analysis_2024-2025) before this repository existed. It is quoted in the paper as a prior measurement with its date, and it was not re-run here: it needs both the full card and that project's data.
 
 ## Re-running all of it
 
 ```sh
-# inside a container or an environment carrying JAX, R, lme4, sommer, nlme
-export PYTHONPATH=$PWD/src RX_PY=python3
-
-python3 -m pytest tests/python -q                 # unit tests
-python3 tests/python/test_remlax_core.py          # internal algebra
-python3 tests/python/stress_remlax.py --n 50 --seed 0    # random sweep
-Rscript  tests/R/test_remlax.R                    # lme4, sommer
-Rscript  tests/R/test_remlax_nlme.R               # nlme, correlation structures
-Rscript  tests/R/test_remlax_lme4.R               # lme4, slopes, nesting, PEV
-Rscript  tests/R/test_remlax_sommer.R             # sommer, genomic multi-trait
-Rscript  tests/R/test_remlax_asreml.R             # asreml, structures
-Rscript  tests/R/test_remlax_asreml2.R            # asreml, catalogue, K&R
-Rscript  tests/R/test_remlax_asreml3.R            # asreml, remaining structures
-Rscript  tests/R/test_remlax_asreml_blup.R        # asreml, BLUPs
-Rscript  tests/R/test_remlax_ige.R                # full model, known truth
-Rscript  tests/R/test_remlax_tmb_parity.R         # sparse engine (RTMB)
-Rscript  tests/R/test_remlax_tmb_vs_dense.R
-Rscript  tests/R/test_remlax_tmb_prec.R
-
-Rscript  tests/R/export_bundles.R --out=bundles   # serialise the catalogue
-python3  tests/python/parite_gpu.py bundles --tol 1e-8   # CPU against GPU
-
-python3 validation/parse_logs.py <logs>=<provenance> --out validation/results/checks_<date>.csv
-python3 validation/make_validation_md.py --csv ... --versions ... --rev <sha> --date <date>
+# copies remlax and this repository at their commits to the cluster, submits both jobs
+campaign/prepare.sh
+# afterwards, from this repository
+rsync -a cluster:<work folder>/logs/ validation/results/logs_<date>/
+python3 validation/parse_logs.py validation/results/logs_<date>=<provenance> \
+        --out validation/results/checks_<date>.csv
+python3 validation/make_validation_md.py --csv validation/results/checks_<date>.csv \
+        --versions validation/results/versions_<date>.json --rev <sha> --date <date>
 ```
+
+`campaign/run_cpu.sbatch` lists every suite and the log it writes.
 
 asreml requires a licence, and the `test_remlax_asreml*.R` suites check one out at run time. The other suites need no licence. The CPU/GPU parity check needs a machine with a GPU; everything else runs on a CPU.
 

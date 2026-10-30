@@ -844,11 +844,12 @@ Mat\'ern and user kernels. Sectioned residuals, multi-trait spatial residuals,
 \code{vpredict} standard errors, predictions, Wald tests and Kenward--Roger
 degrees of freedom completed the list.
 
-Table~\ref{tab:validation} summarises the 353 checks of the campaign of 28
-September 2026 that ship with the package. Of these, 341 passed. Kenward--Roger
+Table~\ref{tab:validation} summarises the 381 checks of the campaign of 30
+October 2026, run on the released interface with the mixed model engine and
+the AI optimiser. Of these, 364 passed. Kenward--Roger
 denominator degrees of freedom were 21.76897 against 21.76896 for
 \pkg{pbkrtest}. Prediction error variances agreed with the formula of the
-mixed model equations to $1.6 \times 10^{-14}$. Figure~\ref{fig:validation}
+mixed model equations to $1.0 \times 10^{-14}$. Figure~\ref{fig:validation}
 plots every compared pair.
 
 \begin{table}[t]
@@ -859,21 +860,21 @@ plots every compared pair.
 \cmidrule(lr){4-5}
 Reference & Checks & Passed & log-likelihood & estimates \\
 \midrule
-\pkg{asreml}      & 176 & 164 & $4.3 \times 10^{-5}$ & $7.7 \times 10^{-2}$ \\
+\pkg{asreml}      & 177 & 162 & $4.3 \times 10^{-5}$ & $7.7 \times 10^{-2}$ \\
 \pkg{lme4}        &  61 &  61 & $0$                  & $0$ \\
 \pkg{nlme}        &  61 &  61 & $9 \times 10^{-9}$   & $3.1 \times 10^{-6}$ \\
 \pkg{sommer}      &  19 &  19 & differences only     & $9.6 \times 10^{-5}$ \\
 closed forms      &  26 &  26 &                      & \\
-dense REML in \proglang{R} & 9 & 9 &                 & \\
-properties only   &   1 &   1 &                      & \\
+other device (GPU) &  34 &  33 & $6.8 \times 10^{-16}$ (relative) & \\
+properties only   &   3 &   2 &                      & \\
 \midrule
-Total             & 353 & 341 &                      & \\
+Total             & 381 & 364 &                      & \\
 \bottomrule
 \end{tabular}
-\caption{\label{tab:validation}Checks of the validation campaign of 28
-September 2026. Gaps are absolute on the log-likelihood and relative on the
+\caption{\label{tab:validation}Checks of the validation campaign of 30
+October 2026. Gaps are absolute on the log-likelihood and relative on the
 estimates, read from the shipped table of pairs, with the models
-\code{ma2}, \code{sph} and \code{cir} set aside. Against \pkg{lme4}, the
+\code{ma2}, \code{sph}, \code{cir} and \code{lvr} set aside. Against \pkg{lme4}, the
 gap of 0 is at the printed precision. On \code{rr(1)}, \pkg{asreml} lies $4.3
 \times 10^{-5}$ below \pkg{remlax}. The estimate gap of $7.7 \times 10^{-2}$
 is a variance of the full indirect genetic effects model at the boundary (see
@@ -884,15 +885,16 @@ text). For \pkg{sommer}, the gap was measured at its default tolerance.}
 \centering
 \includegraphics[width=\textwidth]{figures/fig_validation.png}
 \caption{\label{fig:validation}Estimates of \pkg{remlax} against the
-reference programs. Left, the 219 pairs of variance components,
+reference programs. Left, the 221 pairs of variance components,
 correlations, fixed effects, standard errors and BLUPs printed by the checks.
 Right, the absolute gap of log-likelihood at the optimum for the 66 checks
 that print both values, with zeros drawn at $10^{-13}$. The points above
-$10^{-5}$ are \code{ma2}, \code{sph} and \code{cir} against \pkg{asreml}, and
-the point at $4.3 \times 10^{-5}$ is \code{rr(1)}.}
+$10^{-5}$ are \code{ma2}, \code{sph} and \code{cir} against \pkg{asreml} and
+\code{lvr} against a profile computed in \proglang{R}, and the point at
+$4.3 \times 10^{-5}$ is \code{rr(1)}.}
 \end{figure}
 
-All 12 failures came from the \pkg{asreml} suite, on the moving-average
+Twelve of the 17 failures came from the \pkg{asreml} suite, on the moving-average
 residual \code{ma2} and on the spherical and circular kernels fitted to an
 irregular field of 90 positions. Each model was handed to an independent
 REML written in dense \proglang{R} algebra, and \pkg{asreml} was held at the
@@ -906,6 +908,18 @@ convergence while its parameters still moved by 3.5\,\% per iteration, 0.033
 units below \pkg{remlax}. In each case, the independent REML reproduced the
 value of \pkg{remlax}. The rows are left as failures, since the criterion is
 agreement with what \pkg{asreml} reports.
+
+Five failures remain. On the two-dimensional P-spline, \pkg{asreml} received
+the five basis matrices of the PS-ANOVA and stopped $1.4 \times 10^{-5}$
+below \pkg{remlax}, with one variance 0.5\,\% apart. It stayed at that point
+when allowed to iterate further. The truncated tent \code{lvr} has a
+likelihood with one local maximum per integer range. \pkg{remlax} stopped at
+a range of 1.51, 0.76 units below the maximum found by a fine grid in
+\proglang{R}, and \pkg{asreml} stopped lower still. On the anisotropic
+Mat\'ern, the CPU/GPU check could not run, because the gradient is not finite
+at zero distance and the fit is refused at its start. Finally, one of the 600
+configurations of the random sweep ended with a Newton decrement of 0.011,
+above the threshold of 0.01.
 
 On the full direct and indirect genetic effects model of \citet{salas2026},
 simulated on 600 plots, both programs placed the direct and indirect genetic
@@ -923,15 +937,12 @@ values of Section~\ref{sec:optim}.
 
 \subsection{Internal agreement and simulation}
 
-The campaign above predates the mixed model engine and the AI optimiser.
-%% TODO: rerun the asreml, lme4, nlme and sommer campaign with the current
-%% version, which includes the MME engine and the AI optimiser.
-Their agreement with the dense engine was checked directly. The mixed model
+The mixed model engine and the AI optimiser were also checked directly. Their agreement with the dense engine was checked directly. The mixed model
 engine returns the likelihood, gradient and AI matrix of the dense engine to
 $10^{-13}$, and its prediction error variances to $3 \times 10^{-15}$. On
-34 serialised designs evaluated at a common $\theta$, the CPU and GPU values
-of $-2\ell_R$ differed by at most $6.4 \times 10^{-15}$ in relative value, on
-1 September 2026. A later check on an NVIDIA L40S, on 27 October 2026, found
+33 of 34 serialised designs fitted on both devices, the CPU and GPU values of
+$-2\ell_R$ differed by at most $6.8 \times 10^{-16}$ in relative value, on
+30 October 2026. A later check on an NVIDIA L40S, on 27 October 2026, found
 seven benchmark designs in agreement to $10^{-13}$ at a common $\theta$, and
 complete fits to $2 \times 10^{-10}$.
 

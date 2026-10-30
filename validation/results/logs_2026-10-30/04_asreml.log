@@ -1,0 +1,49 @@
+Online License checked out Fri Oct 30 15:40:14 2026
+remlax 0.1.0 installed in /scratch/users/salasn/validation_2026-10-30_bc2af0c/rlib 
+
+=== 1. one-dimensional AR1 ===
+  AR1 : rho                                            OK  0.6276741 vs 0.6276741
+  AR1 : variance                                       OK  1.1690526 vs 1.1690526
+  AR1 : residual                                       OK  
+  AR1 : logLik (asreml convention)                     OK  -111.075133372 vs -111.075133372
+
+=== 2. separable AR1 x AR1 (spatial field) ===
+  AR1xAR1 : field variance                             OK  1.2088279 vs 1.2088279
+  AR1xAR1 : row rho                                    OK  0.5940549 vs 0.5940549
+  AR1xAR1 : column rho                                 OK  0.3397100 vs 0.3397100
+  AR1xAR1 : residual                                   OK  
+  AR1xAR1 : logLik                                     OK  -154.818019348 vs -154.818019348
+
+=== 3. 2D spline (SAME basis matrices on both sides) ===
+  spline 2D : variance spl_fx                          OK  1.063175e+01 vs 1.063180e+01
+  spline 2D : variance spl_fy                          FAIL 1.552303e+01 vs 1.545232e+01
+  spline 2D : variance spl_fx_y                        OK  6.737911e-11 vs 5.425611e-07
+  spline 2D : variance spl_x_fy                        OK  3.775135e-11 vs 8.655429e-11
+  spline 2D : variance spl_fx_fy                       OK  3.775135e-11 vs 3.454338e-11
+  spline 2D : residual                                 OK  
+  spline 2D : logLik                                   FAIL -5.014079566 vs -5.014093202
+  spline 2D : components at the floor in asreml flagged as degenerate OK  asreml at the floor: spl_fx_y, spl_x_fy, spl_fx_fy | remlax degenerate: spl_fx_y, spl_x_fy, spl_fx_fy
+
+=== 4. str(): covariance SHARED between two terms ===
+  str : var term 1                                     OK  1.1103369 vs 1.1103369
+  str : covariance                                     OK  0.5137383 vs 0.5137383
+  str : var term 2                                     OK  0.6966671 vs 0.6966671
+  str : residual                                       OK  
+  str : logLik                                         OK  -133.657051701 vs -133.657051701
+
+=== 5. vpredict and Wald ===
+  vpredict : estimate of h2                            OK  0.6685333 vs 0.6685333
+  vpredict : STANDARD ERROR of h2 (delta method)       OK  0.0500972 vs 0.0500998
+  Wald : df of the trt term                            OK  2
+  Wald : p-value of the last term (seq == cond)        OK  8.776e-09 vs 8.776e-09
+
+=== 6. SATURATED parametrisations: chol(t-1), ante(t-1), fa(t), rr(t) ===
+  chol(gid, rank=3)  == us                             OK  diff 4.55e-13
+  ante(gid, rank=3)  == us                             OK  diff 2.27e-13
+  fa(gid, rank=4)    == us                             OK  diff 5.68e-13
+  rr(gid, rank=4)    == us                             OK  diff 7.96e-13
+
+====================================================================
+FAILURES (2):
+  - spline 2D : variance spl_fy
+  - spline 2D : logLik

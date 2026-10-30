@@ -1,0 +1,24 @@
+Online License checked out Fri Oct 30 15:24:14 2026
+remlax 0.1.0 installed in /scratch/users/salasn/validation_2026-10-30_bc2af0c/rlib 
+
+=== 1. one-dimensional AR1 ===
+  AR1 : rho                                            OK  0.6276741 vs 0.6276741
+  AR1 : variance                                       OK  1.1690526 vs 1.1690526
+  AR1 : residual                                       OK  
+  AR1 : logLik (asreml convention)                     OK  -111.075133372 vs -111.075133372
+
+=== 2. separable AR1 x AR1 (spatial field) ===
+  AR1xAR1 : field variance                             OK  1.2088279 vs 1.2088279
+  AR1xAR1 : row rho                                    OK  0.5940549 vs 0.5940549
+  AR1xAR1 : column rho                                 OK  0.3397100 vs 0.3397100
+  AR1xAR1 : residual                                   OK  
+  AR1xAR1 : logLik                                     OK  -154.818019348 vs -154.818019348
+
+=== 3. 2D spline (SAME basis matrices on both sides) ===
+  spline 2D : variance spl_fx                          OK  1.063175e+01 vs 1.063179e+01
+  spline 2D : variance spl_fy                          FAIL 1.552303e+01 vs 1.546485e+01
+  spline 2D : variance spl_fx_y                        OK  6.737911e-11 vs 1.372568e-10
+Error in if (max(abs(a), abs(b)) < floor_) return(0) : 
+  missing value where TRUE/FALSE needed
+Calls: check -> cat -> sprintf -> isTRUE -> relc
+Execution halted

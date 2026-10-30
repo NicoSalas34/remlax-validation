@@ -1,0 +1,47 @@
+{
+ "versions": {
+  "R": {
+   "re-measured 2026-10-30, ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax bc2af0c": "4.6.0"
+  },
+  "nlme": {
+   "re-measured 2026-10-30, ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax bc2af0c": "3.1.169"
+  },
+  "lme4": {
+   "re-measured 2026-10-30, ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax bc2af0c": "2.0.1"
+  },
+  "sommer": {
+   "re-measured 2026-10-30, ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax bc2af0c": "4.4.5"
+  },
+  "asreml": {
+   "re-measured 2026-10-30, ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax bc2af0c": "4.2.0.480"
+  },
+  "pbkrtest": {
+   "re-measured 2026-10-30, ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax bc2af0c": "0.5.5"
+  },
+  "jax": {
+   "re-measured 2026-10-30, ssh:cluster cpu-dedicated and gpu A100 MIG, ige_reml_v3.sif, remlax bc2af0c": "0.11.1"
+  }
+ },
+ "logs": {
+  "01_core.log": "validation/results/logs_2026-10-30/01_core.log",
+  "00_pytest.log": "validation/results/logs_2026-10-30/00_pytest.log",
+  "02_stress_s0.log": "validation/results/logs_2026-10-30/02_stress_s0.log",
+  "02_stress_s50.log": "validation/results/logs_2026-10-30/02_stress_s50.log",
+  "02_stress_s100.log": "validation/results/logs_2026-10-30/02_stress_s100.log",
+  "03_lme4_sommer.log": "validation/results/logs_2026-10-30/03_lme4_sommer.log",
+  "07_nlme.log": "validation/results/logs_2026-10-30/07_nlme.log",
+  "08_lme4_extra.log": "validation/results/logs_2026-10-30/08_lme4_extra.log",
+  "09_sommer_extra.log": "validation/results/logs_2026-10-30/09_sommer_extra.log",
+  "04_asreml.log": "validation/results/logs_2026-10-30/04_asreml.log",
+  "05_asreml2.log": "validation/results/logs_2026-10-30/05_asreml2.log",
+  "15_asreml3.log": "validation/results/logs_2026-10-30/15_asreml3.log",
+  "06b_asreml_blup.log": "validation/results/logs_2026-10-30/06b_asreml_blup.log",
+  "06_ige.log": "validation/results/logs_2026-10-30/06_ige.log",
+  "21_parite.log": "validation/results/logs_2026-10-30/21_parite.log"
+ },
+ "missing": [
+  "10_tmb_parity.log",
+  "11_tmb_vs_dense.log",
+  "12_tmb_prec.log"
+ ]
+}

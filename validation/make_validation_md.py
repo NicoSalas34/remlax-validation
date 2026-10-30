@@ -33,10 +33,9 @@ TITLES = OrderedDict([
                 "non-finite log-likelihood, a covariance matrix that is not positive "
                 "semi-definite, a run that does not converge.")),
     ("pytest", ("Unit tests (pytest)", "closed forms and independent numpy references",
-                "The pytest suite under tests/python: one test per feature, each against an "
+                "The pytest suite of remlax (tests-python): one test per feature, each against an "
                 "independent reference (numpy Cholesky REML written out longhand, closed-form "
-                "correlation matrices, finite differences). Collected here as a single line; "
-                "docs/tests-matrix.md maps every feature to its test.")),
+                "correlation matrices, finite differences). Collected here as a single line.")),
     ("lme4_sommer", ("Against lme4 and sommer", "two open-source reference implementations",
                      "The models both packages can fit: a single random factor on three "
                      "layouts, two crossed factors, a genomic relationship matrix, and a "
@@ -160,12 +159,13 @@ def main(argv=None):
     A("# Validation")
     A("")
     A("Every number on this page was produced on %s by the test suites of this repository "
-      "at git revision `%s` (working tree of that day, see the commit that follows it). The "
-      "suites that need asreml or pbkrtest ran on the user's SLURM cluster inside the apptainer "
-      "image `ige_reml.sif`; the others ran there too and, where noted, on a local CPU. The "
-      "measurements were extracted from the logs by `validation/parse_logs.py` and this page "
-      "is generated from the resulting table (`%s`) by `validation/make_validation_md.py`. "
-      "No value here was typed by hand." % (a.date, a.rev, os.path.relpath(a.csv, ROOT)))
+      "and of remlax, with remlax at git revision `%s`. The campaign ran on the user's SLURM "
+      "cluster inside the apptainer image `ige_reml_v3.sif`, launched by `campaign/prepare.sh`: "
+      "every suite on CPU, the CPU/GPU parity on a slice of an A100. The measurements were "
+      "extracted from the logs (`validation/results/logs_%s/`) by `validation/parse_logs.py`, "
+      "and this page is generated from the resulting table (`%s`) by "
+      "`validation/make_validation_md.py`. No value here was typed by hand."
+      % (a.date, a.rev, a.date, os.path.relpath(a.csv, ROOT)))
     A("")
     A("**%d checks, %d passed, %d failed.**" % (n_tot, n_pass, n_tot - n_pass))
     A("")
@@ -223,25 +223,54 @@ def main(argv=None):
                       ["Check", "Measured", "Verdict"]))
             A("")
 
+    A("## The failed checks")
+    A("")
+    A("A failed check stays failed on purpose: each one is a documented disagreement, "
+      "not a reason to widen a tolerance.")
+    A("")
+    A("**ma2, sph and cir against asreml (12 checks, as in 2026-09).** "
+      "`tests/R/diag_asreml3_ecarts.R` settles them (its log sits with the others). A dense "
+      "REML arbiter written in R finds the remlax value to the last digit, and asreml held "
+      "at the parameters of remlax returns the remlax value. For sph and cir, asreml reports "
+      "converge = FALSE (it oscillates between hills of a multimodal surface). For ma2, "
+      "asreml declares convergence while its parameters still change by several per cent "
+      "per iteration, and its two correlation parameters are not the MA coefficients of "
+      "the standard form.")
+    A("")
+    A("**2D P-spline against asreml (2 checks).** `rx_spl2d()` builds the PS-ANOVA of "
+      "SpATS, five smooth components, and asreml receives the same five basis matrices. "
+      "remlax reaches a restricted log-likelihood higher than asreml by 1.4e-5. asreml "
+      "declares convergence and stays at its point when it is allowed to iterate further, "
+      "so the two programs stop at different points of a flat direction. The variance of "
+      "f(y) differs by 0.5 per cent, and the three components at the floor agree.")
+    A("")
+    A("**lvr, truncated tent (1 check).** The likelihood is not unimodal: its support "
+      "changes each time the range crosses an integer distance. remlax stops at a local "
+      "optimum (range 1.51, log-likelihood -2.679) while a fine grid in R finds range 5.89 "
+      "and -1.914. asreml stops at a worse point (-2.820). The remlax revision of "
+      "2026-09-28, which passed this check on the cluster then, gives the same local "
+      "optimum on the authors' workstation: the outcome depends on the start, not on a "
+      "change of the code.")
+    A("")
+    A("**CPU/GPU parity, anisotropic Matern (1 check).** The fit of `mtrn_aniso` stops "
+      "before its first iteration: two components of the gradient are not finite at the "
+      "starting point. The anisotropic distance and the Matern function have an infinite "
+      "derivative at zero distance, where the diagonal of the kernel sits. The check that "
+      "refuses a non-finite start was added on 2026-09-28, after the parity of 2026-09-01 "
+      "(34/34), which therefore did not see it. The 33 other designs agree to at most "
+      "6.8e-16 in relative value.")
+    A("")
+    A("**Random sweep, seed 0 (1 check).** One configuration out of 200 ends with a "
+      "Newton decrement of 0.011, above the threshold of 0.01. Two others reach a better "
+      "optimum after a restart, with gains of 0.004 and 0.27 on -2logL. Seeds 50 and 100 "
+      "have no unconverged configuration.")
+    A("")
     A("## What could not be measured here")
-    A("")
-    A("This section exists so that nothing on the page above is mistaken for "
-      "something it is not.")
-    A("")
-    A("**CPU against GPU.** The 34-design parity sweep (`tests/python/parite_gpu.py`, "
-      "evaluation at a common theta on both devices) was not replayed on this date: the "
-      "whole A100 became free late in the day and the time went to the speed benchmark, "
-      "which fitted the same ten models on 4 CPU cores and on the whole card and reached "
-      "the same optimum on each (|logLik gap| at most 1e-6 at six printed decimals, "
-      "`benchmarks/results/bench_2026-09-28_*.csv`). The parity recorded on 2026-09-01 "
-      "(34/34, relative gap at most 6.4e-15) stands for the code of that date. "
-      "`campaign/run_gpu.sbatch` replays it.")
     A("")
     A("**Structures with no external reference.** `mtrn` with all four parameters free, "
       "`own` (user-written kernels) and `sep` beyond three factors have no counterpart in "
       "asreml, lme4, sommer or nlme; they are checked against closed forms (besselK profile, "
-      "the same kernel written as `exp`) and against the dense reference. The sparse RTMB "
-      "engine is compared to the dense engine, never to a third program.")
+      "the same kernel written as `exp`) and against the dense reference.")
     A("")
     A("**What agreement means here.** Two REML implementations agree on the restricted "
       "log-likelihood at the optimum to 1e-6 absolute, on the variance components to 1e-4 "
@@ -252,42 +281,20 @@ def main(argv=None):
       "Iteration counts are never compared: average information, quasi-Newton and "
       "derivative-free optimisers do not count the same thing.")
     A("")
-    A("**The comparison against the project's own RTMB engine at full scale.** The figure of "
-      "roughly 36 hours for RTMB against roughly 15 minutes on a full A100, at "
-      "n = 16211, was measured in the originating project "
-      "(IGE_analysis_2024-2025) before this repository existed. It is quoted in "
-      "the paper as a prior measurement with its date, and it was not re-run "
-      "here: it needs both the full card and that project's data.")
-    A("")
     A("## Re-running all of it")
     A("")
     A("```sh")
-    A("# inside a container or an environment carrying JAX, R, lme4, sommer, nlme")
-    A("export RX_PY=python3   # remlax installed as an R package")
-    A("")
-    A("python3 -m pytest tests/python -q                 # unit tests")
-    A("python3 tests/python/test_remlax_core.py          # internal algebra")
-    A("python3 tests/python/stress_remlax.py --n 50 --seed 0    # random sweep")
-    A("Rscript  tests/R/test_remlax.R                    # lme4, sommer")
-    A("Rscript  tests/R/test_remlax_nlme.R               # nlme, correlation structures")
-    A("Rscript  tests/R/test_remlax_lme4.R               # lme4, slopes, nesting, PEV")
-    A("Rscript  tests/R/test_remlax_sommer.R             # sommer, genomic multi-trait")
-    A("Rscript  tests/R/test_remlax_asreml.R             # asreml, structures")
-    A("Rscript  tests/R/test_remlax_asreml2.R            # asreml, catalogue, K&R")
-    A("Rscript  tests/R/test_remlax_asreml3.R            # asreml, remaining structures")
-    A("Rscript  tests/R/test_remlax_asreml_blup.R        # asreml, BLUPs")
-    A("Rscript  tests/R/test_remlax_ige.R                # full model, known truth")
-    A("")
-    A("Rscript  tests/R/export_bundles.R --out=bundles   # serialise the catalogue")
-    A("python3  tests/python/parite_gpu.py bundles --tol 1e-8   # CPU against GPU")
-    A("")
-    A("python3 validation/parse_logs.py <logs>=<provenance> --out validation/results/checks_<date>.csv")
-    A("python3 validation/make_validation_md.py --csv ... --versions ... --rev <sha> --date <date>")
+    A("# copies remlax and this repository at their commits to the cluster, submits both jobs")
+    A("campaign/prepare.sh")
+    A("# afterwards, from this repository")
+    A("rsync -a cluster:<work folder>/logs/ validation/results/logs_<date>/")
+    A("python3 validation/parse_logs.py validation/results/logs_<date>=<provenance> \\")
+    A("        --out validation/results/checks_<date>.csv")
+    A("python3 validation/make_validation_md.py --csv validation/results/checks_<date>.csv \\")
+    A("        --versions validation/results/versions_<date>.json --rev <sha> --date <date>")
     A("```")
     A("")
-    A("The RTMB sparse engine was removed from remlax after this campaign, together "
-      "with its three suites (`test_remlax_tmb_*.R`), and the mixed model equations "
-      "engine (`rx_fit(engine = \"mme\")`) now covers its scope.")
+    A("`campaign/run_cpu.sbatch` lists every suite and the log it writes.")
     A("")
     A("asreml requires a licence, and the `test_remlax_asreml*.R` suites "
       "check one out at run time. The other suites need no licence. The "

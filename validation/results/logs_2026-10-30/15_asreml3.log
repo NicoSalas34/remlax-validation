@@ -1,0 +1,204 @@
+Online License checked out Fri Oct 30 15:25:07 2026
+remlax 0.1.0 installed in /scratch/users/salasn/validation_2026-10-30_bc2af0c/rlib 
+asreml 4.2.0.480 | R 4 6.0 
+
+=== A1. ar2: grouped residual, against asreml ===
+    remlax : logLik_asreml -72.335197 | 3 parameters | 11 iterations
+  ar2 : logLik (asreml convention)                         OK  -72.335196521 vs -72.335196521
+  ar2 : residual variance                                  OK  1.675628 vs 1.675628
+  ar2 : correlation parameters (as a set)                  OK  remlax 0.5325 0.19233 | asreml 0.5325 0.19233
+  ar2 : remlax no worse than asreml                        OK  -72.335197 vs -72.335197 (diff -2.84e-14)
+  ar2 : fixed effects (up to order)                        OK  remlax 0.6225 0.4419 | asreml 0.6225 0.4419
+
+=== A2. ar3: grouped residual, against asreml ===
+    remlax : logLik_asreml -75.186558 | 4 parameters | 13 iterations
+  ar3 : logLik (asreml convention)                         OK  -75.186557795 vs -75.186557795
+  ar3 : residual variance                                  OK  1.658159 vs 1.658159
+  ar3 : correlation parameters (as a set)                  OK  remlax 0.4335 0.10803 0.21949 | asreml 0.4335 0.10803 0.21949
+  ar3 : remlax no worse than asreml                        OK  -75.186558 vs -75.186558 (diff +1.42e-14)
+  ar3 : fixed effects (up to order)                        OK  remlax 1.0652 0.4518 | asreml 1.0652 0.4518
+
+=== A3. ma1: grouped residual, against asreml ===
+    remlax : logLik_asreml -71.441166 | 2 parameters | 7 iterations
+  ma1 : logLik (asreml convention)                         OK  -71.441165627 vs -71.441165627
+  ma1 : residual variance                                  OK  1.173080 vs 1.173080
+  ma1 : correlation parameters (as a set)                  OK  remlax -0.52845 | asreml -0.52845
+  ma1 : remlax no worse than asreml                        OK  -71.441166 vs -71.441166 (diff +0.00e+00)
+  ma1 : fixed effects (up to order)                        OK  remlax 1.0329 0.6044 | asreml 1.0329 0.6044
+
+=== A4. ma2: grouped residual, against asreml ===
+    remlax : logLik_asreml -72.524783 | 3 parameters | 11 iterations
+  ma2 : logLik (asreml convention)                         FAIL -72.524782986 vs -72.558053561
+  ma2 : residual variance                                  FAIL 1.400230 vs 1.369831
+  ma2 : correlation parameters (as a set)                  FAIL remlax -0.58011 -0.44931 | asreml -0.57924 -0.44714
+  ma2 : remlax no worse than asreml                        OK  -72.524783 vs -72.558054 (diff +3.33e-02)
+  ma2 : fixed effects (up to order)                        FAIL remlax 0.8983 0.4977 | asreml 0.8994 0.4962
+
+=== A5. arma: grouped residual, against asreml ===
+    remlax : logLik_asreml -73.124117 | 3 parameters | 11 iterations
+  arma : logLik (asreml convention)                        OK  -73.124116717 vs -73.124116717
+  arma : residual variance                                 OK  1.376202 vs 1.376202
+  arma : correlation parameters (as a set)                 OK  remlax 0.28594 0.35587 | asreml 0.35587 0.28594
+  arma : remlax no worse than asreml                       OK  -73.124117 vs -73.124117 (diff -8.53e-14)
+  arma : fixed effects (up to order)                       OK  remlax 0.8109 0.3658 | asreml 0.8109 0.3658
+
+=== A6. sar: grouped residual, against asreml ===
+    remlax : logLik_asreml -70.706817 | 2 parameters | 9 iterations
+  sar : logLik (asreml convention)                         OK  -70.706817237 vs -70.706817237
+  sar : residual variance                                  OK  1.369386 vs 1.369386
+  sar : correlation parameters (as a set)                  OK  remlax 0.63555 | asreml 0.63555
+  sar : remlax no worse than asreml                        OK  -70.706817 vs -70.706817 (diff -8.53e-14)
+  sar : fixed effects (up to order)                        OK  remlax 1.0847 0.3773 | asreml 1.0847 0.3773
+
+=== A7. cor: grouped residual, against asreml ===
+    remlax : logLik_asreml -96.140427 | 2 parameters | 12 iterations
+  cor : logLik (asreml convention)                         OK  -96.140426816 vs -96.140426816
+  cor : residual variance                                  OK  1.515622 vs 1.515622
+  cor : correlation parameters (as a set)                  OK  remlax 0.21775 | asreml 0.21775
+  cor : remlax no worse than asreml                        OK  -96.140427 vs -96.140427 (diff +1.42e-14)
+  cor : fixed effects (up to order)                        OK  remlax 0.9673 0.6452 | asreml 0.9673 0.6452
+
+=== A8. corb: grouped residual, against asreml ===
+    remlax : logLik_asreml -69.307901 | 3 parameters | 10 iterations
+  corb : logLik (asreml convention)                        OK  -69.307901067 vs -69.307901067
+  corb : residual variance                                 OK  1.092528 vs 1.092528
+  corb : correlation parameters (as a set)                 OK  remlax 0.41316 0.14577 | asreml 0.41316 0.14577
+  corb : remlax no worse than asreml                       OK  -69.307901 vs -69.307901 (diff +1.42e-14)
+  corb : fixed effects (up to order)                       OK  remlax 0.9803 0.4266 | asreml 0.9803 0.4266
+
+=== A9. corg: grouped residual, against asreml ===
+    remlax : logLik_asreml -97.912513 | 7 parameters | 16 iterations
+  corg : logLik (asreml convention)                        OK  -97.912513106 vs -97.912513106
+  corg : residual variance                                 OK  0.905272 vs 0.905272
+  corg : correlation parameters (as a set)                 OK  remlax 0.38785 0.16896 0.22701 -0.07416 0.19222 0.43027 | asreml 0.38785 0.16896 0.22701 -0.07416 0.19222 0.43027
+  corg : remlax no worse than asreml                       OK  -97.912513 vs -97.912513 (diff +7.11e-14)
+  corg : fixed effects (up to order)                       OK  remlax 0.9558 0.4911 | asreml 0.9558 0.4911
+
+=== B1. iexp: 2D metric kernel, against asreml ===
+    remlax : logLik_asreml -4.778255 | 2 parameters | 11 iterations
+  iexp : logLik (asreml convention)                        OK  -4.778255069 vs -4.778255069
+  iexp : variance                                          OK  1.476882 vs 1.476882
+  iexp : kernel parameters (as a set)                      OK  remlax 0.87186 | asreml 0.87186
+  iexp : remlax no worse than asreml                       OK  -4.778255 vs -4.778255 (diff +5.33e-14)
+  iexp : same logLik at the asreml parameters              OK  -4.778255069 vs -4.778255069 (remlax evaluated at the asreml parameters)
+
+=== B2. igau: 2D metric kernel, against asreml ===
+    remlax : logLik_asreml -3.293848 | 2 parameters | 8 iterations
+  igau : logLik (asreml convention)                        OK  -3.293847858 vs -3.293847858
+  igau : variance                                          OK  1.287447 vs 1.287447
+  igau : kernel parameters (as a set)                      OK  remlax 0.80114 | asreml 0.80114
+  igau : remlax no worse than asreml                       OK  -3.293848 vs -3.293848 (diff +3.90e-12)
+  igau : same logLik at the asreml parameters              OK  -3.293847858 vs -3.293847858 (remlax evaluated at the asreml parameters)
+
+=== B3. ieuc: 2D metric kernel, against asreml ===
+    remlax : logLik_asreml -4.016578 | 2 parameters | 10 iterations
+  ieuc : logLik (asreml convention)                        OK  -4.016578104 vs -4.016578104
+  ieuc : variance                                          OK  0.769838 vs 0.769838
+  ieuc : kernel parameters (as a set)                      OK  remlax 0.70585 | asreml 0.70585
+  ieuc : remlax no worse than asreml                       OK  -4.016578 vs -4.016578 (diff +1.42e-14)
+  ieuc : same logLik at the asreml parameters              OK  -4.016578104 vs -4.016578104 (remlax evaluated at the asreml parameters)
+
+=== B4. aexp: 2D metric kernel, against asreml ===
+    remlax : logLik_asreml -37.151545 | 3 parameters | 13 iterations
+  aexp : logLik (asreml convention)                        OK  -37.151545485 vs -37.151545489
+  aexp : variance                                          OK  1.424754 vs 1.424748
+  aexp : kernel parameters (as a set)                      OK  remlax 0.75991 0.65095 | asreml 0.75991 0.65096
+  aexp : remlax no worse than asreml                       OK  -37.151545 vs -37.151545 (diff +4.57e-09)
+  aexp : same logLik at the asreml parameters              OK  -37.151545486 vs -37.151545489 (remlax evaluated at the asreml parameters)
+
+=== B5. agau: 2D metric kernel, against asreml ===
+    remlax : logLik_asreml 17.316796 | 3 parameters | 11 iterations
+  agau : logLik (asreml convention)                        OK  17.316795825 vs 17.316795825
+  agau : variance                                          OK  0.605183 vs 0.605183
+  agau : kernel parameters (as a set)                      OK  remlax 0.94404 0.24205 | asreml 0.94404 0.24205
+  agau : remlax no worse than asreml                       OK  17.316796 vs 17.316796 (diff +1.42e-10)
+  agau : same logLik at the asreml parameters              OK  17.316795825 vs 17.316795825 (remlax evaluated at the asreml parameters)
+
+=== B6. sph: 2D metric kernel, against asreml ===
+    remlax : logLik_asreml 3.823231 | 2 parameters | 3 iterations
+  sph : logLik (asreml convention)                         FAIL 3.823231014 vs 3.753094938
+  sph : variance                                           FAIL 1.024529 vs 1.006357
+  sph : kernel parameters (as a set)                       FAIL remlax 8.6514 | asreml 8.75447
+  sph : remlax no worse than asreml                        OK  3.823231 vs 3.753095 (diff +7.01e-02)
+  sph : same logLik at the asreml parameters               FAIL 3.783476190 vs 3.753094938 (remlax evaluated at the asreml parameters)
+
+=== B7. cir: 2D metric kernel, against asreml ===
+    remlax : logLik_asreml 13.875897 | 2 parameters | 3 iterations
+  cir : logLik (asreml convention)                         FAIL 13.875897073 vs 10.847517451
+  cir : variance                                           FAIL 0.846601 vs 0.623517
+  cir : kernel parameters (as a set)                       FAIL remlax 7.40768 | asreml 4.98345
+  cir : remlax no worse than asreml                        OK  13.875897 vs 10.847517 (diff +3.03e+00)
+  cir : same logLik at the asreml parameters               FAIL 10.844976334 vs 10.847517451 (remlax evaluated at the asreml parameters)
+
+=== C1. us(trait) x GRM, 4 traits, diag residual, against asreml ===
+    remlax : logLik_asreml -475.359451 | 14 parameters | 24 iterations
+  us : logLik (asreml convention)                          OK  -475.359451222 vs -475.359451222
+  us : remlax no worse than asreml                         OK  -475.359451 vs -475.359451 (diff +7.84e-12)
+  us : genetic Sigma                                       OK  max rel diff 4.23e-08 | diag remlax 1.209 2.6058 0.711 1.3245 | asreml 1.209 2.6058 0.711 1.3245
+  us : the 4 residual variances                            OK  remlax 0.798 0.8956 0.5819 0.9622 | asreml 0.798 0.8956 0.5819 0.9622
+
+=== C2. diag(trait) x GRM, 4 traits, diag residual, against asreml ===
+    remlax : logLik_asreml -493.193234 | 8 parameters | 14 iterations
+  diag : logLik (asreml convention)                        OK  -493.193233887 vs -493.193233887
+  diag : remlax no worse than asreml                       OK  -493.193234 vs -493.193234 (diff -9.09e-13)
+  diag : genetic Sigma                                     OK  max rel diff 2.49e-08 | diag remlax 1.2052 2.6244 0.7152 1.3477 | asreml 1.2052 2.6244 0.7152 1.3477
+  diag : the 4 residual variances                          OK  remlax 0.7998 0.8921 0.5804 0.9565 | asreml 0.7998 0.8921 0.5804 0.9565
+
+=== C3. fa1(trait) x GRM, 4 traits, diag residual, against asreml ===
+    remlax : logLik_asreml -480.160993 | 12 parameters | 73 iterations
+  fa1 : logLik (asreml convention)                         OK  -480.160993199 vs -480.160993199
+  fa1 : remlax no worse than asreml                        OK  -480.160993 vs -480.160993 (diff -5.50e-11)
+  fa1 : the 4 residual variances                           OK  remlax 0.7967 0.8955 0.5807 0.9543 | asreml 0.7967 0.8955 0.5807 0.9543
+
+=== C4. rr1(trait) x GRM, 4 traits, diag residual, against asreml ===
+    remlax : logLik_asreml -564.439985 | 8 parameters | 26 iterations
+  rr1 : logLik (asreml convention)                         OK  -564.439985070 vs -564.440028141
+  rr1 : remlax no worse than asreml                        OK  -564.439985 vs -564.440028 (diff +4.31e-05)
+  rr1 : the 4 residual variances                           OK  remlax 1.9695 1.0314 1.3332 1.5949 | asreml 1.9693 1.0321 1.3332 1.5944
+
+=== C5. corh(trait) x GRM, 4 traits, diag residual, against asreml ===
+    remlax : logLik_asreml -492.756261 | 9 parameters | 14 iterations
+  corh : logLik (asreml convention)                        OK  -492.756261237 vs -492.756261237
+  corh : remlax no worse than asreml                       OK  -492.756261 vs -492.756261 (diff +3.18e-12)
+  corh : the 4 residual variances                          OK  remlax 0.7972 0.894 0.5795 0.9562 | asreml 0.7972 0.894 0.5795 0.9562
+
+=== C6. ante1(trait) x GRM, 4 traits, diag residual, against asreml ===
+    remlax : logLik_asreml -491.875919 | 11 parameters | 19 iterations
+  ante1 : logLik (asreml convention)                       OK  -491.875918525 vs -491.875918525
+  ante1 : remlax no worse than asreml                      OK  -491.875919 vs -491.875919 (diff +3.58e-11)
+  ante1 : the 4 residual variances                         OK  remlax 0.7999 0.8922 0.5821 0.9573 | asreml 0.7999 0.8922 0.5821 0.9573
+
+=== C7. chol1(trait) x GRM, 4 traits, diag residual, against asreml ===
+    remlax : logLik_asreml -492.112978 | 11 parameters | 21 iterations
+  chol1 : logLik (asreml convention)                       OK  -492.112977719 vs -492.112977719
+  chol1 : remlax no worse than asreml                      OK  -492.112978 vs -492.112978 (diff -5.05e-11)
+  chol1 : the 4 residual variances                         OK  remlax 0.7999 0.8922 0.581 0.9575 | asreml 0.7999 0.8922 0.581 0.9575
+
+=== D. sep: id(block) x ar1(col) x ar1(row), shared correlations, against asreml ===
+    remlax : logLik_asreml -349.658685 | 4 parameters | 11 iterations
+  sep : logLik (asreml convention)                         OK  -349.658684512 vs -349.658684512
+  sep : field variance                                     OK  1.742834 vs 1.742834
+  sep : column rho and row rho                             OK  remlax 0.30873 0.59191 | asreml 0.30873 0.59191
+  sep : residual                                           OK  0.772377 vs 0.772377
+
+=== E. spatial multi-trait residual us(trait):ar1(row):ar1(col), against asreml ===
+    remlax : logLik_asreml -97.115201 | 8 parameters | 22 iterations
+  us:ar1:ar1 : logLik (asreml convention)                  OK  -97.115201240 vs -97.115201240
+  us:ar1:ar1 : row and column rho                          OK  remlax 0.50089 0.36206 | asreml 0.50089 0.36206
+  us:ar1:ar1 : 2x2 residual Sigma                          OK  remlax 1.1591 0.6273 0.6273 0.8517 | asreml 1.1591 0.6273 0.6273 0.8517
+  us:ar1:ar1 : 2x2 genetic Sigma                           OK  remlax 0.5743 0.1596 0.1596 0.4802 | asreml 0.5743 0.1596 0.1596 0.4802
+
+==============================================================
+FAILURES (12):
+  - ma2 : logLik (asreml convention) 
+  - ma2 : residual variance 
+  - ma2 : correlation parameters (as a set) 
+  - ma2 : fixed effects (up to order) 
+  - sph : logLik (asreml convention) 
+  - sph : variance 
+  - sph : kernel parameters (as a set) 
+  - sph : same logLik at the asreml parameters 
+  - cir : logLik (asreml convention) 
+  - cir : variance 
+  - cir : kernel parameters (as a set) 
+  - cir : same logLik at the asreml parameters 

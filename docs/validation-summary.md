@@ -3,25 +3,28 @@
 One page for the reader who wants to know whether remlax computes the same
 restricted likelihood as the programs they already trust. The full table of
 checks, one row per printed verdict, is in [validation.md](validation.md); the
-numbers below are read from the same CSV (`validation/results/checks_2026-09-28.csv`)
+numbers below are read from the same CSV (`validation/results/checks_2026-10-30.csv`)
 and from the benchmark CSVs under `benchmarks/results/`.
 
-Revision tested: git `f576638` plus the working tree of 2026-09-28 (three
-solver fixes, described below, and the new suites). Date: 2026-09-28. Reference software:
-asreml 4.2.0.480, lme4 2.0.1, sommer 4.4.5, nlme 3.1.169, pbkrtest 0.5.5 and
-R 4.6.0 inside the cluster image `ige_reml.sif` with JAX 0.11.1; lme4 1.1.37,
-sommer 4.4.4, nlme 3.1.170, RTMB 1.9 and R 4.5.3 with JAX 0.10.2 on the local
-CPU for the sparse-engine suites.
+Revision tested: remlax `bc2af0c`, the first revision with an English
+interface, on 2026-10-30. Reference software: asreml 4.2.0.480, lme4 2.0.1,
+sommer 4.4.5, nlme 3.1.169, pbkrtest 0.5.5 and R 4.6.0 inside the cluster
+image `ige_reml_v3.sif` with JAX 0.11.1. `campaign/prepare.sh` launched the
+campaign; its logs are in `validation/results/logs_2026-10-30/`.
 
-**Result: 399 checks, 387 passed, 12 failed** (154 checks, all passed, in the
-2026-09-01 table). The 12 failures are all in the new asreml suite for the
-remaining structures and concern three models, `ma2` (4 rows), `sph` (4 rows)
-and `cir` (4 rows). A dedicated diagnostic (under Limits) shows that in each
-case asreml's reported log-likelihood is not the REML at its own reported
-parameters, because asreml either declared convergence with parameters still
-moving (ma2) or never converged and oscillated (sph), while an independent
-dense-algebra REML reproduces remlax's value to the last digit. The rows are
-left as failures on purpose; every other comparison in the table passes.
+**Result: 381 checks, 364 passed, 17 failed** (399 checks, 387 passed, in the
+2026-09-28 table, which still counted the suites of the RTMB engine since
+removed). Twelve failures are those of 2026-09-28: `ma2`, `sph` and `cir`
+against asreml, where a dedicated diagnostic shows that asreml's reported
+log-likelihood is not the REML at its own reported parameters, while an
+independent dense-algebra REML reproduces remlax's value to the last digit.
+Two concern the 2D P-spline, where remlax reaches a log-likelihood higher than
+asreml by 1.4e-5. One is the truncated tent `lvr`, whose multimodal likelihood
+traps remlax at a local optimum (asreml stops lower still). One is the CPU/GPU
+parity of the anisotropic Matern, whose fit is refused at the start because its
+gradient is not finite at zero distance. The last is one unconverged
+configuration out of 600 in the random sweep. [validation.md](validation.md)
+details each one. The rows are left as failures on purpose.
 
 ## What is compared to what
 

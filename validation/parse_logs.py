@@ -68,6 +68,7 @@ SECTION = re.compile(r"^=+\s*(?P<t>[A-Z]?\d*[a-z]?\..*?)\s*=+\s*$")
 PARITY = re.compile(r"^(?P<m>[a-z0-9_.]+)\s+(?P<c>-?\d+\.\d+)\s+(?P<g>-?\d+\.\d+)\s+"
                     r"(?P<rel>[\d.]+e[+-]\d+)\s+(?P<dth>[\d.]+e[+-]\d+)\s+"
                     r"(?P<sc>[\d.]+)\s+(?P<sg>[\d.]+)", re.M)
+ERRORED = re.compile(r"^   (?P<m>[a-z0-9_.]+)\s{2,}(?P<err>\w*Error:.*)$", re.M)
 PYTEST = re.compile(r"^(?:=+ )?(?P<p>\d+) passed(?:, (?P<s>\d+) skipped)?(?:, (?P<f>\d+) failed)?"
                     r"(?:, (?P<e>\d+) errors?)? in (?P<t>[\d.]+)s", re.M)
 # Counters of the stress summary, each with its English and older French label.
@@ -168,6 +169,17 @@ def parity_rows(txt, suite, ref, prov, src, tol=1e-8):
             detail="-2logL %s vs %s | rel gap %s | max|dtheta| %s | %s s CPU vs %s s MIG"
                    % (d["c"], d["g"], d["rel"], d["dth"], d["sc"], d["sg"]),
             provenance=prov, source_log=src))
+    # A design whose fit raised an error has no row in the table above: it
+    # appears under "N paquet(s) en erreur" (or "bundle(s) in error") and
+    # counts as a failure.
+    seen = {r["check"] for r in out}
+    for m in ERRORED.finditer(txt):
+        chk = "design '%s': same -2logL on CPU and on an A100 MIG slice" % m.group("m")
+        if chk not in seen:
+            out.append(dict(suite=suite, section="structure catalogue, 34 serialised designs",
+                            check=chk, reference=ref, verdict="FAIL",
+                            detail="fit error: %s" % m.group("err").strip()[:200],
+                            provenance=prov, source_log=src))
     return out
 
 

@@ -1,0 +1,22 @@
+Online License checked out Fri Oct 30 15:30:36 2026
+remlax 0.1.0 installed in /scratch/users/salasn/validation_2026-10-30_bc2af0c/rlib 
+=== 1. fit on both sides, time measured ===
+  asreml    0.07 s | remlax    3.59 s | ratio 52.78
+  OK    logLik in the asreml convention              -260.296848172 vs -260.296848182
+
+=== 2. what each side exposes (diagnostic before comparison) ===
+  remlax$blups : geno 
+  asreml summary(coef=TRUE) : call, loglik, nedf, sigma, varcomp, bic, aic, coef.fixed, coef.random 
+  columns of the asreml random effects: solution | std.error | z.ratio 
+
+=== 3. BLUP: do both sides predict the same effects? ===
+  60 levels matched out of 60
+  OK    BLUP : maximum difference                    max|diff| = 3.155e-06
+  OK    BLUP : correlation                           r = 1.000000000000
+  NOTE: remlax exposes no BLUP standard error ($blup_se absent).
+         This is a GAP to fill, not a disagreement. Fields present: seconds, seconds_optim, blup_dims, blups, se_theta 
+
+=== 4. fixed effects and their variance ===
+  OK    fixed effect (intercept)                     5.110533510 vs 5.110533510
+
+=== 4 checks, 0 failure(s) | time asreml 0.07 s, remlax 3.59 s ===

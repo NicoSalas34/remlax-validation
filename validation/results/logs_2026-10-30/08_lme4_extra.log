@@ -1,0 +1,46 @@
+remlax 0.1.0 installed in /scratch/users/salasn/validation_2026-10-30_bc2af0c/rlib 
+lme4 2.0.1 | R 4 6.0 
+
+=== 1. correlated random slopes (1 + x | g): us with two columns ===
+  us slopes : identical -2logL                             OK  708.105175507 vs 708.105175507
+  us slopes : fixed effects                                OK  max rel diff 2.00e-09
+  us slopes : standard errors of the fixed effects         OK  max rel diff 6.00e-08
+  us slopes : the three components of Sigma                OK  remlax 1.04933 0.31753 0.51161 | lme4 1.04933 0.31753 0.51161
+  us slopes : residual variance                            OK  0.649963 vs 0.649963
+  us slopes : BLUPs (intercepts and slopes)                OK  max diff 3.11e-08 over 60 values
+  us slopes : remlax PEV = MME formula (with beta)         OK  max rel diff 1.02e-14 | mean PEV 0.10677
+  us slopes : lme4 condVar = formula without beta          OK  max rel diff 3.12e-08 | mean condVar 0.08346 (the two conventions differ)
+
+=== 2. independent random slopes (1 + x || g): diag with two columns ===
+  diag slopes : identical -2logL                           OK  768.020691545 vs 768.020691545
+  diag slopes : fixed effects                              OK  max rel diff 6.07e-10
+  diag slopes : standard errors of the fixed effects       OK  max rel diff 7.50e-09
+  diag slopes : the two variances                          OK  remlax 1.18772 0.49438 | lme4 1.18772 0.49438
+  diag slopes : covariance zero by construction            OK  0.0e+00
+
+=== 3. nesting (1 | g/h): two iid terms ===
+  nested : identical -2logL                                OK  764.300248907 vs 764.300248907
+  nested : fixed effects                                   OK  max rel diff 2.58e-14
+  nested : standard errors of the fixed effects            OK  max rel diff 4.65e-08
+  nested : variances of g and of h within g                OK  g 1.53208/1.53208 | h:g 0.26695/0.26695 | res 1.05729/1.05729
+  nested : BLUPs of both terms                             OK  max diff 9.93e-09 / 3.52e-08
+
+=== 4. three crossed factors, unbalanced design ===
+  3 crossed : identical -2logL                             OK  1232.919208193 vs 1232.919208193
+  3 crossed : fixed effects                                OK  max rel diff 1.01e-09
+  3 crossed : standard errors of the fixed effects         OK  max rel diff 7.85e-08
+  3 crossed : the four variances                           OK  remlax 0.81044 0.69056 0.18664 1.02067 | lme4 0.81044 0.69056 0.18664 1.02067
+  3 crossed : BLUPs of the three terms                     OK  max diff 1.75e-08
+  3 crossed : PEV of the three terms = MME formula         OK  max rel diff 1.48e-14
+  3 crossed : PEV of g decreases with replication          OK  cor(PEV, n_rep) = -0.982
+
+=== 5. one factor, very unequal group sizes, two covariates ===
+  unbalanced : identical -2logL                            OK  888.893080406 vs 888.893080406
+  unbalanced : fixed effects                               OK  max rel diff 2.66e-11
+  unbalanced : standard errors of the fixed effects        OK  max rel diff 4.94e-10
+  unbalanced : variance components                         OK  s2g 1.603755/1.603755 | s2e 1.214474/1.214474
+  unbalanced : BLUPs                                       OK  max diff 6.98e-10 (sizes 1 to 12)
+
+==============================================================
+ALL CHECKS PASS: same -2logL, components, fixed effects, BLUP
+ and PEV (MME formula) as lme4 on every design tested.

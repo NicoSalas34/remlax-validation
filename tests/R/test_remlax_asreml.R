@@ -29,6 +29,7 @@ check <- function(name, cond, detail = "") {
   if (!isTRUE(cond)) FAILURES <<- c(FAILURES, name)
 }
 relc <- function(a, b, floor_ = 1e-6) {
+  if (length(a) != 1 || length(b) != 1 || !is.finite(a) || !is.finite(b)) return(Inf)
   if (max(abs(a), abs(b)) < floor_) return(0)   # two numerical zeros
   abs(a - b) / max(abs(b), floor_)
 }
@@ -92,21 +93,26 @@ g <- expand.grid(col = 1:nc, row = 1:nr)
 surf <- 2 * sin(g$row / 4) + 1.5 * cos(g$col / 3) + 0.02 * g$row * g$col
 y <- 5 + surf + rnorm(nrow(g), 0, 0.6)
 sp <- rx_spl2d(g$row, g$col, nseg = c(6, 6))
+# rx_spl2d gives the PS-ANOVA of SpATS: one iid term per smooth component
+# (five here). asreml receives every one of them as a grp() term.
 Zs <- lapply(sp$terms, function(t) as.matrix(t$Zl[[1]]))
-dd <- data.frame(y = y, sp$X, Zs[[1]], Zs[[2]], Zs[[3]])
+grp_nm <- paste0("g", seq_along(Zs))
+dd <- data.frame(y = y, sp$X, do.call(cbind, Zs))
 colnames(dd) <- c("y", paste0("L", seq_len(ncol(sp$X))),
-                  paste0("A", seq_len(ncol(Zs[[1]]))), paste0("B", seq_len(ncol(Zs[[2]]))),
-                  paste0("C", seq_len(ncol(Zs[[3]]))))
+                  unlist(lapply(seq_along(Zs), function(i) paste0(grp_nm[i], "_", seq_len(ncol(Zs[[i]]))))))
+grp_list <- stats::setNames(lapply(grp_nm, function(gn) grep(paste0("^", gn, "_"), names(dd))), grp_nm)
 a <- stab(asreml(stats::as.formula(paste("y ~", paste(paste0("L", seq_len(ncol(sp$X))), collapse = " + "))),
-                 random = ~ grp(gA) + grp(gB) + grp(gC),
-                 group = list(gA = grep("^A", names(dd)), gB = grep("^B", names(dd)),
-                              gC = grep("^C", names(dd))),
-                 data = dd, trace = FALSE, maxit = 100, workspace = "2gb"))
+                 random = stats::as.formula(paste("~", paste0("grp(", grp_nm, ")", collapse = " + "))),
+                 group = grp_list, data = dd, trace = FALSE, maxit = 100, workspace = "2gb"))
 vc <- summary(a)$varcomp
 f <- rx_fit(rx_model(y, cbind(1, sp$X), sp$terms), backend = "auto",
             n_restarts = 3, verbose = FALSE)
+at_floor <- character(0)
 for (i in seq_along(sp$terms)) {
-  nm <- sp$terms[[i]]$name; ref <- vc[c("grp(gA)", "grp(gB)", "grp(gC)")[i], "component"]
+  nm <- sp$terms[[i]]$name; ref <- vc[paste0("grp(", grp_nm[i], ")"), "component"]
+  # asreml's bound code B also marks components that touched the bound during
+  # its iterations; a component is at the floor when its value is.
+  if (ref < 1e-6 * max(vc[, "component"])) at_floor <- c(at_floor, nm)
   check(sprintf("spline 2D : variance %s", nm),
         relc(f$sigmas[[nm]][1, 1], ref) < 1e-3,
         sprintf("%.6e vs %.6e", f$sigmas[[nm]][1, 1], ref))
@@ -114,9 +120,10 @@ for (i in seq_along(sp$terms)) {
 check("spline 2D : residual", relc(f$sigma_res[1, 1], vc["units!R", "component"]) < 1e-3)
 check("spline 2D : logLik", abs(f$logLik_asreml - a$loglik) < 1e-5,
       sprintf("%.9f vs %.9f", f$logLik_asreml, a$loglik))
-check("spline 2D : zero component flagged as degenerate",
-      "spl_xy" %in% f$degenerate_components,
-      paste(f$degenerate_components, collapse = ", "))
+check("spline 2D : components at the floor in asreml flagged as degenerate",
+      all(at_floor %in% f$degenerate_components),
+      sprintf("asreml at the floor: %s | remlax degenerate: %s",
+              paste(at_floor, collapse = ", "), paste(f$degenerate_components, collapse = ", ")))
 
 # ==============================================================================
 cat("\n=== 4. str(): covariance SHARED between two terms ===\n")
