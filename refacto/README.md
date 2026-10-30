@@ -12,19 +12,9 @@
 
 References:
 
-- `reference_avant_nettoyage/` (golden.R) and `reference_py_bbc7340.pkl`
-  (golden_py.py): captured before and during the cleanup of 2026-10. Every
-  cleanup step compared identical to them.
-- `reference_stabilisation/` and `reference_py_stabilisation.pkl`: captured
-  after the defect fixes of 2026-10-30. Against the
-  former ones they differ only where the fixes meant to: `n_iter` of the
-  average information optimiser (accepted iterations instead of steps
-  tried), and the constraint code B, without standard error, of variances at
-  the raised floor of the MME engine (cases fa1_mme and ige_mme). Engine
-  values, gradients and AI matrices are unchanged.
-- `reference_anglais/` and `reference_py_anglais.pkl`: the current
-  references, captured on remlax bc2af0c, after the move to English names
-  and messages. Against the stabilisation references, once the old names are
-  mapped to the new ones, every number is identical. Only names, translated
-  strings (`scipy_message`, `threads_bound`), printed output and timings
-  differ. `golden_py.py compare` maps the old engine names itself.
+- `reference_anglais/` (golden.R) and `reference_py_anglais.pkl`
+  (golden_py.py), captured on remlax bc2af0c after the move to English names
+  and messages. Every number equals those of the earlier references
+  (before the cleanup, during it, and after the defect fixes of
+  2026-10-30) once the old names are mapped to the new ones. The earlier
+  references are in the history of this repository, up to commit b55f225.

@@ -952,7 +952,7 @@ A term declared by its precision matrix gives the same likelihood as the same te
 
 This section exists so that nothing on the page above is mistaken for something it is not.
 
-**CPU against GPU.** The 34-design parity sweep (`tests/python/parite_gpu.py`, evaluation at a common theta on both devices) was not replayed on this date: the whole A100 became free late in the day and the time went to the speed benchmark, which fitted the same ten models on 4 CPU cores and on the whole card and reached the same optimum on each (|logLik gap| at most 1e-6 at six printed decimals, `benchmarks/results/bench_2026-09-28_*.csv`). The parity recorded on 2026-09-01 (34/34, relative gap at most 6.4e-15) stands for the code of that date. `tests/slurm_valid_gpu.slurm` replays it.
+**CPU against GPU.** The 34-design parity sweep (`tests-python/parite_gpu.py` of remlax, evaluation at a common theta on both devices) was not replayed on this date: the whole A100 became free late in the day and the time went to the speed benchmark, which fitted the same ten models on 4 CPU cores and on the whole card and reached the same optimum on each (|logLik gap| at most 1e-6 at six printed decimals, `benchmarks/results/bench_2026-09-28_*.csv`). The parity recorded on 2026-09-01 (34/34, relative gap at most 6.4e-15) stands for the code of that date. `campaign/run_gpu.sbatch` replays it.
 
 **Structures with no external reference.** `mtrn` with all four parameters free, `own` (user-written kernels) and `sep` beyond three factors have no counterpart in asreml, lme4, sommer or nlme; they are checked against closed forms (besselK profile, the same kernel written as `exp`) and against the dense reference. The sparse RTMB engine is compared to the dense engine, never to a third program.
 

@@ -235,7 +235,7 @@ def main(argv=None):
       "the same optimum on each (|logLik gap| at most 1e-6 at six printed decimals, "
       "`benchmarks/results/bench_2026-09-28_*.csv`). The parity recorded on 2026-09-01 "
       "(34/34, relative gap at most 6.4e-15) stands for the code of that date. "
-      "`tests/slurm_valid_gpu.slurm` replays it.")
+      "`campaign/run_gpu.sbatch` replays it.")
     A("")
     A("**Structures with no external reference.** `mtrn` with all four parameters free, "
       "`own` (user-written kernels) and `sep` beyond three factors have no counterpart in "

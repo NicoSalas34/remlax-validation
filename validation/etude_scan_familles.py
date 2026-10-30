@@ -49,7 +49,7 @@ def _load(name, path):
 
 
 _scan = _load("remlax_scan", os.path.join(moteur_remlax.ENGINE_DIR, "remlax", "scan.py"))
-_t = _load("t_scan", os.path.join(ROOT, "tests", "python", "test_scan.py"))
+_t = _load("t_scan", os.path.join(moteur_remlax.ENGINE_DIR, "..", "..", "tests-python", "test_scan.py"))
 project, scan, lambda_gc = _scan.project, _scan.scan, _scan.lambda_gc
 
 RNG = np.random.default_rng(90210)

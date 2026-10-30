@@ -16,6 +16,7 @@ and sommer on the user's machine.
 
 | path | what |
 |---|---|
+| `campaign/` | the validation campaign on the cluster: `prepare.sh` copies remlax and this repository at their commits and submits `run_cpu.sbatch` (every suite, CPU) and `run_gpu.sbatch` (CPU/GPU parity) |
 | `tests/R/` | the comparison suites, one line per check (`label`, measured values, verdict); `test_remlax_asreml*.R` need an asreml licence |
 | `validation/` | log parsing (`parse_logs.py`), the table of checks (`results/checks_<date>.csv`), the figure, the regeneration of `docs/validation.md` |
 | `benchmarks/` | speed at equal model: `bench_complexite.R` (size, model complexity, density), `summarise_benchc.py` (tables and figures), `verif_ecarts_asreml.R` (asreml continued where it stops short); `bench_engines.R` and `grille.R` time the dense engine against the mixed model equations engine with sparse inversion |
@@ -23,8 +24,8 @@ and sommer on the user's machine.
 | `banc_kmmr/` | remlax against kmmr and asreml-R on CPU and GPU; `R/` and `resultats_2026-10-27/` hold the seven DROPS and Krause models, `absolu/` the absolute benchmark on simulated cases (time against n, p and dim(C)/n), summarised by `absolu/synthese_abs.py` with figures in `absolu/sortie_v14/` |
 | `verif_simulations/` | simulation checks: each model type is fitted by every applicable route, its REML log-likelihood is compared with a dense REML arbiter written in R, and its variance components with the simulated truth |
 | `demo/` | simulated demonstrations: a field trial with a 2D P-spline surface and direct and indirect genetic effects, a one-step GWAS with LOCO, and studies of neighbourhood kernels and of the identifiability of the dilution |
-| `refacto/` | the safety nets of the 2026-10 remlax cleanup: `golden.R` captures and compares whole fits through R, `golden_py.py` the Python engine values at fixed theta; both run pinned to one CPU core |
-| `docs/` | `validation-summary.md` (one page), `validation.md` (every check), `validation-plan.md` (the claims and their evidence), `benchmarks.md` (speed), `vram.md` (GPU memory), `mesures-en-cours.md` (the 2026-09-01 measurement record), `rapport_nuit_2026-10-27.md` (remlax against kmmr and asreml-R), `paysage_logiciels_reml.md` (survey of REML software), `plan_banc_moteurs.md`, `plan_nettoyage_remlax.md` and `plan_branche_cran.md` (plans), `cran_policy_audit.md` (CRAN policy audit), `note_remlax.md` (the original note on the solver, translated from French) |
+| `refacto/` | the safety nets of remlax: `golden.R` captures and compares whole fits through R, `golden_py.py` the Python engine values at fixed theta, both pinned to one CPU core, against the references `reference_anglais/` and `reference_py_anglais.pkl` |
+| `docs/` | `validation-summary.md` (one page), `validation.md` (every check), `validation-plan.md` (the claims and their evidence), `benchmarks.md` (speed), `vram.md` (GPU memory), `rapport_nuit_2026-10-27.md` (remlax against kmmr and asreml-R), `paysage_logiciels_reml.md` (survey of REML software), `plan_banc_moteurs.md` (protocol of the engine benchmark), `plan_branche_cran.md` (conditions of the CRAN release), `cran_policy_audit.md` (CRAN policy audit), `note_remlax.md` (the original note on the solver, translated from French) |
 | `paper/` | the draft of the software paper and its validation section |
 | `R/charger_remlax.R` | loads the installed remlax package and exposes its namespace to the scripts |
 | `moteur_remlax.py` | locates the Python engine shipped with the installed package, for the Python scripts |
