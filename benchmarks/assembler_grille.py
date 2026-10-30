@@ -1,95 +1,128 @@
 #!/usr/bin/env python3
-"""Assemble les CSV de grille et separe ce qui doit l'etre.
+"""Assemble the grid CSVs and separate what must be separated.
 
-POURQUOI CE SCRIPT PLUTOT QU'UN TABLEAU CROISE. Les nombres d'iterations
-different entre backends sur une meme cellule (419 sur carte contre 317 sur
-CPU, mesure). Un temps total melange donc DEUX effets : le cout unitaire d'une
-evaluation, qui est ce qu'on veut comparer entre moteurs, et la longueur de la
-trajectoire d'optimisation, qui depend du conditionnement et de l'ordre des
-reductions. On rapporte les deux, et le temps par iteration qui les separe.
+WHY THIS SCRIPT RATHER THAN A CROSS TABLE. The numbers of iterations differ
+between backends on the same cell (419 on the card against 317 on CPU,
+measured). A total time therefore mixes TWO effects. One is the unit cost of an
+evaluation, which is what the engines are compared on. The other is the length
+of the optimisation path, which depends on the conditioning and on the order of
+the reductions. Both are reported, together with the time per iteration that
+separates them.
 
-Il tourne sur des CSV PARTIELS : les jobs ecrivent cellule par cellule, donc une
-grille en cours s'assemble et se lit sans attendre.
+It runs on PARTIAL CSVs: the jobs write cell by cell, so a grid in progress
+can be assembled and read without waiting.
+
+The CSVs written before the English pass of the scripts (French column names
+and values) are read as well: they are mapped to English right after reading.
+
+    python3 benchmarks/assembler_grille.py [csv or glob ...] [--out grid_assembled.csv]
 """
 import csv, glob, sys
-from pathlib import Path
 
-def lire(motifs):
+# Old French column names and values of grille.R, mapped to English.
+FR_COLUMNS = {"cellule": "cell", "cas": "case", "moteur": "engine",
+              "p_attendu": "p_expected", "fit_paroi_s": "fit_wall_s",
+              "fit_interne_s": "fit_internal_s", "tronque": "truncated",
+              "statut": "status", "erreur": "error"}
+FR_VALUES = {"creux": "sparse", "echec": "fail"}
+
+
+def to_english(r):
+    r = {FR_COLUMNS.get(k, k): v for k, v in r.items()}
+    for k in ("case", "engine", "status"):
+        if k in r:
+            r[k] = FR_VALUES.get(r[k], r[k])
+    if "cell" in r and r["cell"]:
+        r["cell"] = "-".join(FR_VALUES.get(x, x) for x in r["cell"].split("-"))
+    return r
+
+
+def read(patterns):
     rows = []
-    for m in motifs:
+    for m in patterns:
         for f in sorted(glob.glob(m)):
             for r in csv.DictReader(open(f)):
-                if r.get("statut") == "ok":
+                r = to_english(r)
+                if r.get("status") == "ok":
                     for k in ("n", "q", "t", "p", "n_iter"):
                         r[k] = int(float(r[k])) if r[k] not in ("", "NA") else None
-                    for k in ("fit_paroi_s", "fit_interne_s", "logLik"):
+                    for k in ("fit_wall_s", "fit_internal_s", "logLik"):
                         r[k] = float(r[k]) if r[k] not in ("", "NA") else float("nan")
                     rows.append(r)
     return rows
 
-def main(motifs, sortie="grille_assemblee.csv"):
-    rows = lire(motifs)
+
+def main(patterns, out="grid_assembled.csv"):
+    rows = read(patterns)
     if not rows:
-        print("aucune ligne : les jobs n'ont peut-etre encore rien ecrit"); return 1
+        print("no rows: the jobs may not have written anything yet"); return 1
     for r in rows:
-        # Le temps par iteration est la grandeur COMPARABLE entre moteurs : il
-        # retire la longueur de trajectoire, qui n'est pas une propriete du
-        # moteur mais de la surface et de l'ordre des reductions.
-        r["s_par_iter"] = (r["fit_interne_s"] / r["n_iter"]) if r["n_iter"] else float("nan")
+        # The time per iteration is the quantity COMPARABLE between engines: it
+        # removes the path length, which is a property of the surface and of
+        # the order of the reductions, not of the engine.
+        r["s_per_iter"] = (r["fit_internal_s"] / r["n_iter"]) if r["n_iter"] else float("nan")
 
-    champs = ["cellule", "cas", "moteur", "backend", "n", "q", "t", "p",
-              "n_iter", "fit_interne_s", "fit_paroi_s", "s_par_iter", "logLik", "tag"]
-    with open(sortie, "w", newline="") as fh:
-        w = csv.DictWriter(fh, fieldnames=champs, extrasaction="ignore")
-        w.writeheader(); w.writerows(sorted(rows, key=lambda r: (r["n"], r["q"], r["p"], r["cellule"])))
+    fields = ["cell", "case", "engine", "backend", "n", "q", "t", "p",
+              "n_iter", "fit_internal_s", "fit_wall_s", "s_per_iter", "logLik", "tag"]
+    with open(out, "w", newline="") as fh:
+        w = csv.DictWriter(fh, fieldnames=fields, extrasaction="ignore")
+        w.writeheader(); w.writerows(sorted(rows, key=lambda r: (r["n"], r["q"], r["p"], r["cell"])))
 
-    print("%d cellules dans %s\n" % (len(rows), sortie))
-    print("=== le nombre d'iterations contre p, par moteur ===")
-    par = {}
+    print("%d cells in %s\n" % (len(rows), out))
+    print("=== number of iterations against p, per engine ===")
+    by = {}
     for r in rows:
-        par.setdefault((r["moteur"], r["p"]), []).append(r["n_iter"])
-    for k in sorted(par):
-        v = par[k]
-        print("  moteur %-6s p=%-4d : %3d cellules, iterations %4d a %4d (mediane %4d)"
+        by.setdefault((r["engine"], r["p"]), []).append(r["n_iter"])
+    for k in sorted(by):
+        v = by[k]
+        print("  engine %-6s p=%-4d : %3d cells, iterations %4d to %4d (median %4d)"
               % (k[0], k[1], len(v), min(v), max(v), sorted(v)[len(v) // 2]))
 
-    print("\n=== cout par iteration, cellules convergees seulement ===")
-    print("  %-13s %6s %6s %4s %6s %8s %12s" % ("cellule", "n", "q", "p", "iter", "total s", "s/iter"))
-    for r in sorted(rows, key=lambda r: (r["cellule"], r["n"], r["q"], r["p"])):
-        if r.get("tronque") == "TRUE":
-            continue                      # tronquee : ce n'est pas un temps d'ajustement
+    print("\n=== cost per iteration, converged cells only ===")
+    print("  %-13s %6s %6s %4s %6s %8s %12s" % ("cell", "n", "q", "p", "iter", "total s", "s/iter"))
+    for r in sorted(rows, key=lambda r: (r["cell"], r["n"], r["q"], r["p"])):
+        if r.get("truncated") == "TRUE":
+            continue                      # truncated: not a fit time
         print("  %-13s %6d %6d %4d %6d %8.1f %12.4f"
-              % (r["cellule"], r["n"], r["q"], r["p"], r["n_iter"],
-                 r["fit_interne_s"], r["s_par_iter"]))
+              % (r["cell"], r["n"], r["q"], r["p"], r["n_iter"],
+                 r["fit_internal_s"], r["s_per_iter"]))
 
-    print("\n=== le prix du mauvais moteur : cas dense force sur le creux ===")
-    ref = {(r["n"], r["q"], r["t"]): r for r in rows if r["cellule"] == "creux-creux"}
+    print("\n=== the price of the wrong engine: dense case forced on the sparse engine ===")
+    ref = {(r["n"], r["q"], r["t"]): r for r in rows if r["cell"] == "sparse-sparse"}
     for r in sorted(rows, key=lambda r: (r["n"], r["q"], r["p"])):
-        if r["cellule"] != "dense-creux":
+        if r["cell"] != "dense-sparse":
             continue
         b = ref.get((r["n"], r["q"], r["t"]))
         if b:
-            print("  n=%-6d q=%-5d p=%-3d : cas dense %9.1f s contre cas creux %7.2f s  -> x%.0f"
-                  % (r["n"], r["q"], r["p"], r["fit_interne_s"], b["fit_interne_s"],
-                     r["fit_interne_s"] / max(b["fit_interne_s"], 1e-9)))
+            print("  n=%-6d q=%-5d p=%-3d : dense case %9.1f s against sparse case %7.2f s  -> x%.0f"
+                  % (r["n"], r["q"], r["p"], r["fit_internal_s"], b["fit_internal_s"],
+                     r["fit_internal_s"] / max(b["fit_internal_s"], 1e-9)))
 
-    print("\n=== carte entiere contre CPU, meme cas et MEME moteur dense ===")
+    print("\n=== whole card against CPU, same case and SAME dense engine ===")
     idx = {}
     for r in rows:
-        if r["moteur"] == "dense":
-            idx.setdefault((r["cas"], r["n"], r["q"], r["t"]), {})[r["backend"]] = r
+        if r["engine"] == "dense":
+            idx.setdefault((r["case"], r["n"], r["q"], r["t"]), {})[r["backend"]] = r
     for k in sorted(idx):
         d = idx[k]
         if "cpu" in d and "gpu" in d:
             c, g = d["cpu"], d["gpu"]
-            print("  cas %-6s n=%-6d q=%-5d p=%-3d | CPU %9.1f s (%3d it) | carte %8.1f s (%3d it)"
-                  "  -> total x%.1f, par iteration x%.1f"
-                  % (k[0], k[1], k[2], k[3], c["fit_interne_s"], c["n_iter"],
-                     g["fit_interne_s"], g["n_iter"],
-                     c["fit_interne_s"] / max(g["fit_interne_s"], 1e-9),
-                     c["s_par_iter"] / max(g["s_par_iter"], 1e-9)))
+            print("  case %-6s n=%-6d q=%-5d p=%-3d | CPU %9.1f s (%3d it) | card %8.1f s (%3d it)"
+                  "  -> total x%.1f, per iteration x%.1f"
+                  % (k[0], k[1], k[2], k[3], c["fit_internal_s"], c["n_iter"],
+                     g["fit_internal_s"], g["n_iter"],
+                     c["fit_internal_s"] / max(g["fit_internal_s"], 1e-9),
+                     c["s_per_iter"] / max(g["s_per_iter"], 1e-9)))
     return 0
 
+
 if __name__ == "__main__":
-    m = sys.argv[1:] or ["hpc/*/remlax/out/grille*.csv", "hpc/*/grille*.csv"]
-    sys.exit(main(m))
+    argv = sys.argv[1:]
+    out = "grid_assembled.csv"
+    if "--out" in argv:
+        i = argv.index("--out")
+        out = argv[i + 1]
+        argv = argv[:i] + argv[i + 2:]
+    m = argv or ["hpc/*/remlax/out/grid*.csv", "hpc/*/grid*.csv",
+                 "hpc/*/remlax/out/grille*.csv", "hpc/*/grille*.csv"]
+    sys.exit(main(m, out))

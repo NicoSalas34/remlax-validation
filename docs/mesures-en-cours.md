@@ -8,9 +8,9 @@ CSV in `benchmarks/results/`; nothing here is an estimate.
 ## Why the protocol was rebuilt
 
 Comparing **fit times** across backends is not a valid measurement. The two
-backends follow different optimisation trajectories on the same model — 419
+backends follow different optimisation trajectories on the same model (419
 iterations on the card against 317 on the CPU, reaching the same optimum to
-8.6e-10 relative — because floating-point addition is not associative: a
+8.6e-10 relative), because floating-point addition is not associative: a
 reduction is ordered differently on thousands of GPU threads than on sixteen CPU
 cores, the gradient differs in its last bits, the line search accepts a
 different step, and the paths diverge. Near a flat optimum the stopping test
@@ -26,8 +26,8 @@ identical arithmetic on both devices.
 structure, an identity relationship matrix and a dense genomic one cost the
 same per evaluation: 0.01347 against 0.01364 s at n = 2000, and 0.23843 against
 0.23817 s at n = 8000. Likewise the covariance family does not matter: at t = 6,
-`iid` with 7 parameters and `us` with 27 both cost 0.2314 s. This is expected —
-the engine forms and factorises V whatever the sparsity — and it is precisely
+`iid` with 7 parameters and `us` with 27 both cost 0.2314 s. This is expected,
+since the engine forms and factorises V whatever the sparsity. It is precisely
 why it wins on dense models and loses on sparse ones.
 
 **The parameter count acts on the number of evaluations, never on their price.**
@@ -47,7 +47,7 @@ expected CPU/GPU crossover, which must be redone on the numbers.
 
 The cost model claims: compilation + evaluation count x unit cost = total. On
 the 32 paired CPU cells at n = 2000 the predicted/measured ratio was **0.48** in
-median — the model explained half the time. The cause was that the evaluation
+median: the model explained half the time. The cause was that the evaluation
 count was PREDICTED as `n_iter + 2p`, whereas L-BFGS-B performs several
 evaluations per iteration in its line search and each Newton polish step adds a
 full Hessian. Measured on a case with p = 14 and 32 iterations: 60 predicted,
@@ -79,7 +79,7 @@ path: identical log-likelihoods and identical iteration counts throughout.
 
 One caveat we cannot fully close: "the partition has no effect" and "the option
 was not applied" would look the same here. The evidence that it did apply is
-thin but real — the median prediction error variances are bit-identical at
+thin but real: the median prediction error variances are bit-identical at
 q = 500 and 1000 but differ in the tenth digit at q = 2000 and 4000
 (0.3489389175584 against 0.3489389176814), which is the signature of a
 different arithmetic path rather than a no-op.
@@ -90,10 +90,10 @@ variances are available only for the dense portion. Measured: prediction error
 variances come back from BOTH paths, with the same median standard error to ten
 digits. `predict()` evidently recomputes what it needs regardless of the
 partition. The partial inverse must therefore NOT be offered as the structural
-reason remlax does not expose PEVs — that absence is an implementation gap, and
+reason remlax does not expose PEVs. That absence is an implementation gap, and
 should be written as one.
 
-## Not established — do not cite
+## Not established: do not cite
 
 Nothing outstanding on the external test. The CPU/card paired comparison is
 still running at the largest sizes.
@@ -113,7 +113,7 @@ Three cells, not four:
 | traits-dense | dense (JAX) | CPU 16 cores | |
 | traits-dense | dense (JAX) | whole A100 | asserted, not assumed |
 | traits-creux  | sparse (RTMB) | CPU 16 cores | |
-| —             | sparse | GPU | **does not exist**: CHOLMOD is CPU-only |
+| (none)        | sparse | GPU | **does not exist**: CHOLMOD is CPU-only |
 
 That empty cell is a result. It makes "sparse" and "GPU" mutually exclusive, so
 the engine choice is a trade-off rather than two independent axes.
@@ -125,7 +125,7 @@ genomic one.
 
 **Theta must be imposed, and the same for both engines.** The bench logged a
 `logLik` column taken at each engine's *own* starting value. The values diverged
-by 1.6e-5, 1.2e-3 and 8.9e-3, growing with `t` — which reads exactly like a
+by 1.6e-5, 1.2e-3 and 8.9e-3, growing with `t`. This reads exactly like a
 formulation defect in the sparse engine, and was nearly reported as one. At a
 common theta the two agree to 1e-12, and to 0e+00 after the fix. The bench now
 imposes zero on the transformed scale: well conditioned, reproducible, and
@@ -133,13 +133,13 @@ belonging to neither engine. `rx_n_theta()` was factored out for it.
 
 **A warm-up call is required before timing.** The first call in a cell pays
 RTMB's C++ construction. Without a warm-up the sparse engine read 0.209 s at
-`t = 1` against 0.012 s at `t = 2` — a factor 17 *against* the expected slope.
+`t = 1` against 0.012 s at `t = 2`, a factor 17 *against* the expected slope.
 With it, `t = 1` reads 0.0070 s.
 
 ### Local expectation, to be confirmed at real sizes
 
 At `t = 4`, `n_unit = 400`, `q = 60`: dense 0.157 s per evaluation against
 sparse 0.0245 s, and 21.7 s against 0.13 s for a full fit. The sparse
-advantage **grows** with complexity — the opposite of what reading the n axis
+advantage **grows** with complexity, the opposite of what reading the n axis
 alone suggests. These are local numbers on a laptop-class CPU and **must not**
 join the published curve.

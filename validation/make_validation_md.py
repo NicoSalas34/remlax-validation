@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Genere docs/validation.md a partir du CSV de verifications.
+"""Generate docs/validation.md from the CSV of checks.
 
-Le CSV est la source ; ce script ne fait que le mettre en forme. Aucun chiffre
-n'est saisi a la main : tout ce qui apparait dans la page vient d'une ligne du
-CSV, elle-meme extraite par programme des journaux des jobs du cluster.
+The CSV is the source. This script only formats it. No number is typed by
+hand: everything on the page comes from a row of the CSV, which a program
+extracted from the logs of the cluster jobs.
 
     python3 validation/make_validation_md.py --csv validation/results/checks_<date>.csv \
             --versions validation/results/versions_<date>.json --rev <git sha> --date <date>
@@ -19,7 +19,7 @@ ROOT = os.path.dirname(HERE)
 CSV = os.path.join(HERE, "results", "checks_2026-09-28.csv")
 OUT = os.path.join(ROOT, "docs", "validation.md")
 
-TITRES = OrderedDict([
+TITLES = OrderedDict([
     ("algebra", ("Internal algebra", "the solver against itself and against closed-form results",
                  "Gradients against central finite differences, the Hessian against a second "
                  "differentiation, log-determinant and quadratic form against a direct "
@@ -118,17 +118,17 @@ TITRES = OrderedDict([
 ])
 
 
-def lire(chemin):
-    with open(chemin, newline="") as f:
+def read_rows(path):
+    with open(path, newline="") as f:
         return list(csv.DictReader(f))
 
 
-def tableau(lignes, colonnes, entetes):
-    out = ["| " + " | ".join(entetes) + " |",
-           "|" + "|".join(["---"] * len(entetes)) + "|"]
-    for r in lignes:
+def table(rows, columns, headers):
+    out = ["| " + " | ".join(headers) + " |",
+           "|" + "|".join(["---"] * len(headers)) + "|"]
+    for r in rows:
         cells = []
-        for c in colonnes:
+        for c in columns:
             v = (r.get(c) or "").replace("|", "\\|").strip()
             cells.append(v if v else "-")
         out.append("| " + " | ".join(cells) + " |")
@@ -138,18 +138,18 @@ def tableau(lignes, colonnes, entetes):
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--csv", default=CSV)
-    ap.add_argument("--versions", default=None, help="JSON ecrit par parse_logs.py")
-    ap.add_argument("--rev", default="unknown", help="revision git testee")
+    ap.add_argument("--versions", default=None, help="JSON written by parse_logs.py")
+    ap.add_argument("--rev", default="unknown", help="tested git revision")
     ap.add_argument("--date", default="unknown")
-    ap.add_argument("--out", default=OUT)
+    ap.add_argument("--out", default=OUT, help="output Markdown file (default: docs/validation.md)")
     a = ap.parse_args(argv)
-    rows = lire(a.csv)
+    rows = read_rows(a.csv)
     vers = json.load(open(a.versions)) if a.versions and os.path.exists(a.versions) else {}
     n_tot = len(rows)
     n_pass = sum(r["verdict"] == "pass" for r in rows)
-    par_suite = OrderedDict()
+    by_suite = OrderedDict()
     for r in rows:
-        par_suite.setdefault(r["suite"], []).append(r)
+        by_suite.setdefault(r["suite"], []).append(r)
     provenances = OrderedDict()
     for r in rows:
         provenances.setdefault(r["provenance"], 0)
@@ -182,11 +182,12 @@ def main(argv=None):
             A("- %s: %s" % (sw, "; ".join("%s (%s)" % (v, pv.split(", ", 1)[1] if ", " in pv else pv)
                                           for pv, v in d.items())))
         A("")
-    A("The check labels in the tables below are in French. They are the strings "
-      "the test suites print, quoted verbatim, and the suites are written in "
-      "French like the rest of the code. Translating them would give a more "
-      "readable table and a trace that no longer matches the logs, so they are "
-      "left alone; the section headings and the commentary are in English.")
+    A("The check labels in the tables below are the strings the test suites "
+      "printed, quoted verbatim. Suites run before their English translation "
+      "printed French labels, and those labels are kept as they are. "
+      "Translating them would give a more readable table and a trace that no "
+      "longer matches the logs. The section headings and the commentary are in "
+      "English.")
     A("")
     if vers.get("missing"):
         A("Suites whose log was not available for this run, and therefore absent from the "
@@ -195,18 +196,18 @@ def main(argv=None):
 
     A("## Summary")
     A("")
-    resume = []
-    for s, rs in par_suite.items():
-        t = TITRES.get(s, (s, "", ""))
-        resume.append({"suite": t[0], "n": str(len(rs)), "ref": t[1],
+    summary = []
+    for s, rs in by_suite.items():
+        t = TITLES.get(s, (s, "", ""))
+        summary.append({"suite": t[0], "n": str(len(rs)), "ref": t[1],
                        "verdict": "%d/%d" % (sum(r["verdict"] == "pass" for r in rs), len(rs))})
-    A(tableau(resume, ["suite", "n", "ref", "verdict"],
+    A(table(summary, ["suite", "n", "ref", "verdict"],
               ["Suite", "Checks", "Compared against", "Passed"]))
     A("")
 
-    for s, rs in par_suite.items():
-        titre, ref, expl = TITRES.get(s, (s, "", ""))
-        A("## %s" % titre)
+    for s, rs in by_suite.items():
+        title, ref, expl = TITLES.get(s, (s, "", ""))
+        A("## %s" % title)
         A("")
         if expl:
             A(expl)
@@ -218,7 +219,7 @@ def main(argv=None):
             if sec:
                 A("**%s**" % sec)
                 A("")
-            A(tableau(rr, ["check", "detail", "verdict"],
+            A(table(rr, ["check", "detail", "verdict"],
                       ["Check", "Measured", "Verdict"]))
             A("")
 
@@ -262,7 +263,7 @@ def main(argv=None):
     A("")
     A("```sh")
     A("# inside a container or an environment carrying JAX, R, lme4, sommer, nlme")
-    A("export RX_PY=python3   # remlax installe comme paquet R")
+    A("export RX_PY=python3   # remlax installed as an R package")
     A("")
     A("python3 -m pytest tests/python -q                 # unit tests")
     A("python3 tests/python/test_remlax_core.py          # internal algebra")
@@ -296,8 +297,8 @@ def main(argv=None):
 
     with open(a.out, "w") as f:
         f.write("\n".join(L) + "\n")
-    print("%s ecrit : %d lignes, %d verifications, %d suites"
-          % (os.path.relpath(a.out, ROOT), len(L), n_tot, len(par_suite)))
+    print("%s written: %d lines, %d checks, %d suites"
+          % (os.path.relpath(a.out, ROOT), len(L), n_tot, len(by_suite)))
     return 0
 
 

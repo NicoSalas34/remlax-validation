@@ -3,7 +3,7 @@
 This page exists because three probes on a 10 GB GPU slice told us only "it does
 not fit", while one buffer analysis on the CPU told us *what* does not fit, in
 three minutes. Every figure below is measured, and where a figure of mine was
-wrong it is recorded as wrong — the point of the page is to keep the next reader
+wrong it is recorded as wrong. The point of the page is to keep the next reader
 from repeating the reasoning that produced it.
 
 Model: the five-trait direct-and-indirect-effects design, `n = 8987`, 112
@@ -21,8 +21,8 @@ dimension 9 and 6, unstructured residual. `V` is 616 MB.
 
 Read the last two rows together: restricting each term's factor to its support
 buys a factor **1.15 on the chain**, not the factor 2.2 a synthetic bench of the
-same nominal shape had promised. The bench was wrong for a reason worth naming —
-see below.
+same nominal shape had promised. The bench was wrong for a reason given
+below.
 
 ## What the core costs, and why it is not the target
 
@@ -45,7 +45,7 @@ from scratch.
 |---|---:|---:|
 | all 37 terms | 1608 MB | **446 MB** |
 
-A factor 3.6 on that line item, and it is exact — a term of this model concerns
+A factor 3.6 on that line item, and it is exact. A term of this model concerns
 one block and one trait, so its incidence is zero on every other row, and those
 zeros were stored as double-precision floats.
 
@@ -59,7 +59,7 @@ them gains almost nothing, and they carry the widest factors.
 incidences are plain factors, so accumulate them by index comparison."** Wrong,
 and measurement reversed it. The ten indirect-environmental terms hold 82
 percent of the factor memory (1316 MB, `q = 1920` each) and are *weighted* with
-11 to 12 entries per row at order 6 — the one class the index trick cannot
+11 to 12 entries per row at order 6, the one class the index trick cannot
 touch. The eighteen spatial terms, which *are* unit factors on their support,
 hold 6 percent.
 
@@ -71,7 +71,7 @@ them as arguments instead was then measured as a small **loss** (4580 MB of temp
 plus 161 MB of arguments, against 4548 MB), and was reverted.
 
 **"22 support groups and 47 residual sections."** The real design has **6**
-groups and **2** residual sections — one per species — and the larger residual
+groups and **2** residual sections (one per species), and the larger residual
 section alone is 7147 rows, 390 MB. The residual is two large blocks, not a
 mosaic of small ones.
 
@@ -80,8 +80,8 @@ mosaic of small ones.
 Both probes plateaued at **8548 MiB, to the megabyte**, before and after the
 optimisation. A number that does not move when consumption changes is not
 consumption: it is the allocator's arena, capped at 95 percent of the slice.
-The first probe then failed on a request of 1.58 GiB — exactly the full-height
-concatenated factor — and the second on 4.02 GiB, which is the temp buffer.
+The first probe then failed on a request of 1.58 GiB (exactly the full-height
+concatenated factor) and the second on 4.02 GiB, which is the temp buffer.
 
 So the quantity to reduce is **the largest contiguous buffer**, not total
 memory. On a 10 GB slice the arena leaves room for roughly 4000 MB contiguous;
@@ -100,7 +100,7 @@ Two traps, both of which cost a submission here:
 - `peak_bytes_in_use` from `device.memory_stats()` is the **process-cumulative**
   high-water mark. Measuring two variants in one process makes the second
   report the first's peak, so the cheaper form looks identical to the dearer
-  one — measured, 866.2 MB for both, while the factors differed by 14x. Measure
+  one (measured: 866.2 MB for both, while the factors differed by 14x). Measure
   each variant in a separate process.
 - Do not let a diagnostic assertion gate the measurement it accompanies. An
   assertion on the peak killed a probe before the real model was ever tried, so
@@ -112,7 +112,7 @@ At `n = 8987` an evaluation costs about 1.1 s on a whole A100 against 4.84 s for
 the nine-trait model, so four neighbourhood orders fit in two to four hours in
 series on the whole card. A 1/7 slice exposes 7 of 108 compute units and is
 roughly fifteen times slower, so parallelism across slices only buys the card's
-queueing time — and it would still need another factor 1.4 on the largest
+queueing time, and it would still need another factor 1.4 on the largest
 contiguous buffer, from an assembly whose chunked variant is already recorded as
 having been measured worse.
 

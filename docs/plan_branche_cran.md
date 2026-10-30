@@ -1,171 +1,171 @@
-# remlax vers CRAN : branche de publication et conditions du gel
+# remlax to CRAN: release branch and freeze conditions
 
-Note du 2026-10-29, sur main au commit 777435a. Elle prolonge l'audit
-`cran_policy_audit.md` du 2026-09-29 (commit 48a75d2), fait avant l'arrivée
-du moteur MME, de l'AI-REML, du serveur Python, de la voie bayésienne et du
-décalage spatial.
+Note of 2026-10-29, on main at commit 777435a. It extends the audit
+`cran_policy_audit.md` of 2026-09-29 (commit 48a75d2), made before the
+arrival of the MME engine, AI-REML, the Python server, the Bayesian route and
+the spatial lag.
 
-## Où en est le paquet
+## State of the package
 
-`R CMD check --as-cran` du 2026-10-29, R 4.5.3, avec le solveur Python (RX_PY
-défini dans `~/.Renviron`) :
+`R CMD check --as-cran` of 2026-10-29, R 4.5.3, with the Python solver (RX_PY
+set in `~/.Renviron`):
 
-- aucune erreur ;
-- un avertissement, `qpdf` absent de la machine, sans rapport avec le paquet ;
-- une note d'horloge (« future file timestamps »), propre à la machine ;
-- une note sur l'exemple de `rx_bayes`, 5,1 s, et 32 s avec `--run-donttest` ;
-- tests : 890 réussis, 1 ignoré, 197 s de temps écoulé ;
-- vignettes : reconstruites sans erreur, leur code n'est pas exécuté.
+- no error;
+- one warning, `qpdf` missing from the machine, unrelated to the package;
+- one clock note ("future file timestamps"), specific to the machine;
+- one note on the `rx_bayes` example, 5,1 s, and 32 s with `--run-donttest`;
+- tests: 890 passed, 1 skipped, 197 s elapsed;
+- vignettes: rebuilt without error, their code is not run.
 
-Le check sans Python, celui que verront les machines du CRAN, reste à refaire.
-Il faut neutraliser RX_PY dans l'environnement du check lui-même, par exemple
-avec `R_ENVIRON_USER=/dev/null`.
+The check without Python, the one the CRAN machines will see, remains to be
+redone. RX_PY must be neutralised in the environment of the check itself, for
+instance with `R_ENVIRON_USER=/dev/null`.
 
-## Ce qui bloque depuis l'audit
+## Blockers since the audit
 
-### Écritures dans le répertoire personnel
+### Writes to the home directory
 
-Le solveur écrit par défaut dans `~/.cache/remlax` :
+By default the solver writes to `~/.cache/remlax`:
 
-- le cache de compilation XLA (`device.py`, `activer_cache_compilation`) ;
-- la bibliothèque compilée du noyau C de l'inversion sélective
+- the XLA compilation cache (`device.py`, `activer_cache_compilation`);
+- the compiled library of the C kernel of the selected inversion
   (`selinv.py`, `libselinv_<hash>.so`).
 
-Le check de ce jour y a écrit. La politique du CRAN interdit toute écriture
-hors du répertoire temporaire de la session, sauf dans
-`tools::R_user_dir()`, à condition que le contenu reste petit et géré. Le
-côté R ne transmet aujourd'hui aucun `REMLAX_CACHE` au solveur.
+Today's check wrote there. The CRAN policy forbids any write outside the
+temporary directory of the session, except in `tools::R_user_dir()`, provided
+the content stays small and managed. The R side passes no `REMLAX_CACHE` to
+the solver today.
 
-Correction proposée :
+Proposed fix:
 
-- R transmet `REMLAX_CACHE = tools::R_user_dir("remlax", "cache")` à chaque
-  lancement du solveur ;
-- pendant un check (`_R_CHECK_LIMIT_CORES_` défini, ou session non
-  interactive sans accord), le cache va dans `tempdir()` ;
-- une fonction `rx_cache_clear()` vide ce dossier et en donne la taille.
+- R passes `REMLAX_CACHE = tools::R_user_dir("remlax", "cache")` at each
+  launch of the solver;
+- during a check (`_R_CHECK_LIMIT_CORES_` set, or a non-interactive session
+  without consent), the cache goes to `tempdir()`;
+- a function `rx_cache_clear()` empties this folder and reports its size.
 
-### Compilation de code C à l'exécution
+### Compiling C code at run time
 
-`selinv.py` compile `selinv_c.c` au premier usage, avec le compilateur du
-système, puis charge la bibliothèque par `ctypes`. Un relecteur du CRAN
-refusera très probablement du code compilé hors de l'installation.
+`selinv.py` compiles `selinv_c.c` on first use, with the system compiler,
+then loads the library through `ctypes`. A CRAN reviewer will most likely
+refuse code compiled outside the installation.
 
-Deux voies :
+Two routes are possible:
 
-- déplacer le noyau dans `src/`. R le compile à l'installation dans `libs/`,
-  avec sa propre chaîne. R transmet ensuite au solveur le chemin de la
-  bibliothèque, que Python charge par `ctypes` comme aujourd'hui. Les
-  pointeurs BLAS et LAPACK restent ceux de SciPy, passés à l'appel ;
-- désactiver le noyau dans la version CRAN. La boucle NumPy prend le relais,
-  avec le même résultat, mais 5 à 15 fois plus lentement sur l'inversion
-  sélective (0,3 s contre 3,9 s sur un pedigree de 20 031 individus).
+- move the kernel to `src/`. R compiles it at installation into `libs/`, with
+  its own toolchain. R then passes the path of the library to the solver,
+  which Python loads through `ctypes` as today. The BLAS and LAPACK pointers
+  remain those of SciPy, passed at the call;
+- disable the kernel in the CRAN version. The NumPy loop takes over, with the
+  same result, but 5 to 15 times slower on the selected inversion (0,3 s
+  against 3,9 s on a pedigree of 20 031 individuals).
 
-Je recommande la première voie. Elle garde la vitesse, et la compilation
-passe par le mécanisme normal d'un paquet R.
+I recommend the first route. It keeps the speed, and compilation goes through
+the normal mechanism of an R package.
 
-### Exemple trop long
+### Example too long
 
-L'exemple de `rx_bayes` dépasse 5 s. Il passe en `\donttest`.
+The `rx_bayes` example exceeds 5 s. It moves to `\donttest`.
 
-## Points à vérifier sans être bloquants
+## Points to check, not blocking
 
-- Serveur Python persistant. Il est désactivé pendant un check et arrêté par
-  un finaliseur à la fin de la session. Il reste à vérifier sous Windows
-  qu'aucun processus ne survit à R.
-- Fils de calcul. `fils.py` restreint l'affinité du processus. Pendant un
-  check, un seul fil est utilisé, comme l'exige la politique. Il faut le
-  revérifier sur win-builder.
-- Plateformes. Le paquet n'a été vérifié que sous Linux. win-builder (R-devel
-  et R-release), mac-builder et R-hub restent à faire. L'audit avait corrigé
-  `system2(env =)`, ignoré sous Windows, sans l'avoir testé.
-- DOI de Salas et al. (2026). Le préfixe 10.64898 de bioRxiv se résout bien
-  (vérifié le 2026-10-29).
-- Mainteneur. L'adresse institutionnelle doit rester valide après la thèse.
-  L'ORCID et le rôle `cph` d'un employeur éventuel restent à décider.
+- Persistent Python server. It is disabled during a check and stopped by a
+  finaliser at the end of the session. It remains to check on Windows that no
+  process outlives R.
+- Compute threads. `fils.py` restricts the affinity of the process. During a
+  check, a single thread is used, as the policy requires. This must be
+  rechecked on win-builder.
+- Platforms. The package has been checked under Linux only. win-builder
+  (R-devel and R-release), mac-builder and R-hub remain to be done. The audit
+  had fixed `system2(env =)`, ignored under Windows, without testing it.
+- DOI of Salas et al. (2026). The bioRxiv prefix 10.64898 resolves correctly
+  (checked on 2026-10-29).
+- Maintainer. The institutional address must remain valid after the PhD. The
+  ORCID and the `cph` role of a possible employer remain to be decided.
 
-## Décisions à prendre avant de geler l'API
+## Decisions to make before freezing the API
 
-Une fois sur le CRAN, renommer une fonction ou un argument demande un cycle
-de dépréciation. Les choix suivants se font donc avant le gel.
+Once on CRAN, renaming a function or an argument requires a deprecation
+cycle. The following choices are therefore made before the freeze.
 
-### Langue de l'interface
+### Language of the interface
 
-L'interface mélange l'anglais et le français :
+The interface mixes English and French:
 
-- arguments en français : `marqueurs`, `carte`, `codage`, `construire`,
-  `K_de`, `bloc` ;
-- une fonction en français : `rx_scan_seuil()` ;
-- champs de sortie en français : `moteur`, `secondes`, `composantes_degenerees`,
-  `signe_non_identifie`, `second_ordre_omis` ;
-- messages et affichages du solveur en français (« Ajustement REML »,
-  « parametres »).
+- arguments in French: `marqueurs`, `carte`, `codage`, `construire`,
+  `K_de`, `bloc`;
+- one function in French: `rx_scan_seuil()`;
+- output fields in French: `moteur`, `secondes`, `composantes_degenerees`,
+  `signe_non_identifie`, `second_ordre_omis`;
+- solver messages and printouts in French ("Ajustement REML",
+  "parametres").
 
-Le CRAN ne l'interdit pas. Un paquet public sera pourtant lu surtout en
-anglais. Je propose de passer l'interface en anglais avant le gel, en gardant
-les anciens noms comme alias dépréciés pendant une version. Les messages
-internes du solveur peuvent rester en français dans un premier temps.
+CRAN does not forbid it. A public package will still be read mostly in
+English. I propose to switch the interface to English before the freeze, and
+to keep the old names as deprecated aliases for one version. The internal
+solver messages can stay in French at first.
 
-### Périmètre de la première version
+### Scope of the first version
 
-Certaines fonctions sont récentes et ont peu servi hors de nos données :
-la voie bayésienne, le décalage spatial, le moteur par blocs, le moteur MME
-hybride, `rx_scan_loco()` et `rx_scan_exact()`. Deux options :
+Some functions are recent and have seen little use outside our data: the
+Bayesian route, the spatial lag, the block engine, the hybrid MME engine,
+`rx_scan_loco()` and `rx_scan_exact()`. Two options are open:
 
-- les publier, marquées expérimentales dans leur aide, sans promesse de
-  stabilité de leur interface ;
-- les garder sur main, hors de la version CRAN, jusqu'à la suivante.
+- publish them, marked experimental in their help, with no promise of a
+  stable interface;
+- keep them on main, out of the CRAN version, until the next one.
 
-Je recommande la première option, avec la mention expérimentale. Retirer du
-code d'une branche de publication crée une divergence coûteuse à entretenir.
+I recommend the first option, with the experimental label. Removing code from
+a release branch creates a divergence that is costly to maintain.
 
-## Stratégie de branches
+## Branch strategy
 
-La branche `cran-layout` a déjà été fusionnée dans main, qui l'a dépassée de
-huit commits. Entretenir une branche de mise en forme parallèle à main a
-coûté cette fusion. La conformité au CRAN doit vivre sur main, et
-`.Rbuildignore` exclut déjà ce qui ne part pas dans l'archive (`manual/`,
-`tests-python/`, l'archive de bancs).
+The `cran-layout` branch has already been merged into main, which is now
+eight commits ahead of it. Maintaining a layout branch parallel to main cost
+this merge. CRAN compliance must live on main, and `.Rbuildignore` already
+excludes what does not go into the archive (`manual/`, `tests-python/`, the
+benchmark archive).
 
-Proposition :
+Proposal:
 
-- main reste la branche de développement, en version `0.1.0.9000` après la
-  première soumission ;
-- au gel, une branche `release/0.1` part d'un commit étiqueté. Elle ne reçoit
-  que des corrections demandées par le CRAN ;
-- l'étiquette `v0.1.0` marque l'archive soumise. Chaque correction faite sur
-  `release/0.1` est reportée sur main ;
-- les branches `cran-layout` et `structural-lag`, entièrement contenues dans
-  main, peuvent être supprimées.
+- main stays the development branch, at version `0.1.0.9000` after the first
+  submission;
+- at the freeze, a `release/0.1` branch starts from a tagged commit. It
+  receives only fixes requested by CRAN;
+- the `v0.1.0` tag marks the submitted archive. Each fix made on
+  `release/0.1` is carried over to main;
+- the `cran-layout` and `structural-lag` branches, fully contained in main,
+  can be deleted.
 
-## Intégration continue
+## Continuous integration
 
-Le dépôt n'a pas de `.github/` aujourd'hui, bien que `.Rbuildignore` le
-prévoie. Il faudrait deux familles de jobs GitHub Actions :
+The repository has no `.github/` today, although `.Rbuildignore` anticipates
+one. Two families of GitHub Actions jobs are needed:
 
-- un check `--as-cran` sans Python, sous Linux, Windows et macOS, avec
-  R-release et R-devel (`r-lib/actions/check-r-package`). Il reproduit ce que
-  verra le CRAN ;
-- un job Linux avec Python et JAX sur CPU, qui lance les tests testthat avec
-  le solveur et la suite pytest.
+- an `--as-cran` check without Python, under Linux, Windows and macOS, with
+  R-release and R-devel (`r-lib/actions/check-r-package`). It reproduces what
+  CRAN will see;
+- a Linux job with Python and JAX on CPU, which runs the testthat tests with
+  the solver and the pytest suite.
 
-## Conditions du gel
+## Freeze conditions
 
-Le paquet est prêt pour une branche de publication quand :
+The package is ready for a release branch when:
 
-- les blocages ci-dessus sont corrigés sur main ;
-- l'interface est figée, langue comprise ;
-- les tests ajoutés le 2026-10-29 (`test-scan-plus.R`, `test_face_cone.py`)
-  sont commités, et la suite complète passe avec et sans Python ;
-- `verif_simulations` (remlax-validation) passe sans nouvel échec ;
-- le check `--as-cran` donne 0 erreur, 0 avertissement et seulement la note
-  « New submission » sur win-builder, mac-builder et l'intégration continue ;
-- `NEWS.md` porte un résumé court de la première version, et le journal de
-  développement actuel est déplacé ailleurs ;
-- `cran-comments.md` est à jour.
+- the blockers above are fixed on main;
+- the interface is frozen, language included;
+- the tests added on 2026-10-29 (`test-scan-plus.R`, `test_face_cone.py`)
+  are committed, and the full suite passes with and without Python;
+- `verif_simulations` (remlax-validation) passes without a new failure;
+- the `--as-cran` check gives 0 errors, 0 warnings and only the "New
+  submission" note on win-builder, mac-builder and continuous integration;
+- `NEWS.md` carries a short summary of the first version, and the current
+  development log is moved elsewhere;
+- `cran-comments.md` is up to date.
 
-## Ordre proposé
+## Proposed order
 
-On corrige d'abord les blocages sur main : cache, noyau C, exemple trop long.
-On tranche ensuite la langue et le périmètre, puis on fait les renommages. On
-installe l'intégration continue. On gèle alors : étiquette, branche
-`release/0.1`, checks externes. La soumission vient en dernier.
+The blockers on main come first: cache, C kernel, example too long. The
+language and the scope are decided next, then the renaming is done.
+Continuous integration is installed. The freeze follows: tag, `release/0.1`
+branch, external checks. The submission comes last.

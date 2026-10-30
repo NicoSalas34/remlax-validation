@@ -1,38 +1,39 @@
 # ==============================================================================
-# Cas simules du banc absolu : temps contre n, contre p, et regime dim(C) >> n.
+# Simulated cases of the absolute benchmark: time against n, against p, and the
+# dim(C) >> n regime.
 #
-# Nom d'un cas : sim_q<q>_t<t>_r<r>_s<struct>_x<x>_o<o>
-#   q       genotypes phenotypes
-#   t       environnements (caracteres) ; t = 1 donne un GBLUP
-#   r       repetitions par genotype et par environnement observe
-#   struct  structure G x E : id (t = 1), diag, fa1, fa2, fa3, us
-#   x       genotypes NON phenotypes par genotype phenotype (ensemble de
-#           prediction) : la parente porte q (1 + x) genotypes, C aussi
-#   o       pourcentage des couples (genotype, environnement) observes
-#           (essais clairsemes) ; 100 = plan complet
+# Case name: sim_q<q>_t<t>_r<r>_s<struct>_x<x>_o<o>
+#   q       phenotyped genotypes
+#   t       environments (traits). t = 1 gives a GBLUP
+#   r       replicates per genotype and per observed environment
+#   struct  G x E structure: id (t = 1), diag, fa1, fa2, fa3, us
+#   x       NON-phenotyped genotypes per phenotyped genotype (prediction set).
+#           The kinship holds q (1 + x) genotypes, and so does C
+#   o       percentage of observed (genotype, environment) pairs (sparse
+#           trials). 100 = complete design
 #
-# Modele commun aux trois outils :
-#   y = mu_env + g + e,  g ~ N(0, Sigma_g (x) K),  e ~ N(0, sigma2_env) par env.
-# Parente : VanRaden sur 3000 marqueurs tires dans 10 sous-populations,
-# K = 0,98 G / mean(diag G) + 0,02 I (definie positive meme si q > marqueurs).
+# Model shared by the three tools:
+#   y = mu_env + g + e,  g ~ N(0, Sigma_g (x) K),  e ~ N(0, sigma2_env) per env.
+# Kinship: VanRaden on 3000 markers drawn in 10 subpopulations,
+# K = 0.98 G / mean(diag G) + 0.02 I (positive definite even if q > markers).
 #
-# Les jeux sont ecrits une fois par `preparer_sim()` dans <dossier>/sim/, pour
-# que les trois outils et les deux grappes lisent les memes nombres.
+# `prepare_sim()` writes the data sets once in <dir>/sim/, so that the three
+# tools and the two clusters read the same numbers.
 # ==============================================================================
 
-lire_nom_sim <- function(cas) {
-  v <- function(cle) sub(paste0(".*_", cle, "([^_]+).*"), "\\1", cas)
+parse_sim_name <- function(case) {
+  v <- function(key) sub(paste0(".*_", key, "([^_]+).*"), "\\1", case)
   list(q = as.integer(v("q")), t = as.integer(v("t")), r = as.integer(v("r")),
        s = v("s"), x = as.numeric(v("x")), o = as.numeric(v("o")))
 }
 
-# parente de q_tot genotypes, graine fixee par q_tot : tous les cas de meme
-# q_tot partagent la meme matrice
-simuler_K <- function(q_tot, m = 3000L, n_pop = 10L) {
+# kinship of q_tot genotypes, seed fixed by q_tot: all cases with the same
+# q_tot share the same matrix
+simulate_K <- function(q_tot, m = 3000L, n_pop = 10L) {
   set.seed(1000L + q_tot)
   p0 <- stats::runif(m, 0.05, 0.5)
   pop <- sample.int(n_pop, q_tot, replace = TRUE)
-  # frequences par sous-population : derive de type Balding-Nichols, Fst 0,1
+  # frequencies per subpopulation: Balding-Nichols type drift, Fst 0.1
   Fst <- 0.1
   P <- sapply(p0, function(p) stats::rbeta(n_pop, p * (1 - Fst) / Fst, (1 - p) * (1 - Fst) / Fst))
   P <- pmin(pmax(P, 0.01), 0.99)
@@ -41,8 +42,8 @@ simuler_K <- function(q_tot, m = 3000L, n_pop = 10L) {
   W <- sweep(M, 2L, 2 * f)
   G <- tcrossprod(W) / (2 * sum(f * (1 - f)))
   K <- 0.98 * G / mean(diag(G)) + 0.02 * diag(q_tot)
-  noms <- sprintf("G%05d", seq_len(q_tot))
-  dimnames(K) <- list(noms, noms)
+  ids <- sprintf("G%05d", seq_len(q_tot))
+  dimnames(K) <- list(ids, ids)
   K
 }
 
@@ -53,69 +54,69 @@ sigma_g <- function(t) {
   S <- tcrossprod(L)
   S <- S + diag(pmax(1 - diag(S), 0.05))
   D <- diag(1 / sqrt(diag(S)))
-  D %*% S %*% D                                  # variances genetiques 1
+  D %*% S %*% D                                  # genetic variances 1
 }
 
-simuler_jeu <- function(cas, K) {
-  a <- lire_nom_sim(cas)
+simulate_data <- function(case, K) {
+  a <- parse_sim_name(case)
   q <- a$q; t <- a$t
   q_tot <- nrow(K)
-  set.seed(sum(utf8ToInt(cas)))
-  noms <- rownames(K)
-  obs <- noms[seq_len(q)]                       # les q premiers sont phenotypes
-  # valeurs genetiques : chol(K)' Z chol(Sigma)
+  set.seed(sum(utf8ToInt(case)))
+  ids <- rownames(K)
+  obs <- ids[seq_len(q)]                        # the first q are phenotyped
+  # genetic values: chol(K)' Z chol(Sigma)
   Lk <- chol(K[obs, obs])
   Sg <- sigma_g(t)
-  # sigma_g() refixe la graine quand t > 1 : sans cette ligne, les jeux _gN
-  # multicaracteres etaient des copies de g1. Les noms sans suffixe gardent
-  # l'ancien tirage pour que les mesures g1 restent valides. Les fichiers _g2 et
-  # _g3 multicaracteres ecrits avant ce correctif sont ranges dans sim/copies_g1.
-  if (grepl("_g[0-9]+$", cas)) set.seed(sum(utf8ToInt(cas)) + 1L)
+  # sigma_g() resets the seed when t > 1. Without this line, the multi-trait
+  # _gN data sets were copies of g1. Names without a suffix keep the old draw,
+  # so that the g1 measurements remain valid. The multi-trait _g2 and _g3 files
+  # written before this fix are stored in sim/copies_g1.
+  if (grepl("_g[0-9]+$", case)) set.seed(sum(utf8ToInt(case)) + 1L)
   U <-crossprod(Lk, matrix(stats::rnorm(q * t), q, t)) %*% chol(Sg)
-  # couples observes : chaque genotype dans max(1, round(o t / 100)) env
+  # observed pairs: each genotype in max(1, round(o t / 100)) environments
   k_env <- max(1L, round(a$o * t / 100))
-  cellules <- do.call(rbind, lapply(seq_len(q), function(i)
+  cells <- do.call(rbind, lapply(seq_len(q), function(i)
     cbind(i, if (k_env >= t) seq_len(t) else sort(sample.int(t, k_env)))))
-  cellules <- cellules[rep(seq_len(nrow(cellules)), each = a$r), , drop = FALSE]
+  cells <- cells[rep(seq_len(nrow(cells)), each = a$r), , drop = FALSE]
   sig_e <- seq(1.5, 2.5, length.out = t)
-  env <- factor(sprintf("E%02d", cellules[, 2]), levels = sprintf("E%02d", seq_len(t)))
+  env <- factor(sprintf("E%02d", cells[, 2]), levels = sprintf("E%02d", seq_len(t)))
   mu <- seq(5, 10, length.out = t)
-  y <- mu[cellules[, 2]] + U[cellules] + stats::rnorm(nrow(cellules), 0, sqrt(sig_e[cellules[, 2]]))
-  d <- data.frame(GY = y, Env = env, Gen = factor(obs[cellules[, 1]], levels = noms))
+  y <- mu[cells[, 2]] + U[cells] + stats::rnorm(nrow(cells), 0, sqrt(sig_e[cells[, 2]]))
+  d <- data.frame(GY = y, Env = env, Gen = factor(obs[cells[, 1]], levels = ids))
   d <- d[order(d$Env, d$Gen), ]
   d$Unit <- factor(sprintf("U%07d", seq_len(nrow(d))))
   rownames(d) <- NULL
   d
 }
 
-fichier_K <- function(dossier, q_tot) file.path(dossier, "sim", sprintf("K_q%d.rds", q_tot))
-fichier_d <- function(dossier, cas) file.path(dossier, "sim", paste0(cas, ".rds"))
+K_file <- function(dir, q_tot) file.path(dir, "sim", sprintf("K_q%d.rds", q_tot))
+data_file <- function(dir, case) file.path(dir, "sim", paste0(case, ".rds"))
 
-preparer_sim <- function(cas_liste, dossier) {
-  dir.create(file.path(dossier, "sim"), showWarnings = FALSE, recursive = TRUE)
-  for (cas in cas_liste) {
-    a <- lire_nom_sim(cas)
+prepare_sim <- function(case_list, dir) {
+  dir.create(file.path(dir, "sim"), showWarnings = FALSE, recursive = TRUE)
+  for (case in case_list) {
+    a <- parse_sim_name(case)
     q_tot <- as.integer(round(a$q * (1 + a$x)))
-    fk <- fichier_K(dossier, q_tot)
+    fk <- K_file(dir, q_tot)
     if (!file.exists(fk)) {
       t0 <- Sys.time()
-      saveRDS(simuler_K(q_tot), fk, compress = FALSE)
-      cat(sprintf("K q_tot = %d : %.1f s\n", q_tot, as.numeric(difftime(Sys.time(), t0, units = "secs"))))
+      saveRDS(simulate_K(q_tot), fk, compress = FALSE)
+      cat(sprintf("K q_tot = %d: %.1f s\n", q_tot, as.numeric(difftime(Sys.time(), t0, units = "secs"))))
     }
-    fd <- fichier_d(dossier, cas)
+    fd <- data_file(dir, case)
     if (!file.exists(fd)) {
-      d <- simuler_jeu(cas, readRDS(fk))
+      d <- simulate_data(case, readRDS(fk))
       saveRDS(d, fd)
-      cat(sprintf("%s : n = %d, q_tot = %d\n", cas, nrow(d), q_tot))
+      cat(sprintf("%s: n = %d, q_tot = %d\n", case, nrow(d), q_tot))
     }
   }
 }
 
-charger_sim <- function(cas, dossier) {
-  a <- lire_nom_sim(cas)
+load_sim <- function(case, dir) {
+  a <- parse_sim_name(case)
   q_tot <- as.integer(round(a$q * (1 + a$x)))
-  d <- readRDS(fichier_d(dossier, cas))
-  K <- readRDS(fichier_K(dossier, q_tot))
-  rang <- if (startsWith(a$s, "fa")) as.integer(sub("fa", "", a$s)) else 0L
-  list(cas = cas, d = d, K = K, type = "sim", t = a$t, ge = a$s, rang = rang)
+  d <- readRDS(data_file(dir, case))
+  K <- readRDS(K_file(dir, q_tot))
+  rank <- if (startsWith(a$s, "fa")) as.integer(sub("fa", "", a$s)) else 0L
+  list(case = case, d = d, K = K, type = "sim", t = a$t, ge = a$s, rank = rank)
 }

@@ -1,62 +1,63 @@
 # ==============================================================================
-# Traduction d'un cas en rx_model remlax, et ajustement selon une voie.
+# Translation of a case into a remlax rx_model, and fit along one route.
 #
-# Voies : dense (forme V, memoire econome), blocs (forme V par blocs), mme
-# (inversion choisie automatiquement), mme_hybride (separateur dense + blocs).
-# Les voies V utilisent L-BFGS-B avec la finition a region de confiance ; les
-# voies MME l'AI-REML, comme kmmr.
+# Routes: dense (V form, low memory), blocks (V form by blocks), mme
+# (inversion chosen automatically), mme_hybrid (dense separator + blocks).
+# The V routes use L-BFGS-B with the trust-region finish. The MME routes use
+# AI-REML, like kmmr. The old French route names (blocs, mme_creux,
+# mme_hybride) stay accepted, because stored task lists use them.
 # ==============================================================================
 
-indicatrices <- function(f, filtre = NULL) {
+indicators <- function(f, keep = NULL) {
   f <- factor(f)
   i <- seq_along(f); j <- as.integer(f)
-  if (!is.null(filtre)) { i <- i[filtre]; j <- j[filtre] }
+  if (!is.null(keep)) { i <- i[keep]; j <- j[keep] }
   Matrix::sparseMatrix(i = i, j = j, x = 1, dims = c(length(f), nlevels(f)),
                        dimnames = list(NULL, levels(f)))
 }
 
-# indicatrices d'un facteur sur les seules lignes `ok` (niveaux presents)
-sous_indicatrices <- function(f, ok) {
+# indicators of a factor on the `ok` rows only (levels present)
+sub_indicators <- function(f, ok) {
   g <- droplevels(factor(f)[ok])
   Matrix::sparseMatrix(i = which(ok), j = as.integer(g), x = 1, dims = c(length(f), nlevels(g)))
 }
 
-# terme G x E : t composantes (une par environnement), q genotypes, parente K
-terme_ge <- function(nom, env, gen, K, struct, rang = 0L) {
+# G x E term: t components (one per environment), q genotypes, kinship K
+term_ge <- function(name, env, gen, K, struct, rank = 0L) {
   env <- factor(env)
-  Zl <- lapply(levels(env), function(e) indicatrices(gen, env == e))
+  Zl <- lapply(levels(env), function(e) indicators(gen, env == e))
   names(Zl) <- levels(env)
-  remlax::rx_term(nom, Zl, K = K, struct = struct, rank = rang)
+  remlax::rx_term(name, Zl, K = K, struct = struct, rank = rank)
 }
 
-modele_remlax <- function(cs) {
+remlax_model <- function(cs) {
   d <- cs$d
-  if (cs$type == "deux_etapes") {
+  if (cs$type == "two_stage") {
     X <- stats::model.matrix(~ -1 + ManEnv, d)
-    tm <- terme_ge("ge", d$ManEnv, d$Gen, cs$K, "fa", cs$rang)
+    tm <- term_ge("ge", d$ManEnv, d$Gen, cs$K, "fa", cs$rank)
     return(remlax::rx_model(d$GY, X, list(tm), remlax::rx_residual("iid"), weights = d$weight))
   }
-  if (cs$type == "une_etape") {
+  if (cs$type == "one_stage") {
     X <- stats::model.matrix(~ 1 + Env, d)
-    termes <- list()
+    terms <- list()
     secs <- list()
     for (e in levels(d$Env)) {
       ok <- d$Env == e
-      termes[[length(termes) + 1L]] <- remlax::rx_term(paste0("rep_", e), sous_indicatrices(d$Rep, ok), t = 1L)
-      termes[[length(termes) + 1L]] <- remlax::rx_term(paste0("blk_", e), sous_indicatrices(d$Block, ok), t = 1L)
+      terms[[length(terms) + 1L]] <- remlax::rx_term(paste0("rep_", e), sub_indicators(d$Rep, ok), t = 1L)
+      terms[[length(terms) + 1L]] <- remlax::rx_term(paste0("blk_", e), sub_indicators(d$Block, ok), t = 1L)
       r <- d$Row[ok] - min(d$Row[ok]); cc <- d$Col[ok] - min(d$Col[ok])
       nr <- max(r) + 1L; nc <- max(cc) + 1L
       Zc <- Matrix::sparseMatrix(i = which(ok), j = r * nc + cc + 1L, x = 1, dims = c(nrow(d), nr * nc))
-      termes[[length(termes) + 1L]] <- remlax::rx_term(paste0("champ_", e), Zc, t = 1L,
+      terms[[length(terms) + 1L]] <- remlax::rx_term(paste0("field_", e), Zc, t = 1L,
                                                        level = "ar1ar1", dims = c(nr, nc))
       secs[[length(secs) + 1L]] <- remlax::rx_residual("iid", rows = which(ok), name = e)
     }
-    termes[[length(termes) + 1L]] <- terme_ge("ge", d$Env, d$Gen, cs$K,
-                                              if (cs$ge == "us") "us" else "fa", if (cs$ge == "us") 0L else 1L)
-    return(remlax::rx_model(d$GY, X, termes, remlax::rx_residual("iid", sections = secs)))
+    terms[[length(terms) + 1L]] <- term_ge("ge", d$Env, d$Gen, cs$K,
+                                           if (cs$ge == "us") "us" else "fa", if (cs$ge == "us") 0L else 1L)
+    return(remlax::rx_model(d$GY, X, terms, remlax::rx_residual("iid", sections = secs)))
   }
   if (cs$type == "sim") {
-    # indicatrices sur TOUS les niveaux de la parente, observes ou non
+    # indicators on ALL kinship levels, observed or not
     ind <- function(ok) Matrix::sparseMatrix(i = which(ok), j = as.integer(d$Gen)[ok], x = 1,
                                              dims = c(nrow(d), nlevels(d$Gen)))
     if (cs$t == 1L) {
@@ -65,55 +66,58 @@ modele_remlax <- function(cs) {
     }
     Zl <- lapply(levels(d$Env), function(e) ind(d$Env == e)); names(Zl) <- levels(d$Env)
     st <- if (startsWith(cs$ge, "fa")) "fa" else cs$ge
-    tm <- remlax::rx_term("ge", Zl, K = cs$K, struct = st, rank = cs$rang)
+    tm <- remlax::rx_term("ge", Zl, K = cs$K, struct = st, rank = cs$rank)
     secs <- lapply(levels(d$Env), function(e) remlax::rx_residual("iid", rows = which(d$Env == e), name = e))
     return(remlax::rx_model(d$GY, stats::model.matrix(~ -1 + Env, d), list(tm),
                             remlax::rx_residual("iid", sections = secs)))
   }
   if (cs$type == "gblup") {
     X <- stats::model.matrix(~ 1 + Cycle, d)
-    tm <- remlax::rx_term("g", indicatrices(d$Gen), K = cs$K, t = 1L)
+    tm <- remlax::rx_term("g", indicators(d$Gen), K = cs$K, t = 1L)
     return(remlax::rx_model(d$GY, X, list(tm), remlax::rx_residual("iid")))
   }
   X <- stats::model.matrix(~ -1 + TrtCycle, d)
-  tm <- terme_ge("ge", d$Trt, d$Gen, cs$K, if (cs$ge == "us") "us" else "fa", if (cs$ge == "us") 0L else 2L)
+  tm <- term_ge("ge", d$Trt, d$Gen, cs$K, if (cs$ge == "us") "us" else "fa", if (cs$ge == "us") 0L else 2L)
   secs <- lapply(levels(d$Trt), function(e) remlax::rx_residual("iid", rows = which(d$Trt == e), name = e))
   remlax::rx_model(d$GY, X, list(tm), remlax::rx_residual("iid", sections = secs))
 }
 
-ajuster_remlax <- function(cs, voie, backend = "cpu", maxiter = 30000L) {
+fit_remlax <- function(cs, route, backend = "cpu", maxiter = 30000L) {
   t0 <- Sys.time()
-  m <- modele_remlax(cs)
-  t_modele <- as.numeric(difftime(Sys.time(), t0, units = "secs"))
-  args <- switch(voie,
+  m <- remlax_model(cs)
+  t_model <- as.numeric(difftime(Sys.time(), t0, units = "secs"))
+  args <- switch(route,
     dense       = list(engine = "dense", memory = "low", optimizer = "lbfgsb"),
-    # voies entierement fixees du banc absolu (moteur x inversion x optimiseur)
+    # fully fixed routes of the absolute benchmark (engine x inversion x optimiser)
     V_ai        = list(engine = "dense", memory = "standard", optimizer = "ai"),
     V_lbfgsb    = list(engine = "dense", memory = "standard", optimizer = "lbfgsb"),
     mme_dense   = list(engine = "mme", inversion = "dense", optimizer = "ai"),
+    blocks      = ,
     blocs       = list(engine = "blocks", optimizer = "lbfgsb"),
     mme         = list(engine = "mme", inversion = "auto", optimizer = "ai"),
+    mme_sparse  = ,
     mme_creux   = list(engine = "mme", inversion = "sparse", optimizer = "ai"),
+    mme_hybrid  = ,
     mme_hybride = list(engine = "mme", inversion = "hybrid", optimizer = "ai"),
-    stop("voie inconnue : ", voie))
-  commun <- list(model = m, backend = backend, hessian = FALSE, blups = FALSE, verbose = TRUE,
+    stop("unknown route: ", route))
+  common <- list(model = m, backend = backend, hessian = FALSE, blups = FALSE, verbose = TRUE,
                  maxiter = maxiter)
-  fixe <- NULL
+  fixed <- NULL
   if (!is.null(m$weights)) {
-    # residuelle fixee a 1 (poids = inverses des variances des BLUE) : theta_init
-    # porte NA partout sauf la residuelle (log sd 0) ; les NA prennent le depart
-    # automatique du solveur, sans appel preliminaire.
+    # residual fixed at 1 (weights = inverses of the BLUE variances). theta_init
+    # holds NA everywhere except the residual (log sd 0). The NA entries take
+    # the automatic start of the solver, without a preliminary call.
     th <- rep(NA_real_, m$n_par); th[m$n_par] <- 0
-    commun$theta_init <- th
-    fixe <- m$n_par
+    common$theta_init <- th
+    fixed <- m$n_par
   }
   t1 <- Sys.time()
-  r <- do.call(remlax::rx_fit, c(commun, list(fixed_theta = fixe), args))
+  r <- do.call(remlax::rx_fit, c(common, list(fixed_theta = fixed), args))
   sec <- as.numeric(difftime(Sys.time(), t1, units = "secs"))
   list(logLik = r$logLik_asreml %||% r$logLik, logLik_remlax = r$logLik, n_iter = r$n_iter %||% NA,
-       n_eval = r$n_eval %||% NA, converge = isTRUE(as.logical(r[["scipy_success"]])),
-       secondes = sec, secondes_solveur = r$secondes %||% NA, n_par = m$n_par,
-       moteur = r$moteur %||% NA, inversion = r$inversion %||% NA,
-       t_modele = t_modele, compile_s = r$compile_s %||% NA, eval_s = r$eval_s %||% NA,
-       chrono = r[["chrono"]])
+       n_eval = r$n_eval %||% NA, converged = isTRUE(as.logical(r[["scipy_success"]])),
+       seconds = sec, solver_seconds = r$seconds %||% NA, n_par = m$n_par,
+       engine = r$engine %||% NA, inversion = r$inversion %||% NA,
+       t_model = t_model, compile_s = r$compile_s %||% NA, eval_s = r$eval_s %||% NA,
+       timings = r[["chrono"]])
 }

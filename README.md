@@ -24,7 +24,7 @@ and sommer on the user's machine.
 | `verif_simulations/` | simulation checks: each model type is fitted by every applicable route, its REML log-likelihood is compared with a dense REML arbiter written in R, and its variance components with the simulated truth |
 | `demo/` | simulated demonstrations: a field trial with a 2D P-spline surface and direct and indirect genetic effects, a one-step GWAS with LOCO, and studies of neighbourhood kernels and of the identifiability of the dilution |
 | `refacto/` | the safety nets of the 2026-10 remlax cleanup: `golden.R` captures and compares whole fits through R, `golden_py.py` the Python engine values at fixed theta; both run pinned to one CPU core |
-| `docs/` | `validation-summary.md` (one page), `validation.md` (every check), `validation-plan.md` (the claims and their evidence), `benchmarks.md` (speed), `vram.md` (GPU memory), `mesures-en-cours.md` (the 2026-09-01 measurement record), `rapport_nuit_2026-10-27.md` (remlax against kmmr and asreml-R), `paysage_logiciels_reml.md` (survey of REML software), `plan_banc_moteurs.md`, `plan_nettoyage_remlax.md` and `plan_branche_cran.md` (plans), `cran_policy_audit.md` (CRAN policy audit), `note_remlax_fr.md` (the original note on the solver) |
+| `docs/` | `validation-summary.md` (one page), `validation.md` (every check), `validation-plan.md` (the claims and their evidence), `benchmarks.md` (speed), `vram.md` (GPU memory), `mesures-en-cours.md` (the 2026-09-01 measurement record), `rapport_nuit_2026-10-27.md` (remlax against kmmr and asreml-R), `paysage_logiciels_reml.md` (survey of REML software), `plan_banc_moteurs.md`, `plan_nettoyage_remlax.md` and `plan_branche_cran.md` (plans), `cran_policy_audit.md` (CRAN policy audit), `note_remlax.md` (the original note on the solver, translated from French) |
 | `paper/` | the draft of the software paper and its validation section |
 | `R/charger_remlax.R` | loads the installed remlax package and exposes its namespace to the scripts |
 | `moteur_remlax.py` | locates the Python engine shipped with the installed package, for the Python scripts |
@@ -43,16 +43,24 @@ Rscript tests/R/test_remlax_sommer.R     # sommer
 Rscript tests/R/test_remlax_asreml3.R    # asreml (licence)
 Rscript benchmarks/bench_complexite.R --sizes 500,2000 --software asreml,remlax --tag cpu4
 python3 benchmarks/summarise_benchc.py --date <date>
-Rscript verif_simulations/verif_simulations.R --coeurs=10
+Rscript verif_simulations/verif_simulations.R --cores=10
 Rscript demo/demo_remlax_spatial_cpu.R
-Rscript banc_moteurs/R/executer.R --famille=grm --n=2000 --rep=1 --sortie=resultats
-python3 banc_kmmr/absolu/synthese_abs.py banc_kmmr/absolu/resultats banc_kmmr/absolu/sortie_v14
+Rscript banc_moteurs/R/executer.R --family=grm --n=2000 --rep=1 --out=results
+python3 banc_kmmr/absolu/synthese_abs.py banc_kmmr/absolu/resultats banc_kmmr/absolu/output_v14
 Rscript refacto/golden.R capture <dir> [<remlax sources>]
 python3 refacto/golden_py.py capture <out.pkl> <remlax repository>
 ```
 
 The `.sbatch` files in `banc_moteurs/` and `banc_kmmr/` launch the full
 benchmarks on the authors' clusters.
+
+The scripts write English file names and columns. The stored results predate
+this choice and keep their original French names and columns (for instance
+`banc_kmmr/absolu/resultats/`, `verif_simulations/resultats/ajustements.csv`,
+the `sortie_*` folders of `demo/`). The scripts that read stored results map
+the old names to the new ones on reading. `banc_kmmr/absolu/sortie_v14/` holds
+the stored figures and tables of the absolute benchmark. The command above
+regenerates them under English names in a new folder.
 
 The published campaign (2026-09-28/29) ran in the apptainer image
 `ige_reml.sif` of the authors' cluster (R 4.6.0, asreml 4.2.0.480, lme4 2.0.1,

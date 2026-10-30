@@ -1,152 +1,152 @@
-remlax · nuit du 26 au 27 octobre 2026
+remlax · night of 26 to 27 October 2026
 
-# remlax face à kmmr et asreml-R
+# remlax against kmmr and asreml-R
 
-Optimisation du solveur, validation complète et banc sur sept modèles de génétique quantitative, CPU et GPU, version figée v10.
+Solver optimisation, full validation and a benchmark on seven quantitative genetics models, CPU and GPU, frozen version v10.
 
-## En bref
+## Summary
 
-remlax atteint sur chacun des sept cas un optimum au moins aussi haut que kmmr et asreml-R. Sur quatre cas, il est strictement plus haut. Les deux modèles DROPS en une étape font décrocher kmmr, qui s’arrête après deux itérations. asreml plafonne leurs corrélations ar1 à 0,98, colle des variances spécifiques à zéro sur drops2_fa3 et s’arrête 3,8 unités sous remlax sur krause_fa2.
+On each of the seven cases, remlax reaches an optimum at least as high as kmmr and asreml-R. On four cases, it is strictly higher. The two one-stage DROPS models make kmmr break down, and it stops after two iterations. asreml caps their ar1 correlations at 0,98, pins specific variances at zero on drops2_fa3 and stops 3,8 units below remlax on krause_fa2.
 
-Sur A100, remlax est le plus rapide sur tous les modèles Krause : 22 fois kmmr sur krause_fa2, près de 4 fois sur krause_us. Sur CPU, il passe devant kmmr sur krause_us (316 s contre 359 s) et drops2_fa3, il est au niveau de kmmr sur la GBLUP et drops2_fa1, et il reste plus lent sur krause_fa2 (995 s contre 813 s), où il monte 20 unités plus haut. Sur les petits modèles, l’essentiel de son temps est fixe : environ 2,5 s pour démarrer le solveur Python, une fois par session R.
+On A100, remlax is the fastest on all Krause models: 22 times kmmr on krause_fa2, nearly 4 times on krause_us. On CPU, it beats kmmr on krause_us (316 s against 359 s) and drops2_fa3. It matches kmmr on the GBLUP and drops2_fa1, and it remains slower on krause_fa2 (995 s against 813 s), where it climbs 20 units higher. On the small models, most of its time is fixed: about 2,5 s to start the Python solver, once per R session.
 
-×22 (krause_fa2 sur A100 : 44,4 s contre 961 s pour kmmr, optimum plus haut).
+×22 (krause_fa2 on A100: 44,4 s against 961 s for kmmr, higher optimum).
 
-×3,7 (krause_us sur A100 : 22,1 s contre 82,6 s).
+×3,7 (krause_us on A100: 22,1 s against 82,6 s).
 
-357 → 29 s (drops1_fa1 sur CPU, de la v1 à la v10, mêmes nœuds).
+357 → 29 s (drops1_fa1 on CPU, from v1 to v10, same nodes).
 
-36 / 37 (cas de la vérification par simulation ; le dernier est un aléa connu).
+36 / 37 (cases of the simulation check; the last one is a known random failure).
 
-## Résultats du banc
+## Benchmark results
 
-kmmr et remlax tournent sur les mêmes nœuds de genotoul, AMD EPYC 7513 avec 8 cœurs ou A100 80 Go, dans la même image. asreml-R tourne sur meso, où sa licence est disponible : ses temps ne valent qu’en ordre de grandeur. Le temps de kmmr comprend l’inversion de K faite dans R avant l’appel. Celui de remlax comprend tout `rx_fit()`, démarrage du solveur compris, au second ajustement de la session (programmes compilés relus sur disque). ▼ marque un optimum plus bas que le meilleur des trois.
+kmmr and remlax run on the same genotoul nodes, AMD EPYC 7513 with 8 cores or A100 80 GB, in the same image. asreml-R runs on meso, where its licence is available. Its times are therefore only orders of magnitude. The kmmr time includes the inversion of K done in R before the call. The remlax time includes the whole `rx_fit()`, solver start included, at the second fit of the session (compiled programs read back from disk). ▼ marks an optimum lower than the best of the three.
 
-| cas | log-vraisemblance REML à l’optimum |  |  | CPU, 8 cœurs (s) |  |  | A100 (s) |  |
+| case | REML log-likelihood at the optimum |  |  | CPU, 8 cores (s) |  |  | A100 (s) |  |
 |----|----|----|----|----|----|----|----|----|
 |  | kmmr | asreml-R | remlax | kmmr | remlax | asreml | kmmr | remlax |
-| DROPS deux étapes, fa1 | -492.86 | -492.86 | -492.86 | 6.2 | 7.2 | 0.5 | 8.3 | 8.2 |
-| DROPS deux étapes, fa3 | ▼ -368.06 | ▼ -378.25 | -367.68 | 16.0 | 9.7 | 2.4 | 19.6 | 10.0 |
-| DROPS une étape, fa1 | ▼ -2154.65 | ▼ -1161.86 | -1161.21 | 3.9 | 29.1 | 15.3 | 5.0 | 42.7 |
-| DROPS une étape, us(5) | ▼ -2169.30 | ▼ -1146.72 | -1146.19 | 5.8 | 18.0 | 10.5 | 5.6 | 28.3 |
+| DROPS two-stage, fa1 | -492.86 | -492.86 | -492.86 | 6.2 | 7.2 | 0.5 | 8.3 | 8.2 |
+| DROPS two-stage, fa3 | ▼ -368.06 | ▼ -378.25 | -367.68 | 16.0 | 9.7 | 2.4 | 19.6 | 10.0 |
+| DROPS one-stage, fa1 | ▼ -2154.65 | ▼ -1161.86 | -1161.21 | 3.9 | 29.1 | 15.3 | 5.0 | 42.7 |
+| DROPS one-stage, us(5) | ▼ -2169.30 | ▼ -1146.72 | -1146.19 | 5.8 | 18.0 | 10.5 | 5.6 | 28.3 |
 | Krause, GBLUP | 389.57 | 389.57 | 389.57 | 9.1 | 9.0 | 60.2 | 7.4 | 9.2 |
-| Krause, fa2 × 5 traitements | ▼ 7109.92 | ▼ 7126.36 | 7130.18 | 813 | 995 | 7429 | 961 | 44.4 |
-| Krause, us(5) × 5 traitements | 7138.93 | 7138.93 | 7138.93 | 359 | 316 | 7530 | 82.6 | 22.1 |
+| Krause, fa2 × 5 treatments | ▼ 7109.92 | ▼ 7126.36 | 7130.18 | 813 | 995 | 7429 | 961 | 44.4 |
+| Krause, us(5) × 5 treatments | 7138.93 | 7138.93 | 7138.93 | 359 | 316 | 7530 | 82.6 | 22.1 |
 
-kmmr à la tolérance 1e-6 sur la log-vraisemblance. asreml-R avec ses réglages par défaut, workspace de 30 Go pour Krause. Sur drops1, asreml retrouve l’optimum de remlax à 0,02 près quand on fige comme lui les corrélations à 0,98.
+kmmr at a tolerance of 1e-6 on the log-likelihood. asreml-R with its default settings, with a 30 GB workspace for Krause. On drops1, asreml recovers the remlax optimum to within 0,02 when the correlations are fixed at 0,98 as it does.
 
-### Itérations et coût d’une évaluation
+### Iterations and cost of one evaluation
 
-| cas | it. kmmr | it. asreml | pas AI essayés remlax | remlax s/éval CPU | remlax s/éval A100 | version |
+| case | kmmr it. | asreml it. | remlax AI steps tried | remlax s/eval CPU | remlax s/eval A100 | version |
 |----|----|----|----|----|----|----|
-| DROPS deux étapes, fa1 | 23 | 13 | 24 | 0.071 | 0.030 | v10 |
-| DROPS deux étapes, fa3 | 38 | 30 | 138 | 0.070 | 0.033 | v10 |
-| DROPS une étape, fa1 | 2 | 24 | 76 | 0.435 | 0.607 | v10 |
-| DROPS une étape, us(5) | 2 | 23 | 30 | 0.416 | 0.608 | v10 |
+| DROPS two-stage, fa1 | 23 | 13 | 24 | 0.071 | 0.030 | v10 |
+| DROPS two-stage, fa3 | 38 | 30 | 138 | 0.070 | 0.033 | v10 |
+| DROPS one-stage, fa1 | 2 | 24 | 76 | 0.435 | 0.607 | v10 |
+| DROPS one-stage, us(5) | 2 | 23 | 30 | 0.416 | 0.608 | v10 |
 | Krause, GBLUP | 11 | 7 | 4 | 0.676 | 0.056 | v10 |
-| Krause, fa2 × 5 traitements | 14 | 15 | 56 | 28.122 | 1.252 | v10 |
-| Krause, us(5) × 5 traitements | 12 | 9 | 9 | 30.670 | 1.242 | v10 |
+| Krause, fa2 × 5 treatments | 14 | 15 | 56 | 28.122 | 1.252 | v10 |
+| Krause, us(5) × 5 treatments | 12 | 9 | 9 | 30.670 | 1.242 | v10 |
 
-Les pas AI essayés de remlax comptent aussi les pas rejetés, évalués sur la seule vraisemblance. Sur les modèles fa, la convergence de l’AI reste linéaire en fin de course : c’est la limite principale de remlax sur CPU.
+The AI steps tried by remlax also count the rejected steps, evaluated on the likelihood alone. On the fa models, AI convergence stays linear near the end. This is the main limitation of remlax on CPU.
 
-### Progression de remlax au fil des versions figées
+### Progress of remlax across the frozen versions
 
-| cas, matériel | v1 | v2 | v3 | v6 | v10 |
+| case, hardware | v1 | v2 | v3 | v6 | v10 |
 |----|----|----|----|----|----|
-| DROPS deux étapes, fa3, CPU | 186 s -367.68 | 12.9 s -367.68 | 10.4 s -367.68 | 10.4 s -367.68 | 9.7 s -367.68 |
-| DROPS une étape, fa1, CPU | 357 s -1161.21 | 25.4 s -1161.21 | 415 s -1161.21 | 34.5 s -1161.21 | 29.1 s -1161.21 |
+| DROPS two-stage, fa3, CPU | 186 s -367.68 | 12.9 s -367.68 | 10.4 s -367.68 | 10.4 s -367.68 | 9.7 s -367.68 |
+| DROPS one-stage, fa1, CPU | 357 s -1161.21 | 25.4 s -1161.21 | 415 s -1161.21 | 34.5 s -1161.21 | 29.1 s -1161.21 |
 | Krause, GBLUP, CPU | 11.7 s 389.57 | 14.4 s 389.57 | 11.1 s 389.57 | 10.0 s 389.57 | 9.0 s 389.57 |
-| Krause, us(5) × 5 traitements, CPU |  | 1286 s 7138.93 |  | 444 s 7138.93 | 316 s 7138.93 |
-| Krause, fa2 × 5 traitements, A100 | 480 s 7130.18 |  |  | 66.6 s 7130.18 | 44.4 s 7130.18 |
-| Krause, us(5) × 5 traitements, A100 | 266 s 7138.93 |  |  | 28.0 s 7138.93 | 22.1 s 7138.93 |
+| Krause, us(5) × 5 treatments, CPU |  | 1286 s 7138.93 |  | 444 s 7138.93 | 316 s 7138.93 |
+| Krause, fa2 × 5 treatments, A100 | 480 s 7130.18 |  |  | 66.6 s 7130.18 | 44.4 s 7130.18 |
+| Krause, us(5) × 5 treatments, A100 | 266 s 7138.93 |  |  | 28.0 s 7138.93 | 22.1 s 7138.93 |
 
-v1 à v3 : premières optimisations (départs, essais sur la valeur seule, fils BLAS, blocs pleins). v6 : brides de l’AI et voie GPU sans transfert. v9 : cache de la dernière évaluation et règle de Heywood. v10 : un pas AI accepté reprend la factorisation de son essai. La v3 trouvait drops1_fa1 en 415 s sur CPU et le manquait sur GPU ; la v10 le trouve partout.
+v1 to v3: first optimisations (starting values, trials on the value alone, BLAS threads, full blocks). v6: AI step limits and a GPU route without transfers. v9: cache of the last evaluation and Heywood rule. v10: an accepted AI step reuses the factorisation of its trial. v3 found drops1_fa1 in 415 s on CPU and missed it on GPU. v10 finds it everywhere.
 
-### Où passe le temps de remlax (v10, à chaud)
+### Where remlax spends its time (v10, warm)
 
-#### CPU, 8 cœurs
+#### CPU, 8 cores
 
-| cas | démarrage | préparation | 1re évaluation | optimisation | finition | sorties | total solveur |
+| case | start | preparation | 1st evaluation | optimisation | finish | outputs | solver total |
 |----|----|----|----|----|----|----|----|
-| DROPS deux étapes, fa1 | 2.6 | 0.3 | 2.2 | 1.9 | 0.0 | 0.1 | 7.2 |
-| DROPS deux étapes, fa3 | 2.6 | 0.3 | 0.3 | 6.3 | 0.0 | 0.1 | 9.6 |
-| DROPS une étape, fa1 | 2.5 | 2.3 | 0.6 | 23.0 | 0.0 | 0.2 | 28.9 |
-| DROPS une étape, us(5) | 2.4 | 2.3 | 0.6 | 12.1 | 0.0 | 0.2 | 17.9 |
+| DROPS two-stage, fa1 | 2.6 | 0.3 | 2.2 | 1.9 | 0.0 | 0.1 | 7.2 |
+| DROPS two-stage, fa3 | 2.6 | 0.3 | 0.3 | 6.3 | 0.0 | 0.1 | 9.6 |
+| DROPS one-stage, fa1 | 2.5 | 2.3 | 0.6 | 23.0 | 0.0 | 0.2 | 28.9 |
+| DROPS one-stage, us(5) | 2.4 | 2.3 | 0.6 | 12.1 | 0.0 | 0.2 | 17.9 |
 | Krause, GBLUP | 3.0 | 1.7 | 0.8 | 3.0 | 0.0 | 0.1 | 8.8 |
-| Krause, fa2 × 5 traitements | 2.6 | 2.4 | 28.6 | 960 | 0.0 | 0.6 | 995 |
-| Krause, us(5) × 5 traitements | 2.5 | 2.8 | 29.3 | 280 | 0.0 | 0.6 | 316 |
+| Krause, fa2 × 5 treatments | 2.6 | 2.4 | 28.6 | 960 | 0.0 | 0.6 | 995 |
+| Krause, us(5) × 5 treatments | 2.5 | 2.8 | 29.3 | 280 | 0.0 | 0.6 | 316 |
 
 #### A100
 
-| cas | démarrage | préparation | 1re évaluation | optimisation | finition | sorties | total solveur |
+| case | start | preparation | 1st evaluation | optimisation | finish | outputs | solver total |
 |----|----|----|----|----|----|----|----|
-| DROPS deux étapes, fa1 | 2.8 | 0.3 | 0.5 | 0.8 | 0.0 | 0.1 | 8.1 |
-| DROPS deux étapes, fa3 | 2.8 | 0.3 | 0.5 | 2.7 | 0.0 | 0.1 | 10.0 |
-| DROPS une étape, fa1 | 2.7 | 2.9 | 0.8 | 32.2 | 0.0 | 0.3 | 42.6 |
-| DROPS une étape, us(5) | 2.8 | 3.0 | 0.8 | 17.7 | 0.0 | 0.3 | 28.1 |
+| DROPS two-stage, fa1 | 2.8 | 0.3 | 0.5 | 0.8 | 0.0 | 0.1 | 8.1 |
+| DROPS two-stage, fa3 | 2.8 | 0.3 | 0.5 | 2.7 | 0.0 | 0.1 | 10.0 |
+| DROPS one-stage, fa1 | 2.7 | 2.9 | 0.8 | 32.2 | 0.0 | 0.3 | 42.6 |
+| DROPS one-stage, us(5) | 2.8 | 3.0 | 0.8 | 17.7 | 0.0 | 0.3 | 28.1 |
 | Krause, GBLUP | 2.8 | 1.5 | 0.5 | 0.4 | 0.0 | 0.1 | 9.0 |
-| Krause, fa2 × 5 traitements | 2.7 | 2.8 | 1.8 | 33.1 | 0.0 | 0.1 | 44.3 |
-| Krause, us(5) × 5 traitements | 2.8 | 2.8 | 1.8 | 10.7 | 0.0 | 0.1 | 22.0 |
+| Krause, fa2 × 5 treatments | 2.7 | 2.8 | 1.8 | 33.1 | 0.0 | 0.1 | 44.3 |
+| Krause, us(5) × 5 treatments | 2.8 | 2.8 | 1.8 | 10.7 | 0.0 | 0.1 | 22.0 |
 
-## Ce qui a changé dans remlax
+## Changes in remlax
 
-| changement | défaut corrigé | effet mesuré |
+| change | defect fixed | measured effect |
 |----|----|----|
-| Chrono par étapes (`rx_fit()$chrono`) | aucune mesure de la préparation, de la compilation ni des sorties | chaque étape, du lancement par R à la relecture du résultat |
-| Départ sur les résidus des effets fixes, par composante et par section | la variance de y brut contient les écarts de moyenne entre environnements | krause_us (600 génotypes) : 17 → 7 itérations |
-| Exposition divisée par les couples (ligne, composante) chargés | division par n × t : départs t fois trop grands en format long | drops2 : 13 itérations amorties en moins |
-| Essais de pas AI sur la vraisemblance seule | chaque essai rejeté coûtait gradient et matrice AI | drops2 : 42 → 12 s |
-| OpenBLAS de NumPy à un fil pendant le MME | les OpenBLAS de NumPy et de SciPy se disputaient les cœurs | évaluation 1,46 → 0,25 s (m = 1428, 8 cœurs) |
-| Greffon CUDA non chargé sur CPU | 2,0 s d’initialisation du backend à chaque lancement | démarrage 4,3 → 2,2 s |
-| Cache de compilation persistant | recompilation à chaque lancement | GPU : premier appel 3,4 → 0,6 s |
-| Table des composantes vectorisée, sonde Python à la demande | une opération JAX par entrée de Σ ; un Python lancé pour rien | 1,9 → 0,18 s ; 1,5 s |
-| Blocs pleins dans le MME dense, différés hors du motif creux | 178 millions d’entrées regroupées par bincount à chaque évaluation | préparation Krause 18 → 3 s |
-| Sur GPU, C et C⁻¹ restent sur la carte, blocs groupés par terme | 2,8 Go aller-retour par évaluation ; 406 opérations à compiler | évaluation Krause 6,9 → 1,25 s ; drops2 à froid 39 → 12 s |
-| Dernière évaluation du MME en cache | finition et sorties refactorisaient C au point final | krause_us sur CPU : 444 → 384 s (v6 → v9) |
-| Un pas AI accepté reprend la factorisation de son essai | l’évaluation complète refactorisait C juste après l’essai sur la valeur | environ 10 s de Cholesky en moins par pas accepté sur Krause en CPU |
-| AI bridée : variance ÷10, paramètre de niveau 0,5 au plus par pas | sauts entre bassins d’une vraisemblance multimodale | drops1 : bon optimum quel que soit le nombre de fils |
-| Variance bridée trois pas de suite libre de rejoindre le plancher | cas de Heywood d’un fa : dix paliers de plus | krause_fa2 : 101 → 56 pas essayés |
-| Sortie du plancher après L-BFGS-B et après l’AI | une variance au plancher a un gradient nul en log | drops2 en forme V : −2734,67 → −1753,64 |
-| METIS et CHOLMOD, ce dernier forcé dans notre ordre | SuperLU manquait de mémoire ; CHOLMOD pouvait rendre un facteur dans son propre ordre | mvD7 en 26 Go sur CPU ; 7 erreurs de la vérification → 0 |
-| `engine = "auto"`, `optimizer = "auto"`, `theta_init` avec NA | choix du moteur laissé à l’utilisateur ; appel préalable pour fixer un paramètre | MME et AI quand le modèle s’y prête |
+| Step timer (`rx_fit()$chrono`) | no measurement of preparation, compilation or outputs | every step, from the launch by R to reading back the result |
+| Starting values on the residuals of the fixed effects, by component and by section | the variance of raw y contains the mean differences between environments | krause_us (600 genotypes): 17 → 7 iterations |
+| Exposure divided by the loaded (row, component) pairs | division by n × t: starting values t times too large in long format | drops2: 13 fewer damped iterations |
+| AI step trials on the likelihood alone | each rejected trial cost a gradient and an AI matrix | drops2: 42 → 12 s |
+| NumPy OpenBLAS on one thread during the MME | the NumPy and SciPy OpenBLAS competed for the cores | evaluation 1,46 → 0,25 s (m = 1428, 8 cores) |
+| CUDA plugin not loaded on CPU | 2,0 s of backend initialisation at each launch | start 4,3 → 2,2 s |
+| Persistent compilation cache | recompilation at each launch | GPU: first call 3,4 → 0,6 s |
+| Vectorised component table, Python probe on demand | one JAX operation per entry of Σ; a Python process launched for nothing | 1,9 → 0,18 s; 1,5 s |
+| Full blocks in the dense MME, deferred out of the sparse pattern | 178 million entries grouped by bincount at each evaluation | Krause preparation 18 → 3 s |
+| On GPU, C and C⁻¹ stay on the card, blocks grouped by term | 2,8 GB round trip per evaluation; 406 operations to compile | Krause evaluation 6,9 → 1,25 s; drops2 cold 39 → 12 s |
+| Last MME evaluation cached | finish and outputs refactorised C at the final point | krause_us on CPU: 444 → 384 s (v6 → v9) |
+| An accepted AI step reuses the factorisation of its trial | the full evaluation refactorised C right after the trial on the value | about 10 s less Cholesky per accepted step on Krause on CPU |
+| Limited AI: variance ÷10, level parameter at most 0,5 per step | jumps between basins of a multimodal likelihood | drops1: right optimum whatever the number of threads |
+| A variance limited three steps in a row is free to reach the floor | Heywood case of an fa: ten more plateaus | krause_fa2: 101 → 56 steps tried |
+| Leaving the floor after L-BFGS-B and after the AI | a variance at the floor has a zero gradient on the log scale | drops2 in V form: −2734,67 → −1753,64 |
+| METIS and CHOLMOD, the latter forced into our ordering | SuperLU ran out of memory; CHOLMOD could return a factor in its own ordering | mvD7 in 26 GB on CPU; 7 errors of the simulation check → 0 |
+| `engine = "auto"`, `optimizer = "auto"`, `theta_init` with NA | choice of engine left to the user; a preliminary call to fix a parameter | MME and AI when the model suits them |
 
-Essayés puis écartés : une correction quasi-Newton (SR1) de la matrice AI, qui augmentait les itérations partout, et un test de rapport à la manière des régions de confiance, sans effet sur les optimums et jusqu’à 60 % plus lent (laissé en option, `REMLAX_AI_RAPPORT`). Une bride ÷1000 sur les variances accélérait les fa mais manquait l’optimum de drops1_us.
+Tried then dropped: a quasi-Newton correction (SR1) of the AI matrix, which increased the iterations everywhere, and a trust-region style ratio test, with no effect on the optima and up to 60 % slower (left as an option, `REMLAX_AI_RAPPORT`). A ÷1000 limit on the variances sped up the fa models but missed the optimum of drops1_us.
 
-## Validation de la version finale
+## Validation of the final version
 
-| contrôle | résultat |
+| check | result |
 |----|----|
-| tests Python, CPU | 257 passés, 1 sauté |
-| tests Python, GPU (L40S) | 253 passés, 1 sauté |
-| testthat | tout passe ; 1 test sauté faute du dépôt IGE |
-| `R CMD check` | Status: OK, sans avertissement ni note |
-| vérification par simulation (37 cas, 4 voies, arbitre REML dense en R) | 36 cas passés ; mt_g_fa2 échoue sur sa graine 1 sur le seul critère de récupération (une composante à 3,06 erreurs-types, même vraisemblance exacte sur les quatre voies) et passe sur 4 graines sur 5 |
-| parité CPU/GPU (L40S, 7 paquets du banc) | évaluations à 1e-13 près ou mieux, ajustements complets à 2e-10 près |
+| Python tests, CPU | 257 passed, 1 skipped |
+| Python tests, GPU (L40S) | 253 passed, 1 skipped |
+| testthat | all pass; 1 test skipped for lack of the IGE repository |
+| `R CMD check` | Status: OK, with no warning or note |
+| simulation check (37 cases, 4 routes, dense REML arbiter in R) | 36 cases passed; mt_g_fa2 fails on its seed 1 on the recovery criterion only (one component at 3,06 standard errors, same exact likelihood on all four routes) and passes on 4 seeds out of 5 |
+| CPU/GPU parity (L40S, 7 benchmark bundles) | evaluations within 1e-13 or better, full fits within 2e-10 |
 
-Quatre tests ont changé, chacun justifié dans son commentaire. Sur un jeu à vraisemblance plate et multimodale, le moteur par blocs et la finition à région de confiance trouvent désormais un meilleur point que le moteur dense : les tests vérifient qu’ils ne font pas pire. La finition à région de confiance ne fait plus gagner d’évaluations depuis la correction des départs : son test ne compare plus que l’optimum. Un seuil analytique de 1e-8 était trop strict pour les sommes du GPU : il passe à 1e-7.
+Four tests changed, each justified in its comment. On a data set with a flat and multimodal likelihood, the block engine and the trust-region finish now find a better point than the dense engine. The tests check that they do no worse. The trust-region finish no longer saves evaluations since the starting values were fixed, so its test now compares only the optimum. An analytical threshold of 1e-8 was too strict for GPU sums. It moves to 1e-7.
 
-## Limites et décisions à prendre
+## Limitations and decisions to make
 
-- Le défaut reste `engine = "dense"` et `optimizer = "lbfgsb"`. Passer à `"auto"` donnerait la voie la plus rapide sans réglage, mais changerait le chemin d’optimisation de tes scripts, dont ceux du pipeline IGE. Je ne l’ai pas fait sans ton accord.
-- Les nouveaux départs changent le chemin de tous les ajustements. Les optimums sont les mêmes sur la vérification et sur le banc, mais les ajustements du pipeline IGE devront être relancés avant toute comparaison avec les anciens.
-- Les vraisemblances multimodales restent un risque. Les brides de l’AI ont réglé tous les cas observés, sans garantir l’optimum global : `n_restarts` reste la parade en cas de doute.
-- Sur CPU, krause_fa2 reste plus lent que kmmr : l’AI y fait 19 itérations contre 14, plus des essais de pas réduits en début de course. C’est la prochaine cible.
-- Le démarrage du solveur Python coûte environ 2,5 s une fois par session R ; c’est l’essentiel du temps sur les petits modèles.
-- asreml-R : la licence de meso n’accepte que quelques exécutions simultanées ; krause_us et krause_fa2 y ont demandé deux heures chacun. L’ajustement asreml de mvD7 plante après l’itération (« double free or corruption »).
-- Le dossier `_archive_bancs_20261021` est exclu de la construction du paquet, mais pas de git : à garder ou non.
+- The default remains `engine = "dense"` and `optimizer = "lbfgsb"`. Switching to `"auto"` would give the fastest route without tuning, but it would change the optimisation path of your scripts, including those of the IGE pipeline. I did not make this change without your consent.
+- The new starting values change the path of every fit. The optima are the same on the simulation check and on the benchmark, but the fits of the IGE pipeline will have to be rerun before any comparison with the old ones.
+- Multimodal likelihoods remain a risk. The AI step limits settled every observed case, without guaranteeing the global optimum. `n_restarts` remains the safeguard in case of doubt.
+- On CPU, krause_fa2 remains slower than kmmr. The AI takes 19 iterations there against 14, plus reduced step trials early on. This is the next target.
+- Starting the Python solver costs about 2,5 s once per R session. It accounts for most of the time on small models.
+- asreml-R: the meso licence accepts only a few simultaneous runs. krause_us and krause_fa2 took two hours each there. The asreml fit of mvD7 crashes after the iteration ("double free or corruption").
+- The folder `_archive_bancs_20261021` is excluded from the package build, but not from git. It remains to decide whether to keep it.
 
-## Prêt à pousser
+## Ready to push
 
-Rien n’est commité. Dans le dépôt remlax, 45 fichiers suivis sont modifiés, et ceux-ci sont nouveaux et à ajouter :
+Nothing is committed. In the remlax repository, 45 tracked files are modified, and the following ones are new and must be added:
 
     R/remlax_bayes.R  R/remlax_lag.R  R/remlax_mme.R  R/remlax_serveur.R
     inst/python/remlax/{ai,bayes,blocs,chrono,decoupage,econome,finition,lag,mme,mme_cli,mme_hybride,selinv,serveur}.py
     inst/python/remlax/selinv_c.c
     man/rx_bayes.Rd  man/rx_border.Rd  man/rx_fit_mme.Rd  man/rx_lag.Rd  man/rx_prior.Rd  man/rx_server_stop.Rd
-    manual/ (sources ; les sorties LaTeX sont ignorées)
+    manual/ (sources; the LaTeX outputs are ignored)
     tests-python/test_{bayes,blocs,decalage,econome,finition,mme_hybride,plancher,poids}.py
     tests/testthat/test-decalage.R  vignettes/structural.Rmd
 
-Dans remlax-validation, à ajouter : `banc_kmmr/` (cas, pilotes kmmr, remlax et asreml, synthèse), `verif_simulations/`, `docs/paysage_logiciels_reml.md` et ce rapport (`docs/rapport_nuit_2026-10-27.md`). L’image `container/ige_reml.def` du dépôt IGE gagne pymetis et cvxopt ; l’image reconstruite est sur genotoul (`/work/user/nsalas/kmmr_banc/ige_reml_v2.sif`).
+In remlax-validation, to add: `banc_kmmr/` (cases, kmmr, remlax and asreml drivers, synthesis), `verif_simulations/`, `docs/paysage_logiciels_reml.md` and this report (`docs/rapport_nuit_2026-10-27.md`). The image `container/ige_reml.def` of the IGE repository gains pymetis and cvxopt. The rebuilt image is on genotoul (`/work/user/nsalas/kmmr_banc/ige_reml_v2.sif`).
 
-Versions figées, sources et empreintes : `/work/user/nsalas/kmmr_banc/` sur genotoul (`rlib_remlax` pour la v1, puis `rlib_remlax_v2` à `v10`, `VERSION_FIGEE_v*.txt`, `remlax_fige_v*_src.tgz`).
+Frozen versions, sources and checksums: `/work/user/nsalas/kmmr_banc/` on genotoul (`rlib_remlax` for v1, then `rlib_remlax_v2` to `v10`, `VERSION_FIGEE_v*.txt`, `remlax_fige_v*_src.tgz`).

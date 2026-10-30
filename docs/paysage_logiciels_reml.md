@@ -1,550 +1,550 @@
-# Paysage des solveurs REML et positionnement de remlax
+# The landscape of REML solvers and the position of remlax
 
-Recherche faite le 26 octobre 2026 sur sources primaires : documentation officielle, manuels, code source, articles avec DOI vérifié. Les annexes A, B et C détaillent chaque logiciel et chaque mécanisme, avec leurs sources numérotées. Cette synthèse ne reprend que les constats utiles à la décision. Les mesures de remlax citées ici sont internes et non publiées (mvD7 : n = 12 760, 51 termes, 198 paramètres).
+Survey made on 26 October 2026 from primary sources: official documentation, manuals, source code, and articles with a verified DOI. Appendices A, B and C describe each program and each mechanism, with numbered sources. This summary keeps only the findings that bear on the decision. The remlax measurements cited here are internal and unpublished (mvD7: n = 12 760, 51 terms, 198 parameters).
 
-Question posée : remlax peut-il remplacer ASReml sur les calculs lourds, ou devenir une alternative libre du type de sommer, en plus efficace ?
+Question asked: can remlax replace ASReml for heavy computations, or become a free alternative of the sommer kind, but more efficient?
 
-## 1. Ce qui a changé en 2026
+## 1. Changes in 2026
 
-Le créneau « REML libre, structures façon asreml, GPU » était vide il y a un an. Il ne l'est plus.
+The niche "free REML, asreml-style structures, GPU" was empty a year ago. It is no longer empty.
 
-- pyreml (Marchal, Trottier, Bry et Raimondi, IGMM et IMAG, Montpellier) est paru sur PyPI en juin 2026. Sa prépublication bioRxiv date du 24 octobre 2026 (doi:10.64898/2026.10.20.757556). C'est un REML exact sur GPU en PyTorch, à V dense ou Woodbury dense, avec gradient analytique. Il n'a ni matrices creuses, ni AI, ni erreurs-types des variances. Son banc l'oppose à WOMBAT, pas à ASReml (annexe B).
-- kmmr (Melsen, van Eeuwijk et Peeters, Wageningen) est paru sur arXiv le 12 octobre 2026 (arXiv:2610.16671). C'est un AI-REML multivarié sur équations du modèle mixte : partie creuse par CHOLMOD sur CPU, inversion de Takahashi, complément de Schur dense sur GPU. Sur un GBLUP de blé à 10 375 génotypes, il annonce 49 s sur A100 contre 989 s pour ASReml-R et 512 s pour sommer. Il cite la forme V comme travail futur (annexe B).
-- sommer 4.5.12 (CRAN, 25 octobre 2026) résout désormais par défaut les équations du modèle mixte creuses : CHOLMOD, inversion de Takahashi, ordonnancement METIS optionnel, noyaux CUDA optionnels pour la partie dense. La formulation directe sur V reste disponible mais part vers la dépréciation. Le paquet change très vite : la 4.4.90 a cassé l'interface de contrôle (annexe A).
+- pyreml (Marchal, Trottier, Bry and Raimondi, IGMM and IMAG, Montpellier) appeared on PyPI in June 2026. Its bioRxiv preprint is dated 24 October 2026 (doi:10.64898/2026.10.20.757556). It performs exact REML on GPU in PyTorch, with a dense V or a dense Woodbury form, and an analytical gradient. It has no sparse matrices, no AI, and no standard errors for the variances. Its benchmark compares it with WOMBAT, not with ASReml (appendix B).
+- kmmr (Melsen, van Eeuwijk and Peeters, Wageningen) appeared on arXiv on 12 October 2026 (arXiv:2610.16671). It performs multivariate AI-REML on the mixed model equations. The sparse part uses CHOLMOD on CPU with Takahashi inversion, and the dense Schur complement runs on GPU. On a wheat GBLUP with 10 375 genotypes, it reports 49 s on an A100 against 989 s for ASReml-R and 512 s for sommer. It cites the V form as future work (appendix B).
+- sommer 4.5.12 (CRAN, 25 October 2026) now solves the sparse mixed model equations by default. It uses CHOLMOD, Takahashi inversion, optional METIS ordering, and optional CUDA kernels for the dense part. The direct formulation on V remains available but is heading towards deprecation. The package changes very fast: version 4.4.90 broke the control interface (appendix A).
 
-Les trois projets sont libres (GPL-3). Deux visent explicitement l'amélioration des plantes.
+All three projects are free software (GPL-3). Two of them explicitly target plant breeding.
 
-## 2. Comparaison directe
+## 2. Direct comparison
 
 | | remlax | ASReml-R 4.2 | sommer 4.5.12 | kmmr | pyreml 0.5.3 |
 |---|---|---|---|---|---|
-| Licence | GPL ≥ 3 | commerciale, dès 375 £ (académique) | GPL-3 | GPL-3, expérimental | GPL-3 |
-| Formes de calcul | V dense, MME creuses, V par blocs (Woodbury) | MME creuses, partition dense/creux | MME creuses ; V dense en voie de dépréciation | MME creuses + Schur dense | V dense ou Woodbury dense |
-| Optimiseur | L-BFGS-B, AI-REML, finition à région de confiance | AI-REML | AI-REML, repli EM/PX-EM | AI-REML | L-BFGS (PyTorch), Adam |
-| GPU | oui (JAX) : V, blocs, MME dense | non | CUDA optionnel, noyaux denses seulement | complément de Schur | oui (PyTorch) |
-| Ordonnancement du creux | ordre naturel (METIS mesuré, non branché) | non documenté | AMD, METIS optionnel | CHOLMOD | sans objet |
-| Structures façon asreml | us, fa, rr, ar1⊗ar1, séparables, K ou K⁻¹ | complètes | us, fa, rr, Kronecker arbitraires, K ou K⁻¹ | us, FA étendu, AR1×AR1, noyaux | iid, diag, full, fa, ar, distances |
-| Erreurs-types des variances | oui (AI, Hessien) | oui | oui | oui (AI) | non |
-| Détection automatique de structure | oui (termes globaux et blocs) | non : partition fixée par l'utilisateur | non | non | bascule V ou Woodbury selon q < n |
-| Voisinage IGE à noyau | oui, portée estimée | à la main | à la main | non | non |
-| Vitesse publiée | aucune | référence | 2 fois plus lent que kmmr CPU sur 10 375 génotypes | 20 fois ASReml (GBLUP, A100) | plus de 12 fois WOMBAT (A100) |
+| Licence | GPL ≥ 3 | commercial, from £375 (academic) | GPL-3 | GPL-3, experimental | GPL-3 |
+| Computational forms | dense V, sparse MME, block V (Woodbury) | sparse MME, dense/sparse partition | sparse MME; dense V being deprecated | sparse MME + dense Schur | dense V or dense Woodbury |
+| Optimiser | L-BFGS-B, AI-REML, trust-region finisher | AI-REML | AI-REML, EM/PX-EM fallback | AI-REML | L-BFGS (PyTorch), Adam |
+| GPU | yes (JAX): V, blocks, dense MME | no | optional CUDA, dense kernels only | Schur complement | yes (PyTorch) |
+| Sparse ordering | natural order (METIS measured, not wired in) | undocumented | AMD, optional METIS | CHOLMOD | not applicable |
+| asreml-style structures | us, fa, rr, ar1⊗ar1, separable, K or K⁻¹ | complete | us, fa, rr, arbitrary Kronecker products, K or K⁻¹ | us, extended FA, AR1×AR1, kernels | iid, diag, full, fa, ar, distances |
+| Standard errors of variances | yes (AI, Hessian) | yes | yes | yes (AI) | no |
+| Automatic structure detection | yes (global terms and blocks) | no: partition set by the user | no | no | switches between V and Woodbury depending on q < n |
+| Kernel IGE neighbourhood | yes, estimated range | by hand | by hand | no | no |
+| Published speed | none | reference | 2 times slower than kmmr CPU on 10 375 genotypes | 20 times ASReml (GBLUP, A100) | more than 12 times WOMBAT (A100) |
 
-Les cases de remlax reposent sur nos mesures internes. Les autres colonnes viennent des annexes A et B.
+The remlax cells rest on our internal measurements. The other columns come from appendices A and B.
 
-## 3. Ce qui reste propre à remlax
+## 3. Features unique to remlax
 
-D'après les sources consultées, aucun autre outil ne réunit les éléments suivants.
+According to the sources consulted, no other tool combines the following features.
 
-- Les formes V et MME dans un même solveur, avec la même vraisemblance et l'AI-REML. pyreml n'a pas de forme MME. kmmr n'a pas de forme V.
-- La détection automatique des termes globaux et des blocs, suivie de V = A + UU' traitée par Woodbury avec les blocs en lots (vmap). L'annexe C ne trouve aucune antériorité. Sur mvD7, une évaluation prend 0,90 s sur une tranche MIG de 10 Go, contre 4,85 s pour notre mode économe.
-- Un modèle multivarié lourd ajusté sur une tranche MIG de 10 Go. Aucun outil ne rapporte cet usage.
-- L'ensemble actif sur le cône semi-défini positif en échelle des variances, et le finisseur de Moré et Sorensen avec mise à jour SR1. L'annexe C n'en trouve pas d'usage dans les logiciels REML.
-- L'estimation par REML de la portée continue d'un noyau IGE avec les variances. WOMBAT profile seulement la dilution ; Sato et al. (2021) balaient l'échelle.
+- The V and MME forms in a single solver, with the same likelihood and AI-REML. pyreml has no MME form. kmmr has no V form.
+- Automatic detection of global terms and blocks, followed by V = A + UU' handled by Woodbury with the blocks batched (vmap). Appendix C finds no prior art. On mvD7, one evaluation takes 0.90 s on a 10 GB MIG slice, against 4.85 s for our low-memory mode.
+- A heavy multivariate model fitted on a 10 GB MIG slice. No tool reports this use.
+- The active set on the positive semi-definite cone on the variance scale, and the Moré and Sorensen finisher with an SR1 update. Appendix C finds no use of these in REML software.
+- REML estimation of the continuous range of an IGE kernel together with the variances. WOMBAT only profiles the dilution. Sato et al. (2021) sweep the scale.
 
-Plusieurs briques ont en revanche une antériorité nette (annexe C) : le gradient P − Pyy'P et la forme V dense (Harville 1977), la dérivation de la Cholesky (Smith 1995, Meyer et Smith 1996), la Cholesky supernodale avec inversion sélective (YAMS, WOMBAT, ASReml), la dissection emboîtée sur C (WOMBAT), la vraisemblance tirée d'une matrice bordée (Smith et Graser 1986, Graser et al. 1987), l'AI-REML (Gilmour et al. 1995) et son amortissement (WOMBAT, SAS). Un article devra les citer comme fondations, pas comme apports.
+Several building blocks, on the other hand, have clear prior art (appendix C). They include the gradient P − Pyy'P and the dense V form (Harville 1977), and differentiation of the Cholesky factor (Smith 1995, Meyer and Smith 1996). They also include the supernodal Cholesky with selected inversion (YAMS, WOMBAT, ASReml) and nested dissection on C (WOMBAT). The likelihood taken from a bordered matrix (Smith and Graser 1986, Graser et al. 1987), AI-REML (Gilmour et al. 1995) and its damping (WOMBAT, SAS) complete the list. An article will have to cite them as foundations and claim no contribution from them.
 
-## 4. Ce qui manque à remlax
+## 4. Gaps in remlax
 
-- Le calcul sur plusieurs GPU ou plusieurs nœuds : DISSECT, REACTA, SAIGE-GPU, ExaGeoStat et DALIA le font. En JAX, jaxmg fournit une Cholesky distribuée avec log-déterminant (annexe B).
-- La voie sans matrice, par gradient conjugué préconditionné et traces stochastiques : BOLT-REML, SAIGE, SLEMM, le REML Monte Carlo de BLUPF90 et GPyTorch. Elle seule dépasse quelques centaines de milliers d'individus.
-- La précision mixte FP32 puis FP64 de pyreml, utile sur les GPU sans calcul FP64 rapide (L40S).
-- Les génotypes compressés sur 2 bits lus en flux vers le GPU (miraculix, Quickdraws).
-- L'ordonnancement METIS dans notre moteur MME. sommer et WOMBAT l'ont déjà. Notre mesure sur mvD7 montre un facteur de C divisé par 4 (0,69 Go contre 2,72 Go en ordre naturel).
-- Des bancs publiés contre les concurrents actuels.
+- Computation on several GPUs or several nodes. DISSECT, REACTA, SAIGE-GPU, ExaGeoStat and DALIA do it. In JAX, jaxmg provides a distributed Cholesky with a log-determinant (appendix B).
+- The matrix-free route, with preconditioned conjugate gradients and stochastic traces. BOLT-REML, SAIGE, SLEMM, the Monte Carlo REML of BLUPF90 and GPyTorch use it. Only this route goes beyond a few hundred thousand individuals.
+- The mixed FP32 then FP64 precision of pyreml. It helps on GPUs without fast FP64 arithmetic (L40S).
+- Genotypes compressed to 2 bits and streamed to the GPU (miraculix, Quickdraws).
+- METIS ordering in our MME engine. sommer and WOMBAT already have it. Our measurement on mvD7 shows a factor of C four times smaller (0.69 GB against 2.72 GB in natural order).
+- Published benchmarks against current competitors.
 
-## 5. Réponse à la question
+## 5. Answer to the question
 
-Remplacer ASReml sur les calculs lourds est un objectif réaliste. ASReml n'a pas de GPU, plafonne à 96 Go et 16 threads, et sa partition dense/creux est manuelle. Sur mvD7, une itération AI d'asreml prend 50 min en partition par défaut et 31 min avec les termes génétiques en dense ; le moteur par blocs de remlax évalue la même vraisemblance en 0,9 s. Mais kmmr revendique déjà un facteur 20 face à ASReml, et la comparaison devra se faire contre lui.
+Replacing ASReml for heavy computations is a realistic goal. ASReml has no GPU support, is capped at 96 GB and 16 threads, and its dense/sparse partition is manual. On mvD7, one AI iteration of asreml takes 50 min with the default partition and 31 min with the genetic terms set to dense. The remlax block engine evaluates the same likelihood in 0.9 s. Yet kmmr already claims a factor of 20 over ASReml, and the comparison will have to be made against it.
 
-Être « un sommer plus efficace » est devenu plus difficile. sommer 4.5 a adopté les mêmes techniques creuses que remlax et un GPU partiel. La différence ne se fera plus sur la liste des fonctions mais sur des mesures, sur la stabilité de l'interface, et sur ce que sommer n'a pas : la forme V et les blocs sur GPU, la détection automatique, les modèles de voisinage.
+Becoming "a more efficient sommer" has become harder. sommer 4.5 has adopted the same sparse techniques as remlax, together with partial GPU support. The difference will rest on measurements, on interface stability, and on features sommer lacks. These are the V form and the blocks on GPU, automatic detection, and neighbourhood models. The list of functions will no longer set the two apart.
 
-## 6. Recommandations
+## 6. Recommendations
 
-1. Bancs directs, aux mêmes modèles et au même point fixe de vraisemblance, contre sommer 4.5.12 (mmes avec METIS, avec et sans CUDA), kmmr, pyreml et ASReml-R (partition par défaut et dense). Commencer par les familles du banc moteurs et par mvD7.
-2. Brancher METIS (ou l'ordre « blocs puis séparateur » de decoupage.py) dans le moteur MME. Le gain est mesuré, et les concurrents l'ont.
-3. Stabiliser l'interface R avant toute diffusion : c'est un point faible documenté de sommer.
-4. Ne viser le multi-GPU ou la voie sans matrice que si la cible dépasse 10⁵ individus génotypés. Pour les dispositifs d'amélioration des plantes visés, la forme par blocs semble suffire.
-5. Pour un article : centrer l'apport sur la réunion des formes V et MME, la détection automatique de structure et les modèles de voisinage ; citer pyreml et kmmr comme travaux contemporains ; ne pas revendiquer de priorité sur le REML GPU.
-6. Prendre contact avec l'équipe de pyreml, à Montpellier comme l'utilisateur. Leurs choix (Woodbury dense, précision mixte, grilles d'index) recoupent les nôtres.
+1. Direct benchmarks, on the same models and at the same likelihood fixed point, against sommer 4.5.12 (mmes with METIS, with and without CUDA), kmmr, pyreml and ASReml-R (default and dense partition). Start with the families of the engine benchmark and with mvD7.
+2. Wire METIS (or the "blocks then separator" order of decoupage.py) into the MME engine. The gain has been measured, and the competitors have it.
+3. Stabilise the R interface before any release. Interface instability is a documented weakness of sommer.
+4. Aim for multi-GPU or the matrix-free route only if the target exceeds 10⁵ genotyped individuals. For the plant breeding designs in view, the block form seems sufficient.
+5. For an article, centre the contribution on the union of the V and MME forms, automatic structure detection and neighbourhood models. Cite pyreml and kmmr as contemporary work. Claim no priority on GPU REML.
+6. Contact the pyreml team, which is in Montpellier like the user. Their choices (dense Woodbury, mixed precision, index grids) overlap with ours.
 
-## 7. Points non vérifiés
+## 7. Unverified points
 
-- Sites de WOMBAT, DMU et MTG2 inaccessibles : leurs fiches reposent sur des manuels anciens ou des extraits (annexe A).
-- Échelle exacte des bancs de kmmr (nombre d'observations non donné) et écart de log-vraisemblance face à ASReml-R sur un modèle FA1 (−3 948,66 contre −3 937,65), à relire dans le texte complet.
-- Actes WCGALP 2022 bloqués : d'éventuels travaux GPU en sélection animale n'ont pas été lus.
-- ASReml est fermé : des heuristiques non documentées peuvent exister.
-- La priorité « premier REML général sur GPU » reste disputée entre pyreml et kmmr ; REACTA (2014) l'avait fait pour un cas spécialisé.
+- The WOMBAT, DMU and MTG2 websites were unreachable. Their entries rest on old manuals or on excerpts (appendix A).
+- The exact scale of the kmmr benchmarks (number of observations not given) needs checking in the full text. So does the log-likelihood gap against ASReml-R on an FA1 model (−3 948.66 against −3 937.65).
+- The WCGALP 2022 proceedings were blocked. Possible GPU work in animal breeding has not been read.
+- ASReml is closed source. Undocumented heuristics may exist.
+- Priority for "the first general REML on GPU" remains disputed between pyreml and kmmr. REACTA (2014) had done it for a specialised case.
 
-Les annexes suivent : A, logiciels de référence et alternatives ; B, calcul accéléré ; C, antériorité des mécanismes.
+The appendices follow: A, reference software and alternatives; B, accelerated computing; C, prior art of the mechanisms.
 
-## Annexe A. Logiciels de référence et alternatives pour le REML en génétique quantitative
+## Appendix A. Reference software and alternatives for REML in quantitative genetics
 
-Recherche faite le 26 octobre 2026. Les sources sont des pages officielles, des manuels, des dépôts de code et des articles avec DOI vérifié sur CrossRef ou PubMed. Les numéros entre crochets renvoient à la liste des sources en fin de document. La mention « non vérifié » signale un point que je n'ai pas pu confirmer sur une source primaire.
+Survey made on 26 October 2026. The sources are official pages, manuals, code repositories and articles with a DOI verified on CrossRef or PubMed. Numbers in square brackets refer to the list of sources at the end of the document. The mention "unverified" flags a point I could not confirm on a primary source.
 
-Trois serveurs officiels étaient inaccessibles pendant la recherche : le site de WOMBAT (didgeridoo.une.edu.au), le site de DMU (dmu.ghpc.au.dk) et la page MTG2 (Google Sites, connexion exigée). Les informations sur ces trois logiciels reposent donc sur des manuels plus anciens ou sur des extraits de moteur de recherche, signalés comme tels.
+Three official servers were unreachable during the survey: the WOMBAT site (didgeridoo.une.edu.au), the DMU site (dmu.ghpc.au.dk) and the MTG2 page (Google Sites, login required). The information on these three programs therefore rests on older manuals or on search engine excerpts, flagged as such.
 
-### 1. Tableau comparatif
+### 1. Comparison table
 
-Abréviations. MME : équations du modèle mixte de Henderson. V dense : formulation sur la matrice de variance des observations, de taille n × n. AI : algorithme d'information moyenne. K : matrice de parenté fournie telle quelle. K⁻¹ : son inverse fournie. Fermé : binaire sans code source.
+Abbreviations. MME: Henderson's mixed model equations. Dense V: formulation on the variance matrix of the observations, of size n × n. AI: average information algorithm. K: relationship matrix supplied as is. K⁻¹: its inverse, supplied. Closed: binary without source code.
 
-| Logiciel | Licence | Langage | Algorithme | Creux ou dense | us / fa multivarié | ar1⊗ar1 | Parenté | GPU | Dernière version |
+| Software | Licence | Language | Algorithm | Sparse or dense | Multivariate us / fa | ar1⊗ar1 | Relationship matrix | GPU | Latest version |
 |---|---|---|---|---|---|---|---|---|---|
-| ASReml-R 4.2 | Commerciale, fermée ; licence académique dès 375 £ [1] | Moteur Fortran (non vérifié), interface R | AI-REML [2][3] | MME creuses, partition dense/creux [2] | Oui : us, fa, facv, xfa, rr [4] | Oui [4] | K ou K⁻¹ (ainverse, matrices creuses) [2] | Non | 4.2.0.480-2, 6 mai 2026 [5] |
-| ASReml-SA 4.2 | Commerciale, même licence que ASReml-R [4] | Non vérifié | AI-REML [4] | MME creuses ; espace de travail jusqu'à 96 Go ; 16 threads par défaut [4] | Oui [4] | Oui [4] | K ou K⁻¹ [4] | Non | Release 4.2 (spécification d'octobre 2022) ; build courant non vérifié [4] |
-| Echidna | Gratuit hors usage commercial, fermé, version « alpha » [6] | Non vérifié | AI-REML [6] | Non vérifié | Non vérifié | Non vérifié | H⁻¹ et GRM (note de version) [7] | Non vérifié | Build 2.15, 22 octobre 2026 [7] |
-| WOMBAT | Gratuit pour la communauté scientifique, exécutable seul [8] | Non vérifié | PX-EM puis AI ; EM ; Powell et Simplex sans dérivées [8] | MME creuses supernodales ; ordonnancement MMD, AMD, METIS ; option --dense [8] | us ; rang réduit par Cholesky partiel ; régression aléatoire [8] | Non documenté dans le manuel 2017 | K⁻¹ via fichier .gin [8] | Non | Manuel du 31 mai 2017 ; version courante non vérifiée (site inaccessible) |
-| BLUPF90+ (REMLF90, AIREMLF90), GIBBSF90+ | Gratuit pour la recherche ; version libre limitée à 30 000 génotypés ; commercial sur accord ; binaires, anciennes sources « éducatives » [9][10][11] | Fortran 90/95 [12] | EM-REML (remlf90), AI-REML (airemlf90), Gibbs [11] | MME creuses ; FSPAK puis YAMS supernodal [13] | Multicaractère oui [11] ; fa non vérifié | Non natif ; possible via breedR | A⁻¹ par pedigree, H⁻¹ single-step [11][14] | Non | Page programmes mise à jour le 5 juin 2026 [11] |
-| DMU | Gratuit pour la recherche, exécutables ; commercial sur accord (extrait de recherche) [15] | Non vérifié | AI-REML de Jensen et al. 1997, repli EM (DMUAI) (extrait) [15] | MME creuses, FSPAK [16] | Multivarié (extrait) [15] | Non vérifié | Non vérifié | Non | Guide v6 release 5.6, juin 2024 (extrait) [15] |
-| MiX99 | Commerciale ; licences Standard, Core, University ; élevage seulement [17] | Non vérifié | MC-EM-REML ; AI-REML cité en 2024 [17] | Résolution itérative ; MPI et multithread [17] | Multicaractère [17] | Non | Non vérifié | Non | Release IX/2025 (extrait) [17] |
-| MiXBLUP 3 | Commerciale : 2 400 à 24 790 €/an ; essai gratuit d'un mois [18] | Non vérifié | Non précisé ; cœur dérivé de MiX99 [19] | Non vérifié | Non vérifié | Non | Non vérifié | Non | MiXBLUP 3 (tarifs 2026) [18] |
-| MTG2 | Gratuit ; sources v2.15 déposées sur Dryad ; licence logicielle non précisée [20] | Fortran [20] | AI-REML direct + décomposition propre de la GRM [21] | V dense [21] | Multicaractère, régression aléatoire, plusieurs GRM [21] | Non | K dense [21] | Non vérifié | v2.16, 17 août 2020 [20] |
-| GCTA (GREML) | GPL-3, parties en LGPL [22] | C++ [22] | AI-REML direct, HE [23][24] | V dense ; fastGWA-REML sur GRM creuse [25] | Bivarié seulement [16] | Non | K (GRM) | Non | v1.94.1 (étiquette 2022) ; dernier commit juillet 2025 [22] |
-| LDAK | GPL-3 [26] | C (non vérifié) | REML sur noyaux multiples [27] ; détail de l'algorithme non vérifié | V dense | Non vérifié | Non | K | Non | ldak7.01 ; dépôt actif en octobre 2026 [26] |
-| sommer | GPL-3 [28] | R + C++ (Armadillo, Eigen, CHOLMOD) [28] | AI-REML sur MME creuses (mmes, défaut) ; inversion directe NR/AI (mmer, formulation directe) ; récupération EM/PX-EM [28] | Les deux ; CHOLMOD, inverse sélective de Takahashi, METIS optionnel, PCG stochastique [28] | us, diag, fa, rr [28] | Oui, vsm(ar1m(), ar1m()) [28] | K ou K⁻¹ (attribut inverse) [28] | CUDA optionnel, noyaux denses seulement [28] | 4.5.12, 25 octobre 2026 [28] |
-| lme4 | GPL ≥ 2 [29] | R + C++ (Eigen) [29] | PLS + optimiseur sans dérivées [30] | Cholesky creux [30] | Univarié ; us, diag, cs, ar1 par terme depuis 2.0 [31] | Non | Non natif | Non | 2.1-0, 23 octobre 2026 [29] |
-| lme4qtl | GPL-3 [32] | R | lme4 avec Z·L, L facteur de K [33] | Creux si K creuse [33] | Via lme4 | Non | K [33] | Non | Dernier commit janvier 2021 [32] |
-| pedigreemm | GPL ≥ 2 [34] | R | lme4 avec facteur de A [35] | Creux | Non | Non | Pedigree seulement [36] | Non | 0.3-5, 14 octobre 2024 [34] |
-| lme4breeding | GPL ≥ 2 [37] | R | lme4 avec Z·L ; rotation par décomposition propre [38] | Creux | us documenté dans le préprint [38] | Non vérifié | K [38] | Non | 1.1.5, 5 octobre 2026 [37] |
-| breedR | GPL-3 pour l'interface R ; binaires BLUPF90 [39] | R + binaires Fortran [39] | REMLF90 (EM), AIREMLF90 (AI), Gibbs [39] | MME creuses | Non vérifié | Oui, AR1⊗AR1 et splines [39] | Pedigree [39] | Non | 0.12-7 sur GitHub ; plus maintenu [39] |
-| glmmTMB | AGPL-3 [40] | R + C++ (TMB) [40] | ML ou REML par Laplace, gradient par différentiation automatique [40] | Creux (TMB) | us, rr, diag, cs, toep, etc. [41] | ar1 par terme ; produit de Kronecker non documenté | K dense via propto ou equalto [41] | Non | 1.1.15.2, 29 septembre 2026 [40] |
-| spaMM | CeCILL-2 [42] | R + C++ [42] | ML ou REML par Laplace, h-vraisemblance [42] | Creux pour les champs markoviens et AR [42] | Multivarié (fitmv) [42] ; us non vérifié | AR1, Matérn ; Kronecker non vérifié | K (corrMatrix) ou précision [42] | Non | 4.7.17, 9 octobre 2026 [42] |
-| MCMCglmm | GPL ≥ 2 [43] | R + C++ | Bayésien MCMC [44] | A⁻¹ creuse [45] | us, idh, multivarié [44] | Non | K⁻¹ via ginverse [45] | Non | 2.36, 6 mai 2024 [43] |
-| brms | GPL-2 [46] | R + Stan | HMC (NUTS) [47] | Dense | Multivarié [46] | Non natif (non vérifié) | K via gr(cov = ) | OpenCL via cmdstanr [48] | 2.23.0, 9 septembre 2025 [46] |
-| R-INLA | MIT (dépôt) [49] | C (GMRFLib) + R [49] | INLA, pas de REML [50] | Précision creuse [50] | Non vérifié | ar1 et produit par groupe [51] | K⁻¹ via generic0 [51] | Non vérifié | 26.10.26, 26 octobre 2026 [49] |
-| MixedModels.jl | MIT [52] | Julia [52] | PLS + optimiseur sans dérivées (NEWUOA par défaut en v5) ; REML en option [52] | Creux par blocs | Non | Non | Non natif | Non documenté | v5.9.1, 2 octobre 2026 [52] |
-| statsmodels MixedLM | BSD-3 [53] | Python [53] | ML ou REML selon Lindstrom et Bates [54][55] | Dense par groupe [54] | Non | Non | Non | Non | 0.15.0, 27 août 2026 [53] |
+| ASReml-R 4.2 | Commercial, closed; academic licence from £375 [1] | Fortran engine (unverified), R interface | AI-REML [2][3] | Sparse MME, dense/sparse partition [2] | Yes: us, fa, facv, xfa, rr [4] | Yes [4] | K or K⁻¹ (ainverse, sparse matrices) [2] | No | 4.2.0.480-2, 6 May 2026 [5] |
+| ASReml-SA 4.2 | Commercial, same licence as ASReml-R [4] | Unverified | AI-REML [4] | Sparse MME; workspace up to 96 GB; 16 threads by default [4] | Yes [4] | Yes [4] | K or K⁻¹ [4] | No | Release 4.2 (October 2022 specification); current build unverified [4] |
+| Echidna | Free except for commercial use, closed, "alpha" version [6] | Unverified | AI-REML [6] | Unverified | Unverified | Unverified | H⁻¹ and GRM (release note) [7] | Unverified | Build 2.15, 22 October 2026 [7] |
+| WOMBAT | Free for the scientific community, executable only [8] | Unverified | PX-EM then AI; EM; derivative-free Powell and Simplex [8] | Supernodal sparse MME; MMD, AMD, METIS ordering; --dense option [8] | us; reduced rank by partial Cholesky; random regression [8] | Not documented in the 2017 manual | K⁻¹ through a .gin file [8] | No | Manual of 31 May 2017; current version unverified (site unreachable) |
+| BLUPF90+ (REMLF90, AIREMLF90), GIBBSF90+ | Free for research; free version limited to 30 000 genotyped animals; commercial use by agreement; binaries, old "educational" sources [9][10][11] | Fortran 90/95 [12] | EM-REML (remlf90), AI-REML (airemlf90), Gibbs [11] | Sparse MME; FSPAK then supernodal YAMS [13] | Multi-trait yes [11]; fa unverified | Not native; possible through breedR | A⁻¹ from pedigree, single-step H⁻¹ [11][14] | No | Programs page updated on 5 June 2026 [11] |
+| DMU | Free for research, executables; commercial use by agreement (search excerpt) [15] | Unverified | AI-REML of Jensen et al. 1997, EM fallback (DMUAI) (excerpt) [15] | Sparse MME, FSPAK [16] | Multivariate (excerpt) [15] | Unverified | Unverified | No | Guide v6 release 5.6, June 2024 (excerpt) [15] |
+| MiX99 | Commercial; Standard, Core and University licences; animal breeding only [17] | Unverified | MC-EM-REML; AI-REML cited in 2024 [17] | Iterative solution; MPI and multithreading [17] | Multi-trait [17] | No | Unverified | No | Release IX/2025 (excerpt) [17] |
+| MiXBLUP 3 | Commercial: €2 400 to €24 790 per year; free one-month trial [18] | Unverified | Not stated; core derived from MiX99 [19] | Unverified | Unverified | No | Unverified | No | MiXBLUP 3 (2026 prices) [18] |
+| MTG2 | Free; v2.15 sources deposited on Dryad; software licence not stated [20] | Fortran [20] | Direct AI-REML + eigendecomposition of the GRM [21] | Dense V [21] | Multi-trait, random regression, several GRMs [21] | No | Dense K [21] | Unverified | v2.16, 17 August 2020 [20] |
+| GCTA (GREML) | GPL-3, parts under LGPL [22] | C++ [22] | Direct AI-REML, HE [23][24] | Dense V; fastGWA-REML on a sparse GRM [25] | Bivariate only [16] | No | K (GRM) | No | v1.94.1 (2022 tag); last commit July 2025 [22] |
+| LDAK | GPL-3 [26] | C (unverified) | REML on multiple kernels [27]; algorithm details unverified | Dense V | Unverified | No | K | No | ldak7.01; repository active in October 2026 [26] |
+| sommer | GPL-3 [28] | R + C++ (Armadillo, Eigen, CHOLMOD) [28] | AI-REML on sparse MME (mmes, default); direct NR/AI inversion (mmer, direct formulation); EM/PX-EM recovery [28] | Both; CHOLMOD, Takahashi selected inverse, optional METIS, stochastic PCG [28] | us, diag, fa, rr [28] | Yes, vsm(ar1m(), ar1m()) [28] | K or K⁻¹ (inverse attribute) [28] | Optional CUDA, dense kernels only [28] | 4.5.12, 25 October 2026 [28] |
+| lme4 | GPL ≥ 2 [29] | R + C++ (Eigen) [29] | PLS + derivative-free optimiser [30] | Sparse Cholesky [30] | Univariate; us, diag, cs, ar1 per term since 2.0 [31] | No | Not native | No | 2.1-0, 23 October 2026 [29] |
+| lme4qtl | GPL-3 [32] | R | lme4 with Z·L, L a factor of K [33] | Sparse if K is sparse [33] | Through lme4 | No | K [33] | No | Last commit January 2021 [32] |
+| pedigreemm | GPL ≥ 2 [34] | R | lme4 with a factor of A [35] | Sparse | No | No | Pedigree only [36] | No | 0.3-5, 14 October 2024 [34] |
+| lme4breeding | GPL ≥ 2 [37] | R | lme4 with Z·L; rotation by eigendecomposition [38] | Sparse | us documented in the preprint [38] | Unverified | K [38] | No | 1.1.5, 5 October 2026 [37] |
+| breedR | GPL-3 for the R interface; BLUPF90 binaries [39] | R + Fortran binaries [39] | REMLF90 (EM), AIREMLF90 (AI), Gibbs [39] | Sparse MME | Unverified | Yes, AR1⊗AR1 and splines [39] | Pedigree [39] | No | 0.12-7 on GitHub; no longer maintained [39] |
+| glmmTMB | AGPL-3 [40] | R + C++ (TMB) [40] | ML or REML by Laplace, gradient by automatic differentiation [40] | Sparse (TMB) | us, rr, diag, cs, toep, etc. [41] | ar1 per term; Kronecker product undocumented | Dense K through propto or equalto [41] | No | 1.1.15.2, 29 September 2026 [40] |
+| spaMM | CeCILL-2 [42] | R + C++ [42] | ML or REML by Laplace, h-likelihood [42] | Sparse for Markov fields and AR [42] | Multivariate (fitmv) [42]; us unverified | AR1, Matérn; Kronecker unverified | K (corrMatrix) or precision [42] | No | 4.7.17, 9 October 2026 [42] |
+| MCMCglmm | GPL ≥ 2 [43] | R + C++ | Bayesian MCMC [44] | Sparse A⁻¹ [45] | us, idh, multivariate [44] | No | K⁻¹ through ginverse [45] | No | 2.36, 6 May 2024 [43] |
+| brms | GPL-2 [46] | R + Stan | HMC (NUTS) [47] | Dense | Multivariate [46] | Not native (unverified) | K through gr(cov = ) | OpenCL through cmdstanr [48] | 2.23.0, 9 September 2025 [46] |
+| R-INLA | MIT (repository) [49] | C (GMRFLib) + R [49] | INLA, no REML [50] | Sparse precision [50] | Unverified | ar1 and product by group [51] | K⁻¹ through generic0 [51] | Unverified | 26.10.26, 26 October 2026 [49] |
+| MixedModels.jl | MIT [52] | Julia [52] | PLS + derivative-free optimiser (NEWUOA by default in v5); REML as an option [52] | Block sparse | No | No | Not native | Undocumented | v5.9.1, 2 October 2026 [52] |
+| statsmodels MixedLM | BSD-3 [53] | Python [53] | ML or REML after Lindstrom and Bates [54][55] | Dense per group [54] | No | No | No | No | 0.15.0, 27 August 2026 [53] |
 
-### 2. Fiches par logiciel
+### 2. Software entries
 
-#### 2.1 ASReml (ASReml-R 4.2 et ASReml-SA 4.2)
+#### 2.1 ASReml (ASReml-R 4.2 and ASReml-SA 4.2)
 
-ASReml est un logiciel commercial de VSN International. La licence académique commence à 375 £ ; les tarifs commerciaux sont sur devis [1]. ASReml-R tourne sous la même licence que le programme autonome ASReml-SA [4]. Le système de licence repose sur Reprise, avec gestion en nuage [4]. Je n'ai pas trouvé de licence gratuite pour les pays à faible revenu sur la page officielle.
+ASReml is commercial software from VSN International. The academic licence starts at £375. Commercial prices are on request [1]. ASReml-R runs under the same licence as the stand-alone program ASReml-SA [4]. The licensing system relies on Reprise, with cloud management [4]. I found no free licence for low-income countries on the official page.
 
-Le moteur combine l'algorithme AI de Gilmour, Thompson et Cullis (1995) et des méthodes matricielles creuses [2][3]. Le manuel de ASReml-R précise que seuls les éléments non nuls sont stockés [2]. Les termes sont partagés entre un ensemble dense et un ensemble creux [2]. L'inverse de la matrice des coefficients est formée en entier pour l'ensemble dense, et seulement en partie pour l'ensemble creux [2]. Les effets aléatoires sont creux par défaut. Une matrice de parenté génomique dense peut être basculée dans l'ensemble dense avec l'option dense [2]. Les équations creuses sont réordonnées pour préserver la creusité [2].
+The engine combines the AI algorithm of Gilmour, Thompson and Cullis (1995) with sparse matrix methods [2][3]. The ASReml-R manual states that only non-zero elements are stored [2]. The terms are split between a dense set and a sparse set [2]. The inverse of the coefficient matrix is formed in full for the dense set, and only in part for the sparse set [2]. Random effects are sparse by default. A dense genomic relationship matrix can be moved into the dense set with the dense option [2]. The sparse equations are reordered to preserve sparsity [2].
 
-Les limites d'échelle sont documentées. La version 4.2 porte la mémoire accessible à 96 Go et le parallélisme à 16 threads [2][4]. L'espace de travail par défaut de ASReml-SA est de 2 Go [4]. Le manuel de ASReml-R indique que certains très gros problèmes exigent ASReml-SA à cause des surcoûts de R [2]. La version 4.2.0.393 du 29 août 2025 a porté l'espace de travail de predict à 32 Go [5]. Les structures de variance couvrent us, fa, facv, xfa, rr, ar1 et leurs produits directs [4]. La dernière version de ASReml-R est la 4.2.0.480-2 du 6 mai 2026, compilée pour R 4.6 [5]. Aucun GPU n'est mentionné.
+The scale limits are documented. Version 4.2 raises accessible memory to 96 GB and parallelism to 16 threads [2][4]. The default workspace of ASReml-SA is 2 GB [4]. The ASReml-R manual states that some very large problems require ASReml-SA because of the overheads of R [2]. Version 4.2.0.393 of 29 August 2025 raised the predict workspace to 32 GB [5]. The variance structures cover us, fa, facv, xfa, rr, ar1 and their direct products [4]. The latest version of ASReml-R is 4.2.0.480-2 of 6 May 2026, built for R 4.6 [5]. No GPU is mentioned.
 
 #### 2.2 Echidna
 
-Echidna est développé par Arthur Gilmour, auteur principal de ASReml [6]. Il est gratuit hors usage commercial. Un usage commercial exige une licence ASReml en cours [6]. Le téléchargement demande une inscription et l'acceptation d'une licence [6]. Le code source n'est pas distribué. Le site présente le logiciel comme une version alpha mise à jour au moins tous les mois [6]. Il tourne sous Mac, Linux et Windows 64 bits [6].
+Echidna is developed by Arthur Gilmour, lead author of ASReml [6]. It is free except for commercial use. Commercial use requires a current ASReml licence [6]. The download requires registration and acceptance of a licence [6]. The source code is not distributed. The site presents the program as an alpha version updated at least monthly [6]. It runs on Mac, Linux and 64-bit Windows [6].
 
-L'estimation des paramètres de variance repose sur l'algorithme AI [6]. La note du build 2.15 (22 octobre 2026) annonce la formation d'une matrice H⁻¹ pour 201 150 individus en pedigree et 40 000 en GRM en 10 minutes au lieu de 9 heures. Chaque itération avec cette matrice prend 24 minutes [7]. Je n'ai pas pu lire le manuel ni l'article de présentation au WCGALP 2018 (lien mort). Les structures disponibles et le langage restent donc non vérifiés.
+Variance parameter estimation relies on the AI algorithm [6]. The note for build 2.15 (22 October 2026) reports forming an H⁻¹ matrix for 201 150 pedigree individuals and 40 000 GRM individuals in 10 minutes instead of 9 hours. Each iteration with this matrix takes 24 minutes [7]. I could not read the manual or the WCGALP 2018 presentation article (dead link). The available structures and the language therefore remain unverified.
 
 #### 2.3 WOMBAT
 
-WOMBAT est développé par Karin Meyer (AGBU, University of New England) [8][56]. Il est gratuit pour la communauté scientifique, avec obligation de citation [8]. Seul l'exécutable est distribué, avec le manuel et des exemples, pour Linux et Windows [8][56].
+WOMBAT is developed by Karin Meyer (AGBU, University of New England) [8][56]. It is free for the scientific community, with an obligation to cite it [8]. Only the executable is distributed, with the manual and examples, for Linux and Windows [8][56].
 
-Par défaut, WOMBAT fait quelques itérations PX-EM puis passe à l'AI-REML [8]. Il offre aussi l'EM classique et deux maximisations sans dérivées, Powell et Simplex [8]. Les calculs sont creux par défaut, avec une approche supernodale qui appelle BLAS et LAPACK sur les sous-blocs denses [8]. L'ordonnancement se choisit entre MMD, AMD et METIS [8]. Une option --dense existe pour les GRM denses. Le stockage compact limite alors le système à 65 535 équations ; l'option --dense2 lève cette limite [8]. Les matrices sont non structurées par défaut, avec estimation possible en rang réduit par un facteur de Cholesky partiel [8]. Une matrice de covariance connue s'entre sous forme inverse, dans un fichier .gin [8]. Le manuel de 2017 ne documente pas de structure autorégressive spatiale. Un résumé de 2020 mentionne le REML pénalisé, les GRM, les scans d'association et le single-step [57]. La version courante n'a pas pu être vérifiée.
+By default, WOMBAT runs a few PX-EM iterations and then switches to AI-REML [8]. It also offers classical EM and two derivative-free maximisations, Powell and Simplex [8]. Computations are sparse by default, with a supernodal approach that calls BLAS and LAPACK on the dense sub-blocks [8]. The ordering can be MMD, AMD or METIS [8]. A --dense option exists for dense GRMs. Compact storage then limits the system to 65 535 equations. The --dense2 option removes this limit [8]. Matrices are unstructured by default, with optional reduced-rank estimation through a partial Cholesky factor [8]. A known covariance matrix is entered in inverse form, in a .gin file [8]. The 2017 manual documents no spatial autoregressive structure. A 2020 abstract mentions penalised REML, GRMs, association scans and single-step [57]. The current version could not be verified.
 
-#### 2.4 Famille BLUPF90
+#### 2.4 The BLUPF90 family
 
-Les programmes sont développés à l'Université de Géorgie par I. Misztal, D. Lourenco et collaborateurs [12]. Ils sont gratuits pour la recherche, avec citation obligatoire. Un usage commercial passe par un contact avec les auteurs [9]. La version de recherche limite le nombre d'animaux génotypés à 30 000 [11]. Les binaires sont fournis pour Linux, Windows et Mac. Seules d'anciennes versions du code source sont disponibles « à but éducatif » [10]. Les programmes courants ne sont donc pas des logiciels libres. Certains programmes (BLUP90IOD3, ACCF90GS2) ne sont distribués que sous accord [11].
+The programs are developed at the University of Georgia by I. Misztal, D. Lourenco and co-workers [12]. They are free for research, with mandatory citation. Commercial use requires contacting the authors [9]. The research version limits the number of genotyped animals to 30 000 [11]. Binaries are supplied for Linux, Windows and Mac. Only old versions of the source code are available "for educational purposes" [10]. The current programs are therefore not free software. Some programs (BLUP90IOD3, ACCF90GS2) are distributed only under agreement [11].
 
-BLUPF90+ regroupe blupf90, remlf90 (EM-REML) et airemlf90 (AI-REML). GIBBSF90+ regroupe les échantillonneurs de Gibbs [11]. Le passage de FSPAK au paquet supernodal YAMS a accéléré l'AI-REML d'un facteur moyen supérieur à 10, sur 23 modèles [13]. Le calcul des traces a gagné jusqu'à un facteur 67 grâce au stockage en table de hachage [13]. Le single-step (H⁻¹) est la spécialité de la famille [14]. Le wiki signale le passage progressif du compilateur ifort à ifx en 2025-2026 [10]. Les structures spatiales AR1⊗AR1 ne sont pas natives ; breedR les construit dans sa couche R avant d'appeler les binaires [39].
+BLUPF90+ groups blupf90, remlf90 (EM-REML) and airemlf90 (AI-REML). GIBBSF90+ groups the Gibbs samplers [11]. Moving from FSPAK to the supernodal package YAMS sped up AI-REML by an average factor above 10, over 23 models [13]. Trace computation gained up to a factor of 67 thanks to hash table storage [13]. Single-step (H⁻¹) is the speciality of the family [14]. The wiki reports a gradual move from the ifort compiler to ifx in 2025-2026 [10]. AR1⊗AR1 spatial structures are not native. breedR builds them in its R layer before calling the binaries [39].
 
 #### 2.5 DMU
 
-DMU est développé par Per Madsen et Just Jensen (QGG, Aarhus University). Le serveur officiel refusait les connexions pendant la recherche. D'après les extraits de moteur de recherche du guide officiel, le paquet est distribué sous forme d'exécutables, gratuit pour la recherche, et l'usage commercial demande un accord avec QGG [15]. Le module DMUAI estime les composantes par AI-REML selon Jensen et al. (1997), avec repli possible sur l'EM [15]. Le guide le plus récent repéré est la version 6, release 5.6, de juin 2024 [15]. L'article de HIBLUP indique que DMU utilise FSPAK et que la version distribuée n'offre pas de calcul parallèle [16]. Ces points restent à confirmer sur le guide lui-même.
+DMU is developed by Per Madsen and Just Jensen (QGG, Aarhus University). The official server refused connections during the survey. According to search engine excerpts of the official guide, the package is distributed as executables, free for research, and commercial use requires an agreement with QGG [15]. The DMUAI module estimates the components by AI-REML after Jensen et al. (1997), with a possible EM fallback [15]. The most recent guide found is version 6, release 5.6, of June 2024 [15]. The HIBLUP article states that DMU uses FSPAK and that the distributed version offers no parallel computation [16]. These points remain to be confirmed in the guide itself.
 
-#### 2.6 MiX99 et MiXBLUP
+#### 2.6 MiX99 and MiXBLUP
 
-MiX99 est un logiciel de Luke (Institut finlandais des ressources naturelles) [17]. Trois licences existent : Standard, Core pour les pays émergents et University pour l'usage académique [17]. Les licences sont réservées aux applications d'élevage animal [17]. Le solveur mix99s est multithread ; mix99p et apax99p sont des programmes MPI [17]. Les références citées portent sur le gradient conjugué préconditionné et sur un REML EM par Monte Carlo. Une référence de 2024 porte sur l'AI-REML [17]. La page ne donne pas de tarif.
+MiX99 is software from Luke (Natural Resources Institute Finland) [17]. Three licences exist: Standard, Core for emerging countries, and University for academic use [17]. The licences are reserved for animal breeding applications [17]. The mix99s solver is multithreaded. mix99p and apax99p are MPI programs [17]. The cited references deal with preconditioned conjugate gradients and with a Monte Carlo EM REML. A 2024 reference deals with AI-REML [17]. The page gives no price.
 
-MiXBLUP est développé par Wageningen University & Research avec Luke. Son cœur dérive de MiX99 [19]. Les licences coûtent de 2 400 €/an (pedigree, moins d'un million d'équations) à 24 790 €/an (licence « Large EC », 3 à 10 postes) [18]. Un essai d'un mois est gratuit. Aucune licence académique n'est mentionnée [18]. La méthode REML n'est pas précisée sur ces pages.
+MiXBLUP is developed by Wageningen University & Research together with Luke. Its core derives from MiX99 [19]. Licences cost from €2 400 per year (pedigree, fewer than one million equations) to €24 790 per year ("Large EC" licence, 3 to 10 workstations) [18]. A one-month trial is free. No academic licence is mentioned [18]. These pages do not state the REML method.
 
 #### 2.7 MTG2
 
-MTG2 est développé par S. Hong Lee [21]. Il combine l'AI-REML « direct » de Lee et van der Werf (2006) avec une décomposition propre de la GRM [21][58]. L'algorithme direct travaille sur la matrice V des observations et non sur les MME [21]. Il est avantageux quand la covariance génétique est dense [21]. La décomposition propre exige une seule GRM de rang plein et un plan équilibré, sans phénotype manquant entre caractères [21]. Le dépôt Dryad du 17 août 2020 contient la version 2.16, les sources de la 2.15 en Fortran et le manuel [20]. La licence logicielle n'est pas précisée.
+MTG2 is developed by S. Hong Lee [21]. It combines the "direct" AI-REML of Lee and van der Werf (2006) with an eigendecomposition of the GRM [21][58]. The direct algorithm works on the matrix V of the observations and not on the MME [21]. It pays off when the genetic covariance is dense [21]. The eigendecomposition requires a single full-rank GRM and a balanced design, with no missing phenotype across traits [21]. The Dryad deposit of 17 August 2020 contains version 2.16, the Fortran sources of 2.15 and the manual [20]. The software licence is not stated.
 
-#### 2.8 GCTA et LDAK
+#### 2.8 GCTA and LDAK
 
-GCTA est sous GPL-3, avec des parties en LGPL [22]. La dernière étiquette du dépôt est la v1.94.1 (2022), et le dernier commit date de juillet 2025 [22]. GREML repose sur l'AI-REML direct sur V dense [23][24]. L'article de HIBLUP indique que GCTA ne traite que deux caractères à la fois et n'a pas de fonction pour les effets d'environnement aléatoires [16]. fastGWA-REML exploite une GRM creuse pour les grandes cohortes humaines [25]. LDAK est sous GPL-3 (version 3 ou ultérieure) [26]. Il estime l'héritabilité par REML sur des noyaux pondérés [27]. Ces deux logiciels visent la génétique humaine. Ils n'offrent ni structures us/fa générales ni structures spatiales.
+GCTA is under GPL-3, with parts under LGPL [22]. The latest tag in the repository is v1.94.1 (2022), and the last commit dates from July 2025 [22]. GREML relies on direct AI-REML on a dense V [23][24]. The HIBLUP article states that GCTA handles only two traits at a time and has no function for random environmental effects [16]. fastGWA-REML exploits a sparse GRM for large human cohorts [25]. LDAK is under GPL-3 (version 3 or later) [26]. It estimates heritability by REML on weighted kernels [27]. Both programs target human genetics. They offer neither general us/fa structures nor spatial structures.
 
 #### 2.9 sommer
 
-sommer est le paquet R libre de G. Covarrubias-Pazaran, sous GPL-3 [28]. La version 4.5.12 est parue sur CRAN le 25 octobre 2026 [28]. Le paquet a beaucoup changé depuis 2025.
+sommer is the free R package of G. Covarrubias-Pazaran, under GPL-3 [28]. Version 4.5.12 appeared on CRAN on 25 October 2026 [28]. The package has changed a great deal since 2025.
 
-L'historique des fonctions se lit dans le CHANGELOG [28]. mmer est la fonction historique à inversion directe sur la matrice r × r des observations. mmec, ajoutée en 4.1.7 (juillet 2022), implantait l'AI de Henderson selon Jensen, Madsen et Thompson (1997). En 4.4.1 (avril 2025), les deux moteurs ont été unifiés dans mmes. En 4.4.81 (septembre 2026), mmer est revenue à côté de mmes. Dans la 4.5.12, mmes et mmer sont exportées. mmec ne l'est plus. Le code de mmer est regroupé dans un fichier DEPRECATED_mmer.R, « en attente de dépréciation » [28].
+The history of the functions can be read in the CHANGELOG [28]. mmer is the historical function, with direct inversion on the r × r matrix of the observations. mmec, added in 4.1.7 (July 2022), implemented Henderson's AI after Jensen, Madsen and Thompson (1997). In 4.4.1 (April 2025), the two engines were unified in mmes. In 4.4.81 (September 2026), mmer came back alongside mmes. In 4.5.12, mmes and mmer are exported. mmec is no longer exported. The code of mmer is gathered in a file DEPRECATED_mmer.R, "pending deprecation" [28].
 
-Le moteur mmes résout par défaut les MME avec un AI-REML creux [28]. La factorisation LDLᵀ creuse est réutilisée pour les solutions et les dérivées. Les éléments utiles de l'inverse sont obtenus par la récursion de Takahashi [28]. CHOLMOD est disponible, avec ordonnancement METIS optionnel ou AMD par défaut [28]. La formulation directe (formulation = "direct") travaille sur la covariance dense des observations [28]. Les deux moteurs disposent d'une récupération EM, GEM ou PX-GEM quand l'AI échoue [28]. La convergence exige un score projeté petit ; un pas refusé renvoie convergence = FALSE [28]. Un solveur PCG avec estimateur stochastique des traces (Hutchinson) existe [28]. Le mode solveOnly résout les MME à variances connues sans former C. Le CHANGELOG annonce environ 10 s pour un million d'animaux en un caractère et 40 s en trois caractères [28].
+The mmes engine solves the MME by default with a sparse AI-REML [28]. The sparse LDLᵀ factorisation is reused for the solutions and the derivatives. The required elements of the inverse come from the Takahashi recursion [28]. CHOLMOD is available, with optional METIS ordering or AMD by default [28]. The direct formulation (formulation = "direct") works on the dense covariance of the observations [28]. Both engines have an EM, GEM or PX-GEM recovery when AI fails [28]. Convergence requires a small projected score. A rejected step returns convergence = FALSE [28]. A PCG solver with a stochastic trace estimator (Hutchinson) exists [28]. The solveOnly mode solves the MME at known variances without forming C. The CHANGELOG reports about 10 s for one million animals with one trait and 40 s with three traits [28].
 
-Les structures se combinent en produits de Kronecker arbitraires par vsm() [28]. La vignette spatiale montre un champ AR1⊗AR1 en effet aléatoire ou en résidu [28]. Les matrices K ou K⁻¹ s'entrent par Gu, l'inverse étant marquée par un attribut [28]. rrm() ajuste depuis 2026 un vrai rang réduit à variances spécifiques nulles, comme rr() de ASReml [28]. Une version compilée avec CUDA accélère certains noyaux denses du moteur Henderson. Le travail creux reste sur CPU, et la formulation directe reste sur CPU [28]. Le rythme de changement est très rapide : la 4.4.90 a cassé l'interface de contrôle numérique [28].
+Structures combine into arbitrary Kronecker products through vsm() [28]. The spatial vignette shows an AR1⊗AR1 field as a random effect or in the residual [28]. K or K⁻¹ matrices are entered through Gu, the inverse being flagged by an attribute [28]. Since 2026, rrm() fits a true reduced rank with zero specific variances, like rr() in ASReml [28]. A build compiled with CUDA speeds up some dense kernels of the Henderson engine. The sparse work stays on CPU, and so does the direct formulation [28]. The pace of change is very fast: version 4.4.90 broke the numerical control interface [28].
 
-#### 2.10 lme4 et ses extensions génétiques
+#### 2.10 lme4 and its genetic extensions
 
-lme4 est sous GPL ≥ 2 [29]. La version 2.1-0 est parue le 23 octobre 2026 [29]. Le moteur résout un problème de moindres carrés pénalisés par Cholesky creux, et optimise la vraisemblance profilée avec un optimiseur sans dérivées [30]. Depuis la version 2.0-1 (mars 2026), lme4 accepte des structures us, diag, cs et ar1 sur la covariance d'un terme aléatoire [31]. lme4 n'accepte pas de matrice de parenté native.
+lme4 is under GPL ≥ 2 [29]. Version 2.1-0 appeared on 23 October 2026 [29]. The engine solves a penalised least squares problem by sparse Cholesky, and optimises the profiled likelihood with a derivative-free optimiser [30]. Since version 2.0-1 (March 2026), lme4 accepts us, diag, cs and ar1 structures on the covariance of a random term [31]. lme4 does not accept a relationship matrix natively.
 
-Les extensions génétiques remplacent Z par Z·L, où L est un facteur de la matrice de parenté [33][38]. lme4qtl suit ce principe pour des matrices K quelconques [33]. Son dernier commit date de janvier 2021 [32]. pedigreemm le fait pour le pedigree [35][36] ; sa dernière version date d'octobre 2024 [34]. lme4breeding, du même auteur que sommer, ajoute une rotation par décomposition propre limitée à une seule matrice de parenté [38]. Sa version 1.1.5 date du 5 octobre 2026 [37]. Aucun de ces paquets ne propose de modèle multivarié us natif au sens de ASReml.
+The genetic extensions replace Z by Z·L, where L is a factor of the relationship matrix [33][38]. lme4qtl follows this principle for arbitrary K matrices [33]. Its last commit dates from January 2021 [32]. pedigreemm does it for the pedigree [35][36]. Its latest version dates from October 2024 [34]. lme4breeding, by the author of sommer, adds a rotation by eigendecomposition restricted to a single relationship matrix [38]. Its version 1.1.5 dates from 5 October 2026 [37]. None of these packages offers a native multivariate us model in the ASReml sense.
 
 #### 2.11 breedR
 
-breedR est une interface R sous GPL-3 qui appelle les binaires BLUPF90 (REMLF90, AIREMLF90, Gibbs) [39]. Il vise les essais forestiers. Il propose des effets spatiaux autorégressifs et des splines, ainsi qu'un effet de compétition entre voisins [39]. Le README indique que le paquet n'est plus maintenu activement [39]. Il n'est pas sur CRAN.
+breedR is an R interface under GPL-3 that calls the BLUPF90 binaries (REMLF90, AIREMLF90, Gibbs) [39]. It targets forestry trials. It offers autoregressive spatial effects and splines, as well as a competition effect between neighbours [39]. The README states that the package is no longer actively maintained [39]. It is not on CRAN.
 
-#### 2.12 glmmTMB et spaMM
+#### 2.12 glmmTMB and spaMM
 
-glmmTMB est sous AGPL-3 [40]. Il ajuste par maximum de vraisemblance avec intégration de Laplace et gradients par différentiation automatique (TMB) [40]. L'option REML = TRUE existe [41]. Les structures incluent us, toep, cs, diag, ar1, hetar1, ou, exp, gau, mat, rr, propto et equalto [41]. propto ajuste une covariance proportionnelle à une matrice connue, donc une parenté K dense [41]. Aucun produit de Kronecker ar1⊗ar1 n'est documenté dans la vignette.
+glmmTMB is under AGPL-3 [40]. It fits by maximum likelihood with Laplace integration and gradients by automatic differentiation (TMB) [40]. The option REML = TRUE exists [41]. The structures include us, toep, cs, diag, ar1, hetar1, ou, exp, gau, mat, rr, propto and equalto [41]. propto fits a covariance proportional to a known matrix, hence a dense relationship matrix K [41]. No ar1⊗ar1 Kronecker product is documented in the vignette.
 
-spaMM est sous CeCILL-2 [42]. Il ajuste des modèles avec effets spatialement corrélés, réponses multivariées et effets non gaussiens [42]. La vraisemblance ou la vraisemblance restreinte utilise des approximations de Laplace [42]. Les champs markoviens et les modèles autorégressifs exploitent des matrices de précision creuses [42].
+spaMM is under CeCILL-2 [42]. It fits models with spatially correlated effects, multivariate responses and non-Gaussian effects [42]. The likelihood or restricted likelihood uses Laplace approximations [42]. Markov fields and autoregressive models exploit sparse precision matrices [42].
 
-#### 2.13 Voies bayésiennes : MCMCglmm, brms, R-INLA
+#### 2.13 Bayesian routes: MCMCglmm, brms, R-INLA
 
-MCMCglmm est sous GPL ≥ 2 [43]. Il ajuste des GLMM multivariés par MCMC [44]. L'argument ginverse reçoit des inverses creuses proportionnelles à la covariance d'un effet aléatoire, typiquement A⁻¹ [45]. Sa dernière version date de mai 2024 [43].
+MCMCglmm is under GPL ≥ 2 [43]. It fits multivariate GLMMs by MCMC [44]. The ginverse argument takes sparse inverses proportional to the covariance of a random effect, typically A⁻¹ [45]. Its latest version dates from May 2024 [43].
 
-brms est sous GPL-2 et s'appuie sur Stan (HMC, NUTS) [46][47]. Il ajuste des modèles multivariés. Une covariance connue s'entre par gr(cov = ). Le calcul OpenCL est disponible avec le moteur cmdstanr, pas avec rstan [48].
+brms is under GPL-2 and relies on Stan (HMC, NUTS) [46][47]. It fits multivariate models. A known covariance is entered through gr(cov = ). OpenCL computation is available with the cmdstanr backend, and not with rstan [48].
 
-R-INLA est sous licence MIT dans son dépôt public [49]. Il implémente l'approximation de Laplace imbriquée intégrée et non le REML [50]. Le modèle latent generic0 reçoit une matrice de précision fournie, donc K⁻¹ [51]. Le modèle ar1 et la construction par groupe donnent des structures séparables [51]. La version du 26 octobre 2026 est la 26.10.26 [49].
+R-INLA is under the MIT licence in its public repository [49]. It implements the integrated nested Laplace approximation and not REML [50]. The latent model generic0 takes a supplied precision matrix, hence K⁻¹ [51]. The ar1 model and the group construction give separable structures [51]. The version of 26 October 2026 is 26.10.26 [49].
 
-#### 2.14 MixedModels.jl et statsmodels
+#### 2.14 MixedModels.jl and statsmodels
 
-MixedModels.jl est sous licence MIT [52]. La version 5.9.1 date du 2 octobre 2026 [52]. Depuis la v5, l'optimisation est non contrainte et l'optimiseur par défaut est NEWUOA de NLopt [52]. Le paquet suit l'approche PLS de lme4. Il ne prend ni parenté ni structure us multivariée native.
+MixedModels.jl is under the MIT licence [52]. Version 5.9.1 dates from 2 October 2026 [52]. Since v5, optimisation is unconstrained and the default optimiser is NEWUOA from NLopt [52]. The package follows the PLS approach of lme4. It supports neither a relationship matrix nor a native multivariate us structure.
 
-statsmodels est sous BSD-3 [53]. MixedLM est fondé sur des groupes indépendants [54]. Les effets croisés exigent de traiter tout le jeu de données comme un seul groupe [54]. Les calculs de vraisemblance, de gradient et de hessien suivent Lindstrom et Bates (1988) [54][55]. Ce module ne convient pas aux modèles génétiques avec parenté.
+statsmodels is under BSD-3 [53]. MixedLM is built on independent groups [54]. Crossed effects require treating the whole data set as a single group [54]. The likelihood, gradient and Hessian computations follow Lindstrom and Bates (1988) [54][55]. This module does not suit genetic models with a relationship matrix.
 
-### 3. Comparaisons publiées de vitesse et de justesse
+### 3. Published comparisons of speed and accuracy
 
-Toutes les comparaisons repérées ont été conduites par les auteurs de l'un des logiciels comparés. Aucune comparaison indépendante récente n'inclut à la fois ASReml, BLUPF90, WOMBAT et DMU sur de grandes données génomiques.
+All the comparisons found were carried out by the authors of one of the compared programs. No recent independent comparison includes ASReml, BLUPF90, WOMBAT and DMU together on large genomic data.
 
-| Étude | Logiciels | Données | Résultat chiffré | Réserve |
+| Study | Software | Data | Figures | Caveat |
 |---|---|---|---|---|
-| Covarrubias-Pazaran 2016 [59] | sommer, ASReml, rrBLUP, regress, EMMREML, BGLR, MCMCglmm | GBLUP 1 composante, N = 5 000 ; 3 composantes denses, N = 10 585 hybrides | 1 composante : sommer 240 s, ASReml 443 s, EMMREML 611 s, rrBLUP 766 s, BGLR 1 292 s, regress 1 684 s, MCMCglmm 533 556 s. 3 composantes : sommer 426 s, regress 1 868 s, EMMREML 1 137 s, ASReml 6 874 s, BGLR 17 364 s, MCMCglmm plus de 12 jours | ASReml a signalé une terminaison anormale dans les deux cas. L'inversion de la matrice 10 585 × 10 585 exigée par ginverse domine le temps de ASReml et MCMCglmm. Machine i7 3,4 GHz, 16 Go |
-| Lee et van der Werf 2016 [21] | MTG2, GEMMA, ASReml, WOMBAT | Souris, n = 1 908, jusqu'à 5 caractères ; humains ARIC, n = 7 263, 8 caractères | Souris : MTG2 quelques secondes, « quelques milliers de fois » plus rapide que ASReml et WOMBAT. ARIC : ASReml et WOMBAT trop lents pour tourner. Estimations « essentiellement identiques » | Une seule GRM, plan équilibré par imputation. Gain annoncé supérieur à 1 000 fois |
-| Masuda et al. 2015 [13] | AIREMLF90 avec FSPAK contre YAMS | 23 modèles (poulet, porc, bovins viande et lait), dont single-step | YAMS en moyenne plus de 10 fois plus rapide que FSPAK ; calcul des traces jusqu'à 67 fois plus rapide | Comparaison interne au même logiciel |
-| Masuda et al. 2014, WCGALP [60] | AIREMLF90 avec FSPAK contre YAMS | Plus de 15 000 génotypés | 1 caractère : 5 premières itérations en plus de 4 h (FSPAK) contre 20 min (YAMS). 4 caractères : échec de FSPAK, 5 h avec YAMS | Chiffres lus dans un extrait de recherche ; PDF inaccessible, non vérifié |
-| Yin et al. 2023 (HIBLUP) [16] | HIBLUP, BLUPF90, ASReml-SA, GCTA, MTG2, LDAK, sommer | Simulation de 10 000 individus ; 500 000 individus pour GCTA | Estimations quasi identiques. ASReml converge en 9 itérations contre 15 pour BLUPF90, pour un temps total voisin. sommer exige beaucoup de temps et de mémoire. BLUPF90 est avantagé quand peu d'individus phénotypés sont génotypés. GRM de 500 000 individus : 21 h pour HIBLUP contre 56 h pour GCTA | Taille limitée par la licence de BLUPF90. DMU exclu faute de parallélisme. Chiffres détaillés dans des tableaux non relus |
-| Covarrubias-Pazaran 2024 (lme4breeding, préprint) [38] | lme4breeding, lme4qtl 0.2.2, sommer 4.3.4, ASReml 4.1.0.182 | Blé, 599 lignées, 4 environnements | Composantes « presque identiques ». Gain de 4 à 160 fois pour le modèle diagonal. Rapports de 1:1 350 contre ASReml et 1:1 261 contre lme4qtl pour le modèle non structuré | Mac M1, 8 Go. Préprint non publié. Rapports cités sans les temps sous-jacents |
-| Caamal-Pat et al. 2021 (lme4GS) [61] | lme4GS, BGLR 0.8, sommer 4.1.3 | Modèles génomiques à noyaux | Modèle 6 : sommer 46 s, lme4GS 81,5 s, BGLR 143 s. Modèle 7 : lme4GS 1,3 s, sommer 2,7 s, BGLR 20,2 s | Pas de comparaison avec ASReml |
-| Covarrubias-Pazaran 2018 (préprint) [62] | sommer, ASReml-R, MCMCglmm | Jeux BTdata et CPdata | D'après un extrait : ASReml-R le plus rapide sur BTdata, sommer le plus lent ; sommer plus rapide sur CPdata ; sommer lent quand p < n | Chiffres non relus sur le texte complet |
+| Covarrubias-Pazaran 2016 [59] | sommer, ASReml, rrBLUP, regress, EMMREML, BGLR, MCMCglmm | GBLUP with 1 component, N = 5 000; 3 dense components, N = 10 585 hybrids | 1 component: sommer 240 s, ASReml 443 s, EMMREML 611 s, rrBLUP 766 s, BGLR 1 292 s, regress 1 684 s, MCMCglmm 533 556 s. 3 components: sommer 426 s, regress 1 868 s, EMMREML 1 137 s, ASReml 6 874 s, BGLR 17 364 s, MCMCglmm more than 12 days | ASReml reported an abnormal termination in both cases. The inversion of the 10 585 × 10 585 matrix required by ginverse dominates the time of ASReml and MCMCglmm. i7 3.4 GHz machine, 16 GB |
+| Lee and van der Werf 2016 [21] | MTG2, GEMMA, ASReml, WOMBAT | Mice, n = 1 908, up to 5 traits; ARIC humans, n = 7 263, 8 traits | Mice: MTG2 a few seconds, "a few thousand times" faster than ASReml and WOMBAT. ARIC: ASReml and WOMBAT too slow to run. Estimates "essentially identical" | A single GRM, design balanced by imputation. Reported gain above 1 000 times |
+| Masuda et al. 2015 [13] | AIREMLF90 with FSPAK against YAMS | 23 models (chicken, pig, beef and dairy cattle), including single-step | YAMS on average more than 10 times faster than FSPAK; trace computation up to 67 times faster | Comparison within the same program |
+| Masuda et al. 2014, WCGALP [60] | AIREMLF90 with FSPAK against YAMS | More than 15 000 genotyped animals | 1 trait: first 5 iterations in more than 4 h (FSPAK) against 20 min (YAMS). 4 traits: FSPAK fails, 5 h with YAMS | Figures read in a search excerpt; PDF unreachable, unverified |
+| Yin et al. 2023 (HIBLUP) [16] | HIBLUP, BLUPF90, ASReml-SA, GCTA, MTG2, LDAK, sommer | Simulation of 10 000 individuals; 500 000 individuals for GCTA | Near-identical estimates. ASReml converges in 9 iterations against 15 for BLUPF90, for a similar total time. sommer requires much time and memory. BLUPF90 has the edge when few phenotyped individuals are genotyped. GRM of 500 000 individuals: 21 h for HIBLUP against 56 h for GCTA | Size limited by the BLUPF90 licence. DMU excluded for lack of parallelism. Detailed figures in tables not reread |
+| Covarrubias-Pazaran 2024 (lme4breeding, preprint) [38] | lme4breeding, lme4qtl 0.2.2, sommer 4.3.4, ASReml 4.1.0.182 | Wheat, 599 lines, 4 environments | Components "almost identical". Gain of 4 to 160 times for the diagonal model. Ratios of 1:1 350 against ASReml and 1:1 261 against lme4qtl for the unstructured model | Mac M1, 8 GB. Unpublished preprint. Ratios cited without the underlying times |
+| Caamal-Pat et al. 2021 (lme4GS) [61] | lme4GS, BGLR 0.8, sommer 4.1.3 | Genomic kernel models | Model 6: sommer 46 s, lme4GS 81.5 s, BGLR 143 s. Model 7: lme4GS 1.3 s, sommer 2.7 s, BGLR 20.2 s | No comparison with ASReml |
+| Covarrubias-Pazaran 2018 (preprint) [62] | sommer, ASReml-R, MCMCglmm | BTdata and CPdata data sets | According to an excerpt: ASReml-R fastest on BTdata, sommer slowest; sommer faster on CPdata; sommer slow when p < n | Figures not reread in the full text |
 
-Deux annonces de développeurs complètent ce tableau sans constituer des comparaisons. Echidna annonce 24 minutes par itération avec une H⁻¹ de 201 150 individus et 40 000 génotypés [7]. sommer annonce environ 10 s pour un million d'animaux en mode solveOnly, sans estimation des variances [28].
+Two developer announcements complete this table without being comparisons. Echidna reports 24 minutes per iteration with an H⁻¹ of 201 150 individuals and 40 000 genotyped animals [7]. sommer reports about 10 s for one million animals in solveOnly mode, without variance estimation [28].
 
-Un poster de Rogers et Taylor (IBS Australasie, 2019) comparerait des paquets R de modèles mixtes pour l'amélioration des plantes. Je n'ai pas trouvé son contenu. Les chiffres qui lui sont attribués en ligne restent non vérifiés.
+A poster by Rogers and Taylor (IBS Australasia, 2019) reportedly compares R mixed model packages for plant breeding. I did not find its content. The figures attributed to it online remain unverified.
 
 ### 4. Sources
 
-1. VSN International, page ASReml-R. https://vsni.co.uk/software/asreml-r (consultée le 26/10/2026).
+1. VSN International, ASReml-R page. https://vsni.co.uk/software/asreml-r (accessed 26/10/2026).
 2. Butler D.G., Cullis B.R., Gilmour A.R., Gogel B.J., Thompson R. (2023). ASReml-R Reference Manual Version 4.2. VSN International. https://asreml.kb.vsni.co.uk/wp-content/uploads/sites/3/ASReml-R-Reference-Manual-4.2.pdf (sections 1.1, 2.2, A.1, A.2).
 3. Gilmour A.R., Thompson R., Cullis B.R. (1995). Average information REML: an efficient algorithm for variance parameter estimation in linear mixed models. Biometrics 51:1440–1450. https://doi.org/10.2307/2533274
 4. Gilmour A.R., Gogel B.J., Cullis B.R., Welham S.J., Thompson R. (2022). ASReml User Guide Release 4.2 Functional Specification. https://asreml.kb.vsni.co.uk/wp-content/uploads/sites/3/ASReml-4.2-Functional-Specification.pdf (sections 7.11, 11.3.6, option !MP).
 5. VSN International, Release notes ASReml-R 4.2. https://asreml.kb.vsni.co.uk/?p=2374
-6. Echidna Mixed Models Software, page d'accueil. https://www.echidnamms.org/
-7. Gilmour A.R., note « Echidna Build 2.15 October 22, 2026 ». https://www.echidnamms.org/echidna-build-2-15-october-22-2026/
-8. Meyer K. (2017). WOMBAT User Notes, version du 31 mai 2017. Copie INRAE : https://forge-dga.jouy.inra.fr/attachments/download/8063/WombatManual-V20170531.pdf (chapitres 1, 2, 5.3). Site officiel http://didgeridoo.une.edu.au/km/wombat.php inaccessible le 26/10/2026.
-9. BLUPF90 wiki, « Conditions of use ». https://nce.ads.uga.edu/wiki/doku.php?id=condition_of_use
-10. BLUPF90 wiki, « Distribution ». https://nce.ads.uga.edu/wiki/doku.php?id=distribution
-11. BLUPF90 wiki, « Application programs ». https://nce.ads.uga.edu/wiki/doku.php?id=application_programs
-12. BLUPF90 wiki, page d'accueil. https://nce.ads.uga.edu/wiki/doku.php?id=start
+6. Echidna Mixed Models Software, home page. https://www.echidnamms.org/
+7. Gilmour A.R., note "Echidna Build 2.15 October 22, 2026". https://www.echidnamms.org/echidna-build-2-15-october-22-2026/
+8. Meyer K. (2017). WOMBAT User Notes, version of 31 May 2017. INRAE copy: https://forge-dga.jouy.inra.fr/attachments/download/8063/WombatManual-V20170531.pdf (chapters 1, 2, 5.3). Official site http://didgeridoo.une.edu.au/km/wombat.php unreachable on 26/10/2026.
+9. BLUPF90 wiki, "Conditions of use". https://nce.ads.uga.edu/wiki/doku.php?id=condition_of_use
+10. BLUPF90 wiki, "Distribution". https://nce.ads.uga.edu/wiki/doku.php?id=distribution
+11. BLUPF90 wiki, "Application programs". https://nce.ads.uga.edu/wiki/doku.php?id=application_programs
+12. BLUPF90 wiki, home page. https://nce.ads.uga.edu/wiki/doku.php?id=start
 13. Masuda Y., Aguilar I., Tsuruta S., Misztal I. (2015). Technical note: Acceleration of sparse operations for average-information REML analyses with supernodal methods and sparse-storage refinements. J. Anim. Sci. 93:4670–4674. https://doi.org/10.2527/jas.2015-9395
 14. Lourenco D., Legarra A., Tsuruta S., Masuda Y., Aguilar I., Misztal I. (2020). Single-step genomic evaluations from theory to practice: using SNP chips and sequence data in BLUPF90. Genes 11:790. https://doi.org/10.3390/genes11070790
-15. Madsen P., Jensen J. DMU, a package for analyzing multivariate mixed models, guide v6 release 5.6 (2024). https://dmu.ghpc.au.dk/dmu/DMU/Doc/Current/dmuv6_guide.5.6.pdf. Serveur inaccessible le 26/10/2026 ; contenu connu par extraits de moteur de recherche seulement.
+15. Madsen P., Jensen J. DMU, a package for analyzing multivariate mixed models, guide v6 release 5.6 (2024). https://dmu.ghpc.au.dk/dmu/DMU/Doc/Current/dmuv6_guide.5.6.pdf. Server unreachable on 26/10/2026; content known from search engine excerpts only.
 16. Yin L. et al. (2023). HIBLUP: an integration of statistical models on the BLUP framework for efficient genetic evaluation using big genomic data. Nucleic Acids Res. 51:3501–3512. https://doi.org/10.1093/nar/gkad074
-17. Luke, page MiX99. https://www.luke.fi/en/node/8911
-18. MiXBLUP, page « Licenses ». https://www.mixblup.eu/licenses
-19. MiXBLUP, page d'accueil. https://www.mixblup.eu/
+17. Luke, MiX99 page. https://www.luke.fi/en/node/8911
+18. MiXBLUP, "Licenses" page. https://www.mixblup.eu/licenses
+19. MiXBLUP, home page. https://www.mixblup.eu/
 20. Lee S.H., Zhou X. (2020). CORE GREML: MTG2 code and instruction. Dryad. https://doi.org/10.5061/dryad.bk3j9kd8c
 21. Lee S.H., van der Werf J.H.J. (2016). MTG2: an efficient algorithm for multivariate linear mixed model analysis based on genomic information. Bioinformatics 32:1420–1422. https://doi.org/10.1093/bioinformatics/btw012
-22. Dépôt GCTA. https://github.com/jianyangqt/gcta (README, étiquettes, commits).
+22. GCTA repository. https://github.com/jianyangqt/gcta (README, tags, commits).
 23. Yang J., Lee S.H., Goddard M.E., Visscher P.M. (2011). GCTA: a tool for genome-wide complex trait analysis. Am. J. Hum. Genet. 88:76–82. https://doi.org/10.1016/j.ajhg.2010.11.011
-24. Voir [21], introduction : l'AI direct est implanté dans GCTA-GREML.
+24. See [21], introduction: direct AI is implemented in GCTA-GREML.
 25. Jiang L. et al. (2019). A resource-efficient tool for mixed model association analysis of large-scale data. Nat. Genet. 51:1749–1755. https://doi.org/10.1038/s41588-019-0530-8
-26. Dépôt LDAK, fichier LICENCE.txt. https://github.com/dougspeed/LDAK
+26. LDAK repository, file LICENCE.txt. https://github.com/dougspeed/LDAK
 27. Speed D., Hemani G., Johnson M.R., Balding D.J. (2012). Improved heritability estimation from genome-wide SNPs. Am. J. Hum. Genet. 91:1011–1021. https://doi.org/10.1016/j.ajhg.2012.10.010
-28. sommer 4.5.12, CRAN. https://cran.r-project.org/package=sommer. Sources lues : DESCRIPTION, NAMESPACE, CHANGELOG, README, vignettes sommer.qg et sommer.spatial, R/FUN_mme_gpu.R, R/FUN_mme_control.R (archive sommer_4.5.12.tar.gz).
+28. sommer 4.5.12, CRAN. https://cran.r-project.org/package=sommer. Sources read: DESCRIPTION, NAMESPACE, CHANGELOG, README, vignettes sommer.qg and sommer.spatial, R/FUN_mme_gpu.R, R/FUN_mme_control.R (archive sommer_4.5.12.tar.gz).
 29. lme4 2.1-0, CRAN. https://cran.r-project.org/package=lme4
 30. Bates D., Mächler M., Bolker B., Walker S. (2015). Fitting linear mixed-effects models using lme4. J. Stat. Softw. 67(1). https://doi.org/10.18637/jss.v067.i01
-31. lme4, fichier NEWS, versions 2.0-1 et 2.1-0. https://github.com/lme4/lme4/blob/master/inst/NEWS.Rd
-32. Dépôt lme4qtl. https://github.com/variani/lme4qtl
+31. lme4, NEWS file, versions 2.0-1 and 2.1-0. https://github.com/lme4/lme4/blob/master/inst/NEWS.Rd
+32. lme4qtl repository. https://github.com/variani/lme4qtl
 33. Ziyatdinov A. et al. (2018). lme4qtl: linear mixed models with flexible covariance structure for genetic studies of related individuals. BMC Bioinformatics 19:68. https://doi.org/10.1186/s12859-018-2057-x
 34. pedigreemm 0.3-5, CRAN. https://cran.r-project.org/package=pedigreemm
 35. Vazquez A.I., Bates D.M., Rosa G.J.M., Gianola D., Weigel K.A. (2010). Technical note: An R package for fitting generalized linear mixed models in animal breeding. J. Anim. Sci. 88:497–504. https://doi.org/10.2527/jas.2009-1952
-36. Voir [59], tableau 2 : pedigreemm accepte un pedigree mais pas une matrice de covariance fournie directement.
+36. See [59], table 2: pedigreemm accepts a pedigree but not a covariance matrix supplied directly.
 37. lme4breeding 1.1.5, CRAN. https://cran.r-project.org/package=lme4breeding
 38. Covarrubias-Pazaran G. (2024). lme4breeding: enabling genetic evaluation in the era of genomic data. bioRxiv. https://doi.org/10.1101/2024.05.17.594795
-39. Dépôt breedR (README, DESCRIPTION, NAMESPACE, R/competition.R, R/spatial.R). https://github.com/famuvie/breedR
+39. breedR repository (README, DESCRIPTION, NAMESPACE, R/competition.R, R/spatial.R). https://github.com/famuvie/breedR
 40. glmmTMB 1.1.15.2, CRAN. https://cran.r-project.org/package=glmmTMB ; Brooks M.E. et al. (2017). glmmTMB balances speed and flexibility among packages for zero-inflated generalized linear mixed modeling. R J. 9:378. https://doi.org/10.32614/RJ-2017-066
-41. glmmTMB, vignette « Covariance structures with glmmTMB ». https://github.com/glmmTMB/glmmTMB/blob/master/glmmTMB/vignettes/covstruct.rmd
+41. glmmTMB, vignette "Covariance structures with glmmTMB". https://github.com/glmmTMB/glmmTMB/blob/master/glmmTMB/vignettes/covstruct.rmd
 42. spaMM 4.7.17, CRAN. https://cran.r-project.org/package=spaMM ; Rousset F., Ferdy J.-B. (2014). Testing environmental and genetic effects in the presence of spatial autocorrelation. Ecography 37:781–790. https://doi.org/10.1111/ecog.00566
 43. MCMCglmm 2.36, CRAN. https://cran.r-project.org/package=MCMCglmm
 44. Hadfield J.D. (2010). MCMC methods for multi-response generalized linear mixed models: the MCMCglmm R package. J. Stat. Softw. 33(2). https://doi.org/10.18637/jss.v033.i02
-45. MCMCglmm, page d'aide MCMCglmm.Rd, argument ginverse. https://github.com/jarrodhadfield/MCMCglmm
+45. MCMCglmm, help page MCMCglmm.Rd, argument ginverse. https://github.com/jarrodhadfield/MCMCglmm
 46. brms 2.23.0, CRAN. https://cran.r-project.org/package=brms
 47. Bürkner P.-C. (2017). brms: an R package for Bayesian multilevel models using Stan. J. Stat. Softw. 80(1). https://doi.org/10.18637/jss.v080.i01
-48. brms, fichier R/backends.R (gestion d'OpenCL selon le moteur). https://github.com/paul-buerkner/brms
-49. Dépôt R-INLA (LICENSE, version 26.10.26). https://github.com/hrue/r-inla
+48. brms, file R/backends.R (handling of OpenCL by backend). https://github.com/paul-buerkner/brms
+49. R-INLA repository (LICENSE, version 26.10.26). https://github.com/hrue/r-inla
 50. Rue H., Martino S., Chopin N. (2009). Approximate Bayesian inference for latent Gaussian models by using integrated nested Laplace approximations. J. R. Stat. Soc. B 71:319–392. https://doi.org/10.1111/j.1467-9868.2008.00700.x
-51. Documentation R-INLA des modèles latents generic0 et ar1. https://github.com/hrue/r-inla/tree/devel/r-inla.org/doc/latent
-52. Dépôt MixedModels.jl (README, version 5.9.1). https://github.com/JuliaStats/MixedModels.jl
-53. Dépôt statsmodels (licence, version 0.15.0). https://github.com/statsmodels/statsmodels
-54. statsmodels, documentation « Linear Mixed Effects Models ». https://www.statsmodels.org/stable/mixed_linear.html
+51. R-INLA documentation of the latent models generic0 and ar1. https://github.com/hrue/r-inla/tree/devel/r-inla.org/doc/latent
+52. MixedModels.jl repository (README, version 5.9.1). https://github.com/JuliaStats/MixedModels.jl
+53. statsmodels repository (licence, version 0.15.0). https://github.com/statsmodels/statsmodels
+54. statsmodels, documentation "Linear Mixed Effects Models". https://www.statsmodels.org/stable/mixed_linear.html
 55. Lindstrom M.J., Bates D.M. (1988). Newton-Raphson and EM algorithms for linear mixed-effects models for repeated-measures data. J. Am. Stat. Assoc. 83:1014–1022. https://doi.org/10.1080/01621459.1988.10478693
 56. Meyer K. (2007). WOMBAT: a tool for mixed model analyses in quantitative genetics by restricted maximum likelihood (REML). J. Zhejiang Univ. Sci. B 8:815–821. https://doi.org/10.1631/jzus.2007.B0815
-57. Meyer K. (2020). WOMBAT: a tool for estimation of genetic parameters, highlights and updates. ICQG 6, résumés, p. 199. https://hdl.handle.net/1959.11/30741
+57. Meyer K. (2020). WOMBAT: a tool for estimation of genetic parameters, highlights and updates. ICQG 6, abstracts, p. 199. https://hdl.handle.net/1959.11/30741
 58. Lee S.H., van der Werf J.H.J. (2006). An efficient variance component approach implementing an average information REML suitable for combined LD and linkage mapping with a general complex pedigree. Genet. Sel. Evol. 38:25. https://doi.org/10.1186/1297-9686-38-1-25
 59. Covarrubias-Pazaran G. (2016). Genome-assisted prediction of quantitative traits using the R package sommer. PLoS ONE 11:e0156744. https://doi.org/10.1371/journal.pone.0156744
-60. Masuda Y. et al. (2014). Communication au 10e WCGALP sur YAMS dans AIREMLF90. Copie INIA : https://inia.uy/sites/default/files/publications/2024-10/Masuda-et-al2014WCGALP.pdf (accès refusé, non vérifié).
+60. Masuda Y. et al. (2014). Communication at the 10th WCGALP on YAMS in AIREMLF90. INIA copy: https://inia.uy/sites/default/files/publications/2024-10/Masuda-et-al2014WCGALP.pdf (access denied, unverified).
 61. Caamal-Pat D. et al. (2021). lme4GS: an R-package for genomic selection. Front. Genet. 12:680569. https://doi.org/10.3389/fgene.2021.680569
 62. Covarrubias-Pazaran G. (2018). Software update: moving the R package sommer to multivariate mixed models for genome-assisted prediction. bioRxiv. https://doi.org/10.1101/354639
 
-## Annexe B. Calcul accéléré pour le REML et les modèles mixtes linéaires, 2010-2026
+## Appendix B. Accelerated computing for REML and linear mixed models, 2010-2026
 
-Consultation le 26 octobre 2026. Les DOI ont été vérifiés sur Crossref, ou sur DataCite pour arXiv. L'activité des dépôts vient de l'API GitHub. Pour pyreml, le code source 0.5.3 a été lu en entier. Le mot « non vérifié » signale un point que je n'ai pas pu confirmer sur une source primaire.
+Consulted on 26 October 2026. DOIs were verified on Crossref, or on DataCite for arXiv. Repository activity comes from the GitHub API. For pyreml, the 0.5.3 source code was read in full. The word "unverified" flags a point I could not confirm on a primary source.
 
-### Tableau comparatif
+### Comparison table
 
-Légende des colonnes. « Calcul » dit si l'outil estime les variances par REML exact, par une approximation, ou ne fait que du BLUP ou de la GWAS. « Modèle » résume la généralité. « Échelle » reprend le plus grand cas publié et son matériel.
+Column key. "Computation" states whether the tool estimates the variances by exact REML, by an approximation, or only does BLUP or GWAS. "Model" summarises generality. "Scale" gives the largest published case and its hardware.
 
-| Outil | Calcul | Modèle | Technique calcul et mémoire | Échelle et matériel | Licence, maintenance |
+| Tool | Computation | Model | Computational and memory technique | Scale and hardware | Licence, maintenance |
 |---|---|---|---|---|---|
-| pyreml 0.5.3 (Marchal et al.) | REML exact, gradient analytique, L-BFGS puis Adam en secours. Pas d'AI. | Multi-termes, multivarié, Σ⊗K, fa, us, diag, blocs, hétéroscédasticité, noyaux spatiaux, régression aléatoire. | PyTorch dense. Forme V ou Woodbury (C = G⁻¹ + Z'R⁻¹Z dense q×q). Grilles d'index au lieu de Z. FP32 puis FP64. | n = 10⁶, q = 25 000, 41 paramètres, 262 à 279 s sur A100 80 Go. | GPL-3.0. Créé en juin 2026, 19 versions, 0.5.3 le 21/10/2026. |
-| kmmr (Melsen et al.) | AI-REML exact. | Multivarié, us, FA étendu, AR1×AR1, noyaux gaussiens, Kronecker, empilement. | Partie creuse par CHOLMOD supernodal sur CPU, inverse partielle de Takahashi. Complément de Schur dense sur GPU (cuSOLVER). | GBLUP 10 375 génotypes : 49 s sur A100 contre 989 s pour ASReml-R. | GPL-3.0, R. Actif (push le 22/10/2026). |
-| SAIGE-GPU | AI-REML sur quasi-vraisemblance pénalisée (biaisé selon les auteurs de SAIGE), puis tests. | Un seul terme génétique (GRM pleine ou creuse). | PCG sans former la GRM, produits génotype × vecteur par cuBLAS, MPI multi-nœuds, traces aléatoires. | 635 969 individus, 2 068 phénotypes. Summit (V100), Frontier (MI250X), A100. | GPL-3.0. Commit en avril 2026. |
-| BOLT-REML | REML approché : gradient Monte Carlo, AI, gradient conjugué. | Plusieurs composantes et plusieurs traits. | Mémoire ≈ MN/4 octets. CPU seulement. | ≈ 50 000 individus dans l'article. UK Biobank en quelques jours sur 8 fils (manuel). | GPLv3. Version 2.5 en juin 2025. |
-| DISSECT | REML exact sur V dense distribuée. | LMM univarié et bivarié. Multi-composantes annoncé en test en 2015. | MPI, BLACS, ScaLAPACK. | 470 000 individus, 590 004 SNP, moins de 4 h sur 8 400 cœurs (ARCHER). | GPLv3. Maintenance non vérifiée. |
-| REACTA | REML exact, héritabilité régionale. | Dérivé de GCTA. | MAGMA et CUDA, régions réparties par MPI. | 1 024 GPU de Titan, 15 min. | Licence non vérifiée. |
-| GPU_REML (dépôt Asiandier/SPLIT) | REML approché : PCG par blocs, Hutchinson, SLQ, AI ou Fisher. | Plusieurs GRM, une variance par GRM. | GRM jamais formée, génotypes compressés lus en flux vers le GPU. | Non publié. | Aucune licence. Créé en mai 2026. Aucun article. |
-| TorchLIMIX | LMM multivarié de LIMIX pour la GWAS. Mode d'estimation non vérifié. | Deux traits ou plus, une parenté. | Algèbre par lots sur GPU (PyTorch). | Gain jusqu'à 100× face à LIMIX. | Dépôt annoncé en 404. |
-| Quickdraws | Spike-and-slab par inférence variationnelle stochastique. Héritabilité par RHE, pas par REML. | Un trait à la fois. | Mini-lots sur GPU, génotypes sur 2 bits. | 405 088 individus sur un A10G de 16 Go. | GPL-3.0. Commit en août 2025. |
-| Faster-LMM-D | LMM à une parenté pour la GWAS, AI-REML repris de GEMMA. | Une composante. | GPU seulement pour le produit matriciel dense. | Non vérifié. | GPL-3.0. Dernier commit en 2018. |
-| FaST-LMM, pylmm, GEMMA | REML exact par décomposition spectrale. | Une parenté. mvLMM dans GEMMA. | CPU. | 120 000 individus (FaST-LMM). | Apache-2.0, MIT, GPL-3.0. Pas de GPU. |
-| Hail LinearMixedModel | REML exact. | Une matrice K. | Rotation spectrale. Seuls les tests sont distribués (Spark). | Non vérifié. | MIT. Retiré depuis Hail 0.2.94. |
-| REGENIE, GloWGR | Ridge empilé, pas de REML. | GWAS. | Segments en mémoire. Spark pour GloWGR. | 407 746 individus. | MIT, Apache-2.0. Pas de GPU. |
-| tensorQTL, jaxQTL | Modèles linéaires ou GLM, pas d'effet aléatoire. | QTL. | PyTorch GPU ; JAX. | Gain > 200× (tensorQTL). | BSD-3, MIT. |
-| GPyTorch (BBMM) | Vraisemblance marginale de PG, approchée par CG et Lanczos stochastique au-delà de 800 points. Pas de REML trouvé. | Processus gaussiens, noyaux structurés. | Produits matrice-matrice par lots, préconditionneur, multi-GPU. | 10⁶ points exacts en moins de 2 h (Wang et al. 2019). | MIT. Actif. |
-| KeOps | Réductions de noyaux sans stocker la matrice n×n. | Brique de calcul. | Code CUDA généré, autodiff. | Millions de points en secondes (résumé). | MIT. Actif. |
-| GPflow, GPJax, tinygp | Vraisemblance de PG, variationnel. | Processus gaussiens. | TensorFlow ou JAX. | Non vérifié. | Apache-2.0, MIT. |
-| TensorFlow Probability | ML par EM Monte Carlo (HMC + Adam) dans l'exemple LMM. Pas de REML. | 3 facteurs aléatoires iid (InstEval). | XLA sur GPU. | 58 737 observations. | Apache-2.0. Actif. |
-| NumPyro, BlackJAX | Bayésien (NUTS, HMC, VI). | Tout modèle écrit par l'utilisateur. | JAX, chaînes vectorisées, GPU et TPU. | Non applicable. | Apache-2.0. Actifs. |
-| Stan avec OpenCL | Bayésien. | Tout modèle Stan. | Cholesky, sa dérivée et quelques vraisemblances sur GPU. | Non vérifié. | BSD-3. Actif. |
-| ExaGeoStat | Vraisemblance gaussienne exacte (Matérn), plus approximations TLR. | Spatial. | Cholesky dense en tuiles, GPU et mémoire distribuée. | Non vérifié dans le texte. | Non vérifié. |
-| INLA-DIST, DALIA | Bayésien approché (INLA). | Champs spatio-temporels, multivariés pour DALIA. | Factorisation creuse par blocs sur GPU, inversion sélective (Serinv). | 496 GH200 (Alps) pour DALIA. | Non vérifié. |
-| jaxmg | Brique : Cholesky, solve et log-déterminant distribués. | Matrice dense. | cuSOLVERMp, multi-GPU et multi-nœuds, appelable sous jit. | Jusqu'à la mémoire cumulée des GPU. | Apache-2.0. Actif. |
-| miraculix dans MiXBLUP 3.1 | BLUP par PCG (single-step), pas de REML. | Multicaractère. | Produit génotype × vecteur sur GPU, 2 bits, CUTLASS. | 2,61 M génotypés, 26,46 M au pedigree, A100. | Apache 2.0 annoncé. MiXBLUP commercial. |
-| BOLT (Theta Solutions) | BLUP par PCG et Gibbs single-step. Pas de REML documenté. | Bayes A, B, C, LASSO. | Plusieurs GPU. | 13 M animaux. | Propriétaire. |
-| MC-REML (Matilainen ; Bermann) | EM-REML et AI-REML à traces Monte Carlo ou Hutchinson. | Multicaractère, single-step. | CPU, solveurs itératifs. | 7 M animaux, 330 000 génotypés, 121 h, 53 Go. | Dans BLUPF90 (2025). |
-| SLEMM, SL_REML | REML par Lanczos stochastique. | Deux composantes (SL_REML). SLEMM avec poids de SNP. | CPU. | 3 M individus simulés (SLEMM). | Code public. |
-| RHE-mc, REHE | Méthode des moments (Haseman-Elston), pas REML. | Jusqu'à 100 composantes (RHE-mc). | Traces aléatoires. | 10⁶ individus, 10⁶ SNP en quelques heures. | Non vérifié. |
-| HIBLUP, MTG2 | AI-REML exact (forme MME ou V). | Multicaractère. | CPU multithread. | 500 000 individus simulés (HIBLUP). | Exécutables gratuits. Pas de GPU. |
+| pyreml 0.5.3 (Marchal et al.) | Exact REML, analytical gradient, L-BFGS then Adam as a fallback. No AI. | Multiple terms, multivariate, Σ⊗K, fa, us, diag, blocks, heteroscedasticity, spatial kernels, random regression. | Dense PyTorch. V form or Woodbury (dense q×q C = G⁻¹ + Z'R⁻¹Z). Index grids instead of Z. FP32 then FP64. | n = 10⁶, q = 25 000, 41 parameters, 262 to 279 s on an 80 GB A100. | GPL-3.0. Created in June 2026, 19 versions, 0.5.3 on 21/10/2026. |
+| kmmr (Melsen et al.) | Exact AI-REML. | Multivariate, us, extended FA, AR1×AR1, Gaussian kernels, Kronecker, stacking. | Sparse part by supernodal CHOLMOD on CPU, Takahashi partial inverse. Dense Schur complement on GPU (cuSOLVER). | GBLUP with 10 375 genotypes: 49 s on A100 against 989 s for ASReml-R. | GPL-3.0, R. Active (push on 22/10/2026). |
+| SAIGE-GPU | AI-REML on penalised quasi-likelihood (biased according to the SAIGE authors), then tests. | A single genetic term (full or sparse GRM). | PCG without forming the GRM, genotype × vector products by cuBLAS, multi-node MPI, random traces. | 635 969 individuals, 2 068 phenotypes. Summit (V100), Frontier (MI250X), A100. | GPL-3.0. Commit in April 2026. |
+| BOLT-REML | Approximate REML: Monte Carlo gradient, AI, conjugate gradient. | Several components and several traits. | Memory ≈ MN/4 bytes. CPU only. | ≈ 50 000 individuals in the article. UK Biobank in a few days on 8 threads (manual). | GPLv3. Version 2.5 in June 2025. |
+| DISSECT | Exact REML on a distributed dense V. | Univariate and bivariate LMM. Multiple components announced as in testing in 2015. | MPI, BLACS, ScaLAPACK. | 470 000 individuals, 590 004 SNPs, under 4 h on 8 400 cores (ARCHER). | GPLv3. Maintenance unverified. |
+| REACTA | Exact REML, regional heritability. | Derived from GCTA. | MAGMA and CUDA, regions distributed by MPI. | 1 024 GPUs of Titan, 15 min. | Licence unverified. |
+| GPU_REML (repository Asiandier/SPLIT) | Approximate REML: block PCG, Hutchinson, SLQ, AI or Fisher. | Several GRMs, one variance per GRM. | GRM never formed, compressed genotypes streamed to the GPU. | Unpublished. | No licence. Created in May 2026. No article. |
+| TorchLIMIX | LIMIX multivariate LMM for GWAS. Estimation mode unverified. | Two or more traits, one relationship matrix. | Batched algebra on GPU (PyTorch). | Gain up to 100× over LIMIX. | Announced repository returns 404. |
+| Quickdraws | Spike-and-slab by stochastic variational inference. Heritability by RHE, not by REML. | One trait at a time. | Mini-batches on GPU, genotypes on 2 bits. | 405 088 individuals on a 16 GB A10G. | GPL-3.0. Commit in August 2025. |
+| Faster-LMM-D | LMM with one relationship matrix for GWAS, AI-REML taken from GEMMA. | One component. | GPU only for the dense matrix product. | Unverified. | GPL-3.0. Last commit in 2018. |
+| FaST-LMM, pylmm, GEMMA | Exact REML by spectral decomposition. | One relationship matrix. mvLMM in GEMMA. | CPU. | 120 000 individuals (FaST-LMM). | Apache-2.0, MIT, GPL-3.0. No GPU. |
+| Hail LinearMixedModel | Exact REML. | One K matrix. | Spectral rotation. Only the tests are distributed (Spark). | Unverified. | MIT. Removed since Hail 0.2.94. |
+| REGENIE, GloWGR | Stacked ridge, no REML. | GWAS. | Segments in memory. Spark for GloWGR. | 407 746 individuals. | MIT, Apache-2.0. No GPU. |
+| tensorQTL, jaxQTL | Linear models or GLMs, no random effect. | QTL. | PyTorch GPU; JAX. | Gain > 200× (tensorQTL). | BSD-3, MIT. |
+| GPyTorch (BBMM) | GP marginal likelihood, approximated by CG and stochastic Lanczos beyond 800 points. No REML found. | Gaussian processes, structured kernels. | Batched matrix-matrix products, preconditioner, multi-GPU. | 10⁶ exact points in under 2 h (Wang et al. 2019). | MIT. Active. |
+| KeOps | Kernel reductions without storing the n×n matrix. | Computational building block. | Generated CUDA code, autodiff. | Millions of points in seconds (abstract). | MIT. Active. |
+| GPflow, GPJax, tinygp | GP likelihood, variational. | Gaussian processes. | TensorFlow or JAX. | Unverified. | Apache-2.0, MIT. |
+| TensorFlow Probability | ML by Monte Carlo EM (HMC + Adam) in the LMM example. No REML. | 3 iid random factors (InstEval). | XLA on GPU. | 58 737 observations. | Apache-2.0. Active. |
+| NumPyro, BlackJAX | Bayesian (NUTS, HMC, VI). | Any model written by the user. | JAX, vectorised chains, GPU and TPU. | Not applicable. | Apache-2.0. Active. |
+| Stan with OpenCL | Bayesian. | Any Stan model. | Cholesky, its derivative and a few likelihoods on GPU. | Unverified. | BSD-3. Active. |
+| ExaGeoStat | Exact Gaussian likelihood (Matérn), plus TLR approximations. | Spatial. | Tiled dense Cholesky, GPU and distributed memory. | Unverified in the text. | Unverified. |
+| INLA-DIST, DALIA | Approximate Bayesian (INLA). | Spatio-temporal fields, multivariate for DALIA. | Block sparse factorisation on GPU, selected inversion (Serinv). | 496 GH200 (Alps) for DALIA. | Unverified. |
+| jaxmg | Building block: distributed Cholesky, solve and log-determinant. | Dense matrix. | cuSOLVERMp, multi-GPU and multi-node, callable under jit. | Up to the combined memory of the GPUs. | Apache-2.0. Active. |
+| miraculix in MiXBLUP 3.1 | BLUP by PCG (single-step), no REML. | Multi-trait. | Genotype × vector product on GPU, 2 bits, CUTLASS. | 2.61 M genotyped, 26.46 M in the pedigree, A100. | Apache 2.0 announced. MiXBLUP commercial. |
+| BOLT (Theta Solutions) | BLUP by PCG and single-step Gibbs. No documented REML. | Bayes A, B, C, LASSO. | Several GPUs. | 13 M animals. | Proprietary. |
+| MC-REML (Matilainen; Bermann) | EM-REML and AI-REML with Monte Carlo or Hutchinson traces. | Multi-trait, single-step. | CPU, iterative solvers. | 7 M animals, 330 000 genotyped, 121 h, 53 GB. | In BLUPF90 (2025). |
+| SLEMM, SL_REML | REML by stochastic Lanczos. | Two components (SL_REML). SLEMM with SNP weights. | CPU. | 3 M simulated individuals (SLEMM). | Public code. |
+| RHE-mc, REHE | Method of moments (Haseman-Elston), not REML. | Up to 100 components (RHE-mc). | Random traces. | 10⁶ individuals, 10⁶ SNPs in a few hours. | Unverified. |
+| HIBLUP, MTG2 | Exact AI-REML (MME or V form). | Multi-trait. | Multithreaded CPU. | 500 000 simulated individuals (HIBLUP). | Free executables. No GPU. |
 
-### Solveurs REML généraux sur GPU
+### General REML solvers on GPU
 
 #### pyreml
 
-- Article. Marchal, Trottier, Bry et Raimondi, prépublication bioRxiv du 24 octobre 2026, doi:10.64898/2026.10.20.757556. Logiciel archivé sous doi:10.5281/zenodo.21394319. Le texte complet a été lu.
-- Paquet. PyPI, de la 0.1.0 (24 juin 2026) à la 0.5.3 (21 octobre 2026), 19 versions (https://pypi.org/pypi/pyreml/json). GPL-3.0-or-later. Dépôt sans étoile ni ticket ouvert au 26 octobre (API GitHub). Auteurs à l'IGMM et à l'IMAG, Montpellier.
-- Optimisation. Descente de gradient sur −2ℓ_REML, dans la lignée de Simchoni et Rosset (JMLR 2023, 24(156)), avec le terme REML ajouté. L-BFGS de PyTorch avec recherche de Wolfe forte, Adam en secours quand la recherche linéaire échoue (pyreml/Optimizer.py). β est optimisé comme paramètre en même temps que les variances (MixedModel.py, l. 297 et 304). Le critère d'arrêt compte les chiffres significatifs restants de la vraisemblance (doc/training.qmd).
-- Gradient. L'autodiff à travers le Cholesky est remplacée par le gradient REML en forme close, injecté par une « ghost loss » (MixedModel.py, REML_loss, l. 709-720). Le recouvrement avec le custom_vjp de remlax est direct.
-- Forme V ou Woodbury. La voie SMW factorise C = G⁻¹ + Z'R⁻¹Z, dense de taille q×q, et ne forme jamais V. Elle s'active quand q < n et que R est diagonale (MixedModel.py, l. 207-225 ; Variance.py, classe Capacitance). Sinon un Cholesky de V dense (classe DirectSolve).
-- Mémoire. Les blocs de Kronecker et ZGZ' ne sont jamais formés. Z et R sont remplacés par des grilles d'index. Un test vérifie que la plus grande allocation reste sous 4 × max(q², np) (tests/test_biggplup.py, n = 23 600).
-- Précision. Trois modes : FP64, FP32, ou mixte (FP32 puis FP64), mixte par défaut. En FP32, 241 tests fonctionnels échouent (prépublication, section 2.3).
-- Absences vérifiées dans le code 0.5.3. Aucun appel à torch.sparse : tout est dense. Aucun algorithme AI ni matrice d'information. Aucune erreur-type des composantes de variance dans la documentation : seuls les effets fixes (SE) et les BLUP (PEV, CD) en reçoivent, par l'inverse dense des équations de Henderson (MixedModel.py, l. 817-830). Pas de GLMM (prépublication, discussion). Pas de multi-GPU. Pas de test du rapport de vraisemblance intégré.
-- Structures. Huit structures à gauche (iid, diag, full, fa, bl_resp, bl_form, kr_resp, kr_form) et sept à droite (iid, str, het, dist, eucl, ar_iso, ar_ani), GaussianComponents.py, l. 10-11. Un constructeur de bas niveau accepte des fonctions varmeth arbitraires.
-- Bancs publiés. GBLUP comparé à WOMBAT (EM, AI, PX-AI sur 64 cœurs EPYC 9124) et non à ASReml. Plus de 12× plus rapide sur A100, plus de 2× sur L40S. WOMBAT AI n'a pas convergé pour n ≥ 10 000. Cas extrême : 25 000 génotypes × 40 environnements, 10⁶ observations, 279 s en FP64 sur A100 (prépublication) ; la documentation affiche 261,65 s pour un modèle de même taille avec 41 paramètres (doc/building_models.qmd). FA2 sur 8 traits et 942 individus : 429 s pour pyreml contre 281 s pour WOMBAT, ou 66 s à tolérance égale. Validation contre lme4, rrBLUP, BLUPF90 et spaMM (505 tests).
-- Les auteurs se disent « the first library performing REML estimations on GPU ». REACTA (2014) et SAIGE-GPU contredisent cette priorité au sens strict.
+- Article. Marchal, Trottier, Bry and Raimondi, bioRxiv preprint of 24 October 2026, doi:10.64898/2026.10.20.757556. Software archived under doi:10.5281/zenodo.21394319. The full text was read.
+- Package. PyPI, from 0.1.0 (24 June 2026) to 0.5.3 (21 October 2026), 19 versions (https://pypi.org/pypi/pyreml/json). GPL-3.0-or-later. Repository with no star and no open issue on 26 October (GitHub API). Authors at IGMM and IMAG, Montpellier.
+- Optimisation. Gradient descent on −2ℓ_REML, following Simchoni and Rosset (JMLR 2023, 24(156)), with the REML term added. PyTorch L-BFGS with a strong Wolfe search, and Adam as a fallback when the line search fails (pyreml/Optimizer.py). β is optimised as a parameter together with the variances (MixedModel.py, l. 297 and 304). The stopping criterion counts the remaining significant digits of the likelihood (doc/training.qmd).
+- Gradient. Autodiff through the Cholesky factor is replaced by the closed-form REML gradient, injected through a "ghost loss" (MixedModel.py, REML_loss, l. 709-720). The overlap with the custom_vjp of remlax is direct.
+- V or Woodbury form. The SMW route factorises C = G⁻¹ + Z'R⁻¹Z, dense of size q×q, and never forms V. It is used when q < n and R is diagonal (MixedModel.py, l. 207-225; Variance.py, class Capacitance). Otherwise a Cholesky factorisation of the dense V is used (class DirectSolve).
+- Memory. The Kronecker blocks and ZGZ' are never formed. Z and R are replaced by index grids. A test checks that the largest allocation stays below 4 × max(q², np) (tests/test_biggplup.py, n = 23 600).
+- Precision. Three modes: FP64, FP32, or mixed (FP32 then FP64), mixed by default. In FP32, 241 functional tests fail (preprint, section 2.3).
+- Absences verified in the 0.5.3 code. No call to torch.sparse: everything is dense. No AI algorithm and no information matrix. No standard error for the variance components in the documentation. Only the fixed effects (SE) and the BLUPs (PEV, CD) get them, through the dense inverse of Henderson's equations (MixedModel.py, l. 817-830). No GLMM (preprint, discussion). No multi-GPU. No built-in likelihood ratio test.
+- Structures. Eight left structures (iid, diag, full, fa, bl_resp, bl_form, kr_resp, kr_form) and seven right structures (iid, str, het, dist, eucl, ar_iso, ar_ani), GaussianComponents.py, l. 10-11. A low-level constructor accepts arbitrary varmeth functions.
+- Published benchmarks. GBLUP compared with WOMBAT (EM, AI, PX-AI on 64 EPYC 9124 cores) and not with ASReml. More than 12× faster on A100, more than 2× on L40S. WOMBAT AI did not converge for n ≥ 10 000. Extreme case: 25 000 genotypes × 40 environments, 10⁶ observations, 279 s in FP64 on A100 (preprint). The documentation shows 261.65 s for a model of the same size with 41 parameters (doc/building_models.qmd). FA2 on 8 traits and 942 individuals: 429 s for pyreml against 281 s for WOMBAT, or 66 s at equal tolerance. Validation against lme4, rrBLUP, BLUPF90 and spaMM (505 tests).
+- The authors describe their package as "the first library performing REML estimations on GPU". REACTA (2014) and SAIGE-GPU contradict this priority in the strict sense.
 
 #### kmmr
 
-- Melsen, van Eeuwijk et Peeters, arXiv:2610.16671 (octobre 2026), doi:10.48550/arXiv.2610.16671. Dépôt github.com/KillianMelsen/kmmr, GPL-3.0, R, archive doi:10.5281/zenodo.23398636. Paquet qualifié d'expérimental, Linux ou WSL2 avec CUDA.
-- AI-REML multivarié sur les équations du modèle mixte. Les équations creuses sont éliminées par Cholesky supernodal (CHOLMOD). Le complément de Schur dense passe sur GPU : potrf, potrs, potri de cuSOLVER, SpMM de cuSPARSE. L'inverse partielle de la partie creuse vient d'une récursion de Takahashi supernodale (cholmod-extra).
-- Bancs sur A100 80 Go et i7. GBLUP blé à 10 375 génotypes : ASReml-R 988,6 s, sommer 511,5 s, kmmr 129,3 s sur 8 fils et 49,2 s sur GPU. Modèle FA + noyau empilé : ASReml-R ne converge pas en 50 itérations, kmmr 6,8 s sur GPU.
-- Limites écrites par les auteurs. La mémoire du complément de Schur croît comme le carré du nombre d'équations denses. La forme V sur GPU est citée comme extension naturelle. Sur des modèles en une étape, kmmr converge vers des log-vraisemblances plus basses qu'ASReml-R (−3948,66 contre −3937,65 en FA1).
+- Melsen, van Eeuwijk and Peeters, arXiv:2610.16671 (October 2026), doi:10.48550/arXiv.2610.16671. Repository github.com/KillianMelsen/kmmr, GPL-3.0, R, archive doi:10.5281/zenodo.23398636. The package is labelled experimental, Linux or WSL2 with CUDA.
+- Multivariate AI-REML on the mixed model equations. The sparse equations are eliminated by supernodal Cholesky (CHOLMOD). The dense Schur complement runs on GPU: potrf, potrs and potri from cuSOLVER, SpMM from cuSPARSE. The partial inverse of the sparse part comes from a supernodal Takahashi recursion (cholmod-extra).
+- Benchmarks on an 80 GB A100 and an i7. Wheat GBLUP with 10 375 genotypes: ASReml-R 988.6 s, sommer 511.5 s, kmmr 129.3 s on 8 threads and 49.2 s on GPU. FA + stacked kernel model: ASReml-R does not converge in 50 iterations, kmmr 6.8 s on GPU.
+- Limits stated by the authors. The memory of the Schur complement grows as the square of the number of dense equations. The V form on GPU is cited as a natural extension. On single-stage models, kmmr converges to lower log-likelihoods than ASReml-R (−3948.66 against −3937.65 for FA1).
 
-#### GPU_REML (dépôt Asiandier/SPLIT)
+#### GPU_REML (repository Asiandier/SPLIT)
 
-- Dépôt créé le 30 mai 2026, sans licence ni article (https://github.com/Asiandier/SPLIT).
-- REML pour V = Σθ_g K_g + θ_e I, avec K_g = Z_g Z_g'/m appliqué sans former la GRM. Génotypes compressés lus en flux vers le GPU. PCG par blocs, traces de Hutchinson, log-déterminants par SLQ, mises à jour AI ou Fisher contraintes (README).
-- Outil de recherche sur la partition de l'héritabilité. Aucun banc publié.
+- Repository created on 30 May 2026, with no licence and no article (https://github.com/Asiandier/SPLIT).
+- REML for V = Σθ_g K_g + θ_e I, with K_g = Z_g Z_g'/m applied without forming the GRM. Compressed genotypes streamed to the GPU. Block PCG, Hutchinson traces, log-determinants by SLQ, constrained AI or Fisher updates (README).
+- A research tool for heritability partitioning. No published benchmark.
 
 #### TorchLIMIX
 
-- Horn, Nikoloski et Lippert, bioRxiv 2026, doi:10.64898/2026.04.29.721342. Portage PyTorch du LMM multivarié de LIMIX, gain jusqu'à deux ordres de grandeur.
-- Le dépôt github.com/bi-horn/torchLIMIX renvoie 404. Le mode d'estimation des covariances n'est pas vérifié.
+- Horn, Nikoloski and Lippert, bioRxiv 2026, doi:10.64898/2026.04.29.721342. A PyTorch port of the LIMIX multivariate LMM, with a gain of up to two orders of magnitude.
+- The repository github.com/bi-horn/torchLIMIX returns 404. The covariance estimation mode is unverified.
 
-### Génétique humaine et GWAS
+### Human genetics and GWAS
 
 #### SAIGE-GPU
 
 - Rodriguez et al. 2026, Bioinformatics 42(3):btag032, doi:10.1093/bioinformatics/btag032.
-- Le GPU accélère l'étape 1, l'ajustement du GLMM nul. Les produits génotype × vecteur du PCG passent par cuBLAS sans former la GRM. Les colonnes de génotypes sont réparties entre nœuds par MPI. L'étape 2 reste sur CPU.
-- L'étape 1 de SAIGE est un AI-REML sur quasi-vraisemblance pénalisée, avec traces aléatoires. Zhou et al. 2018 (doi:10.1038/s41588-018-0184-y) déconseillent son τ pour estimer l'héritabilité.
-- 635 969 participants du MVP et 2 068 phénotypes. Environ 72× par itération PCG, 3 à 5× sur l'ajustement complet. Summit, Frontier, A100 en nuage.
-- Code : branche SAIGE-GPU-1.3.3 de github.com/saigegit/SAIGE, GPL-3.0, archive doi:10.5281/zenodo.17642591.
+- The GPU speeds up step 1, the fit of the null GLMM. The genotype × vector products of the PCG go through cuBLAS without forming the GRM. The genotype columns are distributed across nodes by MPI. Step 2 stays on CPU.
+- Step 1 of SAIGE is an AI-REML on penalised quasi-likelihood, with random traces. Zhou et al. 2018 (doi:10.1038/s41588-018-0184-y) advise against using its τ to estimate heritability.
+- 635 969 MVP participants and 2 068 phenotypes. About 72× per PCG iteration, 3 to 5× on the full fit. Summit, Frontier, A100 in the cloud.
+- Code: branch SAIGE-GPU-1.3.3 of github.com/saigegit/SAIGE, GPL-3.0, archive doi:10.5281/zenodo.17642591.
 
 #### Quickdraws
 
-- Loya et al. 2025, Nat Genet, doi:10.1038/s41588-024-02044-7. Régression spike-and-slab par inférence variationnelle stochastique, en mini-lots sur GPU (PyTorch).
-- L'héritabilité vient du Haseman-Elston aléatoire, pas du REML. Un trait à la fois. 405 088 individus sur un A10G de 16 Go. github.com/PalamaraLab/quickdraws, GPL-3.0.
+- Loya et al. 2025, Nat Genet, doi:10.1038/s41588-024-02044-7. Spike-and-slab regression by stochastic variational inference, in mini-batches on GPU (PyTorch).
+- Heritability comes from randomised Haseman-Elston, not from REML. One trait at a time. 405 088 individuals on a 16 GB A10G. github.com/PalamaraLab/quickdraws, GPL-3.0.
 
 #### Faster-LMM-D, pylmm, FaST-LMM, GEMMA
 
-- Faster-LMM-D (github.com/genetics-statistics/faster_lmm_d, GPL-3.0, dernier commit en décembre 2018). Le GPU (cuBLAS ou ArrayFire) ne remplace que le produit matriciel dense (source/faster_lmm_d/optmatrix.d). Aucun article associé.
-- pylmm (github.com/nickFurlotte/pylmm). Une composante, grille sur h puis Brent, en REML. Réécrit en octobre 2026 (v1.0.0, MIT). Pas de GPU.
-- FaST-LMM (Lippert et al. 2011, doi:10.1038/nmeth.1681) et GEMMA (Zhou et Stephens 2012, doi:10.1038/ng.2310 ; mvLMM 2014, doi:10.1038/nmeth.2848). Décomposition spectrale d'une seule parenté. Pas de GPU.
+- Faster-LMM-D (github.com/genetics-statistics/faster_lmm_d, GPL-3.0, last commit in December 2018). The GPU (cuBLAS or ArrayFire) replaces only the dense matrix product (source/faster_lmm_d/optmatrix.d). No associated article.
+- pylmm (github.com/nickFurlotte/pylmm). One component, a grid on h then Brent, in REML. Rewritten in October 2026 (v1.0.0, MIT). No GPU.
+- FaST-LMM (Lippert et al. 2011, doi:10.1038/nmeth.1681) and GEMMA (Zhou and Stephens 2012, doi:10.1038/ng.2310; mvLMM 2014, doi:10.1038/nmeth.2848). Spectral decomposition of a single relationship matrix. No GPU.
 
-#### BOLT-LMM et BOLT-REML
+#### BOLT-LMM and BOLT-REML
 
-- BOLT-REML : Loh et al. 2015, Nat Genet 47:1385, doi:10.1038/ng.3431 (PMC4666835). Le gradient est estimé par Monte Carlo, la hessienne par la matrice AI, les systèmes par gradient conjugué. 100 vecteurs aléatoires en général, 15 pour les analyses régionales.
-- Précision. Estimations presque identiques à GCTA avec 100 essais sur 50 000 traits simulés. Avec 15 essais, les erreurs-types augmentent d'un facteur 1,03.
-- Coût ≈ O(MN^1,5) et mémoire ≈ MN/4 octets, presque indépendante du nombre de composantes. 22 composantes chromosomiques et paires bivariées dans l'article. CPU seulement (manuel v2.5, https://alkesgroup.broadinstitute.org/BOLT-LMM/BOLT-LMM_manual.html).
+- BOLT-REML: Loh et al. 2015, Nat Genet 47:1385, doi:10.1038/ng.3431 (PMC4666835). The gradient is estimated by Monte Carlo, the Hessian by the AI matrix, and the systems by conjugate gradients. 100 random vectors in general, 15 for regional analyses.
+- Accuracy. Estimates almost identical to GCTA with 100 trials on 50 000 simulated traits. With 15 trials, the standard errors increase by a factor of 1.03.
+- Cost ≈ O(MN^1.5) and memory ≈ MN/4 bytes, almost independent of the number of components. 22 chromosomal components and bivariate pairs in the article. CPU only (manual v2.5, https://alkesgroup.broadinstitute.org/BOLT-LMM/BOLT-LMM_manual.html).
 
 #### GCTA, fastGWA, REGENIE, Hail, tensorQTL, jaxQTL
 
-- GCTA (Yang et al. 2011, doi:10.1016/j.ajhg.2010.11.011) et fastGWA (Jiang et al. 2019, doi:10.1038/s41588-019-0530-8) : CPU, MKL ou OpenBLAS. Aucune voie GPU trouvée.
-- REGENIE (Mbatchou et al. 2021, doi:10.1038/s41588-021-00870-7) : ridge empilé, pas de REML, pas de GPU. GloWGR le distribue sur Spark (github.com/projectglow/glow).
-- Hail LinearMixedModel : une seule matrice K, REML exact sur le nœud principal, tests distribués. Retiré depuis la version 0.2.94 (documentation Hail).
-- tensorQTL (Taylor-Weiner et al. 2019, doi:10.1186/s13059-019-1836-7) et jaxQTL (Zhang et al. 2025, medRxiv, doi:10.1101/2025.01.18.25320755) : pas d'effet aléatoire.
+- GCTA (Yang et al. 2011, doi:10.1016/j.ajhg.2010.11.011) and fastGWA (Jiang et al. 2019, doi:10.1038/s41588-019-0530-8): CPU, MKL or OpenBLAS. No GPU route found.
+- REGENIE (Mbatchou et al. 2021, doi:10.1038/s41588-021-00870-7): stacked ridge, no REML, no GPU. GloWGR distributes it on Spark (github.com/projectglow/glow).
+- Hail LinearMixedModel: a single K matrix, exact REML on the main node, distributed tests. Removed since version 0.2.94 (Hail documentation).
+- tensorQTL (Taylor-Weiner et al. 2019, doi:10.1186/s13059-019-1836-7) and jaxQTL (Zhang et al. 2025, medRxiv, doi:10.1101/2025.01.18.25320755): no random effect.
 
-### REML distribué
+### Distributed REML
 
 #### DISSECT
 
-- Canela-Xandri et al. 2015, Nat Commun 6:10162, doi:10.1038/ncomms10162. C++ avec MPI, BLACS et ScaLAPACK.
-- REML exact en O(N³) sur V dense distribuée. LMM univarié et bivarié. 470 000 individus et 590 004 SNP en moins de 4 h sur 8 400 cœurs et environ 16 To de RAM (ARCHER), REML et BLUP compris.
-- GPLv3 sur www.dissect.ed.ac.uk. Certificat expiré lors de la consultation. Maintenance non vérifiée.
+- Canela-Xandri et al. 2015, Nat Commun 6:10162, doi:10.1038/ncomms10162. C++ with MPI, BLACS and ScaLAPACK.
+- Exact REML in O(N³) on a distributed dense V. Univariate and bivariate LMM. 470 000 individuals and 590 004 SNPs in under 4 h on 8 400 cores and about 16 TB of RAM (ARCHER), REML and BLUP included.
+- GPLv3 on www.dissect.ed.ac.uk. The certificate had expired at the time of consultation. Maintenance unverified.
 
 #### REACTA
 
-- Cebamanos et al. 2014, Bioinformatics, doi:10.1093/bioinformatics/btt754. Dérivé de GCTA pour l'héritabilité régionale.
-- GRM et inversion REML par MAGMA, noyaux CUDA, régions réparties par MPI. 19 746 régions sur 1 024 GPU de Titan (ORNL) en 15 min 26 s. Environ 3× sur une K20.
+- Cebamanos et al. 2014, Bioinformatics, doi:10.1093/bioinformatics/btt754. Derived from GCTA for regional heritability.
+- GRM and REML inversion by MAGMA, CUDA kernels, regions distributed by MPI. 19 746 regions on 1 024 GPUs of Titan (ORNL) in 15 min 26 s. About 3× on a K20.
 
 #### ExaGeoStat
 
-- Abdulah et al. 2018, IEEE TPDS 29(12), doi:10.1109/TPDS.2018.2850749 (arXiv:1708.02835). Vraisemblance gaussienne exacte d'un champ de Matérn par Cholesky dense en tuiles, sur GPU NVIDIA, KNL et mémoire distribuée. Variantes approchées en faible rang par tuiles (non vérifié dans ce texte).
-- Domaine spatial, sans effets fixes ni REML générique.
+- Abdulah et al. 2018, IEEE TPDS 29(12), doi:10.1109/TPDS.2018.2850749 (arXiv:1708.02835). Exact Gaussian likelihood of a Matérn field by tiled dense Cholesky, on NVIDIA GPUs, KNL and distributed memory. Approximate tile low-rank variants (unverified in this text).
+- Spatial domain, with no fixed effects and no generic REML.
 
-#### Autres briques distribuées
+#### Other distributed building blocks
 
-- jaxmg (github.com/flatironinstitute/jaxmg, Apache-2.0, actif). Relie JAX à cuSOLVERMp. Fournit potrs avec log-déterminant, sur matrices réparties sur plusieurs GPU et nœuds, sous jit.
-- Lewis et al. 2022, PNAS, doi:10.1073/pnas.2122762119. Algèbre linéaire dense distribuée sur pods TPU, en float32. Produit de deux matrices de taille 2²⁰ en environ 2 min sur 2 048 cœurs TPU v3.
-- Wang et al. 2019, « Exact Gaussian processes on a million data points », NeurIPS (arXiv:1903.08114). Produits de noyau partitionnés et distribués sur plusieurs GPU, gradient conjugué. Plus d'un million de points en moins de 2 h. Nombre et type de GPU non vérifiés dans le texte.
+- jaxmg (github.com/flatironinstitute/jaxmg, Apache-2.0, active). Connects JAX to cuSOLVERMp. Provides potrs with a log-determinant, on matrices distributed over several GPUs and nodes, under jit.
+- Lewis et al. 2022, PNAS, doi:10.1073/pnas.2122762119. Distributed dense linear algebra on TPU pods, in float32. Product of two matrices of size 2²⁰ in about 2 min on 2 048 TPU v3 cores.
+- Wang et al. 2019, "Exact Gaussian processes on a million data points", NeurIPS (arXiv:1903.08114). Partitioned kernel products distributed over several GPUs, conjugate gradients. More than one million points in under 2 h. Number and type of GPUs unverified in the text.
 
-### Bibliothèques d'apprentissage automatique et probabilistes
+### Machine learning and probabilistic libraries
 
-#### GPyTorch et BBMM
+#### GPyTorch and BBMM
 
-- Gardner et al. 2018, NeurIPS, arXiv:1809.11165. Gradient conjugué par lots modifié (mBCG) qui fournit en un appel les solves, le log-déterminant par Lanczos stochastique et les traces. Coût exact ramené de O(n³) à O(n²). Préconditionneur spécialisé.
-- Réglages par défaut (https://docs.gpytorch.ai/en/stable/settings.html) : Cholesky sous 800 points, 10 vecteurs pour les traces, 20 itérations de Lanczos. Au-delà, la vraisemblance est donc approchée.
-- Objectif : vraisemblance marginale de processus gaussiens. Aucun terme REML (log|X'V⁻¹X|) trouvé dans la documentation (non vérifié dans le code). github.com/cornellius-gp/gpytorch, MIT, actif ; l'algèbre est isolée dans linear_operator.
+- Gardner et al. 2018, NeurIPS, arXiv:1809.11165. A modified batched conjugate gradient (mBCG) that provides in one call the solves, the log-determinant by stochastic Lanczos, and the traces. The exact cost drops from O(n³) to O(n²). Specialised preconditioner.
+- Default settings (https://docs.gpytorch.ai/en/stable/settings.html): Cholesky below 800 points, 10 vectors for the traces, 20 Lanczos iterations. Beyond that, the likelihood is therefore approximate.
+- Objective: marginal likelihood of Gaussian processes. No REML term (log|X'V⁻¹X|) found in the documentation (unverified in the code). github.com/cornellius-gp/gpytorch, MIT, active. The algebra is isolated in linear_operator.
 
 #### KeOps
 
-- Charlier et al. 2021, JMLR 22(74):1-6 (https://www.jmlr.org/papers/v22/20-275.html). Tenseurs symboliques définis par formule, réduits sur GPU sans stocker la matrice n×n, avec autodiff. Liaisons Python, Matlab et R.
-- Brique de calcul pour les noyaux denses de grande taille. github.com/getkeops/keops, MIT.
+- Charlier et al. 2021, JMLR 22(74):1-6 (https://www.jmlr.org/papers/v22/20-275.html). Symbolic tensors defined by a formula, reduced on GPU without storing the n×n matrix, with autodiff. Python, Matlab and R bindings.
+- A computational building block for large dense kernels. github.com/getkeops/keops, MIT.
 
 #### GPflow, GPJax, tinygp
 
-- GPflow (Matthews et al. 2017, JMLR 18(40)) sur TensorFlow, Apache-2.0. GPJax (Pinder et Dodd 2022, JOSS, doi:10.21105/joss.04455) et tinygp (github.com/dfm/tinygp, MIT) sur JAX.
-- Processus gaussiens et inférence variationnelle. Pas de modèle mixte de type asreml.
+- GPflow (Matthews et al. 2017, JMLR 18(40)) on TensorFlow, Apache-2.0. GPJax (Pinder and Dodd 2022, JOSS, doi:10.21105/joss.04455) and tinygp (github.com/dfm/tinygp, MIT) on JAX.
+- Gaussian processes and variational inference. No asreml-type mixed model.
 
 #### TensorFlow Probability
 
-- Dillon et al. 2017, arXiv:1711.10604. L'exemple officiel de modèle mixte (https://www.tensorflow.org/probability/examples/Linear_Mixed_Effects_Models) ajuste InstEval avec trois facteurs aléatoires iid.
-- Ajustement par EM Monte Carlo : HMC pour l'étape E, Adam pour l'étape M. Maximum de vraisemblance, pas de REML. GPU recommandé.
+- Dillon et al. 2017, arXiv:1711.10604. The official mixed model example (https://www.tensorflow.org/probability/examples/Linear_Mixed_Effects_Models) fits InstEval with three iid random factors.
+- Fit by Monte Carlo EM: HMC for the E step, Adam for the M step. Maximum likelihood, no REML. GPU recommended.
 
 #### NumPyro, BlackJAX, Stan
 
-- NumPyro (Phan et al. 2019, arXiv:1912.11554) : NUTS itératif compilé de bout en bout par JAX. BlackJAX (Cabezas et al. 2024, arXiv:2402.10797) : échantillonneurs composables sur CPU, GPU et TPU. Apache-2.0, actifs.
-- Stan (Češnovar et al. 2019, arXiv:1907.01063) : routines OpenCL pour le Cholesky, sa dérivée et quelques vraisemblances. Activé par STAN_OPENCL (https://mc-stan.org/docs/cmdstan-guide/parallelization.html).
-- Ces outils ne fournissent pas de modèle mixte prêt à l'emploi. La voie bayésienne de remlax recoupe leur usage générique.
+- NumPyro (Phan et al. 2019, arXiv:1912.11554): iterative NUTS compiled end to end by JAX. BlackJAX (Cabezas et al. 2024, arXiv:2402.10797): composable samplers on CPU, GPU and TPU. Apache-2.0, active.
+- Stan (Češnovar et al. 2019, arXiv:1907.01063): OpenCL routines for the Cholesky factorisation, its derivative and a few likelihoods. Enabled by STAN_OPENCL (https://mc-stan.org/docs/cmdstan-guide/parallelization.html).
+- These tools provide no ready-made mixed model. The Bayesian route of remlax overlaps with their generic use.
 
-#### Autres paquets JAX ou PyTorch
+#### Other JAX or PyTorch packages
 
-- jaxgam (github.com/scatt67/jaxgam) : portage JAX de mgcv, REML de Laplace pour les modèles additifs. Projet personnel déclaré non prêt pour la production.
-- Recherche GitHub du 26 octobre 2026 (« mixed model REML jax », « REML gpu ») : aucune autre bibliothèque JAX de modèles mixtes linéaires généraux trouvée.
+- jaxgam (github.com/scatt67/jaxgam): a JAX port of mgcv, Laplace REML for additive models. A personal project declared not ready for production.
+- GitHub search of 26 October 2026 ("mixed model REML jax", "REML gpu"): no other JAX library for general linear mixed models found.
 
-### REML stochastique et itératif
+### Stochastic and iterative REML
 
-#### Estimateurs de trace
+#### Trace estimators
 
-- Hutchinson 1989, Commun. Stat. Simul. Comput., doi:10.1080/03610918908812806. Avec m vecteurs de Rademacher, tr(A) ≈ moyenne de z'Az. La variance vaut 2(‖A‖²_F − Σ a_ii²)/m.
-- Lanczos stochastique (SLQ) pour tr(f(A)), dont log|A| : Ubaru, Chen et Saad 2017, SIAM J. Matrix Anal. Appl., doi:10.1137/16M1104974, avec bornes sur le nombre de vecteurs.
+- Hutchinson 1989, Commun. Stat. Simul. Comput., doi:10.1080/03610918908812806. With m Rademacher vectors, tr(A) ≈ the mean of z'Az. The variance equals 2(‖A‖²_F − Σ a_ii²)/m.
+- Stochastic Lanczos quadrature (SLQ) for tr(f(A)), including log|A|: Ubaru, Chen and Saad 2017, SIAM J. Matrix Anal. Appl., doi:10.1137/16M1104974, with bounds on the number of vectors.
 
-#### SL_REML (Border et Becker 2019)
+#### SL_REML (Border and Becker 2019)
 
-- BMC Bioinformatics 20:411, doi:10.1186/s12859-019-2978-z (PMC6668092). Deux algorithmes, SLDF_REML et L_FOMC_REML, fondés sur l'invariance par décalage des sous-espaces de Krylov.
-- Une seule passe itérative, puis l'objectif se réévalue par opérations vectorielles. Limité au modèle à deux composantes.
-- Précision. Héritabilités cohérentes avec GCTA. Pour n = 250 000, erreur quadratique moyenne de 1,24 × 10⁻⁷ contre 1,74 × 10⁻⁶ pour BOLT-LMM v2.3.2. Code Python sur github.com/rborder/SL_REML.
+- BMC Bioinformatics 20:411, doi:10.1186/s12859-019-2978-z (PMC6668092). Two algorithms, SLDF_REML and L_FOMC_REML, based on the shift invariance of Krylov subspaces.
+- A single iterative pass, after which the objective is re-evaluated by vector operations. Limited to the two-component model.
+- Accuracy. Heritabilities consistent with GCTA. For n = 250 000, a mean squared error of 1.24 × 10⁻⁷ against 1.74 × 10⁻⁶ for BOLT-LMM v2.3.2. Python code on github.com/rborder/SL_REML.
 
 #### SLEMM
 
-- Cheng et al. 2023, Bioinformatics, doi:10.1093/bioinformatics/btad127. REML par Lanczos stochastique avec pondération des SNP. Jusqu'à 3 M individus et 1 M SNP simulés. CPU. github.com/jiang18/slemm.
+- Cheng et al. 2023, Bioinformatics, doi:10.1093/bioinformatics/btad127. REML by stochastic Lanczos with SNP weighting. Up to 3 M individuals and 1 M simulated SNPs. CPU. github.com/jiang18/slemm.
 
-#### REML Monte Carlo en sélection animale
+#### Monte Carlo REML in animal breeding
 
-- Matilainen et al. 2012, JABG, doi:10.1111/j.1439-0388.2012.01000.x (MC EM-REML multicaractère) et 2013, PLoS One, doi:10.1371/journal.pone.0080821 (MC Newton, MC AI, MC Broyden).
-- Bermann et al. 2025, GSE 57:63, doi:10.1186/s12711-025-01006-9. MC-ss-GREML avec EM et AI. Mêmes estimations que l'exact, en 14 % du temps et 1 % de la mémoire (100 000 animaux, 14 paramètres). 7 M animaux au pedigree dont 330 000 génotypés en 121 h et 53 Go, sur CPU.
-- Bermann et al. 2025, GSE 57:44, doi:10.1186/s12711-025-00991-1. Log-déterminant approché, écart relatif moyen d'environ 10⁻³, 2 à 500 fois plus rapide. Le maximum de la vraisemblance approchée coïncide avec l'exact.
-- Strandén et al. 2024, GSE 56:73, doi:10.1186/s12711-024-00939-x. AI-REML augmenté, une seule résolution des équations augmentées par itération, temps par itération réduit de 75 à 86 %.
+- Matilainen et al. 2012, JABG, doi:10.1111/j.1439-0388.2012.01000.x (multi-trait MC EM-REML) and 2013, PLoS One, doi:10.1371/journal.pone.0080821 (MC Newton, MC AI, MC Broyden).
+- Bermann et al. 2025, GSE 57:63, doi:10.1186/s12711-025-01006-9. MC-ss-GREML with EM and AI. Same estimates as the exact method, in 14 % of the time and 1 % of the memory (100 000 animals, 14 parameters). 7 M animals in the pedigree, 330 000 of them genotyped, in 121 h and 53 GB, on CPU.
+- Bermann et al. 2025, GSE 57:44, doi:10.1186/s12711-025-00991-1. Approximate log-determinant, mean relative error of about 10⁻³, 2 to 500 times faster. The maximum of the approximate likelihood coincides with the exact one.
+- Strandén et al. 2024, GSE 56:73, doi:10.1186/s12711-024-00939-x. Augmented AI-REML, a single solve of the augmented equations per iteration, time per iteration reduced by 75 to 86 %.
 
-#### Méthodes des moments et MM
+#### Methods of moments and MM
 
-- RHE-reg (Wu et Sankararaman 2018, doi:10.1093/bioinformatics/bty253) et RHE-mc (Pazokitoroudi et al. 2020, doi:10.1038/s41467-020-17576-9). Haseman-Elston à traces aléatoires. Cent composantes sur 10⁶ individus et 10⁶ SNP en quelques heures. Pas de REML.
-- REHE (Yue et al. 2021, Genet Epidemiol 45(8), doi:10.1002/gepi.22432). Haseman-Elston contraint à des variances positives, avec une variante par rééchantillonnage. Précision annoncée comparable au REML.
-- Algorithmes MM (Zhou, Hu, Zhou et Lange 2019, JCGS 28(2), doi:10.1080/10618600.2018.1529601). ML et REML exacts par minorisation-maximisation. Convergence globale vers un point KKT, plus rapide que l'EM au-delà de deux composantes. S'étend au multivarié avec données manquantes. Pas de GPU mentionné.
+- RHE-reg (Wu and Sankararaman 2018, doi:10.1093/bioinformatics/bty253) and RHE-mc (Pazokitoroudi et al. 2020, doi:10.1038/s41467-020-17576-9). Haseman-Elston with random traces. A hundred components on 10⁶ individuals and 10⁶ SNPs in a few hours. No REML.
+- REHE (Yue et al. 2021, Genet Epidemiol 45(8), doi:10.1002/gepi.22432). Haseman-Elston constrained to positive variances, with a resampling variant. Reported accuracy comparable to REML.
+- MM algorithms (Zhou, Hu, Zhou and Lange 2019, JCGS 28(2), doi:10.1080/10618600.2018.1529601). Exact ML and REML by minorisation-maximisation. Global convergence to a KKT point, faster than EM beyond two components. Extends to the multivariate case with missing data. No GPU mentioned.
 
-### Sélection animale et végétale
+### Animal and plant breeding
 
-#### miraculix et MiXBLUP
+#### miraculix and MiXBLUP
 
-- Freudenberg et al. 2023, Front. Genet. 14:1220408, doi:10.3389/fgene.2023.1220408. Produits Z·M et Z'·M avec Z stockée sur 2 bits, sur GPU par extension de CUTLASS 2.10 (V100, A100, H100).
-- Données ICBF : 2,61 M génotypés, 26,46 M animaux au pedigree, 16,59 M enregistrements sur 6 caractères. ssSNPBLUP passe de 6,47 h à 2,49 h sur A100. C'est du BLUP par PCG, sans REML.
-- Intégré au solveur hpblup de MiXBLUP 3.1 (Vandenplas et al., WCGALP 2022, doi:10.3920/978-90-8686-940-4_358). MiXBLUP est commercial. Dépôt github.com/alexfreudenberg/miraculix, Apache 2.0 annoncé, dernier push en août 2023.
+- Freudenberg et al. 2023, Front. Genet. 14:1220408, doi:10.3389/fgene.2023.1220408. Products Z·M and Z'·M with Z stored on 2 bits, on GPU through an extension of CUTLASS 2.10 (V100, A100, H100).
+- ICBF data: 2.61 M genotyped animals, 26.46 M animals in the pedigree, 16.59 M records on 6 traits. ssSNPBLUP drops from 6.47 h to 2.49 h on A100. This is BLUP by PCG, without REML.
+- Integrated into the hpblup solver of MiXBLUP 3.1 (Vandenplas et al., WCGALP 2022, doi:10.3920/978-90-8686-940-4_358). MiXBLUP is commercial. Repository github.com/alexfreudenberg/miraculix, Apache 2.0 announced, last push in August 2023.
 
-#### BOLT de Theta Solutions et échantillonneurs de Gibbs
+#### BOLT from Theta Solutions and Gibbs samplers
 
-- Fernando et al. 2016, GSE 48:96, doi:10.1186/s12711-016-0273-2. Single-step bayésien et PCG sur quatre Titan X. 6,18 M animaux au pedigree, environ 3 h par analyse unicaractère.
-- Présentation WCGALP 2018 (https://www.icar.org/Documents/Auckland-2018/WCGALP/1415%20Dorian%20Garrick.pdf) : 13 M animaux, 1 000 itérations PCG en 1,5 h. Logiciel propriétaire. Aucun REML documenté.
-- GenSel hétérogène CPU/GPU (DeVore et al. 2014, IEEE BIBM, doi:10.1109/bibm.2014.6999186) : gain de 1,84× seulement, la chaîne restant séquentielle.
+- Fernando et al. 2016, GSE 48:96, doi:10.1186/s12711-016-0273-2. Bayesian single-step and PCG on four Titan X cards. 6.18 M animals in the pedigree, about 3 h per single-trait analysis.
+- WCGALP 2018 presentation (https://www.icar.org/Documents/Auckland-2018/WCGALP/1415%20Dorian%20Garrick.pdf): 13 M animals, 1 000 PCG iterations in 1.5 h. Proprietary software. No documented REML.
+- Heterogeneous CPU/GPU GenSel (DeVore et al. 2014, IEEE BIBM, doi:10.1109/bibm.2014.6999186): a gain of only 1.84×, since the chain remains sequential.
 
-#### Travaux GPU pionniers
+#### Pioneering GPU work
 
-- Coffey et al. 2011, Interbull Bull. 44:114-116 (https://journal.interbull.org/index.php/ib/article/view/1694) : produit AA' sur GTX 590, de 507 s à 70 s.
-- Meyer et Tier 2013, Proc. AAABG 20:270-273 (https://hdl.handle.net/1959.11/14323) : construction et inversion de G sur GPU, gain de 4 à 5×.
+- Coffey et al. 2011, Interbull Bull. 44:114-116 (https://journal.interbull.org/index.php/ib/article/view/1694): product AA' on a GTX 590, from 507 s to 70 s.
+- Meyer and Tier 2013, Proc. AAABG 20:270-273 (https://hdl.handle.net/1959.11/14323): construction and inversion of G on GPU, a gain of 4 to 5×.
 
-#### Absences constatées
+#### Observed absences
 
-- Aucune voie GPU documentée dans BLUPF90, DMU, MiX99, JWAS (Project.toml de la v2.4.0 sans CUDA) ni HIBLUP (Yin et al. 2023, doi:10.1093/nar/gkad074, texte complet sans « GPU »). Une absence de résultat ne prouve pas une absence.
-- MTG2 (Lee et van der Werf 2016, doi:10.1093/bioinformatics/btw012) : AI-REML direct sur V avec décomposition propre. Aucune version GPU trouvée.
-- ChromaX (Younis et al. 2023, doi:10.1093/bioinformatics/btad691) simule des programmes de sélection sur GPU en JAX, sans inférence.
+- No documented GPU route in BLUPF90, DMU, MiX99, JWAS (Project.toml of v2.4.0 without CUDA) or HIBLUP (Yin et al. 2023, doi:10.1093/nar/gkad074, full text without "GPU"). The lack of a result does not prove an absence.
+- MTG2 (Lee and van der Werf 2016, doi:10.1093/bioinformatics/btw012): direct AI-REML on V with an eigendecomposition. No GPU version found.
+- ChromaX (Younis et al. 2023, doi:10.1093/bioinformatics/btad691) simulates breeding programmes on GPU in JAX, without inference.
 
-### Briques de calcul pour la forme MME sur GPU
+### Computational building blocks for the MME form on GPU
 
-- Cholesky creux supernodal de CHOLMOD accéléré sur GPU : Rennich, Stosic et Davis 2016, Parallel Computing, doi:10.1016/j.parco.2016.06.004.
-- Inversion sélective distribuée : PSelInv (Jacquelin, Lin et Yang 2016, ACM TOMS, doi:10.1145/2786977). Inversion sélective sur GPU de matrices tridiagonales par blocs avec flèche : Serinv (Maillou et al. 2025, IEEE CLUSTER, doi:10.1109/cluster59342.2025.11186484), utilisé par DALIA (Gaedke-Merzhäuser et al. 2025, arXiv:2507.06938, 496 GH200) et issu de INLA-DIST (SIAM J. Sci. Comput. 2024, doi:10.1137/23m1561531).
-- cuDSS de NVIDIA (https://docs.nvidia.com/cuda/cudss/latest/index.html) : solveur direct creux sur GPU, matrices définies positives, multi-GPU et multi-nœuds. La documentation ne mentionne ni inverse sélective ni log-déterminant.
-- jax.experimental.sparse.linalg.spsolve : solveur creux par QR, CUDA seulement, sans vmap (https://docs.jax.dev/en/latest/_autosummary/jax.experimental.sparse.linalg.spsolve.html).
+- GPU-accelerated supernodal sparse Cholesky in CHOLMOD: Rennich, Stosic and Davis 2016, Parallel Computing, doi:10.1016/j.parco.2016.06.004.
+- Distributed selected inversion: PSelInv (Jacquelin, Lin and Yang 2016, ACM TOMS, doi:10.1145/2786977). Selected inversion on GPU of block tridiagonal arrowhead matrices: Serinv (Maillou et al. 2025, IEEE CLUSTER, doi:10.1109/cluster59342.2025.11186484). DALIA uses it (Gaedke-Merzhäuser et al. 2025, arXiv:2507.06938, 496 GH200), and it stems from INLA-DIST (SIAM J. Sci. Comput. 2024, doi:10.1137/23m1561531).
+- NVIDIA cuDSS (https://docs.nvidia.com/cuda/cudss/latest/index.html): sparse direct solver on GPU, positive definite matrices, multi-GPU and multi-node. The documentation mentions neither a selected inverse nor a log-determinant.
+- jax.experimental.sparse.linalg.spsolve: sparse solver by QR, CUDA only, without vmap (https://docs.jax.dev/en/latest/_autosummary/jax.experimental.sparse.linalg.spsolve.html).
 
-### Positionnement de remlax
+### Position of remlax
 
-Recoupements.
-- pyreml partage l'essentiel de la voie dense de remlax : REML exact sur GPU, gradient analytique au lieu de l'autodiff à travers Cholesky, Woodbury, Kronecker jamais formé, fa et multivarié.
-- kmmr partage la voie MME : AI-REML, Cholesky supernodal, inverse partielle de Takahashi, GPU pour la partie dense.
-- La voie bayésienne recoupe l'usage générique de NumPyro, BlackJAX ou Stan.
+Overlaps.
+- pyreml shares most of the dense route of remlax: exact REML on GPU, an analytical gradient instead of autodiff through the Cholesky factor, Woodbury, a Kronecker product never formed, fa and multivariate models.
+- kmmr shares the MME route: AI-REML, supernodal Cholesky, Takahashi partial inverse, GPU for the dense part.
+- The Bayesian route overlaps with the generic use of NumPyro, BlackJAX or Stan.
 
-Points propres à remlax dans les sources consultées.
-- Un même moteur réunit la forme V dense, la forme MME creuse et l'AI-REML. pyreml n'a ni creux ni AI. kmmr n'a pas de forme V, qu'il cite comme travail futur.
-- La détection automatique des termes globaux et des blocs, avec V = A + UU' par Woodbury et blocs traités en lots (vmap), n'a d'équivalent dans aucun outil trouvé. Le Woodbury de pyreml factorise un C dense de taille q.
-- L'ajustement de modèles multivariés lourds sur une tranche MIG de 10 Go n'est rapporté nulle part ailleurs.
-- La matrice AI fournit des erreurs-types et sert aux tests de covariance. pyreml n'en donne aucune pour les variances.
+Features unique to remlax in the sources consulted.
+- A single engine combines the dense V form, the sparse MME form and AI-REML. pyreml has neither sparse matrices nor AI. kmmr has no V form, which it cites as future work.
+- Automatic detection of global terms and blocks, with V = A + UU' by Woodbury and blocks processed in batches (vmap), has no equivalent in any tool found. The Woodbury form of pyreml factorises a dense C of size q.
+- Fitting heavy multivariate models on a 10 GB MIG slice is reported nowhere else.
+- The AI matrix provides standard errors and serves the covariance tests. pyreml gives none for the variances.
 
-Capacités présentes ailleurs et absentes de remlax, d'après la description reçue.
-- Le multi-GPU et le multi-nœud : DISSECT, REACTA, SAIGE-GPU, ExaGeoStat, DALIA, Wang et al. 2019. jaxmg offre en JAX un Cholesky distribué avec log-déterminant.
-- La voie sans matrice, par PCG et traces stochastiques : BOLT-REML, SAIGE, SLEMM, MC-ss-GREML, GPyTorch, GPU_REML. Elle seule dépasse quelques centaines de milliers d'individus.
-- La précision mixte FP32 puis FP64 de pyreml, utile sur les GPU grand public (L40S).
-- Les génotypes compressés sur 2 bits et lus en flux vers le GPU : miraculix, SAIGE-GPU, Quickdraws, GPU_REML.
+Capabilities present elsewhere and absent from remlax, according to the description received.
+- Multi-GPU and multi-node computation: DISSECT, REACTA, SAIGE-GPU, ExaGeoStat, DALIA, Wang et al. 2019. jaxmg offers a distributed Cholesky with a log-determinant in JAX.
+- The matrix-free route, with PCG and stochastic traces: BOLT-REML, SAIGE, SLEMM, MC-ss-GREML, GPyTorch, GPU_REML. Only this route goes beyond a few hundred thousand individuals.
+- The mixed FP32 then FP64 precision of pyreml, useful on consumer-grade GPUs (L40S).
+- Genotypes compressed to 2 bits and streamed to the GPU: miraculix, SAIGE-GPU, Quickdraws, GPU_REML.
 
-### Points non vérifiés
+### Unverified points
 
-- Le texte complet de kmmr au-delà de 100 000 caractères n'a pas été lu. Le nombre d'observations de ses bancs n'est pas donné par les auteurs.
-- L'écart entre 261,65 s (documentation pyreml, version 0.5.0) et 279 s (prépublication) pour le cas à 10⁶ observations. Les deux configurations ne sont peut-être pas identiques.
-- Le mode d'estimation et le code de TorchLIMIX.
-- Une étape 2 de SAIGE-GPU sur GPU AMD, que seul un nom de branche suggère.
-- La maintenance de DISSECT, la licence de REACTA et d'ExaGeoStat, le matériel de Wang et al. 2019.
-- L'absence de REML dans le code de GPyTorch (vérifiée seulement dans la documentation).
-- Le contenu GPU éventuel des actes WCGALP 2022 sur BLUPF90, MiX99 et JWAS : PDF bloqués par Cloudflare. EAAP, ASAS-ADSA et Interbull n'ont pas été couverts en texte intégral.
-- La priorité revendiquée par pyreml (« first library performing REML estimations on GPU ») est contredite par REACTA (2014) pour un REML spécialisé. Pour un REML généraliste, la priorité entre pyreml (juin 2026) et kmmr (dépôt de mars 2026, prépublication d'octobre 2026) reste ouverte.
+- The full text of kmmr beyond 100 000 characters was not read. The authors do not give the number of observations in their benchmarks.
+- The gap between 261.65 s (pyreml documentation, version 0.5.0) and 279 s (preprint) for the case with 10⁶ observations. The two configurations may differ.
+- The estimation mode and the code of TorchLIMIX.
+- A step 2 of SAIGE-GPU on AMD GPUs, suggested only by a branch name.
+- The maintenance of DISSECT, the licences of REACTA and ExaGeoStat, and the hardware of Wang et al. 2019.
+- The absence of REML in the GPyTorch code (verified only in the documentation).
+- Any GPU content in the WCGALP 2022 proceedings on BLUPF90, MiX99 and JWAS: PDFs blocked by Cloudflare. EAAP, ASAS-ADSA and Interbull were not covered in full text.
+- The priority claimed by pyreml ("first library performing REML estimations on GPU") is contradicted by REACTA (2014) for a specialised REML. For a general-purpose REML, priority between pyreml (June 2026) and kmmr (repository of March 2026, preprint of October 2026) remains open.
 
 ### Sources
 
-Articles et prépublications (DOI vérifiés)
+Articles and preprints (verified DOIs)
 - Abdulah S et al. 2018. ExaGeoStat. IEEE TPDS 29(12). doi:10.1109/TPDS.2018.2850749
 - Bermann M et al. 2025. GSE 57:44. doi:10.1186/s12711-025-00991-1
 - Bermann M et al. 2025. GSE 57:63. doi:10.1186/s12711-025-01006-9
@@ -606,161 +606,161 @@ Articles et prépublications (DOI vérifiés)
 - Zhou X, Stephens M. 2012. GEMMA. Nat Genet. doi:10.1038/ng.2310
 - Zhou X, Stephens M. 2014. mvLMM. Nat Methods. doi:10.1038/nmeth.2848
 
-Dépôts, paquets et documentation
-- pyreml : https://github.com/ai-for-genome-interpretation-lab/pyreml ; https://pypi.org/project/pyreml/ ; https://ai-for-genome-interpretation-lab.github.io/pyreml/ ; Zenodo doi:10.5281/zenodo.21394319
-- kmmr : https://github.com/KillianMelsen/kmmr ; Zenodo doi:10.5281/zenodo.23398636
-- SAIGE-GPU : https://github.com/saigegit/SAIGE (branche SAIGE-GPU-1.3.3) ; Zenodo doi:10.5281/zenodo.17642591
-- GPU_REML : https://github.com/Asiandier/SPLIT
-- Faster-LMM-D : https://github.com/genetics-statistics/faster_lmm_d
-- pylmm : https://github.com/nickFurlotte/pylmm
-- FaST-LMM : https://github.com/fastlmm/FaST-LMM
-- GEMMA : https://github.com/genetics-statistics/GEMMA
-- BOLT-LMM, manuel v2.5 : https://alkesgroup.broadinstitute.org/BOLT-LMM/BOLT-LMM_manual.html
-- GCTA : https://github.com/jianyangqt/gcta
-- REGENIE : https://github.com/rgcgithub/regenie ; Glow : https://github.com/projectglow/glow
-- Quickdraws : https://github.com/PalamaraLab/quickdraws
-- tensorQTL : https://github.com/broadinstitute/tensorqtl ; jaxQTL : https://github.com/mancusolab/jaxqtl
-- Hail : https://github.com/hail-is/hail
-- SL_REML : https://github.com/rborder/SL_REML ; SLEMM : https://github.com/jiang18/slemm
-- GPyTorch : https://github.com/cornellius-gp/gpytorch ; réglages : https://docs.gpytorch.ai/en/stable/settings.html
-- KeOps : https://github.com/getkeops/keops
-- GPflow : https://github.com/GPflow/GPflow ; tinygp : https://github.com/dfm/tinygp
-- TensorFlow Probability, exemple LMM : https://www.tensorflow.org/probability/examples/Linear_Mixed_Effects_Models
-- NumPyro : https://github.com/pyro-ppl/numpyro ; BlackJAX : https://github.com/blackjax-devs/blackjax
-- Stan OpenCL : https://mc-stan.org/docs/cmdstan-guide/parallelization.html
-- jaxmg : https://github.com/flatironinstitute/jaxmg
-- jaxgam : https://github.com/scatt67/jaxgam
-- cuDSS : https://docs.nvidia.com/cuda/cudss/latest/index.html
-- JAX spsolve : https://docs.jax.dev/en/latest/_autosummary/jax.experimental.sparse.linalg.spsolve.html
-- miraculix : https://github.com/alexfreudenberg/miraculix
-- BOLT (Theta Solutions), WCGALP 2018 : https://www.icar.org/Documents/Auckland-2018/WCGALP/1415%20Dorian%20Garrick.pdf
-- JWAS : https://github.com/reworkhow/JWAS.jl
+Repositories, packages and documentation
+- pyreml: https://github.com/ai-for-genome-interpretation-lab/pyreml ; https://pypi.org/project/pyreml/ ; https://ai-for-genome-interpretation-lab.github.io/pyreml/ ; Zenodo doi:10.5281/zenodo.21394319
+- kmmr: https://github.com/KillianMelsen/kmmr ; Zenodo doi:10.5281/zenodo.23398636
+- SAIGE-GPU: https://github.com/saigegit/SAIGE (branch SAIGE-GPU-1.3.3) ; Zenodo doi:10.5281/zenodo.17642591
+- GPU_REML: https://github.com/Asiandier/SPLIT
+- Faster-LMM-D: https://github.com/genetics-statistics/faster_lmm_d
+- pylmm: https://github.com/nickFurlotte/pylmm
+- FaST-LMM: https://github.com/fastlmm/FaST-LMM
+- GEMMA: https://github.com/genetics-statistics/GEMMA
+- BOLT-LMM, manual v2.5: https://alkesgroup.broadinstitute.org/BOLT-LMM/BOLT-LMM_manual.html
+- GCTA: https://github.com/jianyangqt/gcta
+- REGENIE: https://github.com/rgcgithub/regenie ; Glow: https://github.com/projectglow/glow
+- Quickdraws: https://github.com/PalamaraLab/quickdraws
+- tensorQTL: https://github.com/broadinstitute/tensorqtl ; jaxQTL: https://github.com/mancusolab/jaxqtl
+- Hail: https://github.com/hail-is/hail
+- SL_REML: https://github.com/rborder/SL_REML ; SLEMM: https://github.com/jiang18/slemm
+- GPyTorch: https://github.com/cornellius-gp/gpytorch ; settings: https://docs.gpytorch.ai/en/stable/settings.html
+- KeOps: https://github.com/getkeops/keops
+- GPflow: https://github.com/GPflow/GPflow ; tinygp: https://github.com/dfm/tinygp
+- TensorFlow Probability, LMM example: https://www.tensorflow.org/probability/examples/Linear_Mixed_Effects_Models
+- NumPyro: https://github.com/pyro-ppl/numpyro ; BlackJAX: https://github.com/blackjax-devs/blackjax
+- Stan OpenCL: https://mc-stan.org/docs/cmdstan-guide/parallelization.html
+- jaxmg: https://github.com/flatironinstitute/jaxmg
+- jaxgam: https://github.com/scatt67/jaxgam
+- cuDSS: https://docs.nvidia.com/cuda/cudss/latest/index.html
+- JAX spsolve: https://docs.jax.dev/en/latest/_autosummary/jax.experimental.sparse.linalg.spsolve.html
+- miraculix: https://github.com/alexfreudenberg/miraculix
+- BOLT (Theta Solutions), WCGALP 2018: https://www.icar.org/Documents/Auckland-2018/WCGALP/1415%20Dorian%20Garrick.pdf
+- JWAS: https://github.com/reworkhow/JWAS.jl
 
-## Annexe C. Antériorité des mécanismes de remlax
+## Appendix C. Prior art of the remlax mechanisms
 
-La plupart des briques de remlax ont une antériorité nette en génétique quantitative. Le gradient REML par rapport à V, l'AI-REML, la factorisation creuse des équations du modèle mixte et l'inversion sélective ont été publiés entre 1977 et 2015. La dissection emboîtée et la vraisemblance tirée de la Cholesky d'une matrice bordée datent de la même période. Ils sont aussi implémentés dans ASReml, WOMBAT, DFREML/MTDFREML et la famille BLUPF90/YAMS. La détection automatique des termes à traiter en rang faible et des blocs d'observations indépendants, par un modèle de coût et une recherche gloutonne, n'a pas d'antériorité trouvée. L'ensemble actif sur le cône semi-défini positif en échelle des variances, suivi d'un finisseur à région de confiance, n'en a pas non plus dans les logiciels REML examinés. L'estimation conjointe par REML d'une portée continue de noyau IGE avec les composantes de variance reste elle aussi sans antécédent trouvé. L'exécution sur GPU par dérivation automatique a une antériorité contemporaine (pyreml, 2026) et une antériorité ancienne pour la dérivation automatique elle-même (Meyer et Smith 1996).
+Most remlax building blocks have clear prior art in quantitative genetics. The REML gradient with respect to V, AI-REML, sparse factorisation of the mixed model equations and selected inversion were published between 1977 and 2015. Nested dissection and the likelihood taken from the Cholesky factor of a bordered matrix date from the same period. They are also implemented in ASReml, WOMBAT, DFREML/MTDFREML and the BLUPF90/YAMS family. Automatic detection of the terms to handle at low rank and of independent blocks of observations, through a cost model and a greedy search, has no prior art found. The active set on the positive semi-definite cone on the variance scale, followed by a trust-region finisher, has none either in the REML software examined. Joint REML estimation of a continuous IGE kernel range with the variance components also has no antecedent found. GPU execution with automatic differentiation has contemporary prior art (pyreml, 2026), and older prior art for automatic differentiation itself (Meyer and Smith 1996).
 
-### Tableau de synthèse
+### Summary table
 
-| Mécanisme de remlax | Verdict | Références principales |
+| remlax mechanism | Verdict | Main references |
 |---|---|---|
-| 1. -2logL REML depuis V dense, gradient P − Pyy'P | Antériorité claire pour la formule et la forme V dense | [Harville 1977](https://doi.org/10.1080/01621459.1977.10480998), [Searle et al. 1992](https://doi.org/10.1002/9780470316856), [Covarrubias-Pazaran 2016](https://doi.org/10.1371/journal.pone.0156744) |
-| 1b. Gradient par rapport à V codé en règle adjointe (custom_vjp), reste par dérivation automatique | Antériorité partielle | [Smith 1995](https://doi.org/10.1080/10618600.1995.10474671), [Giles 2008](https://doi.org/10.1007/978-3-540-68942-3_4), [Kristensen et al. 2016](https://doi.org/10.18637/jss.v070.i05), pyreml 0.5.3 ([Marchal et Raimondi 2026](https://doi.org/10.5281/zenodo.21394319)) |
-| 2a. Équations du modèle mixte creuses, Cholesky supernodale | Antériorité claire | [Masuda et al. 2014](https://doi.org/10.1111/jbg.12058), [Masuda et al. 2015](https://doi.org/10.2527/jas.2015-9395), manuel WOMBAT 2017, manuel ASReml 4.2 |
-| 2b. Inversion sélective (Takahashi) pour le gradient et l'AI | Antériorité claire | [Erisman et Tinney 1975](https://doi.org/10.1145/360680.360704), [Misztal et Perez-Enciso 1993](https://doi.org/10.3168/jds.S0022-0302%2893%2977478-0), [Masuda et al. 2014](https://doi.org/10.1111/jbg.12058), [Lin et al. 2011](https://doi.org/10.1145/1916461.1916464) |
-| 2c. Échec d'AMD sur un C localement dense, gain de la dissection emboîtée ou d'un ordre « blocs puis séparateur » | Antériorité partielle (mécanisme et usage connus, constat IGE non publié) | [George 1973](https://doi.org/10.1137/0710032), [Karypis et Kumar 1998](https://doi.org/10.1137/S1064827595287997), [Amestoy et al. 2004](https://doi.org/10.1145/1024074.1024081), [Masuda et al. 2014](https://doi.org/10.1111/jbg.12058), manuels WOMBAT et ASReml |
-| 3a. V = A + UU', Woodbury, A diagonale par blocs | Antériorité claire pour chaque élément | [Lindstrom et Bates 1988](https://doi.org/10.1080/01621459.1988.10478693), [Mishchenko et al. 2007](https://doi.org/10.48550/arXiv.0709.0625), [Lippert et al. 2011](https://doi.org/10.1038/nmeth.1681), [Strandén et Garrick 2009](https://doi.org/10.3168/jds.2008-1929) |
-| 3b. Cholesky d'une matrice bordée [U X y]'A⁻¹[U X y] + diag(I,0,0) donnant log|V|, log|X'V⁻¹X|, y'Py | Antériorité claire pour l'algèbre ; partielle pour A contenant des termes aléatoires absorbés | [Smith et Graser 1986](https://doi.org/10.3168/jds.S0022-0302%2886%2980516-1), [Graser et al. 1987](https://doi.org/10.2527/jas1987.6451362x), [Meyer 1989](https://doi.org/10.1186/1297-9686-21-3-317), [Bates et DebRoy 2004](https://doi.org/10.1016/j.jmva.2004.04.013), [Bates et al. 2025](https://doi.org/10.48550/arXiv.2505.11674) |
-| 3c. Détection automatique des termes globaux et des blocs indépendants (modèle de coût, recherche gloutonne) | Pas d'antériorité trouvée ; heuristiques voisines seulement | manuel ASReml 4.2 (!DENSE, !GDENSE), manuel WOMBAT (--dense), [Kristensen et al. 2016](https://doi.org/10.18637/jss.v070.i05), [Bates et al. 2025](https://doi.org/10.48550/arXiv.2505.11674), pyreml 0.5.3 |
-| 4a. AI-REML en échelle des variances | Antériorité claire | [Gilmour et al. 1995](https://doi.org/10.2307/2533274), [Johnson et Thompson 1995](https://doi.org/10.3168/jds.S0022-0302%2895%2976654-1) |
-| 4b. Ensemble actif, plancher des variances | Antériorité partielle (bornes scalaires) | [Mishchenko et al. 2008](https://doi.org/10.3233/JCM-2008-81-203), manuel ASReml 4.2 (codes P et B), manuel WOMBAT (--pivot) |
-| 4c. Ensemble actif sur le cône semi-défini positif | Pas d'antériorité trouvée dans les logiciels REML examinés | ASReml remplace la mise à jour AI par une mise à jour EM ; WOMBAT reparamètre par Cholesky ([Meyer et Smith 1996](https://doi.org/10.1186/1297-9686-28-1-23)) |
-| 4d. Amortissement de Levenberg-Marquardt | Antériorité claire | manuel WOMBAT (--modaim2), [Wolfinger et al. 1994](https://doi.org/10.1137/0915079) |
-| 4e. Salves de L-BFGS-B, finisseur Moré-Sorensen avec SR1 | Composants classiques ; usage en REML non trouvé (sauf BFGS chez Mishchenko) | [Byrd et al. 1995](https://doi.org/10.1137/0916069), [Moré et Sorensen 1983](https://doi.org/10.1137/0904038), [Conn et al. 1991](https://doi.org/10.1007/BF01594934), [Mishchenko et al. 2008](https://doi.org/10.3233/JCM-2008-81-203) |
-| 4f. Démarrage EM ou PX-EM | Antériorité claire | [Liu et al. 1998](https://doi.org/10.1093/biomet/85.4.755), [Foulley et van Dyk 2000](https://doi.org/10.1186/1297-9686-32-2-143), manuels WOMBAT et ASReml |
-| 5. REML sur GPU par dérivation automatique | Antériorité partielle et contemporaine | [Meyer et Smith 1996](https://doi.org/10.1186/1297-9686-28-1-23), [Gardner et al. 2018](https://doi.org/10.48550/arXiv.1809.11165), pyreml 0.5.3, [Horn et al. 2026](https://doi.org/10.64898/2026.04.29.721342) |
-| 6a. Modèle IGE de voisinage, dilution | Antériorité claire | [Griffing 1967](https://doi.org/10.1071/BI9670127), [Muir 2005](https://doi.org/10.1534/genetics.104.035956), [Bijma et al. 2007](https://doi.org/10.1534/genetics.106.062711), [Bijma 2010](https://doi.org/10.1534/genetics.110.120485), manuel WOMBAT (SOCIAL) |
-| 6b. Noyau à ordre discret ou pondéré par la distance | Antériorité claire | [Cappa et Cantet 2008](https://doi.org/10.1515/sg-2008-0008), [Costa e Silva et al. 2017](https://doi.org/10.1038/hdy.2017.25), [Sato et al. 2021](https://doi.org/10.1038/s41437-020-00401-w) |
-| 6c. Portée continue estimée par REML avec les variances | Pas d'antériorité trouvée | profil de vraisemblance de la dilution dans WOMBAT ; balayage d'échelle par PVE chez [Sato et al. 2021](https://doi.org/10.1038/s41437-020-00401-w) |
+| 1. REML -2logL from a dense V, gradient P − Pyy'P | Clear prior art for the formula and the dense V form | [Harville 1977](https://doi.org/10.1080/01621459.1977.10480998), [Searle et al. 1992](https://doi.org/10.1002/9780470316856), [Covarrubias-Pazaran 2016](https://doi.org/10.1371/journal.pone.0156744) |
+| 1b. Gradient with respect to V coded as an adjoint rule (custom_vjp), the rest by automatic differentiation | Partial prior art | [Smith 1995](https://doi.org/10.1080/10618600.1995.10474671), [Giles 2008](https://doi.org/10.1007/978-3-540-68942-3_4), [Kristensen et al. 2016](https://doi.org/10.18637/jss.v070.i05), pyreml 0.5.3 ([Marchal and Raimondi 2026](https://doi.org/10.5281/zenodo.21394319)) |
+| 2a. Sparse mixed model equations, supernodal Cholesky | Clear prior art | [Masuda et al. 2014](https://doi.org/10.1111/jbg.12058), [Masuda et al. 2015](https://doi.org/10.2527/jas.2015-9395), WOMBAT manual 2017, ASReml 4.2 manual |
+| 2b. Selected inversion (Takahashi) for the gradient and AI | Clear prior art | [Erisman and Tinney 1975](https://doi.org/10.1145/360680.360704), [Misztal and Perez-Enciso 1993](https://doi.org/10.3168/jds.S0022-0302%2893%2977478-0), [Masuda et al. 2014](https://doi.org/10.1111/jbg.12058), [Lin et al. 2011](https://doi.org/10.1145/1916461.1916464) |
+| 2c. Failure of AMD on a locally dense C, gain from nested dissection or a "blocks then separator" order | Partial prior art (mechanism and use known, IGE finding unpublished) | [George 1973](https://doi.org/10.1137/0710032), [Karypis and Kumar 1998](https://doi.org/10.1137/S1064827595287997), [Amestoy et al. 2004](https://doi.org/10.1145/1024074.1024081), [Masuda et al. 2014](https://doi.org/10.1111/jbg.12058), WOMBAT and ASReml manuals |
+| 3a. V = A + UU', Woodbury, block-diagonal A | Clear prior art for each element | [Lindstrom and Bates 1988](https://doi.org/10.1080/01621459.1988.10478693), [Mishchenko et al. 2007](https://doi.org/10.48550/arXiv.0709.0625), [Lippert et al. 2011](https://doi.org/10.1038/nmeth.1681), [Strandén and Garrick 2009](https://doi.org/10.3168/jds.2008-1929) |
+| 3b. Cholesky factor of a bordered matrix [U X y]'A⁻¹[U X y] + diag(I,0,0) giving log|V|, log|X'V⁻¹X|, y'Py | Clear prior art for the algebra; partial when A contains absorbed random terms | [Smith and Graser 1986](https://doi.org/10.3168/jds.S0022-0302%2886%2980516-1), [Graser et al. 1987](https://doi.org/10.2527/jas1987.6451362x), [Meyer 1989](https://doi.org/10.1186/1297-9686-21-3-317), [Bates and DebRoy 2004](https://doi.org/10.1016/j.jmva.2004.04.013), [Bates et al. 2025](https://doi.org/10.48550/arXiv.2505.11674) |
+| 3c. Automatic detection of global terms and independent blocks (cost model, greedy search) | No prior art found; only related heuristics | ASReml 4.2 manual (!DENSE, !GDENSE), WOMBAT manual (--dense), [Kristensen et al. 2016](https://doi.org/10.18637/jss.v070.i05), [Bates et al. 2025](https://doi.org/10.48550/arXiv.2505.11674), pyreml 0.5.3 |
+| 4a. AI-REML on the variance scale | Clear prior art | [Gilmour et al. 1995](https://doi.org/10.2307/2533274), [Johnson and Thompson 1995](https://doi.org/10.3168/jds.S0022-0302%2895%2976654-1) |
+| 4b. Active set, variance floor | Partial prior art (scalar bounds) | [Mishchenko et al. 2008](https://doi.org/10.3233/JCM-2008-81-203), ASReml 4.2 manual (codes P and B), WOMBAT manual (--pivot) |
+| 4c. Active set on the positive semi-definite cone | No prior art found in the REML software examined | ASReml replaces the AI update by an EM update; WOMBAT reparameterises by Cholesky ([Meyer and Smith 1996](https://doi.org/10.1186/1297-9686-28-1-23)) |
+| 4d. Levenberg-Marquardt damping | Clear prior art | WOMBAT manual (--modaim2), [Wolfinger et al. 1994](https://doi.org/10.1137/0915079) |
+| 4e. L-BFGS-B bursts, Moré-Sorensen finisher with SR1 | Classical components; no use in REML found (except BFGS in Mishchenko) | [Byrd et al. 1995](https://doi.org/10.1137/0916069), [Moré and Sorensen 1983](https://doi.org/10.1137/0904038), [Conn et al. 1991](https://doi.org/10.1007/BF01594934), [Mishchenko et al. 2008](https://doi.org/10.3233/JCM-2008-81-203) |
+| 4f. EM or PX-EM start | Clear prior art | [Liu et al. 1998](https://doi.org/10.1093/biomet/85.4.755), [Foulley and van Dyk 2000](https://doi.org/10.1186/1297-9686-32-2-143), WOMBAT and ASReml manuals |
+| 5. REML on GPU with automatic differentiation | Partial and contemporary prior art | [Meyer and Smith 1996](https://doi.org/10.1186/1297-9686-28-1-23), [Gardner et al. 2018](https://doi.org/10.48550/arXiv.1809.11165), pyreml 0.5.3, [Horn et al. 2026](https://doi.org/10.64898/2026.04.29.721342) |
+| 6a. Neighbourhood IGE model, dilution | Clear prior art | [Griffing 1967](https://doi.org/10.1071/BI9670127), [Muir 2005](https://doi.org/10.1534/genetics.104.035956), [Bijma et al. 2007](https://doi.org/10.1534/genetics.106.062711), [Bijma 2010](https://doi.org/10.1534/genetics.110.120485), WOMBAT manual (SOCIAL) |
+| 6b. Kernel with a discrete order or weighted by distance | Clear prior art | [Cappa and Cantet 2008](https://doi.org/10.1515/sg-2008-0008), [Costa e Silva et al. 2017](https://doi.org/10.1038/hdy.2017.25), [Sato et al. 2021](https://doi.org/10.1038/s41437-020-00401-w) |
+| 6c. Continuous range estimated by REML with the variances | No prior art found | likelihood profile of the dilution in WOMBAT; scale sweep by PVE in [Sato et al. 2021](https://doi.org/10.1038/s41437-020-00401-w) |
 
-### Forme V dense et gradient adjoint
+### Dense V form and adjoint gradient
 
-La dérivée de la log-vraisemblance REML s'écrit -½ tr(P ∂V/∂θ) + ½ y'P (∂V/∂θ) Py. Cette forme figure dans la revue de [Harville 1977](https://doi.org/10.1080/01621459.1977.10480998) et dans le manuel de [Searle et al. 1992](https://doi.org/10.1002/9780470316856). La dérivée de -2logL par rapport à V vaut donc P − Pyy'P. remlax n'apporte rien sur la formule. L'évaluation REML directe sur V dense est aussi ancienne. Le paquet sommer l'utilise dans sa fonction historique, avec Newton-Raphson et AI ([Covarrubias-Pazaran 2016](https://doi.org/10.1371/journal.pone.0156744)). Les outils de génomique humaine la combinent avec une décomposition propre ([Kang et al. 2008](https://doi.org/10.1534/genetics.107.080101); [Yang et al. 2011](https://doi.org/10.1016/j.ajhg.2010.11.011)).
+The derivative of the REML log-likelihood is -½ tr(P ∂V/∂θ) + ½ y'P (∂V/∂θ) Py. This form appears in the review by [Harville 1977](https://doi.org/10.1080/01621459.1977.10480998) and in the textbook by [Searle et al. 1992](https://doi.org/10.1002/9780470316856). The derivative of -2logL with respect to V is therefore P − Pyy'P. remlax brings nothing new to the formula. Direct REML evaluation on a dense V is just as old. The sommer package uses it in its historical function, with Newton-Raphson and AI ([Covarrubias-Pazaran 2016](https://doi.org/10.1371/journal.pone.0156744)). Human genomics tools combine it with an eigendecomposition ([Kang et al. 2008](https://doi.org/10.1534/genetics.107.080101); [Yang et al. 2011](https://doi.org/10.1016/j.ajhg.2010.11.011)).
 
-La dérivation automatique de la vraisemblance REML est elle aussi ancienne. [Smith 1995](https://doi.org/10.1080/10618600.1995.10474671) a dérivé l'algorithme de Cholesky en mode inverse. Murray décrit cette méthode comme l'application manuelle des idées de la dérivation automatique à l'algorithme de Cholesky ([Murray 2016](https://doi.org/10.48550/arXiv.1602.07527)). [Meyer et Smith 1996](https://doi.org/10.1186/1297-9686-28-1-23) ont appliqué cette dérivation aux modèles animaux. Leur résumé indique des dérivées premières et secondes sans inversion de grandes matrices. Les règles adjointes du log-déterminant et de l'inverse sont rassemblées par [Giles 2008](https://doi.org/10.1007/978-3-540-68942-3_4). TMB calcule le gradient du log-déterminant d'un hessien creux par une passe inverse et l'algorithme du sous-ensemble inverse ([Kristensen et al. 2016](https://doi.org/10.18637/jss.v070.i05), section 4.1). Le paquet pyreml 0.5.3 expose une option « analytic_backward » dans une implémentation PyTorch (code source examiné localement, [Marchal et Raimondi 2026](https://doi.org/10.5281/zenodo.21394319)). Nous n'avons pas vérifié le contenu exact de cette règle.
+Automatic differentiation of the REML likelihood is also old. [Smith 1995](https://doi.org/10.1080/10618600.1995.10474671) differentiated the Cholesky algorithm in reverse mode. Murray describes this method as the manual application of automatic differentiation ideas to the Cholesky algorithm ([Murray 2016](https://doi.org/10.48550/arXiv.1602.07527)). [Meyer and Smith 1996](https://doi.org/10.1186/1297-9686-28-1-23) applied this differentiation to animal models. Their abstract reports first and second derivatives without inverting large matrices. The adjoint rules of the log-determinant and of the inverse are collected by [Giles 2008](https://doi.org/10.1007/978-3-540-68942-3_4). TMB computes the gradient of the log-determinant of a sparse Hessian by a reverse pass and the inverse subset algorithm ([Kristensen et al. 2016](https://doi.org/10.18637/jss.v070.i05), section 4.1). The pyreml 0.5.3 package exposes an "analytic_backward" option in a PyTorch implementation (source code examined locally, [Marchal and Raimondi 2026](https://doi.org/10.5281/zenodo.21394319)). We did not verify the exact content of this rule.
 
-Verdict. La formule et la forme V dense ont une antériorité claire. Une règle adjointe insérée dans un graphe de dérivation automatique a une antériorité partielle. L'apport de remlax tient à l'ingénierie en JAX et à la portabilité CPU/GPU.
+Verdict. The formula and the dense V form have clear prior art. An adjoint rule inserted into an automatic differentiation graph has partial prior art. The contribution of remlax lies in the JAX engineering and in CPU/GPU portability.
 
-### Équations du modèle mixte creuses
+### Sparse mixed model equations
 
-#### Absorption et partition creux/dense
+#### Absorption and the sparse/dense partition
 
-La partition des termes en un bloc dense et un bloc creux est documentée dans ASReml. Le manuel 4.2 indique que la partition se fait au point !r, sauf réglage par !DENSE (section 6.10.1). Par défaut, le bloc dense reçoit les effets fixes listés avant les effets aléatoires, jusqu'à 800 équations par défaut. L'option !GDENSE place le premier terme GRM dans les équations denses. L'utilisateur fixe cette partition. ASReml absorbe d'abord les équations creuses, dans un ordre qu'il choisit, puis les équations denses dans l'ordre déclaré (section 6.10.2). WOMBAT propose une option --dense quand une matrice de parenté est dense, par exemple une GRM (manuel 2017, section 5.3.4). Son option --s1step regroupe les individus génotypés en un bloc dense traité à part. Ces partitions vivent toutes dans C. Aucune ne bascule un terme vers une forme V.
+The partition of the terms into a dense block and a sparse block is documented in ASReml. The 4.2 manual states that the partition is made at the !r point, unless set by !DENSE (section 6.10.1). By default, the dense block receives the fixed effects listed before the random effects, up to 800 equations by default. The !GDENSE option places the first GRM term in the dense equations. The user sets this partition. ASReml first absorbs the sparse equations, in an order it chooses, then the dense equations in the declared order (section 6.10.2). WOMBAT offers a --dense option when a relationship matrix is dense, for example a GRM (2017 manual, section 5.3.4). Its --s1step option groups the genotyped individuals into a dense block handled separately. All these partitions live in C. None of them moves a term to a V form.
 
-#### Ordonnancement
+#### Ordering
 
-La dissection emboîtée remonte à [George 1973](https://doi.org/10.1137/0710032). METIS en donne une version multiniveau ([Karypis et Kumar 1998](https://doi.org/10.1137/S1064827595287997)). Le degré minimum approché est décrit par [Amestoy et al. 1996](https://doi.org/10.1137/S0895479894278952). [Liu 1985](https://doi.org/10.1145/214392.214398) a proposé le degré minimum multiple.
+Nested dissection goes back to [George 1973](https://doi.org/10.1137/0710032). METIS provides a multilevel version of it ([Karypis and Kumar 1998](https://doi.org/10.1137/S1064827595287997)). The approximate minimum degree is described by [Amestoy et al. 1996](https://doi.org/10.1137/S0895479894278952). [Liu 1985](https://doi.org/10.1145/214392.214398) proposed the multiple minimum degree.
 
-En sélection animale, ces ordres sont déjà comparés. YAMS emploie l'AMD ou la dissection emboîtée multiniveau ([Masuda et al. 2014](https://doi.org/10.1111/jbg.12058)). Ses auteurs rapportent une factorisation jusqu'à 13 fois plus rapide que FSPAK « when an appropriate ordering strategy was applied ». WOMBAT choisit l'ordre selon la taille du problème (manuel 2017, annexe A.1). Le degré minimum multiple sert jusqu'à 25 000 équations, l'AMD jusqu'à 50 000, METIS au-delà. Ce manuel recommande d'essayer plusieurs ordres et propose --metisall, qui parcourt 48 combinaisons de réglages de METIS. Il cite une étude de Meyer (2005, Proc. AAABG 16:282–285, sans DOI, contenu non vérifié). ASReml expose !EQORDER (manuel 4.2, tableau 5.5). Son manuel décrit un cas proche du constat de remlax. Pour un modèle avec une matrice IBD dense et une parenté creuse, l'ordre déclaré par l'utilisateur (!EQORDER -1) s'exécute plus vite que l'ordre automatique.
+In animal breeding, these orderings have already been compared. YAMS uses AMD or multilevel nested dissection ([Masuda et al. 2014](https://doi.org/10.1111/jbg.12058)). Its authors report a factorisation up to 13 times faster than FSPAK "when an appropriate ordering strategy was applied". WOMBAT chooses the ordering according to the size of the problem (2017 manual, appendix A.1). Multiple minimum degree serves up to 25 000 equations, AMD up to 50 000, and METIS beyond. This manual recommends trying several orderings and offers --metisall, which runs through 48 combinations of METIS settings. It cites a study by Meyer (2005, Proc. AAABG 16:282–285, no DOI, content unverified). ASReml exposes !EQORDER (4.2 manual, table 5.5). Its manual describes a case close to the remlax finding. For a model with a dense IBD matrix and a sparse relationship matrix, the order declared by the user (!EQORDER -1) runs faster than the automatic order.
 
-Le mécanisme de l'échec d'AMD est documenté. L'AMD de SuiteSparse retire les lignes de plus de 10√n entrées et les place en fin d'ordre (en-tête amd.h ; [Amestoy et al. 2004](https://doi.org/10.1145/1024074.1024081)). Un C localement dense, avec beaucoup de lignes juste sous ce seuil, dégrade donc l'ordre. WOMBAT transmet aussi à METIS un facteur qui désigne les lignes denses.
+The mechanism of the AMD failure is documented. The SuiteSparse AMD removes rows with more than 10√n entries and places them at the end of the ordering (amd.h header; [Amestoy et al. 2004](https://doi.org/10.1145/1024074.1024081)). A locally dense C, with many rows just below this threshold, therefore degrades the ordering. WOMBAT also passes METIS a factor that flags the dense rows.
 
-Verdict. L'usage de METIS pour C en génétique quantitative a une antériorité claire. L'ordre « blocs puis séparateur » correspond au premier niveau d'une dissection emboîtée. Le constat chiffré sur un modèle IGE multivarié n'a pas été trouvé dans la littérature. Il mérite d'être rapporté comme résultat empirique, sans revendication de méthode.
+Verdict. The use of METIS for C in quantitative genetics has clear prior art. The "blocks then separator" order corresponds to the first level of a nested dissection. The quantified finding on a multivariate IGE model was not found in the literature. It deserves to be reported as an empirical result, without a methodological claim.
 
-#### Inversion sélective
+#### Selected inversion
 
-La récurrence de Takahashi est attribuée à Takahashi, Fagan et Chin (1973, 8th PICA Conference, Minneapolis, pp. 63–69). Cette communication n'a pas de DOI et n'a pas été consultée. [Erisman et Tinney 1975](https://doi.org/10.1145/360680.360704) en donnent la version publiée en revue. [Misztal et Perez-Enciso 1993](https://doi.org/10.3168/jds.S0022-0302%2893%2977478-0) l'ont introduite dans l'EM-REML par inversion creuse ; l'algorithme exact employé n'a pas été vérifié sur le texte. [Johnson et Thompson 1995](https://doi.org/10.3168/jds.S0022-0302%2895%2976654-1) l'associent à l'AI-REML pour les modèles animaux univariés, d'après leur titre. YAMS emploie une factorisation supernodale « left-looking » et une inversion multifrontale inverse ([Masuda et al. 2014](https://doi.org/10.1111/jbg.12058)). Un traitement des traces par table de hachage accélère l'AI-REML jusqu'à 67 fois ([Masuda et al. 2015](https://doi.org/10.2527/jas.2015-9395)). WOMBAT emploie par défaut une approche supernodale et cite Erisman et Tinney (manuel 2017, section 5.3.5). ASReml 4.2 a ajouté une absorption symbolique préalable et une « absorption nodale » (manuel 4.2, section 11.5). Hors génétique, SelInv est l'algorithme supernodal de référence ([Lin et al. 2011](https://doi.org/10.1145/1916461.1916464)).
+The Takahashi recurrence is attributed to Takahashi, Fagan and Chin (1973, 8th PICA Conference, Minneapolis, pp. 63–69). This communication has no DOI and was not consulted. [Erisman and Tinney 1975](https://doi.org/10.1145/360680.360704) give the version published in a journal. [Misztal and Perez-Enciso 1993](https://doi.org/10.3168/jds.S0022-0302%2893%2977478-0) introduced it into EM-REML by sparse inversion. The exact algorithm they used was not checked in the text. [Johnson and Thompson 1995](https://doi.org/10.3168/jds.S0022-0302%2895%2976654-1) combine it with AI-REML for univariate animal models, according to their title. YAMS uses a left-looking supernodal factorisation and an inverse multifrontal inversion ([Masuda et al. 2014](https://doi.org/10.1111/jbg.12058)). Handling the traces with a hash table speeds up AI-REML by up to 67 times ([Masuda et al. 2015](https://doi.org/10.2527/jas.2015-9395)). WOMBAT uses a supernodal approach by default and cites Erisman and Tinney (2017 manual, section 5.3.5). ASReml 4.2 added a preliminary symbolic absorption and a "nodal absorption" (4.2 manual, section 11.5). Outside genetics, SelInv is the reference supernodal algorithm ([Lin et al. 2011](https://doi.org/10.1145/1916461.1916464)).
 
-Verdict. Antériorité claire. remlax réimplémente une technique standard.
+Verdict. Clear prior art. remlax reimplements a standard technique.
 
-### Termes globaux, Woodbury et matrice bordée
+### Global terms, Woodbury and the bordered matrix
 
-#### Woodbury et rang faible
+#### Woodbury and low rank
 
-Les équations de Henderson sont elles-mêmes une forme de Woodbury. [Strandén et Garrick 2009](https://doi.org/10.3168/jds.2008-1929) dérivent l'équivalence entre SNP-BLUP et GBLUP par cette identité. [Mishchenko et al. 2007](https://doi.org/10.48550/arXiv.0709.0625) l'appliquent à l'AI-REML avec une représentation de rang faible, exacte ou tronquée, de la matrice IBD. FaST-LMM l'utilise quand la parenté est de rang inférieur à n ([Lippert et al. 2011](https://doi.org/10.1038/nmeth.1681)). Le traitement de V diagonale par blocs de sujets est l'hypothèse de base de [Lindstrom et Bates 1988](https://doi.org/10.1080/01621459.1988.10478693). SAS PROC MIXED déclare ces blocs par SUBJECT= et applique les algorithmes de [Wolfinger et al. 1994](https://doi.org/10.1137/0915079). Le cas « bloc diagonal plus rang faible » apparaît aussi en génomique en une étape ([Liu et al. 2014](https://doi.org/10.3168/jds.2014-7924); [Taskinen et al. 2017](https://doi.org/10.1186/s12711-017-0310-9)).
+Henderson's equations are themselves a Woodbury form. [Strandén and Garrick 2009](https://doi.org/10.3168/jds.2008-1929) derive the equivalence between SNP-BLUP and GBLUP through this identity. [Mishchenko et al. 2007](https://doi.org/10.48550/arXiv.0709.0625) apply it to AI-REML with a low-rank representation, exact or truncated, of the IBD matrix. FaST-LMM uses it when the relationship matrix has rank lower than n ([Lippert et al. 2011](https://doi.org/10.1038/nmeth.1681)). Handling V as block diagonal by subject is the basic assumption of [Lindstrom and Bates 1988](https://doi.org/10.1080/01621459.1988.10478693). SAS PROC MIXED declares these blocks through SUBJECT= and applies the algorithms of [Wolfinger et al. 1994](https://doi.org/10.1137/0915079). The "block diagonal plus low rank" case also appears in single-step genomics ([Liu et al. 2014](https://doi.org/10.3168/jds.2014-7924); [Taskinen et al. 2017](https://doi.org/10.1186/s12711-017-0310-9)).
 
-#### Décomposition propre
+#### Eigendecomposition
 
-La rotation par les vecteurs propres de la parenté rend V diagonale quand un seul terme aléatoire s'ajoute au résidu ([Kang et al. 2008](https://doi.org/10.1534/genetics.107.080101); [Lippert et al. 2011](https://doi.org/10.1038/nmeth.1681); [Zhou et Stephens 2012](https://doi.org/10.1038/ng.2310)). GCTA l'emploie aussi ([Yang et al. 2011](https://doi.org/10.1016/j.ajhg.2010.11.011)). La version multivariée repose sur une transformation canonique conjointe ([Meyer 1985](https://doi.org/10.2307/2530651); [Zhou et Stephens 2014](https://doi.org/10.1038/nmeth.2848); [Lee et van der Werf 2016](https://doi.org/10.1093/bioinformatics/btw012)). Cette astuce ne s'étend pas à plusieurs termes non simultanément diagonalisables. Les modèles IGE en contiennent plusieurs. remlax s'en distingue sur ce point.
+Rotation by the eigenvectors of the relationship matrix makes V diagonal when a single random term is added to the residual ([Kang et al. 2008](https://doi.org/10.1534/genetics.107.080101); [Lippert et al. 2011](https://doi.org/10.1038/nmeth.1681); [Zhou and Stephens 2012](https://doi.org/10.1038/ng.2310)). GCTA also uses it ([Yang et al. 2011](https://doi.org/10.1016/j.ajhg.2010.11.011)). The multivariate version relies on a joint canonical transformation ([Meyer 1985](https://doi.org/10.2307/2530651); [Zhou and Stephens 2014](https://doi.org/10.1038/nmeth.2848); [Lee and van der Werf 2016](https://doi.org/10.1093/bioinformatics/btw012)). This trick does not extend to several terms that cannot be diagonalised simultaneously. IGE models contain several such terms. remlax differs on this point.
 
-#### Vraisemblance bordée
+#### Bordered likelihood
 
-[Smith et Graser 1986](https://doi.org/10.3168/jds.S0022-0302%2886%2980516-1) calculent log|C| et y'Py par élimination de Gauss sur la matrice des équations bordée par la ligne [r' y'R⁻¹y]. Le dernier pivot donne y'Py = y'R⁻¹y − s'r. Cette description provient des notes d'atelier MTDFREML (Boldman et al., 2002, USDA-ARS, sans DOI). Le texte original n'a pas été consulté. [Graser et al. 1987](https://doi.org/10.2527/jas1987.6451362x) et [Meyer 1989](https://doi.org/10.1186/1297-9686-21-3-317) en ont fait la base du REML sans dérivées. [Boldman et Van Vleck 1991](https://doi.org/10.3168/jds.S0022-0302%2891%2978629-3) l'ont accélérée par une factorisation creuse (SPARSPAK). En statistique, [Bates et DebRoy 2004](https://doi.org/10.1016/j.jmva.2004.04.013) puis lme4 ([Bates et al. 2015](https://doi.org/10.18637/jss.v067.i01)) factorisent la matrice augmentée de [ZΛ X y]. [Bates et al. 2025](https://doi.org/10.48550/arXiv.2505.11674) montrent que 2log|R_ZZ| et r²_yy se lisent directement sur la diagonale du facteur, sans résoudre pour β ni pour les modes. Cette construction suppose R = σ²I.
+[Smith and Graser 1986](https://doi.org/10.3168/jds.S0022-0302%2886%2980516-1) compute log|C| and y'Py by Gaussian elimination on the matrix of the equations bordered by the row [r' y'R⁻¹y]. The last pivot gives y'Py = y'R⁻¹y − s'r. This description comes from the MTDFREML workshop notes (Boldman et al., 2002, USDA-ARS, no DOI). The original text was not consulted. [Graser et al. 1987](https://doi.org/10.2527/jas1987.6451362x) and [Meyer 1989](https://doi.org/10.1186/1297-9686-21-3-317) made it the basis of derivative-free REML. [Boldman and Van Vleck 1991](https://doi.org/10.3168/jds.S0022-0302%2891%2978629-3) sped it up with a sparse factorisation (SPARSPAK). In statistics, [Bates and DebRoy 2004](https://doi.org/10.1016/j.jmva.2004.04.013) and then lme4 ([Bates et al. 2015](https://doi.org/10.18637/jss.v067.i01)) factorise the augmented matrix of [ZΛ X y]. [Bates et al. 2025](https://doi.org/10.48550/arXiv.2505.11674) show that 2log|R_ZZ| and r²_yy can be read directly on the diagonal of the factor, without solving for β or for the modes. This construction assumes R = σ²I.
 
-La matrice bordée de remlax, [U X y]'A⁻¹[U X y] + diag(I,0,0), est algébriquement l'équation de Henderson augmentée, avec une matrice A à la place de R. Le cas R diagonale par blocs existe déjà dans les analyses multivariées de DFREML. La nouveauté éventuelle tient au contenu de A. remlax y absorbe des termes aléatoires locaux en forme V et laisse les termes globaux dans U. Cette hybridation V/C n'a pas été trouvée dans les sources consultées.
+The bordered matrix of remlax, [U X y]'A⁻¹[U X y] + diag(I,0,0), is algebraically the augmented Henderson equation, with a matrix A in place of R. The case of a block-diagonal R already exists in the multivariate analyses of DFREML. Any novelty lies in the content of A. remlax absorbs local random terms into it in V form and leaves the global terms in U. This V/C hybrid was not found in the sources consulted.
 
-#### Détection automatique de structure
+#### Automatic structure detection
 
-Aucun logiciel examiné ne choisit seul, par un modèle de coût, les termes à traiter en rang faible et les blocs d'observations indépendants. Les mécanismes voisins sont des heuristiques fixes ou des choix laissés à l'utilisateur. ASReml partitionne au point !r et laisse !DENSE et !GDENSE à l'utilisateur (manuel 4.2). WOMBAT choisit un ordre selon le nombre d'équations et laisse --dense à l'utilisateur (manuel 2017). MixedModels.jl place en tête le terme au plus grand nombre de niveaux, parce que la structure diagonale du bloc [1,1] se conserve dans le facteur ([Bates et al. 2025](https://doi.org/10.48550/arXiv.2505.11674), section 3.3). TMB détecte automatiquement le motif de creux du hessien ([Kristensen et al. 2016](https://doi.org/10.18637/jss.v070.i05), section 4.2). Ce motif sert à la factorisation creuse. Le choix entre formes V et C reste au modélisateur. pyreml 0.5.3 active la voie Woodbury quand le nombre d'effets aléatoires est inférieur à n et que le résidu s'y prête (MixedModel.py, code examiné localement). Cette règle porte sur une seule dimension et ne détecte pas de blocs.
+No software examined chooses on its own, through a cost model, the terms to handle at low rank and the independent blocks of observations. The related mechanisms are fixed heuristics or choices left to the user. ASReml partitions at the !r point and leaves !DENSE and !GDENSE to the user (4.2 manual). WOMBAT chooses an ordering according to the number of equations and leaves --dense to the user (2017 manual). MixedModels.jl puts first the term with the largest number of levels, because the diagonal structure of block [1,1] is preserved in the factor ([Bates et al. 2025](https://doi.org/10.48550/arXiv.2505.11674), section 3.3). TMB detects the sparsity pattern of the Hessian automatically ([Kristensen et al. 2016](https://doi.org/10.18637/jss.v070.i05), section 4.2). This pattern serves the sparse factorisation. The choice between the V and C forms stays with the modeller. pyreml 0.5.3 uses the Woodbury route when the number of random effects is below n and the residual allows it (MixedModel.py, code examined locally). This rule bears on a single dimension and detects no blocks.
 
-Verdict. Les briques algébriques ont une antériorité claire. La détection automatique par modèle de coût et recherche gloutonne semble nouvelle. Cette conclusion repose sur une recherche non exhaustive. Les moteurs internes d'ASReml sont fermés et peuvent contenir des heuristiques non documentées.
+Verdict. The algebraic building blocks have clear prior art. Automatic detection by a cost model and a greedy search seems new. This conclusion rests on a non-exhaustive search. The internal engines of ASReml are closed and may contain undocumented heuristics.
 
-### Optimisation AI-REML et robustesse
+### AI-REML optimisation and robustness
 
-L'AI-REML est publié par [Gilmour et al. 1995](https://doi.org/10.2307/2533274) et, pour les modèles animaux creux, par [Johnson et Thompson 1995](https://doi.org/10.3168/jds.S0022-0302%2895%2976654-1). ASReml l'applique en échelle des composantes. Le Newton-Raphson et l'EM pour les modèles mixtes sont décrits par [Lindstrom et Bates 1988](https://doi.org/10.1080/01621459.1988.10478693) et [Jennrich et Schluchter 1986](https://doi.org/10.2307/2530695). [Thompson 2008](https://doi.org/10.1098/rspb.2007.1417) retrace cette histoire.
+AI-REML was published by [Gilmour et al. 1995](https://doi.org/10.2307/2533274) and, for sparse animal models, by [Johnson and Thompson 1995](https://doi.org/10.3168/jds.S0022-0302%2895%2976654-1). ASReml applies it on the component scale. Newton-Raphson and EM for mixed models are described by [Lindstrom and Bates 1988](https://doi.org/10.1080/01621459.1988.10478693) and [Jennrich and Schluchter 1986](https://doi.org/10.2307/2530695). [Thompson 2008](https://doi.org/10.1098/rspb.2007.1417) traces this history.
 
-La reparamétrisation par le facteur de Cholesky, avec log des éléments diagonaux, supprime les contraintes ([Groeneveld 1994](https://doi.org/10.1186/1297-9686-26-6-537); [Pinheiro et Bates 1996](https://doi.org/10.1007/BF00140873); [Meyer et Smith 1996](https://doi.org/10.1186/1297-9686-28-1-23)). WOMBAT l'emploie par défaut et borne les pivots à 0,001 (option --pivot, manuel 2017, section 5.2.5). ASReml agit en échelle des variances. Son code P remplace une variance négative par une petite valeur positive, puis la fixe après des tentatives répétées (code B, manuel 4.2, section 7.7.4). Pour une matrice US, !GP déclenche une mise à jour EM à la place de la mise à jour AI quand celle-ci sort du cône. ASReml fixe aussi la matrice entière quand elle devient quasi singulière (manuel 4.2, !EMFLAG). [Mishchenko et al. 2008](https://doi.org/10.3233/JCM-2008-81-203) montrent que l'AI-REML standard échoue quand l'optimum est sur une borne. Ils proposent une méthode d'ensemble actif et une mise à jour BFGS inverse, pour des contraintes de non-négativité scalaires.
+Reparameterisation by the Cholesky factor, with the log of the diagonal elements, removes the constraints ([Groeneveld 1994](https://doi.org/10.1186/1297-9686-26-6-537); [Pinheiro and Bates 1996](https://doi.org/10.1007/BF00140873); [Meyer and Smith 1996](https://doi.org/10.1186/1297-9686-28-1-23)). WOMBAT uses it by default and bounds the pivots at 0.001 (option --pivot, 2017 manual, section 5.2.5). ASReml works on the variance scale. Its code P replaces a negative variance by a small positive value, then fixes it after repeated attempts (code B, 4.2 manual, section 7.7.4). For a US matrix, !GP triggers an EM update in place of the AI update when the latter leaves the cone. ASReml also fixes the whole matrix when it becomes nearly singular (4.2 manual, !EMFLAG). [Mishchenko et al. 2008](https://doi.org/10.3233/JCM-2008-81-203) show that standard AI-REML fails when the optimum lies on a bound. They propose an active-set method and an inverse BFGS update, for scalar non-negativity constraints.
 
-L'amortissement du type Levenberg-Marquardt est documenté. WOMBAT ajoute τI à la matrice AI, avec τ = max(0, δ − λmin), comme modification par défaut (--modaim2, annexe A.5). Il propose aussi le plaquage des valeurs propres et deux Cholesky modifiées. SAS PROC MIXED minimise -2logL par un Newton-Raphson stabilisé par crête ([Wolfinger et al. 1994](https://doi.org/10.1137/0915079) ; documentation SAS). Le démarrage par quelques itérations PX-EM avant l'AI est le réglage par défaut de WOMBAT pour plus de 18 composantes (--pxai). ASReml propose des itérations EM ou PX-EM locales. Le PX-EM vient de [Liu et al. 1998](https://doi.org/10.1093/biomet/85.4.755) et a été adapté au modèle de Henderson par [Foulley et van Dyk 2000](https://doi.org/10.1186/1297-9686-32-2-143). WOMBAT garde Powell et le simplexe pour vérifier la convergence des cas difficiles.
+Levenberg-Marquardt-type damping is documented. WOMBAT adds τI to the AI matrix, with τ = max(0, δ − λmin), as the default modification (--modaim2, appendix A.5). It also offers eigenvalue clamping and two modified Cholesky factorisations. SAS PROC MIXED minimises -2logL by a ridge-stabilised Newton-Raphson ([Wolfinger et al. 1994](https://doi.org/10.1137/0915079); SAS documentation). Starting with a few PX-EM iterations before AI is the WOMBAT default for more than 18 components (--pxai). ASReml offers local EM or PX-EM iterations. PX-EM comes from [Liu et al. 1998](https://doi.org/10.1093/biomet/85.4.755) and was adapted to Henderson's model by [Foulley and van Dyk 2000](https://doi.org/10.1186/1297-9686-32-2-143). WOMBAT keeps Powell and the simplex to check convergence in difficult cases.
 
-Les autres composants sont classiques en optimisation numérique. L-BFGS-B vient de [Byrd et al. 1995](https://doi.org/10.1137/0916069). Le pas de région de confiance par décomposition propre suit [Moré et Sorensen 1983](https://doi.org/10.1137/0904038). La convergence de SR1 est établie par [Conn et al. 1991](https://doi.org/10.1007/BF01594934). [Nocedal et Wright 2006](https://doi.org/10.1007/978-0-387-40065-5) rassemblent ces méthodes. La projection sur le cône semi-défini positif suit [Higham 1988](https://doi.org/10.1016/0024-3795%2888%2990223-6). Aucun logiciel REML examiné ne combine un ensemble actif sur le cône semi-défini, des salves de L-BFGS-B et un finisseur Moré-Sorensen avec SR1.
+The other components are classical in numerical optimisation. L-BFGS-B comes from [Byrd et al. 1995](https://doi.org/10.1137/0916069). The trust-region step by eigendecomposition follows [Moré and Sorensen 1983](https://doi.org/10.1137/0904038). The convergence of SR1 is established by [Conn et al. 1991](https://doi.org/10.1007/BF01594934). [Nocedal and Wright 2006](https://doi.org/10.1007/978-0-387-40065-5) collect these methods. Projection onto the positive semi-definite cone follows [Higham 1988](https://doi.org/10.1016/0024-3795%2888%2990223-6). No REML software examined combines an active set on the semi-definite cone, L-BFGS-B bursts and a Moré-Sorensen finisher with SR1.
 
-Verdict. L'AI, l'amortissement, le plancher et le démarrage EM ont une antériorité claire. L'ensemble actif a une antériorité partielle, limitée aux bornes scalaires. Son extension au cône semi-défini en échelle des variances, et l'assemblage complet, n'ont pas d'antériorité trouvée.
+Verdict. AI, damping, the floor and the EM start have clear prior art. The active set has partial prior art, limited to scalar bounds. Its extension to the semi-definite cone on the variance scale, and the complete assembly, have no prior art found.
 
-### REML sur GPU et dérivation automatique
+### REML on GPU and automatic differentiation
 
-La dérivation automatique appliquée au REML date de [Meyer et Smith 1996](https://doi.org/10.1186/1297-9686-28-1-23), sur CPU. TMB généralise la dérivation automatique aux modèles à effets latents, avec CHOLMOD et le sous-ensemble inverse ([Kristensen et al. 2016](https://doi.org/10.18637/jss.v070.i05)). Le parallélisme décrit dans cet article passe par OpenMP et BLAS, sans GPU. Hors génétique, GPyTorch calcule la vraisemblance marginale d'un processus gaussien et ses dérivées sur GPU, par gradient conjugué par lots ([Gardner et al. 2018](https://doi.org/10.48550/arXiv.1809.11165)). GPJax fait de même en JAX ([Pinder et Dodd 2022](https://doi.org/10.21105/joss.04455)). GPyTorch et GPJax maximisent la vraisemblance complète et ne traitent pas le REML.
+Automatic differentiation applied to REML dates from [Meyer and Smith 1996](https://doi.org/10.1186/1297-9686-28-1-23), on CPU. TMB generalises automatic differentiation to latent effect models, with CHOLMOD and the inverse subset ([Kristensen et al. 2016](https://doi.org/10.18637/jss.v070.i05)). The parallelism described in this article goes through OpenMP and BLAS, without GPU. Outside genetics, GPyTorch computes the marginal likelihood of a Gaussian process and its derivatives on GPU, by batched conjugate gradients ([Gardner et al. 2018](https://doi.org/10.48550/arXiv.1809.11165)). GPJax does the same in JAX ([Pinder and Dodd 2022](https://doi.org/10.21105/joss.04455)). GPyTorch and GPJax maximise the full likelihood and do not handle REML.
 
-En génétique, des concurrents directs sont apparus en 2026. pyreml ajuste des modèles mixtes par différenciation directe du REML en PyTorch, avec accélération GPU ([Marchal et Raimondi 2026](https://doi.org/10.5281/zenodo.21394319)). La version 0.5.3 examinée utilise L-BFGS, avec Adam en repli (Optimizer.py). TorchLIMIX porte le pipeline multivarié LIMIX sur GPU, avec des gains jusqu'à deux ordres de grandeur ([Horn et al. 2026](https://doi.org/10.64898/2026.04.29.721342), prépublication). SAIGE-GPU accélère l'ajustement du GLMM de SAIGE d'un facteur 5 ([Rodriguez et al. 2026](https://doi.org/10.1093/bioinformatics/btag032)). Le paquet torch-openreml annonce un moteur AI-REML sur CPU et GPU. Sa page PyPI n'a pas pu être lue ; il reste non vérifié. Aucune référence trouvée ne combine équations du modèle mixte creuses, Cholesky supernodale et inversion sélective dans un cadre de dérivation automatique sur GPU. Les travaux récents de l'équipe Misztal restent sur CPU, avec REML Monte Carlo et gradient conjugué préconditionné ([Bermann et al. 2025](https://doi.org/10.1186/s12711-025-01006-9)).
+In genetics, direct competitors appeared in 2026. pyreml fits mixed models by direct differentiation of REML in PyTorch, with GPU acceleration ([Marchal and Raimondi 2026](https://doi.org/10.5281/zenodo.21394319)). The version examined, 0.5.3, uses L-BFGS with Adam as a fallback (Optimizer.py). TorchLIMIX ports the LIMIX multivariate pipeline to GPU, with gains of up to two orders of magnitude ([Horn et al. 2026](https://doi.org/10.64898/2026.04.29.721342), preprint). SAIGE-GPU speeds up the SAIGE GLMM fit by a factor of 5 ([Rodriguez et al. 2026](https://doi.org/10.1093/bioinformatics/btag032)). The torch-openreml package announces an AI-REML engine on CPU and GPU. Its PyPI page could not be read, so it remains unverified. No reference found combines sparse mixed model equations, supernodal Cholesky and selected inversion in an automatic differentiation framework on GPU. Recent work by the Misztal team stays on CPU, with Monte Carlo REML and preconditioned conjugate gradients ([Bermann et al. 2025](https://doi.org/10.1186/s12711-025-01006-9)).
 
-Verdict. La dérivation automatique du REML a une antériorité claire. Le REML sur GPU en forme V dense a une antériorité partielle et contemporaine (pyreml). La forme C creuse sur GPU, avec parité CPU/GPU validée, n'a pas d'antériorité trouvée.
+Verdict. Automatic differentiation of REML has clear prior art. REML on GPU in dense V form has partial and contemporary prior art (pyreml). The sparse C form on GPU, with validated CPU/GPU parity, has no prior art found.
 
-### Modèles IGE de voisinage
+### Neighbourhood IGE models
 
-Le cadre IGE est établi. [Griffing 1967](https://doi.org/10.1071/BI9670127) pose la sélection au niveau des groupes. [Moore et al. 1997](https://doi.org/10.1111/j.1558-5646.1997.tb01458.x) et [Wolf et al. 1998](https://doi.org/10.1016/S0169-5347%2897%2901233-0) formalisent les effets génétiques indirects. [Muir 2005](https://doi.org/10.1534/genetics.104.035956) les intègre au BLUP pour les arbres et les animaux. [Bijma et al. 2007a](https://doi.org/10.1534/genetics.106.062711) et [Bijma et al. 2007b](https://doi.org/10.1534/genetics.106.062729) définissent la valeur génétique totale et son estimation. La dépendance à la taille du groupe est traitée par [Hadfield et Wilson 2007](https://doi.org/10.1534/genetics.107.075622). [Bijma 2010a](https://doi.org/10.1534/genetics.110.120485) introduit le facteur de dilution d. Les dispositifs optimaux sont étudiés par [Bijma 2010b](https://doi.org/10.1534/genetics.110.120493). [Arango et al. 2005](https://doi.org/10.2527/2005.8361241x) estiment les effets compétitifs chez le porc.
+The IGE framework is established. [Griffing 1967](https://doi.org/10.1071/BI9670127) sets out selection at the group level. [Moore et al. 1997](https://doi.org/10.1111/j.1558-5646.1997.tb01458.x) and [Wolf et al. 1998](https://doi.org/10.1016/S0169-5347%2897%2901233-0) formalise indirect genetic effects. [Muir 2005](https://doi.org/10.1534/genetics.104.035956) integrates them into BLUP for trees and animals. [Bijma et al. 2007a](https://doi.org/10.1534/genetics.106.062711) and [Bijma et al. 2007b](https://doi.org/10.1534/genetics.106.062729) define the total breeding value and its estimation. The dependence on group size is treated by [Hadfield and Wilson 2007](https://doi.org/10.1534/genetics.107.075622). [Bijma 2010a](https://doi.org/10.1534/genetics.110.120485) introduces the dilution factor d. Optimal designs are studied by [Bijma 2010b](https://doi.org/10.1534/genetics.110.120493). [Arango et al. 2005](https://doi.org/10.2527/2005.8361241x) estimate competitive effects in pigs.
 
-Le voisinage spatial des plantes est modélisé depuis longtemps. Les ajustements de voisinage en essais au champ remontent à [Draper et Guttman 1980](https://doi.org/10.2307/2986297), [Kempton 1982](https://doi.org/10.1017/S0021859600054381) et [Besag et Kempton 1986](https://doi.org/10.2307/2531047). [Stringer et al. 2011](https://doi.org/10.1007/s13253-010-0051-5) modélisent conjointement la variabilité spatiale et la compétition génétique entre parcelles. Chez les arbres, [Cappa et Cantet 2008](https://doi.org/10.1515/sg-2008-0008) pondèrent les voisins par des « intensités de compétition », inverses de la distance et du nombre de voisins. Ils estiment le modèle par Gibbs et par EM-REML. [Cappa et al. 2015](https://doi.org/10.1007/s11295-015-0917-3) y ajoutent l'hétérogénéité environnementale. [Costa e Silva et al. 2013](https://doi.org/10.1111/nph.12035) opposent les IGE de maladie et de compétition chez l'eucalyptus. Chez la même espèce, [Costa e Silva et al. 2017](https://doi.org/10.1038/hdy.2017.25) identifient les positions de voisins les plus influentes par une structure factorielle, puis construisent un effet combiné pondéré par la distance. La revue de [Costa e Silva et Kerr 2013](https://doi.org/10.1007/s11295-012-0521-8) couvre ces modèles. [Sato et al. 2021](https://doi.org/10.1038/s41437-020-00401-w) estiment la portée effective des effets de voisinage au pic de variance expliquée, sur une grille d'échelles spatiales. Une prépublication plus récente évoque une décroissance avec la distance sans l'ajuster ([Sato et Hamazaki 2026](https://doi.org/10.7554/eLife.111650.1)).
+The spatial neighbourhood of plants has long been modelled. Neighbour adjustments in field trials go back to [Draper and Guttman 1980](https://doi.org/10.2307/2986297), [Kempton 1982](https://doi.org/10.1017/S0021859600054381) and [Besag and Kempton 1986](https://doi.org/10.2307/2531047). [Stringer et al. 2011](https://doi.org/10.1007/s13253-010-0051-5) jointly model spatial variability and genetic competition between plots. In trees, [Cappa and Cantet 2008](https://doi.org/10.1515/sg-2008-0008) weight the neighbours by "competition intensities", inverses of the distance and of the number of neighbours. They estimate the model by Gibbs sampling and by EM-REML. [Cappa et al. 2015](https://doi.org/10.1007/s11295-015-0917-3) add environmental heterogeneity. [Costa e Silva et al. 2013](https://doi.org/10.1111/nph.12035) contrast disease IGEs and competition IGEs in eucalyptus. In the same species, [Costa e Silva et al. 2017](https://doi.org/10.1038/hdy.2017.25) identify the most influential neighbour positions through a factor-analytic structure, then build a combined effect weighted by distance. The review by [Costa e Silva and Kerr 2013](https://doi.org/10.1007/s11295-012-0521-8) covers these models. [Sato et al. 2021](https://doi.org/10.1038/s41437-020-00401-w) estimate the effective range of neighbour effects at the peak of explained variance, over a grid of spatial scales. A more recent preprint mentions a decay with distance without fitting it ([Sato and Hamazaki 2026](https://doi.org/10.7554/eLife.111650.1)).
 
-Pour les mélanges de cultures, la littérature porte surtout sur l'aptitude au mélange et les interactions génotypiques. [Knott et Mundt 1990](https://doi.org/10.1007/bf00210065) analysent l'aptitude au mélange chez le blé. [Forst et al. 2019](https://doi.org/10.1016/j.fcr.2019.107571) proposent un cadre pour les dispositifs de mélange incomplets. [Montazeaud et al. 2022](https://doi.org/10.1111/nph.17915) testent la richesse allélique entre génotypes chez le blé dur. [Wuest et Niklaus 2018](https://doi.org/10.1038/s41559-018-0708-y) et [Wuest et al. 2021](https://doi.org/10.1038/s41559-021-01497-x) relient la diversité génétique au rendement des mélanges. [Pélissier et al. 2023](https://doi.org/10.1371/journal.pbio.3002287) montrent que le génotype voisin modifie la sensibilité aux maladies du blé et du riz.
+For crop mixtures, the literature mainly deals with mixing ability and genotypic interactions. [Knott and Mundt 1990](https://doi.org/10.1007/bf00210065) analyse mixing ability in wheat. [Forst et al. 2019](https://doi.org/10.1016/j.fcr.2019.107571) propose a framework for incomplete mixing designs. [Montazeaud et al. 2022](https://doi.org/10.1111/nph.17915) test allelic richness between genotypes in durum wheat. [Wuest and Niklaus 2018](https://doi.org/10.1038/s41559-018-0708-y) and [Wuest et al. 2021](https://doi.org/10.1038/s41559-021-01497-x) relate genetic diversity to the yield of mixtures. [Pélissier et al. 2023](https://doi.org/10.1371/journal.pbio.3002287) show that the neighbouring genotype changes disease susceptibility in wheat and rice.
 
-Les logiciels utilisés sont variés. WOMBAT ajuste des effets « sociaux » avec un facteur de dilution fixé (manuel 2017, section 4.10.6.8). Il écrit la log-vraisemblance pour chaque d et propose une approximation quadratique du profil (--quapp). ASReml permet des superpositions de matrices d'incidence par and() (manuel 4.2). Son usage dans les études IGE forestières citées n'a pas été vérifié sur les textes. Cappa et Cantet emploient leur propre échantillonneur de Gibbs. Sato et collègues emploient rNeighborGWAS et RAINBOWR.
+The software used is varied. WOMBAT fits "social" effects with a fixed dilution factor (2017 manual, section 4.10.6.8). It writes the log-likelihood for each d and offers a quadratic approximation of the profile (--quapp). ASReml allows overlays of incidence matrices through and() (4.2 manual). Its use in the cited forestry IGE studies was not checked in the texts. Cappa and Cantet use their own Gibbs sampler. Sato and colleagues use rNeighborGWAS and RAINBOWR.
 
-Verdict. Le modèle IGE, la dilution et le noyau discret ou pondéré par la distance ont une antériorité claire. L'estimation conjointe d'une portée continue par REML, avec les composantes de variance, n'a pas d'antériorité trouvée. Les approches existantes balaient une grille (Sato) ou profilent la vraisemblance (WOMBAT pour d). La recherche sur les mélanges interspécifiques avec IGE intra et inter espèces n'a pas été exhaustive.
+Verdict. The IGE model, the dilution, and the discrete or distance-weighted kernel have clear prior art. Joint REML estimation of a continuous range with the variance components has no prior art found. Existing approaches sweep a grid (Sato) or profile the likelihood (WOMBAT for d). The search on interspecific mixtures with within-species and between-species IGEs was not exhaustive.
 
-### Incertitudes
+### Uncertainties
 
-Plusieurs textes primaires n'ont pas été lus en entier. La description de la matrice bordée de Smith et Graser 1986 provient de notes d'atelier MTDFREML. Les résultats de Meyer 2005 sur l'ordonnancement ne sont connus que par leur citation dans le manuel WOMBAT. Le choix d'ordre entre AMD et dissection emboîtée selon le type de matrice, chez Masuda et al. 2014, n'est connu que par le résumé. Les algorithmes internes d'ASReml sont fermés ; une heuristique non documentée de partition ou de contrainte ne peut pas être exclue. La version de pyreml examinée est la 0.5.3 du dépôt local. Son comportement exact (règle adjointe, voie Woodbury) mérite une lecture ciblée avant toute comparaison publiée. La page de torch-openreml n'a pas pu être chargée.
+Several primary texts were not read in full. The description of the bordered matrix of Smith and Graser 1986 comes from MTDFREML workshop notes. The results of Meyer 2005 on ordering are known only through their citation in the WOMBAT manual. The choice of ordering between AMD and nested dissection by matrix type, in Masuda et al. 2014, is known only from the abstract. The internal algorithms of ASReml are closed. An undocumented partition or constraint heuristic cannot be ruled out. The pyreml version examined is 0.5.3 from the local repository. Its exact behaviour (adjoint rule, Woodbury route) deserves a targeted reading before any published comparison. The torch-openreml page could not be loaded.
 
-### Bibliographie
+### Bibliography
 
-Articles et chapitres (DOI vérifiés sur CrossRef ou doi.org)
+Articles and chapters (DOIs verified on CrossRef or doi.org)
 
 - Amestoy PR, Davis TA, Duff IS (1996). An approximate minimum degree ordering algorithm. SIAM J Matrix Anal Appl 17:886–905. https://doi.org/10.1137/S0895479894278952
 - Amestoy PR, Davis TA, Duff IS (2004). Algorithm 837: AMD, an approximate minimum degree ordering algorithm. ACM TOMS 30:381–388. https://doi.org/10.1145/1024074.1024081
 - Arango J, Misztal I, Tsuruta S, et al. (2005). Estimation of variance components including competitive effects of Large White growing gilts. J Anim Sci 83:1241–1246. https://doi.org/10.2527/2005.8361241x
 - Bates D, DebRoy S (2004). Linear mixed models and penalized least squares. J Multivar Anal 91:1–17. https://doi.org/10.1016/j.jmva.2004.04.013
 - Bates D, Mächler M, Bolker B, Walker S (2015). Fitting linear mixed-effects models using lme4. J Stat Softw 67(1). https://doi.org/10.18637/jss.v067.i01
-- Bates D, Alday PM, Kokandakar AH (2025). Mixed-model log-likelihood evaluation via a blocked Cholesky factorization. arXiv:2505.11674 (prépublication). https://doi.org/10.48550/arXiv.2505.11674
+- Bates D, Alday PM, Kokandakar AH (2025). Mixed-model log-likelihood evaluation via a blocked Cholesky factorization. arXiv:2505.11674 (preprint). https://doi.org/10.48550/arXiv.2505.11674
 - Bermann M, Legarra A, Aguilar I, et al. (2025). Estimation of (co)variance components for very large datasets and complex single-step genomic models. Genet Sel Evol 57:63. https://doi.org/10.1186/s12711-025-01006-9
 - Besag J, Kempton R (1986). Statistical analysis of field experiments using neighbouring plots. Biometrics 42:231–251. https://doi.org/10.2307/2531047
 - Bijma P, Muir WM, Van Arendonk JAM (2007a). Multilevel selection 1. Genetics 175:277–288. https://doi.org/10.1534/genetics.106.062711
@@ -790,7 +790,7 @@ Articles et chapitres (DOI vérifiés sur CrossRef ou doi.org)
 - Hadfield JD, Wilson AJ (2007). Multilevel selection 3. Genetics 177:667–668. https://doi.org/10.1534/genetics.107.075622
 - Harville DA (1977). Maximum likelihood approaches to variance component estimation and to related problems. J Am Stat Assoc 72:320–338. https://doi.org/10.1080/01621459.1977.10480998
 - Higham NJ (1988). Computing a nearest symmetric positive semidefinite matrix. Linear Algebra Appl 103:103–118. https://doi.org/10.1016/0024-3795%2888%2990223-6
-- Horn B, Nikoloski Z, Lippert C (2026). TorchLIMIX: GPU-accelerated multivariate genome-wide association studies. bioRxiv (prépublication). https://doi.org/10.64898/2026.04.29.721342
+- Horn B, Nikoloski Z, Lippert C (2026). TorchLIMIX: GPU-accelerated multivariate genome-wide association studies. bioRxiv (preprint). https://doi.org/10.64898/2026.04.29.721342
 - Jennrich RI, Schluchter MD (1986). Unbalanced repeated-measures models with structured covariance matrices. Biometrics 42:805–820. https://doi.org/10.2307/2530695
 - Johnson DL, Thompson R (1995). Restricted maximum likelihood estimation of variance components for univariate animal models using sparse matrix techniques and average information. J Dairy Sci 78:449–456. https://doi.org/10.3168/jds.S0022-0302%2895%2976654-1
 - Kang HM, Zaitlen NA, Wade CM, et al. (2008). Efficient control of population structure in model organism association mapping. Genetics 178:1709–1723. https://doi.org/10.1534/genetics.107.080101
@@ -811,7 +811,7 @@ Articles et chapitres (DOI vérifiés sur CrossRef ou doi.org)
 - Meyer K (1989). Restricted maximum likelihood to estimate variance components for animal models with several random effects using a derivative-free algorithm. Genet Sel Evol 21:317–340. https://doi.org/10.1186/1297-9686-21-3-317
 - Meyer K, Smith SP (1996). Restricted maximum likelihood estimation for animal models using derivatives of the likelihood. Genet Sel Evol 28:23–49. https://doi.org/10.1186/1297-9686-28-1-23
 - Meyer K (2007). WOMBAT: a tool for mixed model analyses in quantitative genetics by REML. J Zhejiang Univ Sci B 8:815–821. https://doi.org/10.1631/jzus.2007.B0815
-- Mishchenko K, Holmgren S, Rönnegård L (2007). Efficient implementation of the AI-REML iteration for variance component QTL analysis. arXiv:0709.0625 (rapport de recherche). https://doi.org/10.48550/arXiv.0709.0625
+- Mishchenko K, Holmgren S, Rönnegård L (2007). Efficient implementation of the AI-REML iteration for variance component QTL analysis. arXiv:0709.0625 (research report). https://doi.org/10.48550/arXiv.0709.0625
 - Mishchenko K, Holmgren S, Rönnegård L (2008). Newton-type methods for REML estimation in genetic analysis of quantitative traits. J Comput Methods Sci Eng 8:53–67. https://doi.org/10.3233/JCM-2008-81-203
 - Misztal I, Perez-Enciso M (1993). Sparse matrix inversion for restricted maximum likelihood estimation of variance components by expectation-maximization. J Dairy Sci 76:1479–1483. https://doi.org/10.3168/jds.S0022-0302%2893%2977478-0
 - Montazeaud G, Flutre T, Ballini E, et al. (2022). From cultivar mixtures to allelic mixtures. New Phytol 233:2573–2584. https://doi.org/10.1111/nph.17915
@@ -819,13 +819,13 @@ Articles et chapitres (DOI vérifiés sur CrossRef ou doi.org)
 - Moré JJ, Sorensen DC (1983). Computing a trust region step. SIAM J Sci Stat Comput 4:553–572. https://doi.org/10.1137/0904038
 - Muir WM (2005). Incorporation of competitive effects in forest tree or animal breeding programs. Genetics 170:1247–1259. https://doi.org/10.1534/genetics.104.035956
 - Murray I (2016). Differentiation of the Cholesky decomposition. arXiv:1602.07527. https://doi.org/10.48550/arXiv.1602.07527
-- Nocedal J, Wright SJ (2006). Numerical Optimization, 2e éd. Springer. https://doi.org/10.1007/978-0-387-40065-5
+- Nocedal J, Wright SJ (2006). Numerical Optimization, 2nd ed. Springer. https://doi.org/10.1007/978-0-387-40065-5
 - Pélissier R, Ballini E, Temple C, et al. (2023). The genetic identity of neighboring plants in intraspecific mixtures modulates disease susceptibility of both wheat and rice. PLoS Biol 21:e3002287. https://doi.org/10.1371/journal.pbio.3002287
 - Pinder T, Dodd D (2022). GPJax: a Gaussian process framework in JAX. J Open Source Softw 7:4455. https://doi.org/10.21105/joss.04455
 - Pinheiro JC, Bates DM (1996). Unconstrained parametrizations for variance-covariance matrices. Stat Comput 6:289–296. https://doi.org/10.1007/BF00140873
 - Rodriguez A, Kim Y, Nandi TN, et al. (2026). SAIGE-GPU: accelerating genome- and phenome-wide association studies using GPUs. Bioinformatics. https://doi.org/10.1093/bioinformatics/btag032
 - Sato Y, Yamamoto E, Shimizu KK, Nagano AJ (2021). Neighbor GWAS. Heredity 126:597–614. https://doi.org/10.1038/s41437-020-00401-w
-- Sato Y, Hamazaki K (2026). Dissecting oligogenic and polygenic indirect genetic effects through the lens of neighbor genotypic identity. eLife, prépublication évaluée. https://doi.org/10.7554/eLife.111650.1
+- Sato Y, Hamazaki K (2026). Dissecting oligogenic and polygenic indirect genetic effects through the lens of neighbor genotypic identity. eLife, reviewed preprint. https://doi.org/10.7554/eLife.111650.1
 - Searle SR, Casella G, McCulloch CE (1992). Variance Components. Wiley. https://doi.org/10.1002/9780470316856
 - Smith SP, Graser HU (1986). Estimating variance components in a class of mixed models by restricted maximum likelihood. J Dairy Sci 69:1156–1165. https://doi.org/10.3168/jds.S0022-0302%2886%2980516-1
 - Smith SP (1995). Differentiation of the Cholesky algorithm. J Comput Graph Stat 4:134–147. https://doi.org/10.1080/10618600.1995.10474671
@@ -841,12 +841,12 @@ Articles et chapitres (DOI vérifiés sur CrossRef ou doi.org)
 - Zhou H, Stephens M (2012). Genome-wide efficient mixed-model analysis for association studies. Nat Genet 44:821–824. https://doi.org/10.1038/ng.2310
 - Zhou X, Stephens M (2014). Efficient multivariate linear mixed model algorithms for genome-wide association studies. Nat Methods 11:407–409. https://doi.org/10.1038/nmeth.2848
 
-Manuels, logiciels et sources sans DOI
+Manuals, software and sources without a DOI
 
-- Gilmour AR, Gogel BJ, Cullis BR, Welham SJ, Thompson R (2022). ASReml User Guide, Functional Specification, Release 4.2. VSN International. https://asreml.kb.vsni.co.uk/wp-content/uploads/sites/3/ASReml-4.2-Functional-Specification.pdf (sections 5.8, 6.10, 7.7.4, 11.5 consultées)
-- Meyer K (2017). WOMBAT, a program for mixed model analyses by restricted maximum likelihood. User notes, version du 31 mai 2017. https://forge-dga.jouy.inra.fr/attachments/download/8063/WombatManual-V20170531.pdf (sections 1, 4.10.6.8, 5.2–5.3, annexes A.1 et A.5 consultées)
+- Gilmour AR, Gogel BJ, Cullis BR, Welham SJ, Thompson R (2022). ASReml User Guide, Functional Specification, Release 4.2. VSN International. https://asreml.kb.vsni.co.uk/wp-content/uploads/sites/3/ASReml-4.2-Functional-Specification.pdf (sections 5.8, 6.10, 7.7.4, 11.5 consulted)
+- Meyer K (2017). WOMBAT, a program for mixed model analyses by restricted maximum likelihood. User notes, version of 31 May 2017. https://forge-dga.jouy.inra.fr/attachments/download/8063/WombatManual-V20170531.pdf (sections 1, 4.10.6.8, 5.2–5.3, appendices A.1 and A.5 consulted)
 - Boldman K, Kriese L, Van Tassell C, Kachman S, Dodenhoff J (2002). MTDFREML Workshop Notes. USDA-ARS. https://ars.usda.gov/ARSUserFiles/80420530/MTDFREML/MTDFREML_Workshop_Notes.pdf
-- Marchal A, Raimondi D (2026). pyreml, general-purpose linear mixed model solver, version 0.5.3 (code source examiné localement). https://doi.org/10.5281/zenodo.21394319
-- SuiteSparse AMD, en-tête amd.h (seuil des lignes denses). https://github.com/DrTimothyAldenDavis/SuiteSparse/blob/stable/AMD/Include/amd.h
-- Takahashi K, Fagan J, Chin MS (1973). Formation of a sparse bus impedance matrix and its application to short circuit study. 8th PICA Conference, Minneapolis, pp. 63–69. Sans DOI, non consulté.
-- Meyer K (2005). Ordering strategies to reduce computational requirements in variance component estimation. Proc Assoc Advmt Anim Breed Genet 16:282–285. Sans DOI, non consulté.
+- Marchal A, Raimondi D (2026). pyreml, general-purpose linear mixed model solver, version 0.5.3 (source code examined locally). https://doi.org/10.5281/zenodo.21394319
+- SuiteSparse AMD, header amd.h (dense row threshold). https://github.com/DrTimothyAldenDavis/SuiteSparse/blob/stable/AMD/Include/amd.h
+- Takahashi K, Fagan J, Chin MS (1973). Formation of a sparse bus impedance matrix and its application to short circuit study. 8th PICA Conference, Minneapolis, pp. 63–69. No DOI, not consulted.
+- Meyer K (2005). Ordering strategies to reduce computational requirements in variance component estimation. Proc Assoc Advmt Anim Breed Genet 16:282–285. No DOI, not consulted.

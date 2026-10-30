@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Ecarts maximaux par logiciel de reference, lus dans pairs_<date>.csv et checks_<date>.csv.
+"""Largest gaps by reference software, read from pairs_<date>.csv and checks_<date>.csv.
 
     python3 validation/summary_stats.py validation/results/checks_2026-09-28.csv validation/results/pairs_2026-09-28.csv
 """

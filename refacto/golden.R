@@ -1,22 +1,25 @@
 # ==============================================================================
-# Filet de securite du nettoyage de remlax : resultats de reference
+# Safety net of the remlax cleanup: reference results
 #
-# Ajuste un panel de modeles qui parcourt les chemins du solveur (moteurs dense,
-# econome, MME dense et creux, blocs ; optimiseurs L-BFGS-B et AI ; structures
-# us, fa, ar1 x ar1, spl2d, termes explicites, decalage spatial ; sorties PEV,
-# Wald, Kenward-Roger, vpredict, prediction ; scan, LOCO, reajustement exact ;
-# voie bayesienne ; evaluation a theta fixe ; aides de voisinage) et enregistre
-# chaque objet rendu. Le nettoyage ne doit changer AUCUN nombre : on compare
-# ensuite deux captures champ par champ.
+# Fits a panel of models that covers the paths of the solver (dense, low-memory,
+# dense and sparse MME and blocks engines; L-BFGS-B and AI optimisers; us, fa,
+# ar1 x ar1 and spl2d structures, explicit terms, spatial lag; PEV, Wald,
+# Kenward-Roger, vpredict and prediction outputs; scan, LOCO and exact refit;
+# Bayesian route; evaluation at fixed theta; neighbourhood helpers) and saves
+# every returned object. A cleanup step must change no number: two captures
+# are then compared field by field.
 #
-# Les champs qui varient d'une execution a l'autre du MEME code (temps, chemins)
-# sont reperes en capturant deux fois l'etat de reference, puis ignores.
+# Fields that vary between two runs of the SAME code (timings, paths) are found
+# by capturing the reference state twice, then ignored.
 #
-#   Rscript golden.R capture <dossier> [chemin_du_paquet]
-#   Rscript golden.R compare <dossier_reference> <dossier_nouveau> [<dossier_reference_bis>]
+#   Rscript golden.R capture <folder> [package_path]
+#   Rscript golden.R compare <reference_folder> <new_folder> [<second_reference_folder>]
 #
-# CPU seulement, un fil de calcul : la vraisemblance depend au sixieme chiffre
-# du nombre de fils BLAS, et le GPU n'est pas deterministe.
+# CPU only, one thread: the likelihood depends at the sixth digit on the number
+# of BLAS threads, and the GPU is not deterministic.
+#
+# The saved files keep their original keys ($valeur for the value, $affichage
+# for the printed output) so that the older references stay comparable.
 # ==============================================================================
 
 a0 <- commandArgs(trailingOnly = TRUE)
@@ -45,17 +48,17 @@ if (mode == "capture") {
     }, error = function(e) structure(list(message = conditionMessage(e)), class = "golden_erreur"))
     affichage <- if (inherits(val, "rx_fit"))
       tryCatch(c(utils::capture.output(print(val)), utils::capture.output(print(summary(val)))),
-               error = function(e) paste("affichage :", conditionMessage(e)))
+               error = function(e) paste("print:", conditionMessage(e)))
     else NULL
     saveRDS(list(valeur = val, affichage = affichage), file.path(dossier, paste0(nom, ".rds")))
-    etat <- if (inherits(val, "golden_erreur")) paste("ERREUR :", val$message) else "ok"
+    etat <- if (inherits(val, "golden_erreur")) paste("ERROR:", val$message) else "ok"
     ligne <- sprintf("%-28s %6.1f s  %s", nom, as.numeric(difftime(Sys.time(), t0, units = "secs")), etat)
     journal <<- c(journal, ligne); message(ligne)
     invisible(val)
   }
   fa <- function(...) c(list(backend = "cpu", verbose = FALSE), list(...))
 
-  # --- donnees -----------------------------------------------------------------
+  # --- data --------------------------------------------------------------------
   set.seed(2026)
   d1 <- expand.grid(gid = factor(sprintf("G%02d", 1:60)), bloc = factor(1:4))
   d1$x <- rnorm(nrow(d1))
@@ -94,7 +97,7 @@ if (mode == "capture") {
   g5$y <- 5 + 0.03 * (g5$row - 8)^2 - 0.4 * cos(g5$col / 3) + 0.3 * (g5$trt == "b") +
     rnorm(40)[g5$gid] + rnorm(nrow(g5), 0, 0.5)
 
-  # dispositif a deux especes en bacs (termes explicites, moteur par blocs)
+  # two-species design in tanks (explicit terms, blocks engine)
   set.seed(21)
   ng <- 30
   dd <- do.call(rbind, lapply(1:3, function(b) data.frame(bac = sprintf("b%d", b),
@@ -130,7 +133,7 @@ if (mode == "capture") {
   r_ige_bloc <- ~ str(~ mm(ZaD) + mm(ZaI) + mm(ZaX), struct = "us", name = "gA") +
     str(~ mm(ZbD) + mm(ZbI) + mm(ZbX), struct = "us", name = "gB") + iid(esp_bac)
 
-  # decalage spatial (jeu de test-decalage.R)
+  # spatial lag (data of test-decalage.R)
   reine <- function(nr, nc) {
     co <- expand.grid(c = seq_len(nc), r = seq_len(nr))
     D <- unname(as.matrix(stats::dist(co, method = "maximum")))
@@ -150,7 +153,7 @@ if (mode == "capture") {
   z0 <- Matrix::Matrix(0, N, ngl, sparse = TRUE)
   ZDl <- list(T1 = rbind(Zg, z0), T2 = rbind(z0, Zg))
 
-  # --- cas -----------------------------------------------------------------------
+  # --- cases ---------------------------------------------------------------------
   cas("simple_lbfgsb", do.call("rx_reml", c(list(y ~ x, random = ~ gid + iid(bloc), data = d1,
        vpredict = c(h2 = "V1/(V1+V2+V3)"), wald = TRUE, kenward_roger = TRUE, pev = TRUE), fa())))
   f_simple <- readRDS(file.path(dossier, "simple_lbfgsb.rds"))$valeur
@@ -229,7 +232,7 @@ if (mode == "capture") {
   cas("scan", { fit <- do.call("rx_reml", c(list(y ~ 1, random = ~ vm(gid, K = K), data = d2), fa()))
        m <- rx_model(d2$y, matrix(1, nrow(d2), 1), list(rx_term("gid", d2$gid, K = K)))
        f2 <- do.call("rx_fit", c(list(m), fa()))
-       rx_scan(f2, m, M, carte = carte, incidences = c(dir = "gid"), tests = "dir", maf = NULL,
+       rx_scan(f2, m, M, map = carte, incidences = c(dir = "gid"), tests = "dir", maf = NULL,
                backend = "cpu", verbose = FALSE) })
   construire <- function(Kk, X_sup = NULL)
     rx_model(d2$y, cbind(rep(1, nrow(d2)), X_sup), list(rx_term("gid", d2$gid, K = Kk)), rx_residual())
@@ -251,11 +254,11 @@ if (mode == "capture") {
 }
 
 # ------------------------------------------------------------------------------
-# Comparaison
+# Comparison
 # ------------------------------------------------------------------------------
 if (mode == "compare") {
   ref <- a0[2]; nouv <- a0[3]; bis <- if (length(a0) >= 4) a0[4] else NULL
-  # Aplatit un objet en liste nommee de feuilles : chemin -> valeur
+  # Flattens an object into a named list of leaves: path -> value
   aplatir <- function(x, chemin = "") {
     if (is.environment(x) || is.function(x)) return(list())
     if (is(x, "Matrix")) x <- as.matrix(x)
@@ -286,13 +289,13 @@ if (mode == "compare") {
     }
     if (identical(a, b)) 0 else Inf
   }
-  lire <- function(f) {                # les durees imprimees changent a chaque execution
+  lire <- function(f) {                # printed durations change at every run
     x <- readRDS(f)
     if (!is.null(x$affichage)) x$affichage <- gsub("[0-9]+([.,][0-9]+)? ?s\\b", "<duree>", x$affichage)
     x
   }
   volatils <- character()
-  if (!is.null(bis)) {                 # champs qui changent entre deux captures du meme code
+  if (!is.null(bis)) {                 # fields that change between two captures of the same code
     for (f in list.files(ref, "\\.rds$")) {
       A <- aplatir(lire(file.path(ref, f))); B <- aplatir(lire(file.path(bis, f)))
       for (k in union(names(A), names(B))) if (ecart(A[[k]], B[[k]]) > 0)
@@ -300,7 +303,7 @@ if (mode == "compare") {
     }
     writeLines(volatils, file.path(nouv, "volatils.txt"))
   } else if (file.exists(file.path(ref, "volatils.txt"))) volatils <- readLines(file.path(ref, "volatils.txt"))
-  motif_temps <- "secondes|chrono|compile_s|eval_s|\\$dir$|temps|t_optim|elapsed|duree|fils_bornes"
+  motif_temps <- "secondes|seconds|first_call_s|chrono|compile_s|eval_s|\\$dir$|temps|t_optim|elapsed|duree|fils_bornes|threads_bound"
   res <- list()
   for (f in list.files(ref, "\\.rds$")) {
     if (!file.exists(file.path(nouv, f))) { res[[f]] <- data.frame(cas = f, champ = "(absent)", ecart = Inf); next }
@@ -313,11 +316,11 @@ if (mode == "compare") {
   }
   tab <- if (length(res)) do.call(rbind, res) else data.frame(cas = character(), champ = character(), ecart = numeric())
   rownames(tab) <- NULL
-  cat(sprintf("%d fichiers compares, %d champs volatils ignores\n", length(list.files(ref, "\\.rds$")),
+  cat(sprintf("%d files compared, %d volatile fields ignored\n", length(list.files(ref, "\\.rds$")),
               length(volatils)))
-  if (!nrow(tab)) cat("AUCUN ECART : resultats identiques au bit pres.\n") else {
+  if (!nrow(tab)) cat("NO DIFFERENCE: results identical to the bit.\n") else {
     tab <- tab[order(-tab$ecart), ]
-    cat(sprintf("%d champs differents ; ecart relatif max %.3g\n", nrow(tab), max(tab$ecart)))
+    cat(sprintf("%d fields differ, max relative gap %.3g\n", nrow(tab), max(tab$ecart)))
     print(utils::head(tab, 40), row.names = FALSE)
   }
   utils::write.csv(tab, file.path(nouv, "ecarts.csv"), row.names = FALSE)

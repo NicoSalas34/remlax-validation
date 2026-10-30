@@ -1,23 +1,23 @@
 #!/bin/bash
 # =============================================================================
-# VALIDATION COMPLETE DE remlax SUR GPU (tranche MIG A100)
+# FULL VALIDATION OF remlax ON GPU (A100 MIG slice)
 #
-# Tout tourne dans UNE SEULE image, ige_reml.sif, qui contient a la fois R
-# (asreml, lme4, sommer, pbkrtest) et JAX CUDA. C'est ce qui rend ce job
-# possible : remlax fait appeler le solveur PAR R, et avec deux images il
-# aurait fallu imbriquer apptainer dans apptainer — impossible ici, le binaire
-# de l'hote ne trouvant pas ses bibliotheques dans le conteneur.
+# Everything runs in ONE image, ige_reml.sif, which holds both R (asreml, lme4,
+# sommer, pbkrtest) and JAX CUDA. This makes the job possible. remlax has R
+# call the solver, and two images would need apptainer nested in apptainer.
+# Nesting is impossible here: the host binary does not find its libraries
+# inside the container.
 #
-# CE QUI EST VERIFIE, dans cet ordre :
-#   1. noyau Python            algebre, REML analytique, cas degeneres
-#   2. validation croisee      meme -2logL que lme4 et sommer, SUR GPU
-#   3. asreml (catalogue)      ar1, ar1xar1, splines 2D, str, vpredict, Wald
-#   4. asreml (ajouts)         lvr, mtrn anisotrope, own, dsum, predict, K-R
-#   5. modele IGE complet      le cas reel du projet
-#   6. parite CPU/GPU          35 dispositifs, meme paquet, deux machines
+# WHAT IS CHECKED, in this order:
+#   1. Python core             algebra, analytic REML, degenerate cases
+#   2. cross-validation        same -2logL as lme4 and sommer, ON GPU
+#   3. asreml (catalogue)      ar1, ar1xar1, 2D splines, str, vpredict, Wald
+#   4. asreml (additions)      lvr, anisotropic mtrn, own, dsum, predict, K-R
+#   5. full IGE model          the real case of the project
+#   6. CPU/GPU parity          35 designs, same bundle, two machines
 #
-# Le point 6 est le seul qui teste la MACHINE : les autres testent le code et
-# se trouvent simplement executes sur la carte.
+# Step 6 alone tests the MACHINE. The others test the code and simply run on
+# the card.
 #
 #   sbatch scripts/tests/slurm_valid_gpu.slurm
 # =============================================================================
@@ -38,10 +38,10 @@ mkdir -p logs output/tests
 
 SIF=${SIF:-/scratch/users/salasn/ige_reml.sif}
 
-# renv DOIT ETRE DESARME dans le conteneur. Le projet a un .Rprofile qui charge
-# renv, lequel repointe .libPaths() vers la bibliotheque de l'HOTE — construite
-# pour une autre version de R. Le conteneur perd alors sa propre bibliotheque et
-# s'arrete sur "there is no package called 'jsonlite'", alors que tout est la.
+# renv MUST BE DISABLED inside the container. The project has a .Rprofile that
+# loads renv, and renv points .libPaths() to the HOST library, built for another
+# version of R. The container then loses its own library and stops on
+# "there is no package called 'jsonlite'", although everything is there.
 export APPTAINERENV_RENV_CONFIG_AUTOLOADER_ENABLED=FALSE
 RUN() { apptainer exec --nv "$SIF" "$@"; }
 
@@ -49,33 +49,33 @@ echo "=== $(hostname) | job ${SLURM_JOB_ID:-local} | $(date) ==="
 nvidia-smi --query-gpu=name,memory.total --format=csv,noheader
 RUN python3 -c "import jax; print('[jax]', jax.__version__, jax.devices())"
 
-etat=0
-etape() {                       # etape <numero> <titre> <commande...>
-  local n="$1" titre="$2"; shift 2
-  echo; echo "########## $n. $titre ##########"
-  if "$@"; then echo "--> $n OK"; else echo "--> $n ECHEC (code $?)"; etat=1; fi
+status=0
+step() {                        # step <number> <title> <command...>
+  local n="$1" title="$2"; shift 2
+  echo; echo "########## $n. $title ##########"
+  if "$@"; then echo "--> $n OK"; else echo "--> $n FAIL (code $?)"; status=1; fi
 }
 
-# 1-5 : les suites, telles quelles, mais avec le backend GPU.
-etape 1 "noyau (Python)"            RUN python3 scripts/tests/test_remlax_core.py
-etape 2 "croisee lme4/sommer (GPU)" env APPTAINERENV_RK_BACKEND=gpu \
+# 1-5: the suites as they are, but with the GPU backend.
+step 1 "core (Python)"              RUN python3 scripts/tests/test_remlax_core.py
+step 2 "lme4/sommer cross (GPU)"  env APPTAINERENV_RK_BACKEND=gpu \
         apptainer exec --nv "$SIF" Rscript scripts/tests/test_remlax.R
-etape 3 "asreml : catalogue"        RUN Rscript scripts/tests/test_remlax_asreml.R
-etape 4 "asreml : ajouts 09/2026"   env APPTAINERENV_RK_BACKEND=gpu \
+step 3 "asreml: catalogue"          RUN Rscript scripts/tests/test_remlax_asreml.R
+step 4 "asreml: 09/2026 additions"  env APPTAINERENV_RK_BACKEND=gpu \
         apptainer exec --nv "$SIF" Rscript scripts/tests/test_remlax_asreml2.R
-etape 5 "modele IGE complet"        RUN Rscript scripts/tests/test_remlax_ige.R
+step 5 "full IGE model"             RUN Rscript scripts/tests/test_remlax_ige.R
 
-# 6 : parite. L'export est R, l'ajustement Python : les deux backends lisent
-# STRICTEMENT le meme paquet, ce qui est tout l'interet du format sur fichier.
+# 6: parity. R exports and Python fits. Both backends read EXACTLY the same
+# bundle, which is the whole point of the on-file format.
 #
-# COMPTER EN COMPILATIONS, PAS EN CALCULS. 34 modeles x 2 backends font 68
-# compilations XLA, et sur une TRANCHE MIG (7 SM sur 108) le compilateur est
-# lent au point que XLA emet lui-meme des "Very slow compile?". C'est le poste
-# dominant du balayage, pas l'algebre : les modeles font 160 a 480 observations.
-# Prevoir plusieurs dizaines de minutes ici, et ne pas confondre avec un blocage.
-echo; echo "########## 6. parite CPU/GPU ##########"
-RUN Rscript scripts/tests/export_bundles.R --out=output/tests/bundles || etat=1
-RUN python3 scripts/tests/parite_gpu.py output/tests/bundles || etat=1
+# COUNT COMPILATIONS, NOT COMPUTATIONS. 34 models x 2 backends make 68 XLA
+# compilations. On a MIG SLICE (7 SMs out of 108) the compiler is so slow that
+# XLA itself prints "Very slow compile?". Compilation dominates the sweep, not
+# the algebra: the models have 160 to 480 observations. Expect several tens of
+# minutes here, and do not mistake it for a hang.
+echo; echo "########## 6. CPU/GPU parity ##########"
+RUN Rscript scripts/tests/export_bundles.R --out=output/tests/bundles || status=1
+RUN python3 scripts/tests/parite_gpu.py output/tests/bundles || status=1
 
-echo; echo "=== fin $(date) | etat global : $([ $etat -eq 0 ] && echo OK || echo ECHEC) ==="
-exit $etat
+echo; echo "=== end $(date) | overall status: $([ $status -eq 0 ] && echo OK || echo FAIL) ==="
+exit $status

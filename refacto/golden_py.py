@@ -113,9 +113,10 @@ def capture(out, repo):
                 fsc, fj, sc = mk(plan)
                 return [fj(th) for th in thetas]
             r["blocs"] = _try(blk)
-        for inv in ("dense", "creuse", "hybride"):
+        # keys keep the labels of the reference; the inversion value follows the API
+        for label, inv in (("dense", "dense"), ("creuse", "sparse"), ("hybride", "hybrid")):
             def mme(inv=inv):
-                kw = dict(separateur=sep) if inv == "hybride" and sep else {}
+                kw = dict(separateur=sep) if inv == "hybrid" and sep else {}
                 M = MME(terms, res, y, X, inversion=inv, verbose=False, **kw)
                 ev_fn = getattr(M, "evaluate", None) or M.evaluer
                 out_fn = getattr(M, "outputs", None) or M.sorties
@@ -130,15 +131,15 @@ def capture(out, repo):
                 return dict(inversion=M.inversion, evals=ev,
                             two_step=dict(f=a.get("f"), g=b.get("g"), AI=b.get("AI")),
                             sorties=out_fn(thetas[0], pev=True))
-            r["mme_" + inv] = _try(mme)
+            r["mme_" + label] = _try(mme)
         fits = {}
         kw = dict(verbose=False, hessian=False, pev=False)
-        fits["ai_mme"] = _try(lambda: fit_reml(terms, res, y, X, optimizer="ai", moteur="mme", **kw))
+        fits["ai_mme"] = _try(lambda: fit_reml(terms, res, y, X, optimizer="ai", engine="mme", **kw))
         if not kinv_only:
             fits["ai_dense"] = _try(lambda: fit_reml(terms, res, y, X, optimizer="ai", **kw))
             fits["lbfgsb_dense"] = _try(lambda: fit_reml(terms, res, y, X, maxiter=200, **kw))
         keep = ("theta", "neg2_reml", "n_iter", "n_eval", "n_polish", "scipy_message",
-                "scipy_success", "beta", "moteur", "inversion", "grad_rel", "max_grad")
+                "scipy_success", "beta", "moteur", "engine", "inversion", "grad_rel", "max_grad")
         r["fits"] = {k: ({kk: v[kk] for kk in keep if kk in v} if "erreur" not in v else v)
                      for k, v in fits.items()}
         res_all[name] = _clean(r)
@@ -147,7 +148,24 @@ def capture(out, repo):
         pickle.dump(res_all, f)
 
 
+# English renames of 2026-10: an old name or value compares equal to its new one.
+_SAME = {"moteur": "engine", "creuse": "sparse", "hybride": "hybrid", "blocs": "blocks",
+         "econome": "low"}
+
+
+def _norm(x):
+    if isinstance(x, dict):
+        return {_SAME.get(k, k) if isinstance(k, str) else k: _norm(v) for k, v in x.items()}
+    if isinstance(x, (list, tuple)) and not isinstance(x, np.ndarray):
+        return type(x)(_norm(v) for v in x)
+    if isinstance(x, str):
+        return _SAME.get(x, x)
+    return x
+
+
 def _diff(a, b, path, out):
+    if path == "":
+        a, b = _norm(a), _norm(b)
     if isinstance(a, dict) and isinstance(b, dict):
         for k in sorted(set(a) | set(b), key=str):
             if k not in a or k not in b:

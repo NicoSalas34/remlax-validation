@@ -1,21 +1,21 @@
 # ==============================================================================
-# charger_remlax.R -- charge le paquet remlax installe pour les scripts de ce
-#                     depot de validation
+# charger_remlax.R -- loads the installed remlax package for the scripts of this
+#                     validation repository
 # ------------------------------------------------------------------------------
-# Les scripts de validation sont nes dans le depot remlax, ou ils chargeaient les
-# sources par source("R/remlax.R"), fichier depuis decoupe en plusieurs. Ils
-# testent aussi des fonctions internes (.rx_parse_random, .rx_parse_residual,
-# ...). On charge donc le paquet INSTALLE et l'on
-# rend son espace de noms entier visible depuis l'environnement global : les
-# scripts voient exactement ce qu'ils voyaient avec source(), mais c'est bien le
-# code du paquet teste, a la version installee, qui repond.
+# The validation scripts were born in the remlax repository, where they loaded
+# the sources with source("R/remlax.R"), a file since split into several. They
+# also test internal functions (.rx_parse_random, .rx_parse_residual, ...).
+# This file therefore loads the INSTALLED package and makes its whole namespace
+# visible from the global environment. The scripts see exactly what they saw
+# with source(), but the code that answers is the tested package, at the
+# installed version.
 #
-# La version testee est imprimee en tete : un journal de validation doit dire
-# contre quelle version de remlax il a ete produit.
+# The tested version is printed first. A validation log must state which
+# version of remlax produced it.
 # ==============================================================================
 if (!requireNamespace("remlax", quietly = TRUE))
-  stop("le paquet remlax n'est pas installe : ",
-       "remotes::install_github('NicoSalas34/remlax') ou R CMD INSTALL <depot remlax>")
+  stop("the remlax package is not installed: ",
+       "remotes::install_github('NicoSalas34/remlax') or R CMD INSTALL <remlax repository>")
 suppressPackageStartupMessages(library(remlax))
 local({
   ns <- asNamespace("remlax")
@@ -24,4 +24,4 @@ local({
       assign(nm, get(nm, envir = ns), envir = globalenv())
 })
 cat("remlax", as.character(utils::packageVersion("remlax")),
-    "installe dans", dirname(system.file(package = "remlax")), "\n")
+    "installed in", dirname(system.file(package = "remlax")), "\n")

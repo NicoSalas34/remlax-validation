@@ -1,33 +1,33 @@
 #!/usr/bin/env python3
-"""Extrait le tableau de verifications des journaux des suites de validation.
+"""Extract the table of checks from the logs of the validation suites.
 
-    python3 validation/parse_logs.py <journaux>[=<provenance>] [<journaux2>[=<provenance2>] ...] \
+    python3 validation/parse_logs.py <logs>[=<provenance>] [<logs2>[=<provenance2>] ...] \
             --out validation/results/checks_<date>.csv
 
-POURQUOI UN PARSEUR PLUTOT QU'UNE SAISIE. Les suites de tests impriment une
-ligne par verification, avec un verdict. Recopier ces lignes a la main dans un
-tableau, c'est se donner l'occasion de faire une faute de frappe sur un chiffre
-qui sera ensuite cite dans un article. Le parseur ne peut pas se tromper de
-chiffre : il prend la ligne telle quelle.
+WHY A PARSER RATHER THAN TYPING. The test suites print one line per check,
+with a verdict. Copying these lines into a table by hand invites a typo in a
+number that a paper will later cite. The parser cannot get a number wrong. It
+takes the line as it is.
 
-CE QU'IL LIT. Les formats que les suites produisent :
-  - une ligne de verdict :  deux espaces, un libelle, deux espaces au moins,
-    puis OK ou ECHEC, puis un detail chiffre (suites R principales) ;
-  - la variante `  [OK] libelle   detail` des suites du moteur creux ;
-  - la variante `  OK    libelle  detail` de test_remlax_asreml_blup.R ;
-  - un titre de section :   === 3. spline 2D ===
-  - pour le balayage aleatoire, les compteurs de son resume ;
-  - pour pytest, la ligne finale `N passed, M skipped` ;
-  - pour la parite CPU/GPU, le tableau de parite_gpu.py.
+WHAT IT READS. The formats the suites produce:
+  - a verdict line: two spaces, a label, at least two spaces, then OK or FAIL
+    (ECHEC in older logs), then a numeric detail (main R suites);
+  - the variant `  [OK] label   detail` of the sparse engine suites;
+  - the variant `  OK    label  detail` of test_remlax_asreml_blup.R;
+  - a section title:   === 3. 2D spline ===
+  - for the random sweep, the counters of its summary;
+  - for pytest, the final line `N passed, M skipped`;
+  - for the CPU/GPU parity, the table of parite_gpu.py.
 
-PLUSIEURS REPERTOIRES. Le meme journal peut exister en plusieurs exemplaires
-(cluster et local). Les repertoires sont lus dans l'ordre donne et le PREMIER
-exemplaire trouve d'un journal fait foi ; donner le cluster d'abord. Chaque
-repertoire porte sa provenance apres `=`.
+SEVERAL DIRECTORIES. The same log may exist in several copies (cluster and
+local). The directories are read in the order given and the FIRST copy found
+of a log is authoritative, so give the cluster first. Each directory carries
+its provenance after `=`.
 
-Les libelles restent en francais : ce sont les chaines imprimees par les suites,
-citees verbatim. Les traduire donnerait un tableau plus lisible et une trace
-fausse.
+Labels are copied verbatim from the logs. Logs written before the English pass
+of the suites (such as the 2026-09 campaign) carry French labels, and the
+table keeps them. Translating them here would give a more readable table and a
+false trace.
 """
 import argparse
 import csv
@@ -36,7 +36,7 @@ import os
 import re
 from collections import Counter, OrderedDict
 
-# (fichier, suite, reference) — l'ordre fixe celui du tableau final.
+# (file, suite, reference): this order sets the order of the final table.
 SOURCES = [
     ("01_core.log", "algebra", "internal algebra"),
     ("00_pytest.log", "pytest", "internal algebra and closed forms (pytest)"),
@@ -52,29 +52,36 @@ SOURCES = [
     ("15_asreml3.log", "asreml_rest", "asreml"),
     ("06b_asreml_blup.log", "asreml_blup", "asreml"),
     ("06_ige.log", "ige_model", "asreml + known truth"),
-    # Les trois journaux tmb n'existent que dans la campagne de 2026-09 : le moteur
-    # RTMB a ete retire de remlax ensuite, avec ses suites.
+    # The three tmb logs exist only in the 2026-09 campaign. The RTMB engine
+    # was removed from remlax afterwards, together with its suites.
     ("10_tmb_parity.log", "sparse_parity", "dense engine (same theta)"),
     ("11_tmb_vs_dense.log", "sparse_vs_dense", "dense engine (warm start both ways)"),
     ("12_tmb_prec.log", "sparse_prec", "independent dense-algebra REML"),
     ("21_parite.log", "cpu_gpu_parity", "the other backend (same input bundle)"),
 ]
 
-VERDICT = re.compile(r"^  (?P<nom>.{2,70}?)\s{2,}(?P<verdict>OK|ECHEC)\s*(?P<detail>.*)$")
-VERDICT_CROCHETS = re.compile(r"^\s*\[(?P<verdict>OK|ECHEC)\]\s+(?P<nom>.+?)(?:\s{2,}(?P<detail>.*))?$")
-VERDICT_TETE = re.compile(r"^  (?P<verdict>OK|ECHEC)\s+(?P<nom>.+?)(?:\s{2,}(?P<detail>.*))?$")
+# FAIL is the verdict of the English suites, ECHEC that of older French logs.
+VERDICT = re.compile(r"^  (?P<name>.{2,70}?)\s{2,}(?P<verdict>OK|FAIL|ECHEC)\s*(?P<detail>.*)$")
+VERDICT_BRACKETS = re.compile(r"^\s*\[(?P<verdict>OK|FAIL|ECHEC)\]\s+(?P<name>.+?)(?:\s{2,}(?P<detail>.*))?$")
+VERDICT_HEAD = re.compile(r"^  (?P<verdict>OK|FAIL|ECHEC)\s+(?P<name>.+?)(?:\s{2,}(?P<detail>.*))?$")
 SECTION = re.compile(r"^=+\s*(?P<t>[A-Z]?\d*[a-z]?\..*?)\s*=+\s*$")
-PARITE = re.compile(r"^(?P<m>[a-z0-9_.]+)\s+(?P<c>-?\d+\.\d+)\s+(?P<g>-?\d+\.\d+)\s+"
+PARITY = re.compile(r"^(?P<m>[a-z0-9_.]+)\s+(?P<c>-?\d+\.\d+)\s+(?P<g>-?\d+\.\d+)\s+"
                     r"(?P<rel>[\d.]+e[+-]\d+)\s+(?P<dth>[\d.]+e[+-]\d+)\s+"
                     r"(?P<sc>[\d.]+)\s+(?P<sg>[\d.]+)", re.M)
 PYTEST = re.compile(r"^(?:=+ )?(?P<p>\d+) passed(?:, (?P<s>\d+) skipped)?(?:, (?P<f>\d+) failed)?"
                     r"(?:, (?P<e>\d+) errors?)? in (?P<t>[\d.]+)s", re.M)
-COMPTEURS = ["exception", "logLik non finie", "non convergé", "Sigma non PSD",
-             "optimum instable"]
-# Versions des logiciels, lues dans les en-tetes que les suites impriment.
-# Lues dans les HUIT premieres lignes de chaque journal (les suites impriment
-# leurs versions en tete) et dans 00_versions.log entier, un fichier que le
-# job ecrit avec la ligne [R] ... | asreml ... et la ligne [jax] ... .
+# Counters of the stress summary, each with its English and older French label.
+COUNTERS = OrderedDict([
+    ("exception", ["exception"]),
+    ("non-finite logLik", ["non-finite logLik", "logLik non finie"]),
+    ("not converged", ["not converged", "non convergé"]),
+    ("Sigma not PSD", ["Sigma not PSD", "Sigma non PSD"]),
+    ("unstable optimum", ["unstable optimum", "optimum instable"]),
+])
+# Software versions, read from the headers the suites print. They are read in
+# the first EIGHT lines of each log (the suites print their versions first) and
+# in the whole of 00_versions.log, a file the job writes with the line
+# [R] ... | asreml ... and the line [jax] ... .
 VERSIONS = [
     ("R", re.compile(r"R version (\d+\.\d+\.\d+)")),
     ("R", re.compile(r"\| R (\d+) (\d+\.\d+)")),
@@ -84,31 +91,31 @@ VERSIONS = [
     ("nlme", re.compile(r"nlme (\d+\.\d+[-.]\d+)")),
     ("pbkrtest", re.compile(r"pbkrtest (\d+\.\d+\.\d+)")),
     ("jax", re.compile(r"\[jax\] (\d+\.\d+\.\d+)")),
-    # Ne sert qu'aux journaux de 2026-09 (moteur RTMB retire de remlax depuis).
+    # Only used by the 2026-09 logs (the RTMB engine has since left remlax).
     ("RTMB", re.compile(r"RTMB (\d+\.\d+[\d.]*)")),
 ]
-N_LIGNES_VERSIONS = 8
+N_VERSION_LINES = 8
 
 
-def trouver(racine, nom):
-    """Le meme journal peut apparaitre a plusieurs profondeurs selon le job."""
-    for d, _, fs in os.walk(racine):
-        if nom in fs:
-            return os.path.join(d, nom)
+def find_log(root, name):
+    """The same log may appear at several depths, depending on the job."""
+    for d, _, fs in os.walk(root):
+        if name in fs:
+            return os.path.join(d, name)
     return None
 
 
-def lignes_verdict(txt, suite, ref, prov, src):
+def verdict_rows(txt, suite, ref, prov, src):
     section, out = "", []
     for line in txt.splitlines():
         m = SECTION.match(line.strip())
         if m:
             section = m.group("t").strip()
             continue
-        m = VERDICT.match(line.rstrip()) or VERDICT_CROCHETS.match(line.rstrip()) \
-            or VERDICT_TETE.match(line.rstrip())
+        m = VERDICT.match(line.rstrip()) or VERDICT_BRACKETS.match(line.rstrip()) \
+            or VERDICT_HEAD.match(line.rstrip())
         if m:
-            out.append(dict(suite=suite, section=section, check=m.group("nom").strip(),
+            out.append(dict(suite=suite, section=section, check=m.group("name").strip(),
                             reference=ref,
                             verdict="pass" if m.group("verdict") == "OK" else "FAIL",
                             detail=(m.group("detail") or "").strip(),
@@ -116,16 +123,17 @@ def lignes_verdict(txt, suite, ref, prov, src):
     return out
 
 
-def lignes_stress(txt, suite, ref, prov, src, seed):
+def stress_rows(txt, suite, ref, prov, src, seed):
     cnt = {}
-    for k in COMPTEURS:
-        m = re.search(r"^  %s\s+(\d+)\s*$" % re.escape(k), txt, re.M)
+    for k, labels in COUNTERS.items():
+        alt = "|".join(re.escape(x) for x in labels)
+        m = re.search(r"^  (?:%s)\s+(\d+)\s*$" % alt, txt, re.M)
         cnt[k] = int(m.group(1)) if m else None
-    m = re.search(r"^(\d+)/(\d+) sans aucun probleme", txt, re.M)
+    m = re.search(r"^(\d+)/(\d+) (?:without any problem|sans aucun probleme)", txt, re.M)
     ok, tot = (int(m.group(1)), int(m.group(2))) if m else (0, 0)
     trip = re.findall(r"^\s+\((\d+), ([\d.]+), ([\d.]+)\)\s*$", txt, re.M)
-    impossible = ["exception", "logLik non finie", "non convergé", "Sigma non PSD"]
-    detail = "clean %d/%d; unstable optima %d" % (ok, tot, cnt.get("optimum instable") or 0)
+    impossible = ["exception", "non-finite logLik", "not converged", "Sigma not PSD"]
+    detail = "clean %d/%d; unstable optima %d" % (ok, tot, cnt.get("unstable optimum") or 0)
     if trip:
         detail += " (best-of-restart gains %s in -2logL)" % ", ".join(
             "%.4f" % (float(a) - float(b)) for _, a, b in trip)
@@ -136,7 +144,7 @@ def lignes_stress(txt, suite, ref, prov, src, seed):
                  detail=detail, provenance=prov, source_log=src)]
 
 
-def lignes_pytest(txt, suite, ref, prov, src):
+def pytest_rows(txt, suite, ref, prov, src):
     m = None
     for m in PYTEST.finditer(txt):
         pass
@@ -150,9 +158,9 @@ def lignes_pytest(txt, suite, ref, prov, src):
                  provenance=prov, source_log=src)]
 
 
-def lignes_parite(txt, suite, ref, prov, src, tol=1e-8):
+def parity_rows(txt, suite, ref, prov, src, tol=1e-8):
     out = []
-    for d in (m.groupdict() for m in PARITE.finditer(txt)):
+    for d in (m.groupdict() for m in PARITY.finditer(txt)):
         out.append(dict(
             suite=suite, section="structure catalogue, 34 serialised designs",
             check="design '%s': same -2logL on CPU and on an A100 MIG slice" % d["m"],
@@ -163,12 +171,12 @@ def lignes_parite(txt, suite, ref, prov, src, tol=1e-8):
     return out
 
 
-def versions_de(txt):
+def versions_in(txt):
     v = {}
-    for nom, rx in VERSIONS:
+    for name, rx in VERSIONS:
         m = rx.search(txt)
-        if m and nom not in v:
-            v[nom] = ".".join(g for g in m.groups() if g)
+        if m and name not in v:
+            v[name] = ".".join(g for g in m.groups() if g)
     return v
 
 
@@ -179,47 +187,47 @@ COLS = ["suite", "section", "check", "reference", "verdict", "detail",
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("logs", nargs="+",
-                    help="repertoire(s) de journaux, chacun sous la forme chemin[=provenance]")
+                    help="log directory or directories, each written path[=provenance]")
     ap.add_argument("--out", required=True)
     ap.add_argument("--provenance", default="re-measured, provenance not given")
     ap.add_argument("--versions-out", default=None,
-                    help="JSON des versions de logiciels lues dans les journaux (defaut : a cote de --out)")
+                    help="JSON of the software versions read in the logs (default: next to --out)")
     a = ap.parse_args(argv)
 
-    racines = []
+    roots = []
     for spec in a.logs:
-        chemin, _, prov = spec.partition("=")
-        racines.append((chemin, prov or a.provenance))
+        path, _, prov = spec.partition("=")
+        roots.append((path, prov or a.provenance))
 
-    rows, manquants, versions, origine = [], [], OrderedDict(), {}
-    for nom, suite, ref in SOURCES:
+    rows, missing, versions, origin = [], [], OrderedDict(), {}
+    for name, suite, ref in SOURCES:
         p, prov = None, None
-        for racine, prov_r in racines:
-            p = trouver(racine, nom)
+        for root, prov_r in roots:
+            p = find_log(root, name)
             if p is not None:
                 prov = prov_r
                 break
         if p is None:
-            manquants.append(nom)
+            missing.append(name)
             continue
-        origine[nom] = p
+        origin[name] = p
         txt = open(p, errors="replace").read()
-        for k, v in versions_de("\n".join(txt.splitlines()[:N_LIGNES_VERSIONS])).items():
+        for k, v in versions_in("\n".join(txt.splitlines()[:N_VERSION_LINES])).items():
             versions.setdefault(k, OrderedDict()).setdefault(prov, v)
         if suite == "stress":
-            seed = int(re.search(r"_s(\d+)\.log$", nom).group(1))
-            rows += lignes_stress(txt, suite, ref, prov, nom, seed)
+            seed = int(re.search(r"_s(\d+)\.log$", name).group(1))
+            rows += stress_rows(txt, suite, ref, prov, name, seed)
         elif suite == "cpu_gpu_parity":
-            rows += lignes_parite(txt, suite, ref, prov, nom)
+            rows += parity_rows(txt, suite, ref, prov, name)
         elif suite == "pytest":
-            rows += lignes_pytest(txt, suite, ref, prov, nom)
+            rows += pytest_rows(txt, suite, ref, prov, name)
         else:
-            rows += lignes_verdict(txt, suite, ref, prov, nom)
+            rows += verdict_rows(txt, suite, ref, prov, name)
 
-    for racine, prov_r in racines:
-        pv = trouver(racine, "00_versions.log")
+    for root, prov_r in roots:
+        pv = find_log(root, "00_versions.log")
         if pv:
-            for k, v in versions_de(open(pv, errors="replace").read()).items():
+            for k, v in versions_in(open(pv, errors="replace").read()).items():
                 versions.setdefault(k, OrderedDict())[prov_r] = v
     os.makedirs(os.path.dirname(os.path.abspath(a.out)) or ".", exist_ok=True)
     with open(a.out, "w", newline="") as f:
@@ -229,17 +237,17 @@ def main(argv=None):
             w.writerow({c: r.get(c, "") for c in COLS})
     vout = a.versions_out or re.sub(r"checks_", "versions_", a.out).replace(".csv", ".json")
     with open(vout, "w") as f:
-        json.dump({"versions": versions, "logs": origine, "missing": manquants}, f, indent=1)
+        json.dump({"versions": versions, "logs": origin, "missing": missing}, f, indent=1)
 
-    print("%d verifications ecrites dans %s" % (len(rows), a.out))
-    print("par suite :", dict(Counter(r["suite"] for r in rows)))
-    print("verdicts  :", dict(Counter(r["verdict"] for r in rows)))
-    print("versions  :", json.dumps(versions))
-    if manquants:
-        print("journaux ABSENTS (suites non couvertes) :", ", ".join(manquants))
-    ech = [r["check"] for r in rows if r["verdict"] == "FAIL"]
-    if ech:
-        print("ECHECS :", ech)
+    print("%d checks written to %s" % (len(rows), a.out))
+    print("by suite :", dict(Counter(r["suite"] for r in rows)))
+    print("verdicts :", dict(Counter(r["verdict"] for r in rows)))
+    print("versions :", json.dumps(versions))
+    if missing:
+        print("MISSING logs (suites not covered):", ", ".join(missing))
+    failed = [r["check"] for r in rows if r["verdict"] == "FAIL"]
+    if failed:
+        print("FAILURES:", failed)
     return 0
 
 

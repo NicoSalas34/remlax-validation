@@ -1,19 +1,20 @@
 # ==============================================================================
-# test_remlax_asreml.R — validation contre ASREML, la reference du domaine
+# test_remlax_asreml.R -- validation against ASREML, the reference of the field
 # ------------------------------------------------------------------------------
-# Les autres suites confrontent remlax a lme4 et sommer. Celle-ci le confronte
-# a asreml, sur les structures qu'asreml sait faire et que les deux autres ne
-# font pas : AR1, AR1 separable, splines 2D, et str() (covariance PARTAGEE entre
-# plusieurs termes).
+# The other suites compare remlax with lme4 and sommer. This one compares it
+# with asreml, on the structures that asreml can fit and the two others cannot:
+# AR1, separable AR1, 2D splines, and str() (covariance SHARED between several
+# terms).
 #
-# CONVENTION DE LOG-VRAISEMBLANCE. asreml omet la constante (n-p)/2 * log(2*pi),
-# remlax l'inclut (comme lme4). La comparaison porte donc sur `logLik_asreml`,
-# champ prevu pour ca. Sans cette precaution l'ecart vaut plusieurs centaines et
-# ressemble a un desaccord de modele : il vaut 219,6 sur un jeu a n=240, p=1.
+# LOG-LIKELIHOOD CONVENTION. asreml omits the constant (n-p)/2 * log(2*pi),
+# remlax includes it (as lme4 does). The comparison therefore uses
+# `logLik_asreml`, a field provided for this purpose. Without this precaution
+# the difference is several hundred and looks like a model disagreement: it is
+# 219.6 on a data set with n=240, p=1.
 #
-# TOLERANCES. logLik a 1e-5 (les deux optimiseurs s'arretent differemment) ;
-# composantes a 1e-3 en relatif, SAUF celles qui sont au plancher des deux cotes,
-# ou le relatif n'a aucun sens (comparer 3e-11 a 2e-10 donne 0,85).
+# TOLERANCES. logLik to 1e-5 (the two optimisers stop differently).
+# Components to 1e-3 relative, EXCEPT those at the floor on both sides, where a
+# relative difference has no meaning (comparing 3e-11 with 2e-10 gives 0.85).
 #
 #   Rscript scripts/tests/test_remlax_asreml.R
 # ==============================================================================
@@ -22,19 +23,19 @@ suppressPackageStartupMessages({
 })
 source(here::here("R", "charger_remlax.R"))
 
-ECHECS <- character(0)
-verifier <- function(nom, cond, detail = "") {
-  cat(sprintf("  %-52s %s %s\n", nom, if (isTRUE(cond)) "OK " else "ECHEC", detail))
-  if (!isTRUE(cond)) ECHECS <<- c(ECHECS, nom)
+FAILURES <- character(0)
+check <- function(name, cond, detail = "") {
+  cat(sprintf("  %-52s %s %s\n", name, if (isTRUE(cond)) "OK " else "FAIL", detail))
+  if (!isTRUE(cond)) FAILURES <<- c(FAILURES, name)
 }
-relc <- function(a, b, plancher = 1e-6) {
-  if (max(abs(a), abs(b)) < plancher) return(0)   # deux zeros numeriques
-  abs(a - b) / max(abs(b), plancher)
+relc <- function(a, b, floor_ = 1e-6) {
+  if (max(abs(a), abs(b)) < floor_) return(0)   # two numerical zeros
+  abs(a - b) / max(abs(b), floor_)
 }
 stab <- function(a, k = 5) { for (i in seq_len(k)) a <- update(a, trace = FALSE); a }
 
 # ==============================================================================
-cat("\n=== 1. AR1 unidimensionnel ===\n")
+cat("\n=== 1. one-dimensional AR1 ===\n")
 # ==============================================================================
 set.seed(1); q <- 40; rp <- 6; n <- q * rp
 K <- 0.75 ^ abs(outer(1:q, 1:q, "-"))
@@ -47,16 +48,16 @@ a <- stab(asreml(y ~ 1, random = ~ ar1v(lev), data = d, trace = FALSE,
 vc <- summary(a)$varcomp
 f <- rx_reml(y ~ 1, random = ~ ar1(lev), data = d, backend = "auto",
              n_restarts = 5, verbose = FALSE)
-verifier("AR1 : rho",  relc(f$rho[[1]][1], vc["lev!lev!cor", "component"]) < 1e-3,
-         sprintf("%.7f vs %.7f", f$rho[[1]][1], vc["lev!lev!cor", "component"]))
-verifier("AR1 : variance", relc(f$sigmas[[1]][1, 1], vc["lev!lev!var", "component"]) < 1e-3,
-         sprintf("%.7f vs %.7f", f$sigmas[[1]][1, 1], vc["lev!lev!var", "component"]))
-verifier("AR1 : residuelle", relc(f$sigma_res[1, 1], vc["units!R", "component"]) < 1e-3)
-verifier("AR1 : logLik (convention asreml)", abs(f$logLik_asreml - a$loglik) < 1e-5,
-         sprintf("%.9f vs %.9f", f$logLik_asreml, a$loglik))
+check("AR1 : rho",  relc(f$rho[[1]][1], vc["lev!lev!cor", "component"]) < 1e-3,
+      sprintf("%.7f vs %.7f", f$rho[[1]][1], vc["lev!lev!cor", "component"]))
+check("AR1 : variance", relc(f$sigmas[[1]][1, 1], vc["lev!lev!var", "component"]) < 1e-3,
+      sprintf("%.7f vs %.7f", f$sigmas[[1]][1, 1], vc["lev!lev!var", "component"]))
+check("AR1 : residual", relc(f$sigma_res[1, 1], vc["units!R", "component"]) < 1e-3)
+check("AR1 : logLik (asreml convention)", abs(f$logLik_asreml - a$loglik) < 1e-5,
+      sprintf("%.9f vs %.9f", f$logLik_asreml, a$loglik))
 
 # ==============================================================================
-cat("\n=== 2. AR1 x AR1 separable (champ spatial) ===\n")
+cat("\n=== 2. separable AR1 x AR1 (spatial field) ===\n")
 # ==============================================================================
 set.seed(4); nr <- 12; nc <- 10; K2 <- 2
 g <- expand.grid(col = 1:nc, row = 1:nr)
@@ -70,21 +71,21 @@ a <- stab(asreml(y ~ 1, random = ~ ar1(row):ar1(col), data = d, trace = FALSE,
 vc <- summary(a)$varcomp
 f <- rx_reml(y ~ 1, random = ~ ar1(row, col), data = d, backend = "auto",
              n_restarts = 5, verbose = FALSE)
-verifier("AR1xAR1 : variance du champ",
-         relc(f$sigmas[[1]][1, 1], vc["row:col", "component"]) < 1e-3,
-         sprintf("%.7f vs %.7f", f$sigmas[[1]][1, 1], vc["row:col", "component"]))
-verifier("AR1xAR1 : rho ligne",
-         relc(f$rho[[1]][1], vc["row:col!row!cor", "component"]) < 1e-3,
-         sprintf("%.7f vs %.7f", f$rho[[1]][1], vc["row:col!row!cor", "component"]))
-verifier("AR1xAR1 : rho colonne",
-         relc(f$rho[[1]][2], vc["row:col!col!cor", "component"]) < 1e-3,
-         sprintf("%.7f vs %.7f", f$rho[[1]][2], vc["row:col!col!cor", "component"]))
-verifier("AR1xAR1 : residuelle", relc(f$sigma_res[1, 1], vc["units!R", "component"]) < 1e-3)
-verifier("AR1xAR1 : logLik", abs(f$logLik_asreml - a$loglik) < 1e-5,
-         sprintf("%.9f vs %.9f", f$logLik_asreml, a$loglik))
+check("AR1xAR1 : field variance",
+      relc(f$sigmas[[1]][1, 1], vc["row:col", "component"]) < 1e-3,
+      sprintf("%.7f vs %.7f", f$sigmas[[1]][1, 1], vc["row:col", "component"]))
+check("AR1xAR1 : row rho",
+      relc(f$rho[[1]][1], vc["row:col!row!cor", "component"]) < 1e-3,
+      sprintf("%.7f vs %.7f", f$rho[[1]][1], vc["row:col!row!cor", "component"]))
+check("AR1xAR1 : column rho",
+      relc(f$rho[[1]][2], vc["row:col!col!cor", "component"]) < 1e-3,
+      sprintf("%.7f vs %.7f", f$rho[[1]][2], vc["row:col!col!cor", "component"]))
+check("AR1xAR1 : residual", relc(f$sigma_res[1, 1], vc["units!R", "component"]) < 1e-3)
+check("AR1xAR1 : logLik", abs(f$logLik_asreml - a$loglik) < 1e-5,
+      sprintf("%.9f vs %.9f", f$logLik_asreml, a$loglik))
 
 # ==============================================================================
-cat("\n=== 3. spline 2D (MEMES matrices de base des deux cotes) ===\n")
+cat("\n=== 3. 2D spline (SAME basis matrices on both sides) ===\n")
 # ==============================================================================
 set.seed(6); nr <- 20; nc <- 18
 g <- expand.grid(col = 1:nc, row = 1:nr)
@@ -106,19 +107,19 @@ f <- rx_fit(rx_model(y, cbind(1, sp$X), sp$terms), backend = "auto",
             n_restarts = 3, verbose = FALSE)
 for (i in seq_along(sp$terms)) {
   nm <- sp$terms[[i]]$name; ref <- vc[c("grp(gA)", "grp(gB)", "grp(gC)")[i], "component"]
-  verifier(sprintf("spline 2D : variance %s", nm),
-           relc(f$sigmas[[nm]][1, 1], ref) < 1e-3,
-           sprintf("%.6e vs %.6e", f$sigmas[[nm]][1, 1], ref))
+  check(sprintf("spline 2D : variance %s", nm),
+        relc(f$sigmas[[nm]][1, 1], ref) < 1e-3,
+        sprintf("%.6e vs %.6e", f$sigmas[[nm]][1, 1], ref))
 }
-verifier("spline 2D : residuelle", relc(f$sigma_res[1, 1], vc["units!R", "component"]) < 1e-3)
-verifier("spline 2D : logLik", abs(f$logLik_asreml - a$loglik) < 1e-5,
-         sprintf("%.9f vs %.9f", f$logLik_asreml, a$loglik))
-verifier("spline 2D : composante nulle signalee degeneree",
-         "spl_xy" %in% f$composantes_degenerees,
-         paste(f$composantes_degenerees, collapse = ", "))
+check("spline 2D : residual", relc(f$sigma_res[1, 1], vc["units!R", "component"]) < 1e-3)
+check("spline 2D : logLik", abs(f$logLik_asreml - a$loglik) < 1e-5,
+      sprintf("%.9f vs %.9f", f$logLik_asreml, a$loglik))
+check("spline 2D : zero component flagged as degenerate",
+      "spl_xy" %in% f$degenerate_components,
+      paste(f$degenerate_components, collapse = ", "))
 
 # ==============================================================================
-cat("\n=== 4. str() : covariance PARTAGEE entre deux termes ===\n")
+cat("\n=== 4. str(): covariance SHARED between two terms ===\n")
 # ==============================================================================
 set.seed(12); q <- 40; rp <- 6; n <- q * rp
 S <- matrix(c(1.4, 0.7, 0.7, 0.9), 2, 2)
@@ -132,21 +133,21 @@ Zw <- Matrix::sparseMatrix(i = seq_len(n), j = as.integer(gid), x = w, dims = c(
 a <- stab(asreml(y ~ 1 + w, random = ~ str(~ gid + gid:w, ~ us(2):id(40)),
                  data = d, trace = FALSE, maxit = 100, workspace = "2gb"))
 vc <- summary(a)$varcomp
-f <- rx_reml(y ~ 1 + w, random = ~ str(~ gid + mm(Zw, name = "pente"), struct = "us"),
+f <- rx_reml(y ~ 1 + w, random = ~ str(~ gid + mm(Zw, name = "slope"), struct = "us"),
              data = d, backend = "auto", n_restarts = 3, verbose = FALSE)
 G <- f$sigmas[[1]]
-verifier("str : var terme 1", relc(G[1, 1], vc[1, "component"]) < 1e-3,
-         sprintf("%.7f vs %.7f", G[1, 1], vc[1, "component"]))
-verifier("str : covariance", relc(G[1, 2], vc[2, "component"]) < 1e-3,
-         sprintf("%.7f vs %.7f", G[1, 2], vc[2, "component"]))
-verifier("str : var terme 2", relc(G[2, 2], vc[3, "component"]) < 1e-3,
-         sprintf("%.7f vs %.7f", G[2, 2], vc[3, "component"]))
-verifier("str : residuelle", relc(f$sigma_res[1, 1], vc["units!R", "component"]) < 1e-3)
-verifier("str : logLik", abs(f$logLik_asreml - a$loglik) < 1e-5,
-         sprintf("%.9f vs %.9f", f$logLik_asreml, a$loglik))
+check("str : var term 1", relc(G[1, 1], vc[1, "component"]) < 1e-3,
+      sprintf("%.7f vs %.7f", G[1, 1], vc[1, "component"]))
+check("str : covariance", relc(G[1, 2], vc[2, "component"]) < 1e-3,
+      sprintf("%.7f vs %.7f", G[1, 2], vc[2, "component"]))
+check("str : var term 2", relc(G[2, 2], vc[3, "component"]) < 1e-3,
+      sprintf("%.7f vs %.7f", G[2, 2], vc[3, "component"]))
+check("str : residual", relc(f$sigma_res[1, 1], vc["units!R", "component"]) < 1e-3)
+check("str : logLik", abs(f$logLik_asreml - a$loglik) < 1e-5,
+      sprintf("%.9f vs %.9f", f$logLik_asreml, a$loglik))
 
 # ==============================================================================
-cat("\n=== 5. vpredict et Wald ===\n")
+cat("\n=== 5. vpredict and Wald ===\n")
 # ==============================================================================
 set.seed(31); q <- 60; rp <- 5; n <- q * rp
 dv <- data.frame(gid = factor(rep(paste0("g", 1:q), each = rp)),
@@ -158,28 +159,28 @@ w_a <- asreml::wald(a)
 f <- rx_reml(y ~ trt, random = ~ gid, data = dv, backend = "auto", n_restarts = 3,
              verbose = FALSE, vpredict = c(h2 = "V1/(V1+V2)"), wald = TRUE)
 pv <- f$vpredict$predictions
-verifier("vpredict : estimation de h2",
-         abs(pv$valeur[1] - h_a$Estimate) < 1e-5,
-         sprintf("%.7f vs %.7f", pv$valeur[1], h_a$Estimate))
-verifier("vpredict : ERREUR-TYPE de h2 (delta method)",
-         abs(pv$se[1] - h_a$SE) < 1e-5,
-         sprintf("%.7f vs %.7f", pv$se[1], h_a$SE))
-# asreml donne un Wald SEQUENTIEL (type I) par defaut, remlax un CONDITIONNEL
-# (type III). Ils coincident sur le DERNIER terme, seul cas ou les deux notions
-# se rejoignent : c'est donc lui qu'on compare.
+check("vpredict : estimate of h2",
+      abs(pv$value[1] - h_a$Estimate) < 1e-5,
+      sprintf("%.7f vs %.7f", pv$value[1], h_a$Estimate))
+check("vpredict : STANDARD ERROR of h2 (delta method)",
+      abs(pv$se[1] - h_a$SE) < 1e-5,
+      sprintf("%.7f vs %.7f", pv$se[1], h_a$SE))
+# asreml gives a SEQUENTIAL Wald test (type I) by default, remlax a CONDITIONAL
+# one (type III). They agree on the LAST term, the only case where the two
+# notions meet, so this term is compared.
 tw <- f$wald$tests
-i_trt <- which(tw$terme == "trt")
+i_trt <- which(tw$term == "trt")
 p_asr <- w_a[rownames(w_a) == "trt", "Pr(Chisq)"]
-verifier("Wald : ddl du terme trt", tw$ddl[i_trt] == 2L, sprintf("%d", tw$ddl[i_trt]))
-verifier("Wald : p-valeur du dernier terme (seq == cond)",
-         abs(tw$p[i_trt] - p_asr) < 1e-9,
-         sprintf("%.4g vs %.4g", tw$p[i_trt], p_asr))
+check("Wald : df of the trt term", tw$df[i_trt] == 2L, sprintf("%d", tw$df[i_trt]))
+check("Wald : p-value of the last term (seq == cond)",
+      abs(tw$p[i_trt] - p_asr) < 1e-9,
+      sprintf("%.4g vs %.4g", tw$p[i_trt], p_asr))
 
 # ==============================================================================
-cat("\n=== 6. parametrisations SATUREES : chol(t-1), ante(t-1), fa(t), rr(t) ===\n")
+cat("\n=== 6. SATURATED parametrisations: chol(t-1), ante(t-1), fa(t), rr(t) ===\n")
 # ==============================================================================
-# Elles decrivent toutes la MEME Sigma non structuree. Une divergence de logLik
-# signalerait une erreur de parametrisation, pas un choix de modele.
+# They all describe the SAME unstructured Sigma. A logLik divergence would
+# signal a parametrisation error, not a model choice.
 set.seed(77); qq <- 45; TT <- 4; rr_ <- 3
 gg <- factor(rep(paste0("g", 1:qq), each = rr_)); nn <- qq * rr_
 GG <- crossprod(matrix(rnorm(TT * TT), TT, TT)) + diag(TT)
@@ -192,13 +193,13 @@ fsat <- function(r) rx_reml(y ~ 0 + trait, random = stats::as.formula(paste("~",
                             unit = "unit", backend = "auto", n_restarts = 4, verbose = FALSE)
 fu <- fsat("us(gid)")
 for (r in c("chol(gid, rank=3)", "ante(gid, rank=3)", "fa(gid, rank=4)", "rr(gid, rank=4)"))
-  verifier(sprintf("%-18s == us", r), abs(fsat(r)$logLik - fu$logLik) < 1e-6,
-           sprintf("ecart %.2e", abs(fsat(r)$logLik - fu$logLik)))
+  check(sprintf("%-18s == us", r), abs(fsat(r)$logLik - fu$logLik) < 1e-6,
+        sprintf("diff %.2e", abs(fsat(r)$logLik - fu$logLik)))
 
 cat("\n", strrep("=", 68), "\n", sep = "")
-if (length(ECHECS)) {
-  cat(sprintf("ECHECS (%d) :\n%s\n", length(ECHECS), paste0("  - ", ECHECS, collapse = "\n")))
+if (length(FAILURES)) {
+  cat(sprintf("FAILURES (%d):\n%s\n", length(FAILURES), paste0("  - ", FAILURES, collapse = "\n")))
   quit(save = "no", status = 1L)
 }
-cat("remlax reproduit asreml sur AR1, AR1xAR1, splines 2D, str(), vpredict et Wald.\n")
+cat("remlax reproduces asreml on AR1, AR1xAR1, 2D splines, str(), vpredict and Wald.\n")
 quit(save = "no", status = 0L)

@@ -1,48 +1,47 @@
 # ==============================================================================
-# Le scan de remlax reproduit-il statgenGWAS au SNP pres ?
+# Does the remlax scan reproduce statgenGWAS SNP by SNP?
 # ==============================================================================
-# POURQUOI CE TEST EXISTE, ET POURQUOI IL EST LE SEUL POSSIBLE. `remlax.scan`
-# accepte des V que statgenGWAS ne sait pas traiter : deux noyaux, une
-# residuelle AR1, des sections heterogenes. Il n'existe donc PAS de reference
-# externe sur le cas qui nous interesse. Mais il en existe une sur le cas
-# DEGENERE ou les deux sont censes coincider exactement :
+# WHY THIS TEST EXISTS, AND WHY IT IS THE ONLY ONE POSSIBLE. `remlax.scan`
+# accepts V matrices that statgenGWAS cannot handle: two kernels, an AR1
+# residual, heterogeneous sections. There is therefore NO external reference
+# for the case of interest. There is one for the DEGENERATE case where both are
+# meant to coincide exactly:
 #
-#     un seul noyau, residuelle iid, une observation par genotype
+#     one kernel, iid residual, one observation per genotype
 #
-# C'est le modele d'EMMAX. Si les deux implementations s'accordent la, l'algebre
-# du scan est validee contre du code tiers eprouve ; le reste (deux noyaux, AR1)
-# n'est que la meme algebre avec une autre V, et c'est deja verifie contre le
-# test de Wald dans tests/python/test_scan.py.
+# This is the EMMAX model. If both implementations agree there, the algebra of
+# the scan is validated against proven third-party code. The rest (two kernels,
+# AR1) is the same algebra with another V, already checked against the Wald
+# test in tests/python/test_scan.py.
 #
-# CE QUI EST COMPARE, ET POURQUOI PAS LES p-VALEURS. On compare `effect` et
-# `effectSe` — les quantites que les deux calculent. Les p-valeurs, elles,
-# dependent de la LOI DE REFERENCE : statgenGWAS rapporte un test de Student,
-# remlax un chi2 a 1 ddl. Les deux sont defendables a V figee et ne diffe`rent
-# que par le denominateur des degres de liberte ; comparer les p-valeurs
-# melangerait un desaccord d'algebre (grave) avec une convention de loi (pas
-# grave, et documentee).
+# WHAT IS COMPARED, AND WHY NOT THE p-VALUES. The script compares `effect` and
+# `effectSe`, the quantities both programs compute. The p-values depend on the
+# REFERENCE DISTRIBUTION: statgenGWAS reports a Student test, remlax a chi2 with
+# 1 df. Both are defensible at fixed V and differ only by the denominator
+# degrees of freedom. Comparing p-values would mix an algebra disagreement
+# (serious) with a distribution convention (harmless, and documented).
 #
-# ON FIGE LES COMPOSANTES DE VARIANCE. statgenGWAS les estime par EMMA, remlax
-# par REML : rien ne garantit le meme optimum a la 12e decimale, et un ecart la
-# se propagerait a tous les SNP. Comme c'est l'algebre du SCAN qu'on teste et
-# non l'estimation (deja testee ailleurs dans remlax), on prend les composantes
-# de statgenGWAS et on les impose au scan. Le desaccord residuel ne peut alors
-# venir que du scan.
+# THE VARIANCE COMPONENTS ARE FIXED. statgenGWAS estimates them by EMMA, remlax
+# by REML. Nothing guarantees the same optimum to the 12th decimal, and a gap
+# there would spread to every SNP. The test targets the algebra of the SCAN,
+# not the estimation (tested elsewhere in remlax), so the components of
+# statgenGWAS are imposed on the scan. The remaining disagreement can then only
+# come from the scan.
 #
-# Lancement :  Rscript validation/etude_scan_vs_statgen.R <dossier_sortie>
+# Run:  Rscript validation/etude_scan_vs_statgen.R <output_dir>
 # ==============================================================================
 args <- commandArgs(trailingOnly = TRUE)
-sortie <- if (length(args)) args[1] else file.path(tempdir(), "scan_vs_statgen")
-dir.create(sortie, recursive = TRUE, showWarnings = FALSE)
+out_dir <- if (length(args)) args[1] else file.path(tempdir(), "scan_vs_statgen")
+dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
 
 suppressPackageStartupMessages(library(statgenGWAS))
 cat("statgenGWAS", as.character(packageVersion("statgenGWAS")), "\n")
 
 set.seed(20260907)
-q <- 250L      # genotypes = observations (une par genotype, comme EMMAX)
+q <- 250L      # genotypes = observations (one per genotype, as in EMMAX)
 p <- 800L      # SNP
 
-# --- genotypes en dosage 0/1/2, frequences variees -----------------------
+# --- genotypes as 0/1/2 dosages, varied frequencies ----------------------
 frq <- runif(p, 0.10, 0.90)
 G <- matrix(rbinom(q * p, 2, rep(frq, each = q)), nrow = q)
 G <- G[, apply(G, 2, stats::sd) > 0, drop = FALSE]
@@ -50,43 +49,43 @@ p <- ncol(G)
 rownames(G) <- sprintf("g%03d", seq_len(q))
 colnames(G) <- sprintf("snp%04d", seq_len(p))
 
-carte <- data.frame(chr = rep(1L, p), pos = seq_len(p))
-rownames(carte) <- colnames(G)
+gmap <- data.frame(chr = rep(1L, p), pos = seq_len(p))
+rownames(gmap) <- colnames(G)
 
-# --- parente vanRaden, celle de statgenGWAS ------------------------------
+# --- vanRaden kinship, the one statgenGWAS uses ---------------------------
 K <- kinship(G, method = "vanRaden")
 
-# --- phenotype : fond polygenique + un SNP causal ------------------------
+# --- phenotype: polygenic background + one causal SNP ---------------------
 Lk <- t(chol(K + diag(1e-6, q)))
 j0 <- sample.int(p, 1L)
 y <- 2.0 + 0.45 * scale(G[, j0])[, 1] +
      1.0 * (Lk %*% rnorm(q))[, 1] + rnorm(q, sd = 1.0)
-pheno <- data.frame(genotype = rownames(G), rdt = y, stringsAsFactors = FALSE)
+pheno <- data.frame(genotype = rownames(G), yield = y, stringsAsFactors = FALSE)
 
 # --- statgenGWAS ---------------------------------------------------------
-gd <- createGData(geno = G, map = carte, pheno = pheno, kin = K)
-res <- runSingleTraitGwas(gd, traits = "rdt", kin = K,
-                          GLSMethod = "single",     # pas de LOCO : un seul V
+gd <- createGData(geno = G, map = gmap, pheno = pheno, kin = K)
+res <- runSingleTraitGwas(gd, traits = "yield", kin = K,
+                          GLSMethod = "single",     # no LOCO: a single V
                           remlAlgo = "EMMA",
-                          MAF = 0,                  # aucun SNP ecarte
+                          MAF = 0,                  # no SNP dropped
                           thrType = "fixed", LODThr = 0)
 gw <- as.data.frame(res$GWAResult$pheno)
 vc <- res$GWASInfo$varComp
-cat("composantes de variance (EMMA) :\n"); print(unlist(vc))
+cat("variance components (EMMA):\n"); print(unlist(vc))
 
-# --- ce que le scan doit relire -----------------------------------------
-# Les doses sont recuperees TELLES QUE statgenGWAS les a vues (imputation et
-# filtres compris) : comparer sur d'autres colonnes ne comparerait rien.
+# --- what the scan must read back ---------------------------------------
+# The dosages are taken AS statgenGWAS saw them (imputation and filters
+# included). Comparing on other columns would compare nothing.
 Gs <- gd$markers[rownames(G), gw$snp, drop = FALSE]
 utils::write.csv(gw[, c("snp", "allFreq", "effect", "effectSe", "pValue", "LOD")],
-                 file.path(sortie, "statgen_resultats.csv"), row.names = FALSE)
+                 file.path(out_dir, "statgen_results.csv"), row.names = FALSE)
 utils::write.csv(data.frame(genotype = rownames(G), y = y),
-                 file.path(sortie, "pheno.csv"), row.names = FALSE)
-utils::write.table(K, file.path(sortie, "K.txt"), row.names = FALSE, col.names = FALSE)
-utils::write.table(Gs, file.path(sortie, "M.txt"), row.names = FALSE, col.names = FALSE)
-writeLines(as.character(gw$snp), file.path(sortie, "snp.txt"))
+                 file.path(out_dir, "pheno.csv"), row.names = FALSE)
+utils::write.table(K, file.path(out_dir, "K.txt"), row.names = FALSE, col.names = FALSE)
+utils::write.table(Gs, file.path(out_dir, "M.txt"), row.names = FALSE, col.names = FALSE)
+writeLines(as.character(gw$snp), file.path(out_dir, "snp.txt"))
 writeLines(jsonlite::toJSON(list(varComp = vc, q = q, p = length(gw$snp),
-                                 snp_causal = colnames(G)[j0]),
+                                 causal_snp = colnames(G)[j0]),
                             auto_unbox = TRUE),
-           file.path(sortie, "meta.json"))
-cat("ecrit dans", sortie, ":", length(gw$snp), "SNP,", q, "genotypes\n")
+           file.path(out_dir, "meta.json"))
+cat("written to", out_dir, ":", length(gw$snp), "SNPs,", q, "genotypes\n")

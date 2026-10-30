@@ -1,108 +1,108 @@
-# Plan du banc : moteurs remlax, CPU et GPU, contre asreml, sommer et lme4
+# Benchmark plan: remlax engines, CPU and GPU, against asreml, sommer and lme4
 
-Rédigé le 2026-10-22, révisé le même jour. Ce banc doit fonder la règle `engine = "auto"` de `rx_fit`, la règle d'inversion du moteur MME et le choix du périphérique. Il compare aussi remlax à asreml, sommer et lme4, sur les temps, sur la logLik atteinte et sur les paramètres estimés, dont la vérité est connue par simulation.
+Written on 2026-10-22 and revised the same day. This benchmark grounds the `engine = "auto"` rule of `rx_fit`, the inversion rule of the MME engine and the choice of device. It also compares remlax with asreml, sommer and lme4 on time, on the logLik reached and on the estimated parameters, whose true values are known by simulation.
 
 ## Questions
 
-- Quand le moteur MME est-il plus rapide que le moteur dense, et quand le dense est-il nécessaire ? Le dense est nécessaire hors du périmètre MME (résiduelle none, rr, rx_lag).
-- Dans le moteur MME, à partir de quel remplissage du facteur l'inversion creuse (SuperLU et inversion sélective supernodale) devient-elle plus lente que l'inversion dense de C ?
-- Pour chaque moteur, à partir de quelle taille le GPU l'emporte-t-il sur le CPU, compilation et transferts compris ?
-- remlax retrouve-t-il le même optimum qu'asreml, sommer et lme4, et en combien de temps ?
+- When is the MME engine faster than the dense engine, and when is the dense engine required? The dense engine is required outside the MME scope (residual none, rr, rx_lag).
+- In the MME engine, from which fill-in of the factor does the sparse inversion (SuperLU and supernodal selected inversion) become slower than the dense inversion of C?
+- For each engine, from which size does the GPU beat the CPU, compilation and transfers included?
+- Does remlax reach the same optimum as asreml, sommer and lme4, and in how much time?
 
-## Voies comparées
+## Routes compared
 
-| Voie | Moteur | Inversion | Périphérique |
+| Route | Engine | Inversion | Device |
 |---|---|---|---|
-| D-CPU | dense (V formée) | Cholesky de V | CPU |
-| D-GPU | dense | Cholesky de V | GPU |
-| M-dense-CPU | MME | C dense (LAPACK) | CPU |
-| M-dense-GPU | MME | C dense (JAX) | GPU |
-| M-creux-CPU | MME | C creuse (SuperLU et inversion sélective) | CPU |
-| asreml | asreml-R 4.2 | AI-REML creux | CPU |
-| sommer | sommer 4.4 (`mmer`) | formulation directe en V | CPU |
-| lme4 | lme4 2.0 (`lmer`, pedigreemm pour le pédigrée) | Cholesky creux | CPU |
+| D-CPU | dense (V formed) | Cholesky of V | CPU |
+| D-GPU | dense | Cholesky of V | GPU |
+| M-dense-CPU | MME | dense C (LAPACK) | CPU |
+| M-dense-GPU | MME | dense C (JAX) | GPU |
+| M-sparse-CPU | MME | sparse C (SuperLU and selected inversion) | CPU |
+| asreml | asreml-R 4.2 | sparse AI-REML | CPU |
+| sommer | sommer 4.4 (`mmer`) | direct formulation in V | CPU |
+| lme4 | lme4 2.0 (`lmer`, pedigreemm for the pedigree) | sparse Cholesky | CPU |
 
-L'optimiseur de remlax est l'AI en échelle des variances (`optimizer = "ai"`) pour toutes les voies, avec les mêmes bornes, le même point de départ et le même critère d'arrêt. Le hessien de diagnostic est désactivé (`hessian = FALSE`).
+The remlax optimiser is AI on the variance scale (`optimizer = "ai"`) for every route, with the same bounds, the same starting point and the same stopping criterion. The diagnostic Hessian is switched off (`hessian = FALSE`).
 
-## Familles de modèles
+## Model families
 
-Chaque famille couvre un régime de rapport entre n (observations) et m (taille de C) et de remplissage de C. Un logiciel externe n'est lancé que s'il sait ajuster exactement le même modèle.
+Each family covers one regime of the ratio between n (observations) and m (size of C) and of the fill-in of C. An external program runs only if it can fit exactly the same model.
 
-| Famille | Modèle | Externes |
+| Family | Model | External |
 |---|---|---|
-| iid | génotype iid, bloc iid | asreml, sommer, lme4 |
-| grm | génotype avec GRM dense, bloc iid | asreml, sommer, lme4 (Z L, K = L L') |
-| us | 3 caractères, us génétique, résiduelle us par unité | asreml, sommer |
-| ped | modèle animal, A^-1 creuse, bloc iid | asreml, sommer, lme4 (pedigreemm) |
-| ige | DGE et IGE us(2) sur incidences de voisinage, IEE iid | asreml (n ≤ 3000) |
-| champ | génotype iid, champ ar1 x ar1 en terme aléatoire | asreml |
-| resid | génotype iid, résiduelle ar1(row):ar1(col) | asreml |
-| exp | corrélation exponentielle sur coordonnées 1D | asreml |
-| fa | 5 caractères, fa de rang 2, résiduelle diag | asreml |
+| iid | iid genotype, iid block | asreml, sommer, lme4 |
+| grm | genotype with a dense GRM, iid block | asreml, sommer, lme4 (Z L, K = L L') |
+| us | 3 traits, genetic us, residual us per unit | asreml, sommer |
+| ped | animal model, sparse A^-1, iid block | asreml, sommer, lme4 (pedigreemm) |
+| ige | DGE and IGE us(2) on neighbourhood incidences, iid IEE | asreml (n ≤ 3000) |
+| field | iid genotype, ar1 x ar1 field as a random term | asreml |
+| resid | iid genotype, residual ar1(row):ar1(col) | asreml |
+| exp | exponential correlation on 1D coordinates | asreml |
+| fa | 5 traits, fa of rank 2, diag residual | asreml |
 
-sommer et lme4 n'estiment ni une corrélation ar1 ou exponentielle, ni une structure fa ; ils sont absents de ces familles.
+sommer and lme4 estimate neither an ar1 or exponential correlation nor an fa structure. They are absent from these families.
 
-## Tailles et répétitions
+## Sizes and replicates
 
-n vaut 500, 1000, 1500, 2000, 3000, 4000, 6000 et 8000. n compte les observations, tous caractères confondus. n croît en ajoutant des génotypes, et le nombre d'observations par génotype reste à peu près fixe : m, la taille de C, croît donc avec n. Un effet de n ne doit pas se lire comme un effet du nombre de répétitions par génotype.
+n takes the values 500, 1000, 1500, 2000, 3000, 4000, 6000 and 8000. n counts the observations, all traits together. n grows by adding genotypes, and the number of observations per genotype stays roughly fixed. m, the size of C, therefore grows with n. An effect of n must not be read as an effect of the number of replicates per genotype.
 
-| Famille | Niveaux du terme principal | Observations par niveau et par caractère | m à n = 500 | m à n = 8000 |
+| Family | Levels of the main term | Observations per level and per trait | m at n = 500 | m at n = 8000 |
 |---|---|---|---|---|
-| iid | génotypes = n/5 | 5 | 126 | 1615 |
-| grm | génotypes = n/4 | 4 | 152 | 2027 |
-| us | génotypes = n/12 (3 caractères) | 4 | 126 | 2001 |
-| ped | animaux = n | 1 | 522 | 8022 |
-| ige | génotypes = n/5 | 5 | 701 | 11201 |
-| champ | génotypes = n/4 | 4 | 624 | 9967 |
-| resid | génotypes = n/4 | 4 | 125 | 1963 |
+| iid | genotypes = n/5 | 5 | 126 | 1615 |
+| grm | genotypes = n/4 | 4 | 152 | 2027 |
+| us | genotypes = n/12 (3 traits) | 4 | 126 | 2001 |
+| ped | animals = n | 1 | 522 | 8022 |
+| ige | genotypes = n/5 | 5 | 701 | 11201 |
+| field | genotypes = n/4 | 4 | 624 | 9967 |
+| resid | genotypes = n/4 | 4 | 125 | 1963 |
 | exp | positions = n/3 | 3 | 167 | 2667 |
-| fa | génotypes = n/20 (5 caractères) | 4 (2,5 à n = 500, plancher de 40 génotypes) | 205 | 2005 |
+| fa | genotypes = n/20 (5 traits) | 4 (2.5 at n = 500, floor of 40 genotypes) | 205 | 2005 |
 
-Les génotypes sont tirés avec remise : le dispositif n'est pas équilibré et le nombre d'observations par génotype fluctue autour de sa moyenne. `banc_moteurs/R/dimensions.R` reconstruit chaque cas à partir de sa graine et écrit `dimensions.csv`. L'analyse en tire une figure des dimensions contre n, la règle d'échelle de chaque famille dans le titre de ses panneaux, et une figure des temps contre m.
+Genotypes are drawn with replacement. The design is therefore unbalanced, and the number of observations per genotype fluctuates around its mean. `banc_moteurs/R/dimensions.R` rebuilds each case from its seed and writes `dimensions.csv`. The analysis draws from it a figure of the dimensions against n, puts the scaling rule of each family in the title of its panels, and draws a figure of time against m.
 
-Chaque cellule (famille, n) est simulée cinq fois. La graine dépend de la famille, de n et de la répétition, et toutes les voies et tous les logiciels d'une répétition lisent les mêmes données. Les 360 cas (9 familles, 8 tailles, 5 répétitions) forment un tableau SLURM.
+Each cell (family, n) is simulated five times. The seed depends on the family, on n and on the replicate, and every route and program of a replicate reads the same data. The 360 cases (9 families, 8 sizes, 5 replicates) form one SLURM array.
 
 ## Machine
 
-Tout tourne sur le nœud io-gpu-a100-01, tranche MIG 1g.10gb (1/7 de l'A100), 6 cœurs et 32 Go par tâche, conteneur `ige_reml.sif`. Les voies CPU et les logiciels externes utilisent les cœurs de la tranche, avec OMP, OpenBLAS et MKL réglés sur 6 fils. CPU et GPU partagent donc la même machine. Chaque ajustement tourne dans un processus R à part (callr), avec un délai maximal de 1800 s. Le temps est mesuré dans ce processus, autour du seul appel d'ajustement.
+Everything runs on node io-gpu-a100-01, MIG slice 1g.10gb (1/7 of the A100), 6 cores and 32 GB per task, container `ige_reml.sif`. The CPU routes and the external programs use the cores of the slice, with OMP, OpenBLAS and MKL set to 6 threads. CPU and GPU therefore share the same machine. Each fit runs in its own R process (callr), with a time limit of 1800 s. The time is measured inside that process, around the fitting call alone.
 
-## Mesures enregistrées
+## Recorded measurements
 
-Une ligne par ajustement : famille, n, répétition, graine, logiciel, voie, statut (OK, ERREUR, DELAI), temps total, `compile_s`, `eval_s`, nombre d'itérations et d'évaluations, moteur et inversion effectifs, convergence déclarée, logLik native et logLik arbitre. La logLik arbitre est la REML dense commune, évaluée aux estimations de chaque logiciel : les constantes des logLik natives diffèrent d'un logiciel à l'autre. Une seconde table donne, pour chaque ajustement, la valeur vraie et la valeur estimée de chaque paramètre.
+One row per fit, in `fits_<family>_<n>_<rep>.csv`: family, n, replicate, seed, software, route, status (OK, ERROR, TIMEOUT, MEMORY), total time, `compile_s`, `eval_s`, numbers of iterations and evaluations, effective engine and inversion, declared convergence, native logLik and arbiter logLik. The arbiter logLik is the shared dense REML, evaluated at the estimates of each program, because the constants of the native logLiks differ from one program to the next. A second table, `parameters_<family>_<n>_<rep>.csv`, gives the true and the estimated value of each parameter for each fit. Campaigns run before the English pass wrote `ajustements_*.csv` and `parametres_*.csv` with French columns. The analysis scripts still read them.
 
-## Analyse
+## Analysis
 
-Dans chaque répétition, la référence est la meilleure logLik arbitre parmi les ajustements réussis. Un ajustement est juste à moins de 1e-3 de cette référence. Il est retenu pour les temps et les paramètres à moins de 0,1. Les rapports de temps se calculent dans la répétition, puis se résument par la médiane, le minimum et le maximum des cinq répétitions.
+Within each replicate, the reference is the best arbiter logLik among the successful fits. A fit is accurate within 1e-3 of this reference. It is kept for times and parameters within 0.1. Time ratios are computed within the replicate, then summarised by the median, minimum and maximum of the five replicates.
 
-Figures produites par `banc_moteurs/R/analyser.R` :
+Figures produced by `banc_moteurs/R/analyser.R`:
 
-- dimensions des cas (génotypes, observations par génotype, m) contre n ;
-- état des ajustements par famille et par voie ;
-- temps contre n, toutes voies, en temps total puis en temps du solveur remlax seul ;
-- temps contre m ;
-- gain du GPU (CPU / GPU) pour le dense et le MME ;
-- MME contre dense, et inversion creuse contre dense ;
-- remlax contre asreml ;
-- voie la plus rapide par cellule, toutes voies puis remlax seul ;
-- écart à la meilleure logLik ;
-- récupération des paramètres (biais, RMSE relative) ;
-- accord des estimations des logiciels externes avec remlax ;
-- part de la compilation JAX dans le temps total.
+- dimensions of the cases (genotypes, observations per genotype, m) against n;
+- status of the fits by family and route;
+- time against n, every route, as total time then as time of the remlax solver alone;
+- time against m;
+- GPU gain (CPU / GPU) for the dense and MME engines;
+- MME against dense, and sparse against dense inversion;
+- remlax against asreml;
+- fastest route per cell, every route then remlax only;
+- difference to the best logLik;
+- parameter recovery (bias, relative RMSE);
+- agreement of the external estimates with remlax;
+- share of JAX compilation in the total time.
 
-La règle `auto` se construit sur la carte de la voie remlax la plus rapide, à partir de prédicteurs calculables avant l'ajustement (n, m, nnz du motif de C, remplissage symbolique, présence d'une résiduelle structurée ou d'une K dense paramétrée).
+The `auto` rule is built on the map of the fastest remlax route, from predictors that can be computed before fitting (n, m, nnz of the pattern of C, symbolic fill-in, presence of a structured residual or of a parameterised dense K).
 
-## Lancement
+## Launch
 
 ```
 W=/scratch/users/salasn/banc_moteurs_20261022
 sbatch --array=0-359%7 $W/remlax-validation/banc_moteurs/banc_mig.sbatch
-Rscript banc_moteurs/R/analyser.R --res=<copie locale de $W/res>
+Rscript banc_moteurs/R/analyser.R --res=<local copy of $W/res>
 ```
 
-Une tâche dont le CSV existe déjà s'arrête aussitôt : un tableau relancé ne refait que les cas manquants.
+A task whose CSV already exists stops at once. A resubmitted array therefore redoes only the missing cases.
 
-## Limites connues
+## Known limits
 
-- Une tranche MIG sous-estime le GPU pour les grandes tailles. L'A100 entière n'est pas utilisée.
-- asreml `expv` en terme aléatoire ne retrouve pas l'optimum REML du modèle simulé (ρ écrasé vers 0, logLik arbitre 20 unités sous celle de remlax à n = 500, même sur un cas à une observation par position). L'écart est signalé, pas corrigé.
-- asreml n'ajuste le modèle ige qu'à n ≤ 3000 : les incidences de voisinage passent par des colonnes denses du tableau de données.
+- A MIG slice underestimates the GPU at large sizes. The full A100 is not used.
+- asreml `expv` as a random term does not reach the REML optimum of the simulated model (ρ pushed towards 0, arbiter logLik 20 units below that of remlax at n = 500, even on a case with one observation per position). The gap is reported, not corrected.
+- asreml fits the ige model only at n ≤ 3000, because the neighbourhood incidences go through dense columns of the data frame.

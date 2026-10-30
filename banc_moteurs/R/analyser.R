@@ -1,282 +1,309 @@
 # ==============================================================================
-# Analyse du banc des moteurs : rassemble les CSV de executer.R, puis trace les
-# figures de comparaison (temps, CPU contre GPU, MME contre dense, inversion,
-# justesse de la logLik, recuperation des parametres, accord entre logiciels).
+# Analysis of the engine benchmark: gathers the CSVs of executer.R, then draws
+# the comparison figures (time, CPU against GPU, MME against dense, inversion,
+# accuracy of the logLik, parameter recovery, agreement between software).
 #
-#   Rscript R/analyser.R --res=<dossier des CSV> [--sortie=<dossier>/figures]
+#   Rscript R/analyser.R --res=<folder of the CSVs> [--out=<folder>/figures]
 #
-# Une cellule = (famille, n, repetition). La meme graine sert a toutes les voies
-# d'une cellule : les rapports de temps et les ecarts de logLik se calculent
-# DANS la cellule, puis on resume les cinq repetitions (mediane, min, max).
-# La logLik de reference d'une cellule est la meilleure logLik ARBITRE (REML
-# dense commun, evalue aux estimations de chaque logiciel) parmi les
-# ajustements reussis : les logLik natives n'ont pas la meme constante.
+# A cell = (family, n, replicate). The same seed serves every route of a cell.
+# Time ratios and logLik differences are computed WITHIN the cell, then the
+# five replicates are summarised (median, min, max).
+# The reference logLik of a cell is the best ARBITER logLik (shared dense REML,
+# evaluated at the estimates of each software) among the successful fits. The
+# native logLiks do not share the same constant.
+#
+# Results written before the English pass (ajustements_*.csv, parametres_*.csv,
+# French columns and values) are read as well and translated on reading.
 # ==============================================================================
 suppressPackageStartupMessages({ library(ggplot2) })
 args <- commandArgs(TRUE)
 opt <- function(k, d) { a <- grep(paste0("^--", k, "="), args, value = TRUE); if (length(a)) sub(paste0("^--", k, "="), "", a[1]) else d }
-res <- opt("res", "resultats"); sortie <- opt("sortie", file.path(res, "figures"))
-fdim <- opt("dimensions", file.path(res, "dimensions.csv"))      # produit par R/dimensions.R
-dir.create(sortie, recursive = TRUE, showWarnings = FALSE)
+res <- opt("res", "results"); out_dir <- opt("out", file.path(res, "figures"))
+fdim <- opt("dimensions", file.path(res, "dimensions.csv"))      # written by R/dimensions.R
+dir.create(out_dir, recursive = TRUE, showWarnings = FALSE)
 
-lire <- function(motif) {
-  f <- list.files(res, motif, full.names = TRUE)
-  if (!length(f)) stop("aucun fichier ", motif, " dans ", res)
-  l <- lapply(f, utils::read.csv, stringsAsFactors = FALSE)
-  # colonnes ajoutees au fil des versions du banc (n_par, grad_rel) : on complete
+# Old French column names and values -> English
+FR_EN_COLS <- c(famille = "family", graine = "seed", logiciel = "software", voie = "route", statut = "status",
+                secondes = "seconds", solveur_s = "solver_s", moteur = "engine", logLik_natif = "logLik_native",
+                logLik_arbitre = "logLik_arbiter", parametre = "parameter", vrai = "true", estime = "estimate",
+                n_caracteres = "n_traits", niveau = "level", n_niveaux = "n_levels", niveaux_observes = "levels_observed",
+                obs_par_niveau = "obs_per_level", obs_par_niveau_min = "obs_per_level_min",
+                obs_par_niveau_max = "obs_per_level_max")
+FR_EN_VALUES <- list(status = c(ERREUR = "ERROR", DELAI = "TIMEOUT", MEMOIRE = "MEMORY"),
+                     route = c("M-creux-CPU" = "M-sparse-CPU"), family = c(champ = "field"),
+                     level = c(animaux = "animals"))
+to_english <- function(d) {
+  names(d) <- ifelse(names(d) %in% names(FR_EN_COLS), FR_EN_COLS[names(d)], names(d))
+  for (k in intersect(names(FR_EN_VALUES), names(d))) {
+    v <- FR_EN_VALUES[[k]]; i <- d[[k]] %in% names(v); d[[k]][i] <- unname(v[d[[k]][i]])
+  }
+  if ("parameter" %in% names(d)) d$parameter <- sub("^residuelle", "residual", sub("^champ", "field", d$parameter))
+  d
+}
+
+# English files first; an old French file is read only when its case has no English file
+read_all <- function(prefix_en, prefix_fr) {
+  f_en <- list.files(res, paste0("^", prefix_en, "_.*\\.csv$"), full.names = TRUE)
+  f_fr <- list.files(res, paste0("^", prefix_fr, "_.*\\.csv$"), full.names = TRUE)
+  key_fr <- sub("^champ_", "field_", sub(paste0("^", prefix_fr, "_"), "", basename(f_fr)))
+  f_fr <- f_fr[!key_fr %in% sub(paste0("^", prefix_en, "_"), "", basename(f_en))]
+  f <- c(f_en, f_fr)
+  if (!length(f)) stop("no ", prefix_en, "_*.csv (or ", prefix_fr, "_*.csv) file in ", res)
+  l <- lapply(f, function(x) to_english(utils::read.csv(x, stringsAsFactors = FALSE)))
+  # columns added over the versions of the benchmark (n_par, grad_rel): fill them in
   cols <- unique(unlist(lapply(l, names)))
   do.call(rbind, lapply(l, function(d) { for (k in setdiff(cols, names(d))) d[[k]] <- NA; d[cols] }))
 }
-aj <- lire("^ajustements_.*\\.csv$")
-pa <- lire("^parametres_.*\\.csv$")
+fits <- read_all("fits", "ajustements")
+pa <- read_all("parameters", "parametres")
 
-FAMILLES <- c("iid", "grm", "us", "ped", "ige", "champ", "resid", "exp", "fa")
-VOIES <- c("D-CPU", "D-GPU", "M-dense-CPU", "M-dense-GPU", "M-creux-CPU", "asreml", "sommer", "lme4")
-COUL <- c("D-CPU" = "#1f78b4", "D-GPU" = "#a6cee3", "M-dense-CPU" = "#33a02c", "M-dense-GPU" = "#b2df8a",
-          "M-creux-CPU" = "#e31a1c", asreml = "#ff7f00", sommer = "#6a3d9a", lme4 = "#b15928")
-aj$famille <- factor(aj$famille, FAMILLES); pa$famille <- factor(pa$famille, FAMILLES)
-aj$voie <- factor(aj$voie, VOIES); pa$voie <- factor(pa$voie, VOIES)
-aj$cellule <- paste(aj$famille, aj$n, aj$rep)
-pa$cellule <- paste(pa$famille, pa$n, pa$rep)
+FAMILIES <- c("iid", "grm", "us", "ped", "ige", "field", "resid", "exp", "fa")
+ROUTES <- c("D-CPU", "D-GPU", "M-dense-CPU", "M-dense-GPU", "M-sparse-CPU", "asreml", "sommer", "lme4")
+COL <- c("D-CPU" = "#1f78b4", "D-GPU" = "#a6cee3", "M-dense-CPU" = "#33a02c", "M-dense-GPU" = "#b2df8a",
+         "M-sparse-CPU" = "#e31a1c", asreml = "#ff7f00", sommer = "#6a3d9a", lme4 = "#b15928")
+fits$family <- factor(fits$family, FAMILIES); pa$family <- factor(pa$family, FAMILIES)
+fits$route <- factor(fits$route, ROUTES); pa$route <- factor(pa$route, ROUTES)
+fits$cell <- paste(fits$family, fits$n, fits$rep)
+pa$cell <- paste(pa$family, pa$n, pa$rep)
 
-# DIMENSIONS. n croit en ajoutant des genotypes (nombre d'observations par
-# genotype a peu pres fixe), pas en ajoutant des repetitions : m, la taille de
-# C, croit avec n. Chaque panneau porte la regle de sa famille, pour qu'un effet
-# de n ne soit pas lu comme un effet du nombre de repetitions par genotype.
-dims <- if (file.exists(fdim)) utils::read.csv(fdim, stringsAsFactors = FALSE) else NULL
+# DIMENSIONS. n grows by adding genotypes (number of observations per genotype
+# roughly fixed), not by adding replicates: m, the size of C, grows with n.
+# Each panel carries the rule of its family, so that an effect of n is not read
+# as an effect of the number of replicates per genotype.
+dims <- if (file.exists(fdim)) to_english(utils::read.csv(fdim, stringsAsFactors = FALSE)) else NULL
 if (!is.null(dims)) {
-  dims$famille <- factor(dims$famille, FAMILLES)
-  regle <- vapply(FAMILLES, function(f) {
-    d <- dims[dims$famille == f, ]
+  dims$family <- factor(dims$family, FAMILIES)
+  rule <- vapply(FAMILIES, function(f) {
+    d <- dims[dims$family == f, ]
     if (!nrow(d)) return(f)
-    k <- stats::median(d$n_obs / d$n_niveaux)
+    k <- stats::median(d$n_obs / d$n_levels)
     k <- if (abs(k - round(k)) < 0.15) round(k) else round(k, 1)
-    nt <- d$n_caracteres[1]
-    sprintf("%s : %s = %s%s", f, d$niveau[1], if (k == 1) "n" else paste0("n/", k),
-            if (nt > 1) sprintf(" (%d caracteres)", nt) else "")
+    nt <- d$n_traits[1]
+    sprintf("%s: %s = %s%s", f, d$level[1], if (k == 1) "n" else paste0("n/", k),
+            if (nt > 1) sprintf(" (%d traits)", nt) else "")
   }, "")
-  lab_fam <- as_labeller(regle)
-  aj <- merge(aj, dims[, c("famille", "n", "rep", "n_niveaux", "m")], by = c("famille", "n", "rep"), all.x = TRUE)
+  lab_fam <- as_labeller(rule)
+  fits <- merge(fits, dims[, c("family", "n", "rep", "n_levels", "m")], by = c("family", "n", "rep"), all.x = TRUE)
 } else {
-  message("dimensions.csv absent : lancer R/dimensions.R ; panneaux sans regle d'echelle")
+  message("dimensions.csv missing: run R/dimensions.R; panels without a scaling rule")
   lab_fam <- label_value
 }
 
-# echecs de memoire GPU ecrits ERREUR par les premieres taches du tableau
-aj$statut[aj$statut == "ERREUR" & grepl("bfc_allocator|RESOURCE_EXHAUSTED|out of memory", aj$message)] <- "MEMOIRE"
-# un ajustement compte s'il a abouti et si sa logLik arbitre est connue
-aj$reussi <- aj$statut == "OK" & is.finite(aj$logLik_arbitre)
-ref <- tapply(ifelse(aj$reussi, aj$logLik_arbitre, NA), aj$cellule, max, na.rm = TRUE)
+# GPU memory failures written as ERROR by the first tasks of the array
+fits$status[fits$status == "ERROR" & grepl("bfc_allocator|RESOURCE_EXHAUSTED|out of memory", fits$message)] <- "MEMORY"
+# a fit counts if it ended and its arbiter logLik is known
+fits$success <- fits$status == "OK" & is.finite(fits$logLik_arbiter)
+ref <- tapply(ifelse(fits$success, fits$logLik_arbiter, NA), fits$cell, max, na.rm = TRUE)
 ref[!is.finite(ref)] <- NA
-aj$ecart_logLik <- ref[aj$cellule] - aj$logLik_arbitre          # >= 0, en unites de logLik
-# tolerance : sous 1e-3 l'ecart est numerique ; au-dela l'ajustement est sous l'optimum
+fits$diff_logLik <- ref[fits$cell] - fits$logLik_arbiter          # >= 0, in logLik units
+# tolerance: below 1e-3 the difference is numerical; above, the fit is below the optimum
 TOL <- 1e-3
-aj$juste <- aj$reussi & aj$ecart_logLik <= TOL
-# temps et parametres : un ajustement a moins de 0,1 unite de logLik est retenu
-# (asreml s'arrete parfois a quelques 1e-3 de l'optimum) ; au-dela il est ecarte
-TOL_USAGE <- 0.1
-aj$retenu <- aj$reussi & aj$ecart_logLik <= TOL_USAGE
+fits$accurate <- fits$success & fits$diff_logLik <= TOL
+# time and parameters: a fit within 0.1 logLik unit is kept (asreml sometimes
+# stops a few 1e-3 short of the optimum); beyond that it is discarded
+TOL_USE <- 0.1
+fits$kept <- fits$success & fits$diff_logLik <= TOL_USE
 
-resumer <- function(d, val, par = c("famille", "n", "voie")) {
-  s <- stats::aggregate(d[[val]], d[par], function(x) c(med = stats::median(x), lo = min(x), hi = max(x), k = length(x)))
-  cbind(s[par], as.data.frame(s$x))
+summarise_by <- function(d, val, by = c("family", "n", "route")) {
+  s <- stats::aggregate(d[[val]], d[by], function(x) c(med = stats::median(x), lo = min(x), hi = max(x), k = length(x)))
+  cbind(s[by], as.data.frame(s$x))
 }
-theme_banc <- theme_bw(base_size = 10) + theme(legend.position = "bottom", strip.background = element_rect(fill = "grey95"))
-enregistrer <- function(p, nom, l = 11, h = 8) {
-  ggsave(file.path(sortie, paste0(nom, ".pdf")), p, width = l, height = h)
-  ggsave(file.path(sortie, paste0(nom, ".png")), p, width = l, height = h, dpi = 150)
+theme_bench <- theme_bw(base_size = 10) + theme(legend.position = "bottom", strip.background = element_rect(fill = "grey95"))
+save_fig <- function(p, name, w = 11, h = 8) {
+  ggsave(file.path(out_dir, paste0(name, ".pdf")), p, width = w, height = h)
+  ggsave(file.path(out_dir, paste0(name, ".png")), p, width = w, height = h, dpi = 150)
 }
 
-# ---------------------------------------------------------------- bilan d'etat
-etat <- as.data.frame(table(famille = aj$famille, voie = aj$voie, statut = ifelse(aj$juste, "juste",
-                      ifelse(aj$reussi, "sous l'optimum", aj$statut))))
-etat <- etat[etat$Freq > 0, ]
-utils::write.csv(etat, file.path(sortie, "bilan_etats.csv"), row.names = FALSE)
-p <- ggplot(etat, aes(voie, Freq, fill = statut)) + geom_col() + facet_wrap(~ famille, labeller = lab_fam, nrow = 3) +
-  scale_fill_manual(values = c(juste = "#4daf4a", "sous l'optimum" = "#ff7f00", ERREUR = "#e41a1c", DELAI = "#984ea3", MEMOIRE = "#377eb8")) +
-  labs(x = NULL, y = "ajustements", fill = NULL, title = "Etat des ajustements par famille et par voie",
-       subtitle = sprintf("juste : logLik arbitre a moins de %g de la meilleure de la cellule", TOL)) +
-  theme_banc + theme(axis.text.x = element_text(angle = 45, hjust = 1))
-enregistrer(p, "fig0_etats")
+# -------------------------------------------------------------- status summary
+status_tab <- as.data.frame(table(family = fits$family, route = fits$route, status = ifelse(fits$accurate, "accurate",
+                            ifelse(fits$success, "below optimum", fits$status))))
+status_tab <- status_tab[status_tab$Freq > 0, ]
+utils::write.csv(status_tab, file.path(out_dir, "summary_status.csv"), row.names = FALSE)
+p <- ggplot(status_tab, aes(route, Freq, fill = status)) + geom_col() + facet_wrap(~ family, labeller = lab_fam, nrow = 3) +
+  scale_fill_manual(values = c(accurate = "#4daf4a", "below optimum" = "#ff7f00", ERROR = "#e41a1c", TIMEOUT = "#984ea3", MEMORY = "#377eb8")) +
+  labs(x = NULL, y = "fits", fill = NULL, title = "Status of the fits by family and route",
+       subtitle = sprintf("accurate: arbiter logLik within %g of the best of the cell", TOL)) +
+  theme_bench + theme(axis.text.x = element_text(angle = 45, hjust = 1))
+save_fig(p, "fig0_status")
 
-# ------------------------------------------------------- dimensions contre n
+# ------------------------------------------------------- dimensions against n
 if (!is.null(dims)) {
-  dl <- rbind(data.frame(dims[c("famille", "n")], mesure = "genotypes (ou niveaux) du terme principal", v = dims$n_niveaux),
-              data.frame(dims[c("famille", "n")], mesure = "observations par niveau et par caractere", v = dims$obs_par_niveau),
-              data.frame(dims[c("famille", "n")], mesure = "m (taille de C)", v = dims$m))
-  dl <- stats::aggregate(v ~ famille + n + mesure, dl, stats::median)
-  p <- ggplot(dl, aes(n, v, colour = famille)) + geom_line() + geom_point(size = 1) +
-    scale_x_log10() + scale_y_log10() + facet_wrap(~ mesure, scales = "free_y", nrow = 1) +
-    labs(x = "n (observations)", y = NULL, colour = NULL, title = "Dimensions des cas simules",
-         subtitle = paste("n croit en ajoutant des genotypes ; le nombre d'observations par genotype reste a peu pres fixe.",
-                          "Mediane des 5 repetitions.")) +
-    theme_banc
-  enregistrer(p, "figD_dimensions", 12, 4.5)
-  dt <- stats::aggregate(cbind(n_niveaux, obs_par_niveau, obs_par_niveau_min, obs_par_niveau_max, m) ~ famille + niveau + n,
+  dl <- rbind(data.frame(dims[c("family", "n")], measure = "genotypes (or levels) of the main term", v = dims$n_levels),
+              data.frame(dims[c("family", "n")], measure = "observations per level and per trait", v = dims$obs_per_level),
+              data.frame(dims[c("family", "n")], measure = "m (size of C)", v = dims$m))
+  dl <- stats::aggregate(v ~ family + n + measure, dl, stats::median)
+  p <- ggplot(dl, aes(n, v, colour = family)) + geom_line() + geom_point(size = 1) +
+    scale_x_log10() + scale_y_log10() + facet_wrap(~ measure, scales = "free_y", nrow = 1) +
+    labs(x = "n (observations)", y = NULL, colour = NULL, title = "Dimensions of the simulated cases",
+         subtitle = paste("n grows by adding genotypes; the number of observations per genotype stays roughly fixed.",
+                          "Median of 5 replicates.")) +
+    theme_bench
+  save_fig(p, "figD_dimensions", 12, 4.5)
+  dt <- stats::aggregate(cbind(n_levels, obs_per_level, obs_per_level_min, obs_per_level_max, m) ~ family + level + n,
                          dims, stats::median)
-  utils::write.csv(dt[order(dt$famille, dt$n), ], file.path(sortie, "dimensions_resume.csv"), row.names = FALSE)
+  utils::write.csv(dt[order(dt$family, dt$n), ], file.path(out_dir, "dimensions_summary.csv"), row.names = FALSE)
 }
 
-# ------------------------------------------------------------- temps contre n
-tj <- aj[aj$retenu, ]
-st <- resumer(tj, "secondes")
-if (!is.null(dims)) st <- merge(st, stats::aggregate(cbind(n_niveaux, m) ~ famille + n, aj, stats::median),
-                                by = c("famille", "n"), all.x = TRUE)
-p <- ggplot(st, aes(n, med, colour = voie, fill = voie)) +
+# ------------------------------------------------------------- time against n
+tj <- fits[fits$kept, ]
+st <- summarise_by(tj, "seconds")
+if (!is.null(dims)) st <- merge(st, stats::aggregate(cbind(n_levels, m) ~ family + n, fits, stats::median),
+                                by = c("family", "n"), all.x = TRUE)
+p <- ggplot(st, aes(n, med, colour = route, fill = route)) +
   geom_ribbon(aes(ymin = lo, ymax = hi), alpha = 0.15, colour = NA) + geom_line() + geom_point(size = 1) +
-  scale_x_log10() + scale_y_log10() + facet_wrap(~ famille, labeller = lab_fam, nrow = 3, scales = "free_y") +
-  scale_colour_manual(values = COUL) + scale_fill_manual(values = COUL) +
-  labs(x = "n (observations)", y = "temps total (s)", colour = NULL, fill = NULL,
-       title = "Temps d'ajustement", subtitle = sprintf("mediane de 5 repetitions, bande min-max ; ajustements a moins de %g de la meilleure logLik", TOL_USAGE)) +
-  theme_banc
-enregistrer(p, "fig1_temps")
-utils::write.csv(st, file.path(sortie, "temps_resume.csv"), row.names = FALSE)
-# remlax : temps du seul solveur Python (hors lancement du processus, import de
-# JAX et export du paquet), a cote du temps total des logiciels externes
-ts <- tj; rx <- ts$voie %in% VOIES[1:5]
-ts$secondes[rx] <- ts$solveur_s[rx]
-ts <- ts[is.finite(ts$secondes), ]
-p <- ggplot(resumer(ts, "secondes"), aes(n, med, colour = voie, fill = voie)) +
+  scale_x_log10() + scale_y_log10() + facet_wrap(~ family, labeller = lab_fam, nrow = 3, scales = "free_y") +
+  scale_colour_manual(values = COL) + scale_fill_manual(values = COL) +
+  labs(x = "n (observations)", y = "total time (s)", colour = NULL, fill = NULL,
+       title = "Fitting time", subtitle = sprintf("median of 5 replicates, min-max band; fits within %g of the best logLik", TOL_USE)) +
+  theme_bench
+save_fig(p, "fig1_time")
+utils::write.csv(st, file.path(out_dir, "time_summary.csv"), row.names = FALSE)
+# remlax: time of the Python solver alone (without process start-up, JAX import
+# and package export), beside the total time of the external software
+ts <- tj; rx <- ts$route %in% ROUTES[1:5]
+ts$seconds[rx] <- ts$solver_s[rx]
+ts <- ts[is.finite(ts$seconds), ]
+p <- ggplot(summarise_by(ts, "seconds"), aes(n, med, colour = route, fill = route)) +
   geom_ribbon(aes(ymin = lo, ymax = hi), alpha = 0.15, colour = NA) + geom_line() + geom_point(size = 1) +
-  scale_x_log10() + scale_y_log10() + facet_wrap(~ famille, labeller = lab_fam, nrow = 3, scales = "free_y") +
-  scale_colour_manual(values = COUL) + scale_fill_manual(values = COUL) +
-  labs(x = "n (observations)", y = "temps (s)", colour = NULL, fill = NULL,
-       title = "Temps du solveur remlax seul",
-       subtitle = "remlax : solveur Python, compilation comprise, sans lancement ni export ; externes : temps total") +
-  theme_banc
-enregistrer(p, "fig1b_temps_solveur")
-# meme temps contre m : le cout du moteur MME suit m, celui du dense suit n
+  scale_x_log10() + scale_y_log10() + facet_wrap(~ family, labeller = lab_fam, nrow = 3, scales = "free_y") +
+  scale_colour_manual(values = COL) + scale_fill_manual(values = COL) +
+  labs(x = "n (observations)", y = "time (s)", colour = NULL, fill = NULL,
+       title = "Time of the remlax solver alone",
+       subtitle = "remlax: Python solver, compilation included, without start-up or export; external: total time") +
+  theme_bench
+save_fig(p, "fig1b_solver_time")
+# same time against m: the cost of the MME engine follows m, that of the dense engine follows n
 if (!is.null(dims)) {
-  # m varie un peu d'une repetition a l'autre (niveaux non observes) : m median par (famille, n)
-  sm <- merge(resumer(tj, "secondes"), stats::aggregate(m ~ famille + n, dims, stats::median), by = c("famille", "n"))
-  p <- ggplot(sm, aes(m, med, colour = voie, fill = voie)) +
+  # m varies slightly from one replicate to the next (unobserved levels): median m per (family, n)
+  sm <- merge(summarise_by(tj, "seconds"), stats::aggregate(m ~ family + n, dims, stats::median), by = c("family", "n"))
+  p <- ggplot(sm, aes(m, med, colour = route, fill = route)) +
     geom_ribbon(aes(ymin = lo, ymax = hi), alpha = 0.15, colour = NA) + geom_line() + geom_point(size = 1) +
-    scale_x_log10() + scale_y_log10() + facet_wrap(~ famille, labeller = lab_fam, nrow = 3, scales = "free") +
-    scale_colour_manual(values = COUL) + scale_fill_manual(values = COUL) +
-    labs(x = "m (taille de C : effets fixes + niveaux aleatoires)", y = "temps total (s)", colour = NULL, fill = NULL,
-         title = "Temps d'ajustement contre la taille des equations du modele mixte") + theme_banc
-  enregistrer(p, "fig1c_temps_contre_m")
+    scale_x_log10() + scale_y_log10() + facet_wrap(~ family, labeller = lab_fam, nrow = 3, scales = "free") +
+    scale_colour_manual(values = COL) + scale_fill_manual(values = COL) +
+    labs(x = "m (size of C: fixed effects + random levels)", y = "total time (s)", colour = NULL, fill = NULL,
+         title = "Fitting time against the size of the mixed model equations") + theme_bench
+  save_fig(p, "fig1c_time_vs_m")
 }
 
-# rapport de deux voies dans chaque cellule, puis resume des repetitions
-rapport <- function(num, den) {
-  a <- tj[tj$voie == num, c("famille", "n", "rep", "cellule", "secondes")]
-  b <- tj[tj$voie == den, c("cellule", "secondes")]
-  m <- merge(a, b, by = "cellule", suffixes = c("_num", "_den"))
+# ratio of two routes within each cell, then summary over replicates
+ratio <- function(num, den) {
+  a <- tj[tj$route == num, c("family", "n", "rep", "cell", "seconds")]
+  b <- tj[tj$route == den, c("cell", "seconds")]
+  m <- merge(a, b, by = "cell", suffixes = c("_num", "_den"))
   if (!nrow(m)) return(NULL)
-  m$r <- m$secondes_num / m$secondes_den
-  s <- stats::aggregate(r ~ famille + n, m, function(x) c(med = stats::median(x), lo = min(x), hi = max(x)))
-  cbind(s[c("famille", "n")], as.data.frame(s$r), comparaison = sprintf("%s / %s", num, den))
+  m$r <- m$seconds_num / m$seconds_den
+  s <- stats::aggregate(r ~ family + n, m, function(x) c(med = stats::median(x), lo = min(x), hi = max(x)))
+  cbind(s[c("family", "n")], as.data.frame(s$r), comparison = sprintf("%s / %s", num, den))
 }
-trace_rapports <- function(r, titre, sous, nom) {
+plot_ratios <- function(r, title, sub, name) {
   r <- do.call(rbind, r)
   if (is.null(r) || !nrow(r)) return(invisible())
-  p <- ggplot(r, aes(n, med, colour = comparaison, fill = comparaison)) +
+  p <- ggplot(r, aes(n, med, colour = comparison, fill = comparison)) +
     geom_hline(yintercept = 1, linetype = 2) +
     geom_ribbon(aes(ymin = lo, ymax = hi), alpha = 0.15, colour = NA) + geom_line() + geom_point(size = 1) +
-    scale_x_log10() + scale_y_log10() + facet_wrap(~ famille, labeller = lab_fam, nrow = 3) +
-    labs(x = "n (observations)", y = "rapport des temps", colour = NULL, fill = NULL, title = titre, subtitle = sous) +
-    theme_banc
-  enregistrer(p, nom)
-  utils::write.csv(r, file.path(sortie, paste0(nom, ".csv")), row.names = FALSE)
+    scale_x_log10() + scale_y_log10() + facet_wrap(~ family, labeller = lab_fam, nrow = 3) +
+    labs(x = "n (observations)", y = "time ratio", colour = NULL, fill = NULL, title = title, subtitle = sub) +
+    theme_bench
+  save_fig(p, name)
+  utils::write.csv(r, file.path(out_dir, paste0(name, ".csv")), row.names = FALSE)
 }
-trace_rapports(list(rapport("D-CPU", "D-GPU"), rapport("M-dense-CPU", "M-dense-GPU")),
-               "Gain du GPU", "temps CPU / temps GPU, meme noeud ; au-dessus de 1 le GPU l'emporte", "fig2_gpu_contre_cpu")
-trace_rapports(list(rapport("D-CPU", "M-dense-CPU"), rapport("D-CPU", "M-creux-CPU"), rapport("D-GPU", "M-dense-GPU")),
-               "Moteur MME contre moteur dense", "temps dense / temps MME ; au-dessus de 1 le MME l'emporte", "fig3_mme_contre_dense")
-trace_rapports(list(rapport("M-dense-CPU", "M-creux-CPU")),
-               "Inversion de C dans le moteur MME", "temps inversion dense / temps inversion creuse (CPU)", "fig4_inversion")
-trace_rapports(list(rapport("asreml", "D-CPU"), rapport("asreml", "M-creux-CPU"), rapport("asreml", "M-dense-GPU"),
-                    rapport("asreml", "D-GPU")),
-               "remlax contre asreml", "temps asreml / temps remlax ; au-dessus de 1 remlax l'emporte", "fig5_remlax_contre_asreml")
+plot_ratios(list(ratio("D-CPU", "D-GPU"), ratio("M-dense-CPU", "M-dense-GPU")),
+            "GPU gain", "CPU time / GPU time, same node; above 1 the GPU wins", "fig2_gpu_vs_cpu")
+plot_ratios(list(ratio("D-CPU", "M-dense-CPU"), ratio("D-CPU", "M-sparse-CPU"), ratio("D-GPU", "M-dense-GPU")),
+            "MME engine against dense engine", "dense time / MME time; above 1 the MME wins", "fig3_mme_vs_dense")
+plot_ratios(list(ratio("M-dense-CPU", "M-sparse-CPU")),
+            "Inversion of C in the MME engine", "dense inversion time / sparse inversion time (CPU)", "fig4_inversion")
+plot_ratios(list(ratio("asreml", "D-CPU"), ratio("asreml", "M-sparse-CPU"), ratio("asreml", "M-dense-GPU"),
+                 ratio("asreml", "D-GPU")),
+            "remlax against asreml", "asreml time / remlax time; above 1 remlax wins", "fig5_remlax_vs_asreml")
 
-# ------------------------------------------------- meilleure voie par cellule
-mv <- do.call(rbind, lapply(split(tj, list(tj$famille, tj$n), drop = TRUE), function(d) {
-  s <- tapply(d$secondes, droplevels(d$voie), stats::median)
-  data.frame(famille = d$famille[1], n = d$n[1], voie = names(s)[which.min(s)], secondes = min(s))
+# ------------------------------------------------------ fastest route per cell
+fastest <- do.call(rbind, lapply(split(tj, list(tj$family, tj$n), drop = TRUE), function(d) {
+  s <- tapply(d$seconds, droplevels(d$route), stats::median)
+  data.frame(family = d$family[1], n = d$n[1], route = names(s)[which.min(s)], seconds = min(s))
 }))
-mv$voie <- factor(mv$voie, VOIES)
-p <- ggplot(mv, aes(factor(n), famille, fill = voie)) + geom_tile(colour = "white") +
-  geom_text(aes(label = sprintf("%.3g", secondes)), size = 2.6) + scale_fill_manual(values = COUL, drop = FALSE) +
-  labs(x = "n (observations)", y = NULL, fill = NULL, title = "Voie la plus rapide par cellule",
-       subtitle = "mediane des repetitions retenues ; etiquette = temps (s)") + theme_banc
-enregistrer(p, "fig6_meilleure_voie", 10, 5)
-mvr <- do.call(rbind, lapply(split(tj[tj$voie %in% VOIES[1:5], ], list(tj$famille[tj$voie %in% VOIES[1:5]], tj$n[tj$voie %in% VOIES[1:5]]), drop = TRUE), function(d) {
-  s <- tapply(d$secondes, droplevels(d$voie), stats::median)
-  data.frame(famille = d$famille[1], n = d$n[1], voie = names(s)[which.min(s)], secondes = min(s))
+fastest$route <- factor(fastest$route, ROUTES)
+p <- ggplot(fastest, aes(factor(n), family, fill = route)) + geom_tile(colour = "white") +
+  geom_text(aes(label = sprintf("%.3g", seconds)), size = 2.6) + scale_fill_manual(values = COL, drop = FALSE) +
+  labs(x = "n (observations)", y = NULL, fill = NULL, title = "Fastest route per cell",
+       subtitle = "median of the kept replicates; label = time (s)") + theme_bench
+save_fig(p, "fig6_fastest_route", 10, 5)
+fastest_rx <- do.call(rbind, lapply(split(tj[tj$route %in% ROUTES[1:5], ], list(tj$family[tj$route %in% ROUTES[1:5]], tj$n[tj$route %in% ROUTES[1:5]]), drop = TRUE), function(d) {
+  s <- tapply(d$seconds, droplevels(d$route), stats::median)
+  data.frame(family = d$family[1], n = d$n[1], route = names(s)[which.min(s)], seconds = min(s))
 }))
-mvr$voie <- factor(mvr$voie, VOIES)
-p <- ggplot(mvr, aes(factor(n), famille, fill = voie)) + geom_tile(colour = "white") +
-  geom_text(aes(label = sprintf("%.3g", secondes)), size = 2.6) + scale_fill_manual(values = COUL[1:5], drop = FALSE) +
-  labs(x = "n (observations)", y = NULL, fill = NULL, title = "Voie remlax la plus rapide par cellule",
-       subtitle = "base de la regle engine = \"auto\"") + theme_banc
-enregistrer(p, "fig7_meilleure_voie_remlax", 10, 5)
+fastest_rx$route <- factor(fastest_rx$route, ROUTES)
+p <- ggplot(fastest_rx, aes(factor(n), family, fill = route)) + geom_tile(colour = "white") +
+  geom_text(aes(label = sprintf("%.3g", seconds)), size = 2.6) + scale_fill_manual(values = COL[1:5], drop = FALSE) +
+  labs(x = "n (observations)", y = NULL, fill = NULL, title = "Fastest remlax route per cell",
+       subtitle = "basis of the engine = \"auto\" rule") + theme_bench
+save_fig(p, "fig7_fastest_remlax_route", 10, 5)
 
-# ----------------------------------------------------------- justesse logLik
-ok <- aj[aj$reussi, ]
-p <- ggplot(ok, aes(factor(n), pmax(ecart_logLik, 1e-10), colour = voie)) +
+# ------------------------------------------------------------ logLik accuracy
+ok <- fits[fits$success, ]
+p <- ggplot(ok, aes(factor(n), pmax(diff_logLik, 1e-10), colour = route)) +
   geom_hline(yintercept = TOL, linetype = 2) +
   geom_point(position = position_dodge(width = 0.7), size = 0.9, alpha = 0.8) +
-  scale_y_log10() + facet_wrap(~ famille, labeller = lab_fam, nrow = 3) + scale_colour_manual(values = COUL) +
-  labs(x = "n (observations)", y = "ecart a la meilleure logLik (arbitre)", colour = NULL,
-       title = "Justesse de l'optimum", subtitle = sprintf("ecarts plafonnes en bas a 1e-10 ; tirets : tolerance %g", TOL)) +
-  theme_banc
-enregistrer(p, "fig8_ecart_logLik")
+  scale_y_log10() + facet_wrap(~ family, labeller = lab_fam, nrow = 3) + scale_colour_manual(values = COL) +
+  labs(x = "n (observations)", y = "difference to the best logLik (arbiter)", colour = NULL,
+       title = "Accuracy of the optimum", subtitle = sprintf("differences floored at 1e-10; dashes: tolerance %g", TOL)) +
+  theme_bench
+save_fig(p, "fig8_logLik_diff")
 
-# --------------------------------------------- recuperation des parametres
-# remlax : les voies donnent le meme optimum, on garde D-CPU (ou la premiere juste)
-pj <- merge(pa, aj[, c("cellule", "voie", "retenu")], by = c("cellule", "voie"))
-pj <- pj[pj$retenu, ]
-pj$logiciel <- ifelse(pj$voie %in% VOIES[1:5], "remlax", as.character(pj$voie))
-pr <- pj[!duplicated(pj[c("cellule", "logiciel", "parametre")]), ]
-pr$erreur <- pr$estime - pr$vrai
-rec <- stats::aggregate(erreur ~ famille + n + logiciel + parametre + vrai, pr,
-                        function(x) c(biais = mean(x), rmse = sqrt(mean(x^2)), k = length(x)))
-rec <- cbind(rec[c("famille", "n", "logiciel", "parametre", "vrai")], as.data.frame(rec$erreur))
-utils::write.csv(rec, file.path(sortie, "recuperation_parametres.csv"), row.names = FALSE)
-# une valeur par famille : RMSE relative mediane sur les parametres de variance
-rec$rrmse <- rec$rmse / pmax(abs(rec$vrai), 0.05)
-rf <- stats::aggregate(rrmse ~ famille + n + logiciel, rec, stats::median)
-COUL_L <- c(remlax = "#1f78b4", asreml = "#ff7f00", sommer = "#6a3d9a", lme4 = "#b15928")
-p <- ggplot(rf, aes(n, rrmse, colour = logiciel)) + geom_line() + geom_point(size = 1) +
-  scale_x_log10() + scale_y_log10() + facet_wrap(~ famille, labeller = lab_fam, nrow = 3) + scale_colour_manual(values = COUL_L) +
-  labs(x = "n (observations)", y = "RMSE relative (mediane sur les parametres)", colour = NULL,
-       title = "Recuperation des parametres simules",
-       subtitle = "RMSE sur 5 repetitions divisee par max(|vrai|, 0.05) ; les courbes superposees signalent le meme estimateur") +
-  theme_banc
-enregistrer(p, "fig9_recuperation")
-p <- ggplot(pr, aes(factor(n), erreur, fill = logiciel)) + geom_hline(yintercept = 0) +
-  geom_boxplot(outlier.size = 0.4, linewidth = 0.25) + facet_wrap(~ famille + parametre, scales = "free_y", ncol = 6) +
-  scale_fill_manual(values = COUL_L) +
-  labs(x = "n", y = "estime - vrai", fill = NULL, title = "Erreur d'estimation par parametre") +
-  theme_banc + theme(strip.text = element_text(size = 6), axis.text = element_text(size = 5))
-enregistrer(p, "fig10_erreur_par_parametre", 16, 22)
+# ------------------------------------------------------ parameter recovery
+# remlax: the routes give the same optimum; keep D-CPU (or the first accurate one)
+pj <- merge(pa, fits[, c("cell", "route", "kept")], by = c("cell", "route"))
+pj <- pj[pj$kept, ]
+pj$software <- ifelse(pj$route %in% ROUTES[1:5], "remlax", as.character(pj$route))
+pr <- pj[!duplicated(pj[c("cell", "software", "parameter")]), ]
+pr$error <- pr$estimate - pr$true
+rec <- stats::aggregate(error ~ family + n + software + parameter + true, pr,
+                        function(x) c(bias = mean(x), rmse = sqrt(mean(x^2)), k = length(x)))
+rec <- cbind(rec[c("family", "n", "software", "parameter", "true")], as.data.frame(rec$error))
+utils::write.csv(rec, file.path(out_dir, "parameter_recovery.csv"), row.names = FALSE)
+# one value per family: median relative RMSE over the variance parameters
+rec$rrmse <- rec$rmse / pmax(abs(rec$true), 0.05)
+rf <- stats::aggregate(rrmse ~ family + n + software, rec, stats::median)
+COL_S <- c(remlax = "#1f78b4", asreml = "#ff7f00", sommer = "#6a3d9a", lme4 = "#b15928")
+p <- ggplot(rf, aes(n, rrmse, colour = software)) + geom_line() + geom_point(size = 1) +
+  scale_x_log10() + scale_y_log10() + facet_wrap(~ family, labeller = lab_fam, nrow = 3) + scale_colour_manual(values = COL_S) +
+  labs(x = "n (observations)", y = "relative RMSE (median over the parameters)", colour = NULL,
+       title = "Recovery of the simulated parameters",
+       subtitle = "RMSE over 5 replicates divided by max(|true|, 0.05); overlapping curves indicate the same estimator") +
+  theme_bench
+save_fig(p, "fig9_recovery")
+p <- ggplot(pr, aes(factor(n), error, fill = software)) + geom_hline(yintercept = 0) +
+  geom_boxplot(outlier.size = 0.4, linewidth = 0.25) + facet_wrap(~ family + parameter, scales = "free_y", ncol = 6) +
+  scale_fill_manual(values = COL_S) +
+  labs(x = "n", y = "estimate - true", fill = NULL, title = "Estimation error by parameter") +
+  theme_bench + theme(strip.text = element_text(size = 6), axis.text = element_text(size = 5))
+save_fig(p, "fig10_error_by_parameter", 16, 22)
 
-# -------------------------------------------------- accord entre logiciels
-rx <- pr[pr$logiciel == "remlax", c("cellule", "parametre", "estime")]
-ac <- merge(pr[pr$logiciel != "remlax", ], rx, by = c("cellule", "parametre"), suffixes = c("", "_remlax"))
+# --------------------------------------------------- agreement between software
+rx <- pr[pr$software == "remlax", c("cell", "parameter", "estimate")]
+ac <- merge(pr[pr$software != "remlax", ], rx, by = c("cell", "parameter"), suffixes = c("", "_remlax"))
 if (nrow(ac)) {
-  ac$diff <- abs(ac$estime - ac$estime_remlax) / pmax(abs(ac$estime_remlax), 0.05)
-  ad <- stats::aggregate(diff ~ famille + n + rep + logiciel, ac, max)
-  p <- ggplot(ad, aes(factor(n), pmax(diff, 1e-8), colour = logiciel)) +
+  ac$diff <- abs(ac$estimate - ac$estimate_remlax) / pmax(abs(ac$estimate_remlax), 0.05)
+  ad <- stats::aggregate(diff ~ family + n + rep + software, ac, max)
+  p <- ggplot(ad, aes(factor(n), pmax(diff, 1e-8), colour = software)) +
     geom_point(position = position_dodge(width = 0.6), size = 1) + scale_y_log10() +
-    facet_wrap(~ famille, labeller = lab_fam, nrow = 3) + scale_colour_manual(values = COUL_L) +
-    labs(x = "n (observations)", y = "ecart relatif maximal a remlax", colour = NULL,
-         title = "Accord des estimations avec remlax",
-         subtitle = "par cellule, max sur les parametres de |estime - remlax| / max(|remlax|, 0.05)") + theme_banc
-  enregistrer(p, "fig11_accord_logiciels")
-  utils::write.csv(ad, file.path(sortie, "accord_logiciels.csv"), row.names = FALSE)
+    facet_wrap(~ family, labeller = lab_fam, nrow = 3) + scale_colour_manual(values = COL_S) +
+    labs(x = "n (observations)", y = "maximum relative difference to remlax", colour = NULL,
+         title = "Agreement of the estimates with remlax",
+         subtitle = "per cell, max over the parameters of |estimate - remlax| / max(|remlax|, 0.05)") + theme_bench
+  save_fig(p, "fig11_software_agreement")
+  utils::write.csv(ad, file.path(out_dir, "software_agreement.csv"), row.names = FALSE)
 }
 
-# ------------------------------------------- compilation contre calcul (remlax)
-rc <- tj[tj$voie %in% VOIES[1:5] & is.finite(tj$compile_s), ]
+# --------------------------------------------- compilation against computation (remlax)
+rc <- tj[tj$route %in% ROUTES[1:5] & is.finite(tj$compile_s), ]
 if (nrow(rc)) {
-  rc$part_compilation <- rc$compile_s / rc$secondes
-  s <- resumer(rc, "part_compilation")
-  p <- ggplot(s, aes(n, med, colour = voie)) + geom_line() + geom_point(size = 1) + scale_x_log10() +
-    facet_wrap(~ famille, labeller = lab_fam, nrow = 3) + scale_colour_manual(values = COUL) +
-    labs(x = "n (observations)", y = "part de la compilation dans le temps total", colour = NULL,
-         title = "Poids de la compilation JAX") + theme_banc
-  enregistrer(p, "fig12_compilation")
+  rc$compile_share <- rc$compile_s / rc$seconds
+  s <- summarise_by(rc, "compile_share")
+  p <- ggplot(s, aes(n, med, colour = route)) + geom_line() + geom_point(size = 1) + scale_x_log10() +
+    facet_wrap(~ family, labeller = lab_fam, nrow = 3) + scale_colour_manual(values = COL) +
+    labs(x = "n (observations)", y = "share of compilation in the total time", colour = NULL,
+         title = "Weight of JAX compilation") + theme_bench
+  save_fig(p, "fig12_compilation")
 }
-cat(sprintf("%d ajustements, %d justes, %d retenus ; figures dans %s\n", nrow(aj), sum(aj$juste), sum(aj$retenu), sortie))
+cat(sprintf("%d fits, %d accurate, %d kept; figures in %s\n", nrow(fits), sum(fits$accurate), sum(fits$kept), out_dir))

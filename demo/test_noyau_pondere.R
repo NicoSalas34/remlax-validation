@@ -1,154 +1,154 @@
 # ==============================================================================
-# Dilution par la masse du noyau : essai sur un jeu de donnees
+# Dilution by the kernel mass: test on one data set
 #
-# Meme simulation que test_noyau_deux_especes.R (chapitre 2 de la these) : deux
-# especes, 100 genotypes chacune, DGE, IGE intra et IGE inter correles, bacs de
-# 20 colonnes x 16 rangs, especes alternees par colonne, 10 % d'absentes.
+# Same simulation as test_noyau_deux_especes.R (chapter 2 of the thesis): two
+# species, 100 genotypes each, correlated DGE, intra IGE and inter IGE, trays of
+# 20 columns x 16 rows, species alternating by column, 10 % missing plants.
 #
-# La dilution de rx_neighbourhood divise chaque ligne par n_i^d, n_i etant le
-# NOMBRE de voisins dans la fenetre de rayon r : d depend alors de r. Ici la
-# taille du groupe est la MASSE du noyau, m_i = somme_j w_ij, et chaque ligne
-# est divisee par m_i^d (d = 0 : somme ; d = 1 : moyenne ponderee). Avec un
-# noyau exponentiel, la masse converge et la fenetre ne sert qu'au calcul.
+# The dilution of rx_neighbourhood divides each row by n_i^d, where n_i is the
+# NUMBER of neighbours in the window of radius r, so d depends on r. Here the
+# group size is the MASS of the kernel, m_i = sum_j w_ij, and each row is
+# divided by m_i^d (d = 0: sum; d = 1: weighted mean). With an exponential
+# kernel, the mass converges and the window only serves the computation.
 #
-# Deux verites sur le meme dispositif (n_rep = 10, graine 1) :
-#   A : noyau exponentiel w = exp(-lambda (delta - 1)), lambda = 1 par pas de
-#       grille, dilution par la masse d = 0,5, fenetre de calcul R = 8 ;
-#   B : l'ancienne verite, puissance delta^-1,5 tronquee a r = 3, dilution par
-#       le nombre d = 0,5.
-# Ajustements pour chaque verite :
-#   - "pond"    : grille lambda x d, exponentiel, masse, R = 8 ;
-#   - "fenetre" : lambda = 1, d = 0,5, masse, R in {4, 6, 12} ;
-#   - "nombre"  : exponentiel lambda = 1, dilution par le NOMBRE, R = 8, d en grille ;
-#   - "puis"    : puissance r = 3, lambda = 1,5, d = 0,5, nombre (verite B) ;
-#   - "chap3"   : puissance r = 3, lambda = 1, d = 0 ;
-#   - "naif"    : rang 1 de Chebyshev, poids egaux.
+# Two truths on the same design (n_rep = 10, seed 1):
+#   A : exponential kernel w = exp(-lambda (delta - 1)), lambda = 1 per grid
+#       step, dilution by the mass d = 0.5, computation window R = 8;
+#   B : the former truth, power delta^-1.5 truncated at r = 3, dilution by the
+#       count d = 0.5.
+# Fits for each truth:
+#   - "weighted" : lambda x d grid, exponential, mass, R = 8;
+#   - "window"   : lambda = 1, d = 0.5, mass, R in {4, 6, 12};
+#   - "count"    : exponential lambda = 1, dilution by the COUNT, R = 8, d on a grid;
+#   - "power"    : power r = 3, lambda = 1.5, d = 0.5, count (truth B);
+#   - "ch3"      : power r = 3, lambda = 1, d = 0;
+#   - "naive"    : Chebyshev rank 1, equal weights.
 #
-# Une tache = une verite et une graine (30 graines x 2 verites = 60 taches) ;
-# la graine fixe le dispositif et les valeurs genetiques.
+# One task = one truth and one seed (30 seeds x 2 truths = 60 tasks). The seed
+# sets the design and the genetic values.
 #
-#   Rscript test_noyau_pondere.R tache <i> <dossier> [coeurs]
+#   Rscript test_noyau_pondere.R task <i> <folder> [cores]
 # ==============================================================================
 
 a0 <- commandArgs(trailingOnly = TRUE)
-i_tache <- as.integer(a0[2]); dossier <- a0[3]
-coeurs <- if (length(a0) >= 4) as.integer(a0[4]) else 1L
-nv <- c("A", "B")[(i_tache - 1L) %/% 30L + 1L]
-graine <- (i_tache - 1L) %% 30L + 1L
-dir.create(dossier, showWarnings = FALSE, recursive = TRUE)
+i_task <- as.integer(a0[2]); dir <- a0[3]
+cores <- if (length(a0) >= 4) as.integer(a0[4]) else 1L
+nv <- c("A", "B")[(i_task - 1L) %/% 30L + 1L]
+seed <- (i_task - 1L) %% 30L + 1L
+dir.create(dir, showWarnings = FALSE, recursive = TRUE)
 suppressPackageStartupMessages({ library(remlax); library(Matrix) })
 
-vrai <- list(h2 = 0.3, dge = 1, ige_intra_k = 0.2, ige_inter_k = 0.3,
-             r_dge_intra = -0.6, r_dge_inter = -0.6, r_intra_inter = 0.6, absentes = 0.10)
+truth <- list(h2 = 0.3, dge = 1, ige_intra_k = 0.2, ige_inter_k = 0.3,
+              r_dge_intra = -0.6, r_dge_inter = -0.6, r_intra_inter = 0.6, missing = 0.10)
 n_rep <- 10L; n_gen <- 100L
 gA <- sprintf("A%03d", seq_len(n_gen)); gB <- sprintf("B%03d", seq_len(n_gen))
 
-# --- dispositif (identique a test_noyau_deux_especes.R) -----------------------
-set.seed(1000L * n_rep + graine)
-n_bac <- ceiling(n_gen * n_rep / 160)
-d <- do.call(rbind, lapply(seq_len(n_bac), function(b)
-  data.frame(bac = sprintf("bac%02d", b), col = rep(1:20, 16), rang = rep(1:16, each = 20))))
-d$espece <- ifelse(d$col %% 2 == 1, "A", "B")
+# --- design (identical to test_noyau_deux_especes.R) ------------------------
+set.seed(1000L * n_rep + seed)
+n_tray <- ceiling(n_gen * n_rep / 160)
+d <- do.call(rbind, lapply(seq_len(n_tray), function(b)
+  data.frame(tray = sprintf("tray%02d", b), col = rep(1:20, 16), row = rep(1:16, each = 20))))
+d$species <- ifelse(d$col %% 2 == 1, "A", "B")
 d$gen <- NA_character_
 for (sp in c("A", "B")) {
-  w <- which(d$espece == sp)
+  w <- which(d$species == sp)
   d$gen[w] <- sample(rep_len(if (sp == "A") gA else gB, length(w)))
 }
-d <- d[sort(sample(nrow(d), round((1 - vrai$absentes) * nrow(d)))), ]
-d <- d[order(d$espece != "A"), ]
+d <- d[sort(sample(nrow(d), round((1 - truth$missing) * nrow(d)))), ]
+d <- d[order(d$species != "A"), ]
 rownames(d) <- NULL
 d$id <- sprintf("P%05d", seq_len(nrow(d)))
-d$espece <- factor(d$espece); d$bac <- factor(d$bac)
-d$esp_bac <- factor(paste(d$espece, d$bac))
-n <- nrow(d); lA <- d$espece == "A"; lB <- !lA
+d$species <- factor(d$species); d$tray <- factor(d$tray)
+d$sp_tray <- factor(paste(d$species, d$tray))
+n <- nrow(d); lA <- d$species == "A"; lB <- !lA
 
-incid <- function(nb, paire, niv) {
-  Z <- nb$level[[paire]]
+incid <- function(nb, pair, lev) {
+  Z <- nb$level[[pair]]
   Zt <- methods::as(Z, "TsparseMatrix")
-  Matrix::sparseMatrix(i = match(rownames(Z), d$id)[Zt@i + 1L], j = match(colnames(Z), niv)[Zt@j + 1L],
-                       x = Zt@x, dims = c(n, length(niv)), dimnames = list(NULL, niv))
+  Matrix::sparseMatrix(i = match(rownames(Z), d$id)[Zt@i + 1L], j = match(colnames(Z), lev)[Zt@j + 1L],
+                       x = Zt@x, dims = c(n, length(lev)), dimnames = list(NULL, lev))
 }
-# Voisinage. dilution = "nombre" : n_i^-d de rx_neighbourhood ; "masse" : m_i^-d,
-# m_i = somme des poids de la ligne (rx_neighbourhood appele sans dilution).
-voisinage <- function(noyau, r, lambda, dd, dilution, fenetre = "euclidean") {
-  nb <- rx_neighbourhood(coord = cbind(d$rang, d$col), group = as.character(d$espece), block = d$bac,
+# Neighbourhood. dilution = "count": n_i^-d of rx_neighbourhood; "mass": m_i^-d,
+# m_i = sum of the weights of the row (rx_neighbourhood called without dilution).
+neighbourhood_Z <- function(kernel, r, lambda, dd, dilution, window = "euclidean") {
+  nb <- rx_neighbourhood(coord = cbind(d$row, d$col), group = as.character(d$species), block = d$tray,
                          level = d$gen, id = d$id, rank = r, reach = lambda,
-                         dilution = if (dilution == "nombre") dd else 0, window = fenetre,
-                         kernel = noyau, output = "level")
+                         dilution = if (dilution == "count") dd else 0, window = window,
+                         kernel = kernel, output = "level")
   V <- list(AA = incid(nb, "A<-A", gA), BA = incid(nb, "B<-A", gA),
             BB = incid(nb, "B<-B", gB), AB = incid(nb, "A<-B", gB))
-  if (dilution == "masse" && dd > 0) V <- lapply(V, function(Z) {
+  if (dilution == "mass" && dd > 0) V <- lapply(V, function(Z) {
     m <- Matrix::rowSums(Z); m[m == 0] <- 1
     Zd <- methods::as(Matrix::Diagonal(x = m^(-dd)) %*% Z, "CsparseMatrix")
     dimnames(Zd) <- dimnames(Z); Zd
   })
   V
 }
-kexp <- function(Z, lignes) mean(Matrix::rowSums(Z^2)[lignes])
+kexp <- function(Z, rows) mean(Matrix::rowSums(Z^2)[rows])
 ZdA <- Matrix::sparseMatrix(i = which(lA), j = match(d$gen[lA], gA), x = 1, dims = c(n, n_gen),
                             dimnames = list(NULL, gA))
 ZdB <- Matrix::sparseMatrix(i = which(lB), j = match(d$gen[lB], gB), x = 1, dims = c(n, n_gen),
                             dimnames = list(NULL, gB))
 
-verites <- list(
-  A = list(noyau = "exponential", r = 8, lambda = 1, d = 0.5, dilution = "masse"),
-  B = list(noyau = "power", r = 3, lambda = 1.5, d = 0.5, dilution = "nombre"))
+truths <- list(
+  A = list(kernel = "exponential", r = 8, lambda = 1, d = 0.5, dilution = "mass"),
+  B = list(kernel = "power", r = 3, lambda = 1.5, d = 0.5, dilution = "count"))
 
-# Tirage des valeurs genetiques et du phenotype sous une verite, graine propre
-# a chaque jeu.
-simuler <- function(vt) {
-  Vv <- voisinage(vt$noyau, vt$r, vt$lambda, vt$d, vt$dilution)
+# Draw of the genetic values and of the phenotype under one truth, with a seed
+# specific to each data set.
+simulate <- function(vt) {
+  Vv <- neighbourhood_Z(vt$kernel, vt$r, vt$lambda, vt$d, vt$dilution)
   kv <- c(AA = kexp(Vv$AA, lA), BA = kexp(Vv$BA, lB), BB = kexp(Vv$BB, lB), AB = kexp(Vv$AB, lA))
-  set.seed(5000L + graine)
-  R <- matrix(c(1, vrai$r_dge_intra, vrai$r_dge_inter, vrai$r_dge_intra, 1, vrai$r_intra_inter,
-                vrai$r_dge_inter, vrai$r_intra_inter, 1), 3)
-  tirer <- function(ki, kx) {
-    v <- c(vrai$dge, vrai$ige_intra_k / ki, vrai$ige_inter_k / kx)
+  set.seed(5000L + seed)
+  R <- matrix(c(1, truth$r_dge_intra, truth$r_dge_inter, truth$r_dge_intra, 1, truth$r_intra_inter,
+                truth$r_dge_inter, truth$r_intra_inter, 1), 3)
+  draw <- function(ki, kx) {
+    v <- c(truth$dge, truth$ige_intra_k / ki, truth$ige_inter_k / kx)
     matrix(rnorm(3 * n_gen), n_gen, 3) %*% chol(diag(sqrt(v)) %*% R %*% diag(sqrt(v)))
   }
-  UA <- tirer(kv[["AA"]], kv[["BA"]]); UB <- tirer(kv[["BB"]], kv[["AB"]])
+  UA <- draw(kv[["AA"]], kv[["BA"]]); UB <- draw(kv[["BB"]], kv[["AB"]])
   g <- as.numeric(ZdA %*% UA[, 1] + Vv$AA %*% UA[, 2] + Vv$BA %*% UA[, 3] +
                   ZdB %*% UB[, 1] + Vv$BB %*% UB[, 2] + Vv$AB %*% UB[, 3])
-  y <- ifelse(lA, 10, 5) + g + rnorm(n, 0, sqrt(vrai$dge * (1 / vrai$h2 - 1)))
+  y <- ifelse(lA, 10, 5) + g + rnorm(n, 0, sqrt(truth$dge * (1 / truth$h2 - 1)))
   s <- c(A = mean(Matrix::rowSums(Vv$AA)[lA]), B = mean(Matrix::rowSums(Vv$BB)[lB]))
   list(y = y, k = kv, s = s,
-       vraies = list(A = cbind(UA, UA[, 1] + s[["A"]] * UA[, 2]), B = cbind(UB, UB[, 1] + s[["B"]] * UB[, 2])))
+       true_vals = list(A = cbind(UA, UA[, 1] + s[["A"]] * UA[, 2]), B = cbind(UB, UB[, 1] + s[["B"]] * UB[, 2])))
 }
 
 plan <- function() {
   g <- expand.grid(lambda = c(0.5, 0.75, 1, 1.5, 2), d = c(0, 0.25, 0.5, 0.75, 1))
-  rbind(data.frame(grille = "pond", noyau = "exponential", r = 8, g, dilution = "masse", fenetre = "euclidean"),
-        data.frame(grille = "fenetre", noyau = "exponential", r = c(4, 6, 12), lambda = 1, d = 0.5,
-                   dilution = "masse", fenetre = "euclidean"),
-        data.frame(grille = "nombre", noyau = "exponential", r = 8, lambda = 1, d = c(0, 0.25, 0.5, 0.75, 1),
-                   dilution = "nombre", fenetre = "euclidean"),
-        data.frame(grille = "puis", noyau = "power", r = 3, lambda = 1.5, d = 0.5, dilution = "nombre",
-                   fenetre = "euclidean"),
-        data.frame(grille = "chap3", noyau = "power", r = 3, lambda = 1, d = 0, dilution = "nombre",
-                   fenetre = "euclidean"),
-        data.frame(grille = "naif", noyau = "none", r = 1, lambda = 0, d = 0, dilution = "nombre",
-                   fenetre = "chebyshev"))
+  rbind(data.frame(grid = "weighted", kernel = "exponential", r = 8, g, dilution = "mass", window = "euclidean"),
+        data.frame(grid = "window", kernel = "exponential", r = c(4, 6, 12), lambda = 1, d = 0.5,
+                   dilution = "mass", window = "euclidean"),
+        data.frame(grid = "count", kernel = "exponential", r = 8, lambda = 1, d = c(0, 0.25, 0.5, 0.75, 1),
+                   dilution = "count", window = "euclidean"),
+        data.frame(grid = "power", kernel = "power", r = 3, lambda = 1.5, d = 0.5, dilution = "count",
+                   window = "euclidean"),
+        data.frame(grid = "ch3", kernel = "power", r = 3, lambda = 1, d = 0, dilution = "count",
+                   window = "euclidean"),
+        data.frame(grid = "naive", kernel = "none", r = 1, lambda = 0, d = 0, dilution = "count",
+                   window = "chebyshev"))
 }
 
-ajuster <- function(p, sim) {
+fit_model <- function(p, sim) {
   t0 <- Sys.time()
   dd <- d; dd$y <- sim$y
-  V <- voisinage(p$noyau, p$r, p$lambda, p$d, p$dilution, p$fenetre)
+  V <- neighbourhood_Z(p$kernel, p$r, p$lambda, p$d, p$dilution, p$window)
   ZaD <- ZdA; ZaI <- V$AA; ZaX <- V$BA; ZbD <- ZdB; ZbI <- V$BB; ZbX <- V$AB
   random <- ~ str(~ mm(ZaD) + mm(ZaI) + mm(ZaX), struct = "us", name = "gA") +
               str(~ mm(ZbD) + mm(ZbI) + mm(ZbX), struct = "us", name = "gB")
   environment(random) <- environment()
-  f <- tryCatch(rx_reml(y ~ esp_bac, random = random, residual = ~ dsum(~ units | espece), data = dd,
+  f <- tryCatch(rx_reml(y ~ sp_tray, random = random, residual = ~ dsum(~ units | species), data = dd,
                         backend = "cpu", verbose = FALSE, hessian = FALSE, pev = FALSE),
                 error = function(e) conditionMessage(e))
-  base <- data.frame(p, logLik = NA_real_, conv = NA, secondes = NA_real_, erreur = "")
-  if (is.character(f)) { base$erreur <- substr(gsub("\n", " ", f), 1, 200); return(base) }
+  base <- data.frame(p, logLik = NA_real_, conv = NA, seconds = NA_real_, error = "")
+  if (is.character(f)) { base$error <- substr(gsub("\n", " ", f), 1, 200); return(base) }
   base$logLik <- f$logLik
   base$conv <- isTRUE(as.logical(f$conv_grad_rel)) || isTRUE(as.logical(f$conv_decrement))
   v <- summary(f)$varcomp
   k_f <- list(A = c(1, kexp(V$AA, lA), kexp(V$BA, lB)), B = c(1, kexp(V$BB, lB), kexp(V$AB, lA)))
   s_f <- c(A = mean(Matrix::rowSums(V$AA)[lA]), B = mean(Matrix::rowSums(V$BB)[lB]))
-  vk <- c(vrai$dge, vrai$ige_intra_k, vrai$ige_inter_k)
+  vk <- c(truth$dge, truth$ige_intra_k, truth$ige_inter_k)
   eff <- c("dge", "intra", "inter")
   for (sp in c("A", "B")) {
     nm <- paste0("g", sp)
@@ -160,29 +160,29 @@ ajuster <- function(p, sim) {
     Bl <- f$blups[[nm]][if (sp == "A") gA else gB, , drop = FALSE]
     Bl <- cbind(Bl, Bl[, 1] + s_f[[sp]] * Bl[, 2])
     for (a in 1:3) base[[sprintf("err_%s_%s", eff[a], sp)]] <- log10(S[a, a] * k_f[[sp]][a] / vk[a])
-    for (a in 1:4) base[[sprintf("prec_%s_%s", c(eff, "tbv")[a], sp)]] <- stats::cor(Bl[, a], sim$vraies[[sp]][, a])
+    for (a in 1:4) base[[sprintf("acc_%s_%s", c(eff, "tbv")[a], sp)]] <- stats::cor(Bl[, a], sim$true_vals[[sp]][, a])
   }
-  base$secondes <- as.numeric(difftime(Sys.time(), t0, units = "secs"))
+  base$seconds <- as.numeric(difftime(Sys.time(), t0, units = "secs"))
   base
 }
 
 options(remlax.threads = 1L)
 pl <- plan()
-sim <- simuler(verites[[nv]])
-cat(sprintf("tache %d : verite %s, graine %d, n = %d, %d bacs, %d ajustements sur %d coeurs\n",
-            i_tache, nv, graine, n, n_bac, nrow(pl), coeurs))
-cat(sprintf("k AA %.3f BA %.3f BB %.3f AB %.3f ; s A %.3f B %.3f\n",
+sim <- simulate(truths[[nv]])
+cat(sprintf("task %d: truth %s, seed %d, n = %d, %d trays, %d fits on %d cores\n",
+            i_task, nv, seed, n, n_tray, nrow(pl), cores))
+cat(sprintf("k AA %.3f BA %.3f BB %.3f AB %.3f; s A %.3f B %.3f\n",
             sim$k[1], sim$k[2], sim$k[3], sim$k[4], sim$s[1], sim$s[2]))
 t1 <- Sys.time()
-res <- parallel::mclapply(seq_len(nrow(pl)), function(j) ajuster(pl[j, ], sim), mc.cores = coeurs,
+res <- parallel::mclapply(seq_len(nrow(pl)), function(j) fit_model(pl[j, ], sim), mc.cores = cores,
                           mc.preschedule = FALSE)
 ok <- vapply(res, is.data.frame, TRUE)
 res[!ok] <- lapply(which(!ok), function(j) data.frame(pl[j, ], logLik = NA_real_, conv = NA,
-                                                     secondes = NA_real_, erreur = "processus perdu"))
+                                                     seconds = NA_real_, error = "process lost"))
 nm_all <- unique(unlist(lapply(res, names)))
 res <- do.call(rbind, lapply(res, function(x) { x[setdiff(nm_all, names(x))] <- NA; x[nm_all] }))
-res <- cbind(verite = nv, graine = graine, res)
-utils::write.csv(res, file.path(dossier, sprintf("verite_%s_graine_%02d.csv", nv, graine)), row.names = FALSE)
-cat(sprintf("fini en %.1f min ; %d echec(s), %d non converge(s)\n",
+res <- cbind(truth = nv, seed = seed, res)
+utils::write.csv(res, file.path(dir, sprintf("truth_%s_seed_%02d.csv", nv, seed)), row.names = FALSE)
+cat(sprintf("finished in %.1f min; %d failure(s), %d not converged\n",
             as.numeric(difftime(Sys.time(), t1, units = "mins")), sum(is.na(res$logLik)),
             sum(!res$conv, na.rm = TRUE)))

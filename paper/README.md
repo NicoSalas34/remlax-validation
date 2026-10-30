@@ -15,10 +15,16 @@ always the one in `remlax.tex`.
   (validation campaign of 2026-09-28).
 - `figures/fig_temps_n.pdf`, `fig_temps_p.pdf`, `fig_temps_C.pdf`,
   `fig_cpu_gpu.pdf`, `fig_remlax_asreml.pdf`, `fig_regle.pdf`: the figures of
-  `banc_kmmr/absolu/sortie_v14/`, regenerated with English labels by
+  `banc_kmmr/absolu/sortie_v14/`, regenerated without figure titles by
   `tools/synthese_abs_en.py`. This script is `banc_kmmr/absolu/synthese_abs.py`
-  with its labels translated and its suptitles removed; the data logic is
-  unchanged, and its `mesures.csv` is identical to that of `sortie_v14/`.
+  with its figure titles removed and the figure file names above kept, since
+  `remlax.tex` includes them. The data logic is unchanged. Both scripts read the
+  stored results, whose file and column names are French, and write
+  `measurements.csv` with English columns (`case`, `hardware`, `route`,
+  `seconds_median`, `n_failures`, `diff_best`, ...). Its rows are those of
+  `sortie_v14/mesures.csv` once columns and route names are translated
+  (`remlax_froid` to `remlax_cold`, `mme_creux` to `mme_sparse`, `mme_hybride`
+  to `mme_hybrid`).
 
       python3 tools/synthese_abs_en.py ../banc_kmmr/absolu/resultats <output dir>
 

@@ -31,22 +31,22 @@ can leave the parameter estimates correct.
 
 | Claim | Why it can fail silently | Evidence |
 |---|---|---|
-| The parameterisation is read identically by both engines | A permuted or rescaled θ gives a plausible fit at the wrong point | `tests/R/test_remlax_tmb_parity.R` — 30 checks, including K⁻¹K = I by product rather than by inspecting the sparsity pattern |
+| The parameterisation is read identically by both engines | A permuted or rescaled θ gives a plausible fit at the wrong point | `tests/R/test_remlax_tmb_parity.R`: 30 checks, including K⁻¹K = I by product rather than by inspecting the sparsity pattern |
 | The closed-form sparse precisions really invert the dense correlations | A tridiagonal matrix can look right and not be the inverse | same file |
-| Both engines evaluate the same function | Comparing two optima only shows where each stopped | `tests/R/test_remlax_tmb_vs_dense.R` — 16 checks, warm start in BOTH directions |
-| A term declared by its precision gives the same likelihood as the same term declared by its relationship matrix | A missing constant shifts the likelihood without touching the gradient | `tests/R/test_remlax_tmb_prec.R` — 9 checks, arbitrated by an independent dense-algebra REML |
+| Both engines evaluate the same function | Comparing two optima only shows where each stopped | `tests/R/test_remlax_tmb_vs_dense.R`: 16 checks, warm start in BOTH directions |
+| A term declared by its precision gives the same likelihood as the same term declared by its relationship matrix | A missing constant shifts the likelihood without touching the gradient | `tests/R/test_remlax_tmb_prec.R`: 9 checks, arbitrated by an independent dense-algebra REML |
 
 Three defects were found this way, and two of them were in code that had already
 passed a test on estimates:
 
 1. a likelihood-convention mismatch, which showed up as a ratio of exactly
-   2.0000000000 across three models — a constant factor is a convention, never a
-   formulation difference;
+   2.0000000000 across three models (a constant factor is a convention, never a
+   formulation difference);
 2. a warm start in the **dense** engine that did not evaluate at the imposed θ
    but drifted toward the optimum, which invalidates precisely the comparison the
    warm start exists to make;
 3. a missing `log|K|` in the sparse engine's precision path, a *constant* offset:
-   θ agreed to five digits and only the likelihood was wrong — so every model
+   θ agreed to five digits and only the likelihood was wrong, so every model
    comparison, likelihood-ratio test and information criterion was wrong too.
 
 The lesson worth carrying: two engines that agree prove less than one engine
@@ -57,7 +57,7 @@ written out longhand in the test file, and it settled all three cases.
 
 The mixed model equations contain R⁻¹. As the residual variance goes to zero the
 coefficient matrix becomes ill-conditioned and the sparse engine loses accuracy,
-where the dense engine — working on V — does not. Imposing θ rather than hoping
+where the dense engine, which works on V, does not. Imposing θ rather than hoping
 the optimiser visits that region:
 
 | σ²_e | 3.4e-04 | 6.1e-06 | 1.1e-07 | 2.1e-09 | 3.8e-11 |
@@ -77,22 +77,22 @@ for which model", and the answer is decided by structure, not size.
 | dense engine, CPU | ✓ | ✓ |
 | dense engine, GPU | ✓ | ✓ |
 | sparse engine, CPU | ✓ | ✓ (forced, outside the declared scope) |
-| sparse engine, GPU | — does not exist | — does not exist |
+| sparse engine, GPU | does not exist | does not exist |
 
 **Six cells, not eight.** The sparse engine factorises through CHOLMOD, which is
 CPU-only. That empty cell is a result: it makes "sparse" and "GPU" mutually
 exclusive, so the choice is a trade-off rather than two independent axes.
 
 The most informative cell is the structurally dense case *forced* onto the sparse
-engine. The declared scope excludes it on principle — a genomic relationship
-matrix has a full inverse — and forcing it is the quantitative answer to "why not
+engine. The declared scope excludes it on principle, since a genomic relationship
+matrix has a full inverse. Forcing it is the quantitative answer to "why not
 use sparse everywhere". It is reachable through the `Kinv` slot.
 
 Produced by `benchmarks/bench_engines.R`. Two measurement traps it handles
 explicitly:
 
 - **Out-of-process cost.** The dense engine is invoked through a CLI, so every
-  evaluation pays interpreter start-up and XLA compilation — measured at ~2.9 s
+  evaluation pays interpreter start-up and XLA compilation, measured at ~2.9 s
   against 0.07 s for an in-process sparse evaluation. The grid records the
   solver's own internal timing *and* wall time in separate columns; the gap
   between them is the invocation cost, which matters on its own since a
@@ -105,8 +105,8 @@ explicitly:
 
 ## 4. What calibration the decision tool still needs
 
-`remlax.sparsity` reports the fill-in exactly and attributes it — by
-counterfactual re-factorisation rather than a density threshold — but it converts
+`remlax.sparsity` reports the fill-in exactly and attributes it (by
+counterfactual re-factorisation rather than a density threshold), but it converts
 that into a *flop* ratio, and a flop ratio is not a time ratio. It is absurdly
 optimistic for the sparse route at small sizes. The grid above supplies the
 coefficients that turn it into a time prediction; until those are fitted, the

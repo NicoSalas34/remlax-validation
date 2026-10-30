@@ -1,26 +1,26 @@
-"""Versant Python de la validation externe du scan contre rrBLUP.
+"""Python side of the external validation of the scan against rrBLUP.
 
-    Rscript validation/etude_scan_vs_rrblup.R  <dossier>
-    python  validation/etude_scan_vs_rrblup.py <dossier>
+    Rscript validation/etude_scan_vs_rrblup.R  <dir>
+    python  validation/etude_scan_vs_rrblup.py <dir>
 
-Le script R produit les donnees ET les scores de rrBLUP ; celui-ci refait le
-meme GWAS avec `remlax.scan` et confronte les deux. Voir l'en-tete du script R
-pour le raisonnement : pourquoi ce cas degenere est le seul ou une reference
-externe existe, et pourquoi la comparaison porte sur trois niveaux.
+The R script produces the data AND the rrBLUP scores. This one runs the same
+GWAS with `remlax.scan` and compares the two. The header of the R script
+gives the reasoning: why this degenerate case is the only one with an
+external reference, and why the comparison covers three levels.
 
-CE QUI EST VERIFIE.
-  (A) beta par SNP : la solution des moindres carres generalises, identique.
-  (B) le SCORE de rrBLUP reconstruit depuis les SEULES sorties brutes du scan,
-      par la relation exacte
+WHAT IS CHECKED.
+  (A) beta per SNP: the generalised least squares solution, identical.
+  (B) the rrBLUP SCORE rebuilt from the raw outputs of the scan ALONE, through
+      the exact relation
           Fstat_j = chi2_j * v2 / (y'Py - num_j^2/den_j),      v2 = n - 2
-      qui traduit la reestimation de l'echelle residuelle par SNP que rrBLUP
-      fait et que le scan ne fait pas. Si ce niveau passe, l'ecart de
-      convention entre les deux est ENTIEREMENT explique, et il ne reste aucun
-      desaccord d'algebre.
-  (C) l'ampleur de la conservativite du chi2 a V figee, mesuree la ou elle mord
-      (sur le SNP causal de gros effet) et la ou elle ne mord pas (sur les SNP
-      nuls). C'est le chiffre qui justifie — ou non — le reajustement exact des
-      tetes de liste.
+      which expresses the per-SNP re-estimation of the residual scale that
+      rrBLUP performs and the scan does not. If this level passes, the
+      convention gap between the two is FULLY explained, and no algebra
+      disagreement remains.
+  (C) the size of the conservativeness of the chi2 at fixed V, measured where
+      it bites (on the causal SNP of large effect) and where it does not (on
+      the null SNPs). This number justifies, or not, the exact refit of the
+      top hits.
 """
 import importlib.util
 import os
@@ -29,31 +29,31 @@ import sys
 import numpy as np
 from scipy.stats import beta as beta_dist, chi2 as chi2_dist
 
-RACINE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, RACINE)
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, ROOT)
 _sp = importlib.util.spec_from_file_location(
-    "remlax_scan", os.path.join(__import__("moteur_remlax").MOTEUR, "remlax", "scan.py"))
+    "remlax_scan", os.path.join(__import__("moteur_remlax").ENGINE_DIR, "remlax", "scan.py"))
 rxscan = importlib.util.module_from_spec(_sp)
 _sp.loader.exec_module(rxscan)
 
 
-def main(dossier):
+def main(folder):
     import csv
     Vu, Ve, q, p, j0 = (float(x) for x in
-                        open(os.path.join(dossier, "meta.txt")).read().split())
-    q, p, j0 = int(q), int(p), int(j0) - 1          # R compte a partir de 1
-    y = np.loadtxt(os.path.join(dossier, "y.txt"))
-    K = np.loadtxt(os.path.join(dossier, "K.txt"))
-    M = np.loadtxt(os.path.join(dossier, "M.txt"))      # q x p, doses -1/0/1
-    with open(os.path.join(dossier, "rrblup_scores.csv")) as f:
+                        open(os.path.join(folder, "meta.txt")).read().split())
+    q, p, j0 = int(q), int(p), int(j0) - 1          # R counts from 1
+    y = np.loadtxt(os.path.join(folder, "y.txt"))
+    K = np.loadtxt(os.path.join(folder, "K.txt"))
+    M = np.loadtxt(os.path.join(folder, "M.txt"))      # q x p, dosages -1/0/1
+    with open(os.path.join(folder, "rrblup_scores.csv")) as f:
         rr = {r["snp"]: float(r["score"]) for r in csv.DictReader(f)}
     score_rr = np.array([rr["snp%04d" % (j + 1)] for j in range(p)])
     assert M.shape == (q, p) and K.shape == (q, q), (M.shape, K.shape)
 
-    # V du modele nul, avec LES composantes estimees par rrBLUP : ce qui est
-    # teste ici est le SCAN, pas l'estimation des composantes de variance (deja
-    # testee ailleurs dans remlax). Leur imposer la meme V est ce qui rend le
-    # desaccord residuel attribuable au scan et a rien d'autre.
+    # V of the null model, with THE components estimated by rrBLUP. The test
+    # targets the SCAN, not the estimation of variance components (tested
+    # elsewhere in remlax). Imposing the same V makes any remaining
+    # disagreement attributable to the scan and to nothing else.
     V = Vu * K + Ve * np.eye(q)
     X = np.ones((q, 1))
     Vi = np.linalg.solve(V, np.eye(q))
@@ -62,38 +62,38 @@ def main(dossier):
     resid = y - X @ np.linalg.solve(Am, X.T @ Vi @ y)
     Py = Vi @ resid - Vi @ X @ (vbeta @ (X.T @ Vi @ resid))
 
-    # une observation par genotype => l'incidence du genotype focal est I(q)
+    # one observation per genotype => the focal genotype incidence is I(q)
     proj = rxscan.project(dict(Vi=Vi, vbeta=vbeta, Py=Py), X, {"dir": np.eye(q)})
     r = rxscan.scan(proj, M, tests=["dir"])
     num, den, chi2 = r["num_dir"], r["den_dir_dir"], r["chi2_dir"]
 
-    # (B) le score de rrBLUP, reconstruit sans rien recalculer en dimension n
+    # (B) the rrBLUP score, rebuilt without recomputing anything in dimension n
     yPy = float(y @ Py)
     v2 = q - 2
     Fstat = chi2 * v2 / (yPy - num ** 2 / den)
     score_re = -np.log10(beta_dist.cdf(v2 / (v2 + Fstat), v2 / 2, 0.5))
 
-    fini = np.isfinite(score_rr) & (score_rr > 0)
+    finite = np.isfinite(score_rr) & (score_rr > 0)
     err = np.abs(score_re - score_rr)
-    print("q = %d genotypes, p = %d SNP ; Vu = %.6g, Ve = %.6g (rrBLUP)"
+    print("q = %d genotypes, p = %d SNPs; Vu = %.6g, Ve = %.6g (rrBLUP)"
           % (q, p, Vu, Ve))
-    print("(B) score rrBLUP reconstruit depuis les sorties du scan :")
-    print("    ecart absolu max %.2e sur %d SNP" % (err[fini].max(), int(fini.sum())))
-    print("    SNP causal snp%04d : rrBLUP %.6f | reconstruit %.6f"
+    print("(B) rrBLUP score rebuilt from the scan outputs:")
+    print("    max absolute gap %.2e over %d SNPs" % (err[finite].max(), int(finite.sum())))
+    print("    causal SNP snp%04d: rrBLUP %.6f | rebuilt %.6f"
           % (j0 + 1, score_rr[j0], score_re[j0]))
-    assert err[fini].max() < 1e-6, "desaccord avec rrBLUP"
+    assert err[finite].max() < 1e-6, "disagreement with rrBLUP"
 
-    # (C) la conservativite du chi2 a V figee
+    # (C) the conservativeness of the chi2 at fixed V
     score_chi2 = -np.log10(chi2_dist.sf(chi2, 1))
-    autres = np.ones(p, bool)
-    autres[j0] = False
-    d = score_chi2[autres] - score_rr[autres]
-    print("(C) chi2 a V figee contre F de rrBLUP, en -log10(p) :")
-    print("    SNP causal : %.3f contre %.3f  (ecart %+.3f)"
+    others = np.ones(p, bool)
+    others[j0] = False
+    d = score_chi2[others] - score_rr[others]
+    print("(C) chi2 at fixed V against the rrBLUP F, in -log10(p):")
+    print("    causal SNP: %.3f against %.3f  (gap %+.3f)"
           % (score_chi2[j0], score_rr[j0], score_chi2[j0] - score_rr[j0]))
-    print("    SNP nuls   : median %+.4f, quantiles 5-95%% [%+.4f, %+.4f]"
+    print("    null SNPs : median %+.4f, 5-95%% quantiles [%+.4f, %+.4f]"
           % (np.median(d), *np.percentile(d, [5, 95])))
-    np.savez(os.path.join(dossier, "comparaison.npz"),
+    np.savez(os.path.join(folder, "comparison.npz"),
              score_rr=score_rr, score_re=score_re, score_chi2=score_chi2,
              chi2=chi2, Fstat=Fstat, beta=r["beta_dir"], j0=j0, q=q, p=p)
     return 0
