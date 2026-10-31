@@ -1154,17 +1154,16 @@ the diagonal, \pkg{remlax} is faster.}
 
 \subsection{Real data}
 
-Table~\ref{tab:real} reports fits to real data with a development version of
-\pkg{remlax} frozen on 27 October 2026.
-%% TODO: rerun these seven models with the released version.
+Table~\ref{tab:real} reports fits to real data with the released version of
+\pkg{remlax}.
 The DROPS data hold maize hybrids in European trials
 \citep{millet2016,millet2019}, analysed in two stages or in one stage with
 AR(1) $\times$ AR(1) fields per trial. In the wheat data, lines were grown
 under five treatments \citep{krause2019}. On every model, \pkg{remlax} reached an optimum
 at least as high as those of \pkg{kmmr} and \pkg{ASReml-R}, and strictly
 higher on four of them. With the A100, it fitted the \code{fa2} model over five treatments in
-44.4\,s against 961\,s for \pkg{kmmr}, 20 units higher. On 8 CPU cores,
-\pkg{remlax} was slower than \pkg{kmmr} on that model, 995\,s against 813\,s.
+49.4\,s against 961\,s for \pkg{kmmr}, 20 units higher. On 8 CPU cores,
+\pkg{remlax} was slower than \pkg{kmmr} on that model, 1423\,s against 813\,s.
 \pkg{ASReml-R} capped the AR(1) correlations of the one-stage DROPS models at
 0.98. With these correlations fixed at 0.98 in \pkg{remlax} as well, the two
 optima agreed to within 0.02.
@@ -1179,18 +1178,20 @@ optima agreed to within 0.02.
 \cmidrule(lr){2-4}\cmidrule(lr){5-7}\cmidrule(lr){8-9}
 Model & \pkg{kmmr} & \pkg{ASReml-R} & \pkg{remlax} & \pkg{kmmr} & \pkg{remlax} & \pkg{ASReml-R} & \pkg{kmmr} & \pkg{remlax} \\
 \midrule
-DROPS 2-stage, \code{fa1} & $-492.86$  & $-492.86$  & $-492.86$  & 6.2 & 7.2 & 0.5 & 8.3 & 8.2 \\
-DROPS 2-stage, \code{fa3} & $-368.06$  & $-378.25$  & $-367.68$  & 16.0 & 9.7 & 2.4 & 19.6 & 10.0 \\
-DROPS 1-stage, \code{fa1} & $-2154.65$ & $-1161.86$ & $-1161.21$ & 3.9 & 29.1 & 15.3 & 5.0 & 42.7 \\
-DROPS 1-stage, \code{us(5)} & $-2169.30$ & $-1146.72$ & $-1146.19$ & 5.8 & 18.0 & 10.5 & 5.6 & 28.3 \\
-Wheat, GBLUP                 & 389.57 & 389.57 & 389.57 & 9.1 & 9.0 & 60.2 & 7.4 & 9.2 \\
-Wheat, \code{fa2} & 7109.92 & 7126.36 & 7130.18 & 813 & 995 & 7429 & 961 & 44.4 \\
-Wheat, \code{us(5)} & 7138.93 & 7138.93 & 7138.93 & 359 & 316 & 7530 & 82.6 & 22.1 \\
+DROPS 2-stage, \code{fa1} & $-492.86$  & $-492.86$  & $-492.86$  & 6.2 & 27.5 & 0.5 & 8.3 & 8.4 \\
+DROPS 2-stage, \code{fa3} & $-368.06$  & $-378.25$  & $-367.68$  & 16.0 & 10.8 & 2.4 & 19.6 & 9.5 \\
+DROPS 1-stage, \code{fa1} & $-2154.65$ & $-1161.86$ & $-1161.21$ & 3.9 & 26.9 & 15.3 & 5.0 & 37.7 \\
+DROPS 1-stage, \code{us(5)} & $-2169.30$ & $-1146.72$ & $-1146.19$ & 5.8 & 18.8 & 10.5 & 5.6 & 28.5 \\
+Wheat, GBLUP                 & 389.57 & 389.57 & 389.57 & 9.1 & 8.4 & 60.2 & 7.4 & 9.1 \\
+Wheat, \code{fa2} & 7109.92 & 7126.36 & 7130.18 & 813 & 1423 & 7429 & 961 & 49.4 \\
+Wheat, \code{us(5)} & 7138.93 & 7138.93 & 7138.93 & 359 & 374 & 7530 & 82.6 & 22.0 \\
 \bottomrule
 \end{tabular}
 \caption{\label{tab:real}Seven models on real data. Both \pkg{kmmr} and
 \pkg{remlax} ran on the same genotoul nodes, and \pkg{ASReml-R} on meso,
-where its times are orders of magnitude only. \pkg{kmmr} stopped after two
+where its times are orders of magnitude only. The genotoul nodes are shared,
+and \pkg{remlax} times varied between runs on them, from 7.2 to 27.5\,s on
+the two-stage \code{fa1} model for the same optimum. \pkg{kmmr} stopped after two
 iterations on the one-stage DROPS models. Log-likelihoods are in the
 convention of \pkg{ASReml-R}. The wheat models cover five treatments.}
 \end{table}
