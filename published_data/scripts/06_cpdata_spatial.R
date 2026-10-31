@@ -16,20 +16,19 @@
 #   gblup_ar1fld   y ~ 1 + G + random field AR1(Row) x AR1(Col) + iid residual
 # for Yield and Firmness.
 #
-# Two differences between the programs surface here and are handled in the
-# open. asreml fixes an AR1 correlation at its 0.98 bound; remlax is then
-# refitted with the same value fixed. remlax drops the grid lines that carry
-# no record (columns 28 and 32 to 36 for Firmness), so that the columns on
-# either side of an empty interior column become adjacent; asreml is refitted
-# on that collapsed grid as a diagnostic. The random field of asreml, fitted on
-# the observed records only, collapses the same lines (the two programs agree
-# there); its separable residual needs the full grid and keeps them.
+# asreml fixes an AR1 correlation at its 0.98 bound. remlax is then refitted
+# with the same value fixed, and the free fit is reported as context.
 #
-# References: asreml (all models) and sommer::mmes (gblup_rowcol). For the
-# separable residual, asreml needs the full grid: the 105 empty cells are added
-# as rows with a missing response, sorted by Row then Col. remlax works on the
-# observed cells. Both then maximise the same restricted likelihood of the
-# observed records.
+# References: asreml (all models) and sommer::mmes (gblup_rowcol). The grid
+# has lines without any record (columns 28 and 32 to 36 for Firmness). remlax
+# keeps them, since the factors Row and Col carry every level. asreml keeps
+# them only when the empty cells are present as rows with a missing response.
+# It is therefore given the full grid for both AR1 models: the 105 empty cells
+# are added as rows with a missing response, sorted by Row then Col. remlax
+# works on the observed cells. Both then maximise the same restricted
+# likelihood of the observed records. asreml refitted on the grid without the
+# empty lines is reported as context. remlax 0.1.0 dropped the empty lines
+# and matched that refit.
 #
 #   Rscript published_data/scripts/06_cpdata_spatial.R
 # ==============================================================================
@@ -127,10 +126,11 @@ for (tr in c("Yield", "Firmness")) {
   u_rx <- setNames(f2$blups$id[, 1], rownames(f2$blups$id))
   add_blup_checks(m, "asreml", u_rx, asr_blup(a2, "vm(id, G_as)_")[names(u_rx)])
 
-  # Diagnostic. remlax builds the grid from the levels that carry a record
-  # (factor() in .rx_residual_ar1ar1 drops unused levels), so an empty column
-  # vanishes and its two neighbours become adjacent. asreml refitted on the
-  # grid with the empty columns removed tells whether this explains a gap.
+  # Context. remlax keeps the empty columns in the grid; so does asreml when it
+  # is given the rows with a missing response (fu). Without those rows,
+  # asreml drops the unused levels and its two neighbours become adjacent.
+  # asreml refitted on the grid without the empty columns shows the size of
+  # that difference.
   if (length(empty_cols) || length(empty_rows)) {
     kc <- setdiff(levels(base$Col), empty_cols); kr <- setdiff(levels(base$Row), empty_rows)
     fc <- fu[fu$Col %in% kc & fu$Row %in% kr, ]
@@ -154,8 +154,11 @@ for (tr in c("Yield", "Firmness")) {
   cat("\n===", m, "===\n")
   f3 <- timed(rx_cpu(y ~ 1, random = ~ vm(id, K = G) + ar1(Row, Col), data = d, n_restarts = 5))
   print(f3)
-  a3 <- timed(stab(asreml(y ~ 1, random = ~ vm(id, G_as) + ar1(Row):ar1(Col), data = d,
-                          trace = FALSE, maxit = 100, workspace = WS)))
+  # asreml gets the full grid (fu): from d alone it would drop the empty
+  # columns, whereas remlax keeps every level of Row and Col.
+  a3 <- timed(stab(asreml(y ~ 1, random = ~ vm(id, G_as) + ar1(Row):ar1(Col), data = fu,
+                          trace = FALSE, maxit = 100, workspace = WS,
+                          na.action = na.method(y = "include", x = "include"))))
   vc3 <- summary(a3)$varcomp; print(vc3)
   TIMES[[m]] <- c(remlax = attr(f3, "secs"), asreml = attr(a3, "secs"))
   fld <- setdiff(names(f3$sigmas), "id")

@@ -8,7 +8,7 @@ Each script of `published_data/scripts/` fits remlax on a published data set and
 
 | data set | source | checks | pass | fail | context rows |
 |---|---|---|---|---|---|
-| cpdata_simulated | Covarrubias-Pazaran 2016, doi:10.1371/journal.pone.0156744 (simulated data) | 56 | 51 | 5 | 15 |
+| cpdata_simulated | Covarrubias-Pazaran 2016, doi:10.1371/journal.pone.0156744 (simulated data) | 56 | 56 | 0 | 15 |
 | gryphon_wilson2010 | Wilson et al. 2010, doi:10.1111/j.1365-2656.2009.01639.x | 99 | 99 | 0 | 0 |
 | maize_drops_gwas | Millet et al. 2016 Plant Physiol; Millet et al. 2019 Sci Data | 34 | 34 | 0 | 23 |
 | maize_technow2014 | Technow et al. 2014, doi:10.1534/genetics.114.165860 | 44 | 44 | 0 | 0 |
@@ -16,14 +16,14 @@ Each script of `published_data/scripts/` fits remlax on a published data set and
 | potato_tetraploid | Rosyara et al. 2016, doi:10.3835/plantgenome2015.08.0073 | 29 | 29 | 0 | 1 |
 | rice44k_zhao2011 | Zhao et al. 2011 Nat Commun 2:467 | 52 | 52 | 0 | 40 |
 | wheat_crossa2010 | Crossa et al. 2010, doi:10.1534/genetics.110.118521 | 121 | 121 | 0 | 11 |
-| total | | 505 | 500 | 5 | 92 |
+| total | | 505 | 505 | 0 | 92 |
 
 ## By reference program
 
 | reference | checks | pass | largest discrepancy / tolerance |
 |---|---|---|---|
 | AGHmatrix | 2 | 2 | 0 |
-| asreml | 260 | 255 | 631.1 |
+| asreml | 260 | 260 | 0.9578 |
 | dense R | 1 | 1 | 5.684e-08 |
 | gaston | 58 | 58 | 0.004152 |
 | remlax | 3 | 3 |  |
@@ -34,13 +34,7 @@ Each script of `published_data/scripts/` fits remlax on a published data set and
 
 ## Failed checks
 
-| data set | model | quantity | reference | remlax | reference value | discrepancy | note |
-|---|---|---|---|---|---|---|---|
-| cpdata_simulated | Firmness gblup_ar1res | rho Row | asreml | 0.4219 | 0.4224 | 0.001134 |  |
-| cpdata_simulated | Firmness gblup_ar1res | rho Col | asreml | 0.0053 | 0.01437 | 0.6311 |  |
-| cpdata_simulated | Firmness gblup_ar1res | logLik (asreml convention) | asreml | -1245 | -1245 | 0.005484 |  |
-| cpdata_simulated | Firmness gblup_ar1res | BLUP correlation | asreml | 0.9999926 |  | 7.376e-06 |  |
-| cpdata_simulated | Firmness gblup_ar1res | BLUP max |diff| / sd | asreml | 0.01292 |  | 0.01292 |  |
+None.
 
 ## Values printed in the source papers
 
@@ -93,15 +87,15 @@ Each script of `published_data/scripts/` fits remlax on a published data set and
 | cpdata_simulated | Yield gblup_ar1fld | rho Col | asreml | 0.9875 | 0.98 | 0.007691 | asreml fixed Row:Col!Col!cor at 0.98 |
 | cpdata_simulated | Yield gblup_ar1fld | sigma2 residual | asreml | 3068 | 3039 | 0.009546 | asreml fixed Row:Col!Col!cor at 0.98 |
 | cpdata_simulated | Yield gblup_ar1fld | logLik (asreml convention) | asreml | -1673 | -1673 | 0.1359 | asreml fixed Row:Col!Col!cor at 0.98 |
-| cpdata_simulated | Firmness gblup_ar1res | logLik, grid without empty lines | asreml | -1245 | -1245 | 1.427e-08 | asreml on the grid without the empty lines (13 x 30) |
-| cpdata_simulated | Firmness gblup_ar1res | rho Col, grid without empty lines | asreml | 0.0053 | 0.0053 | 3.722e-05 | asreml on the grid without the empty lines (13 x 30) |
-| cpdata_simulated | Firmness gblup_ar1res | sigma2 G, grid without empty lines | asreml | 2283 | 2283 | 1.146e-05 | asreml on the grid without the empty lines (13 x 30) |
-| cpdata_simulated | Firmness gblup_ar1fld | sigma2 G | asreml | 2308 | 2315 | 0.003011 | asreml fixed Row:Col!Row!cor at 0.98 |
-| cpdata_simulated | Firmness gblup_ar1fld | sigma2 field | asreml | 337.5 | 363.3 | 0.07092 | asreml fixed Row:Col!Row!cor at 0.98 |
-| cpdata_simulated | Firmness gblup_ar1fld | rho Row | asreml | 0.9947 | 0.98 | 0.01496 | asreml fixed Row:Col!Row!cor at 0.98 |
-| cpdata_simulated | Firmness gblup_ar1fld | rho Col | asreml | -0.1663 | -0.1479 | 0.1244 | asreml fixed Row:Col!Row!cor at 0.98 |
-| cpdata_simulated | Firmness gblup_ar1fld | sigma2 residual | asreml | 851.4 | 827 | 0.0295 | asreml fixed Row:Col!Row!cor at 0.98 |
-| cpdata_simulated | Firmness gblup_ar1fld | logLik (asreml convention) | asreml | -1240 | -1240 | 0.04321 | asreml fixed Row:Col!Row!cor at 0.98 |
+| cpdata_simulated | Firmness gblup_ar1res | logLik, grid without empty lines | asreml | -1245 | -1245 | 0.005484 | asreml on the grid without the empty lines (13 x 30) |
+| cpdata_simulated | Firmness gblup_ar1res | rho Col, grid without empty lines | asreml | 0.01437 | 0.0053 | 1.711 | asreml on the grid without the empty lines (13 x 30) |
+| cpdata_simulated | Firmness gblup_ar1res | sigma2 G, grid without empty lines | asreml | 2280 | 2283 | 0.000891 | asreml on the grid without the empty lines (13 x 30) |
+| cpdata_simulated | Firmness gblup_ar1fld | sigma2 G | asreml | 2297 | 2303 | 0.002558 | asreml fixed Row:Col!Row!cor at 0.98 |
+| cpdata_simulated | Firmness gblup_ar1fld | sigma2 field | asreml | 339.5 | 362.3 | 0.06288 | asreml fixed Row:Col!Row!cor at 0.98 |
+| cpdata_simulated | Firmness gblup_ar1fld | rho Row | asreml | 0.9925 | 0.98 | 0.01276 | asreml fixed Row:Col!Row!cor at 0.98 |
+| cpdata_simulated | Firmness gblup_ar1fld | rho Col | asreml | -0.1135 | -0.095 | 0.1948 | asreml fixed Row:Col!Row!cor at 0.98 |
+| cpdata_simulated | Firmness gblup_ar1fld | sigma2 residual | asreml | 851.7 | 830.6 | 0.02535 | asreml fixed Row:Col!Row!cor at 0.98 |
+| cpdata_simulated | Firmness gblup_ar1fld | logLik (asreml convention) | asreml | -1240 | -1240 | 0.02893 | asreml fixed Row:Col!Row!cor at 0.98 |
 | maize_drops_gwas | Mur13W anthesis | null s2_g | statgenGWAS | 4.076 | 4.061 | 0.003728 | statgenGWAS EMMA does not reach the REML optimum, see logLik row |
 | maize_drops_gwas | Mur13W anthesis | null s2_e | statgenGWAS | 0.8692 | 0.885 | 0.01788 | statgenGWAS EMMA does not reach the REML optimum, see logLik row |
 | maize_drops_gwas | Mur13W anthesis | score chi2 native output (max rel) | gaston | 3.122e-06 |  | 3.122e-06 | gaston native output vs its own double recomputation: 3.12e-06 |

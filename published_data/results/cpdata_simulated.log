@@ -1,9 +1,9 @@
 Message d'avis :
 le package ‘Matrix’ a été compilé avec la version R 4.6.1 
-Online License checked out Sat Oct 31 01:57:07 2026
+Online License checked out Sat Oct 31 11:06:33 2026
 
 ######## cpdata_simulated (Covarrubias-Pazaran 2016, doi:10.1371/journal.pone.0156744 (simulated data))
-remlax0.1.0| R4.5.2
+remlax 0.1.0 | R 4.5.2
   asreml       4.2.0.382
   sommer       4.4.4
   gaston       1.6
@@ -16,7 +16,7 @@ records 363 on a 13 x 36 grid (468 cells)
 ================ trait Yield: 362 records ================
 
 === Yield gblup_rowcol ===
-REML fit (cpu): logLik -2006.596046 | 4 parameters | 362 obs | 3.9 s
+REML fit (cpu): logLik -2006.596046 | 4 parameters | 362 obs | 1.0 s
   max|grad| 2.20e-13 | Newton decrement 1.55e-28 | 0 negative eigenvalue(s)
   Sigma[id] 1x1, diagonal: 805.4
   Sigma[Row] 1x1, diagonal: 848.6
@@ -42,7 +42,7 @@ units!R      2992.7217  287.5061 10.409245     P   0
   software   Yield gblup_rowcol         BLUP max |diff| / sd               sommer      2.4283155e-06             NA  d= 2.43e-06  OK
 
 === Yield gblup_ar1res ===
-REML fit (cpu): logLik -2022.796465 | 4 parameters | 362 obs | 2.9 s
+REML fit (cpu): logLik -2022.796465 | 4 parameters | 362 obs | 0.7 s
   max|grad| 1.75e-05 | Newton decrement 6.63e-13 | 0 negative eigenvalue(s)
   Sigma[id] 1x1, diagonal: 560.5
   residual: 4075
@@ -61,7 +61,7 @@ grid lines without a record: rows {}, columns {}
   software   Yield gblup_ar1res         BLUP max |diff| / sd               asreml      3.3476068e-07             NA  d= 3.35e-07  OK
 
 === Yield gblup_ar1fld ===
-REML fit (cpu): logLik -2004.976278 | 5 parameters | 362 obs | 11.9 s
+REML fit (cpu): logLik -2004.976278 | 5 parameters | 362 obs | 2.5 s
   max|grad| 6.23e-13 | Newton decrement 6.87e-26 | 0 negative eigenvalue(s)
   Sigma[id] 1x1, diagonal: 660.5
   Sigma[Row_Col] 1x1, diagonal: 1400
@@ -78,7 +78,7 @@ units!R         3039.3730439 284.0107621 10.701612     P   0
   context    Yield gblup_ar1fld         rho Col                            asreml         0.98753722     0.98000002  d= 7.69e-03  ctx
   context    Yield gblup_ar1fld         sigma2 residual                    asreml          3068.3854       3039.373  d= 9.55e-03  ctx
   context    Yield gblup_ar1fld         logLik (asreml convention)         asreml         -1673.2395     -1673.3753  d= 1.36e-01  ctx
-REML fit (cpu): logLik -2005.112160 | 5 parameters | 362 obs | 3.4 s
+REML fit (cpu): logLik -2005.112160 | 5 parameters | 362 obs | 1.1 s
   max|grad| 2.44e+00 | Newton decrement 3.20e-14 | 0 negative eigenvalue(s)
   Sigma[id] 1x1, diagonal: 654.1
   Sigma[Row_Col] 1x1, diagonal: 1251
@@ -87,15 +87,15 @@ REML fit (cpu): logLik -2005.112160 | 5 parameters | 362 obs | 3.4 s
   software   Yield gblup_ar1fld rho fixed sigma2 field                       asreml          1251.4968      1251.4968  d= 3.06e-09  OK
   software   Yield gblup_ar1fld rho fixed rho Row                            asreml         0.58661032     0.58661032  d= 5.65e-09  OK
   software   Yield gblup_ar1fld rho fixed rho Col                            asreml         0.98000002     0.98000002  d= 0.00e+00  OK
-  software   Yield gblup_ar1fld rho fixed sigma2 residual                    asreml          3039.3731       3039.373  d= 6.04e-09  OK
+  software   Yield gblup_ar1fld rho fixed sigma2 residual                    asreml          3039.3731       3039.373  d= 6.03e-09  OK
   software   Yield gblup_ar1fld rho fixed logLik (asreml convention)         asreml         -1673.3753     -1673.3753  d= 1.82e-12  OK
   software   Yield gblup_ar1fld rho fixed BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
-  software   Yield gblup_ar1fld rho fixed BLUP max |diff| / sd               asreml       8.839331e-08             NA  d= 8.84e-08  OK
+  software   Yield gblup_ar1fld rho fixed BLUP max |diff| / sd               asreml      8.8391676e-08             NA  d= 8.84e-08  OK
 
 ================ trait Firmness: 290 records ================
 
 === Firmness gblup_rowcol ===
-REML fit (cpu): logLik -1498.980330 | 4 parameters | 290 obs | 3.8 s
+REML fit (cpu): logLik -1498.980330 | 4 parameters | 290 obs | 0.9 s
   max|grad| 2.00e-13 | Newton decrement 3.45e-28 | 0 negative eigenvalue(s)
   Sigma[id] 1x1, diagonal: 2234
   Sigma[Row] 1x1, diagonal: 181.2
@@ -121,77 +121,79 @@ units!R       736.2251  122.0177 6.033757     P   0
   software   Firmness gblup_rowcol      BLUP max |diff| / sd               sommer      2.1029958e-06             NA  d= 2.10e-06  OK
 
 === Firmness gblup_ar1res ===
-REML fit (cpu): logLik -1510.749943 | 4 parameters | 290 obs | 2.9 s
-  max|grad| 3.95e-05 | Newton decrement 3.99e-12 | 0 negative eigenvalue(s)
-  Sigma[id] 1x1, diagonal: 2283
-  residual: 1225
+REML fit (cpu): logLik -1510.744459 | 4 parameters | 290 obs | 0.8 s
+  max|grad| 1.71e-06 | Newton decrement 5.56e-15 | 0 negative eigenvalue(s)
+  Sigma[id] 1x1, diagonal: 2280
+  residual: 1226
                    component    std.error   z.ratio bound %ch
 vm(id, G_as)    2.280472e+03 489.88764768 4.6550922     P   0
 Row:Col!R       1.226143e+03 163.01041612 7.5218674     P   0
 Row:Col!Row!cor 4.224074e-01   0.08625399 4.8972500     U   0
 Row:Col!Col!cor 1.436532e-02   0.11562765 0.1242378     U   0
 grid lines without a record: rows {}, columns {28,32,33,34,35,36}
-  software   Firmness gblup_ar1res      sigma2 G                           asreml          2282.5578      2280.4722  d= 9.15e-04  OK
-  software   Firmness gblup_ar1res      sigma2 residual                    asreml          1225.0926      1226.1427  d= 8.56e-04  OK
-  software   Firmness gblup_ar1res      rho Row                            asreml         0.42192836     0.42240736  d= 1.13e-03  FAIL
-  software   Firmness gblup_ar1res      rho Col                            asreml       0.0052995394    0.014365325  d= 6.31e-01  FAIL
-  software   Firmness gblup_ar1res      logLik (asreml convention)         asreml         -1245.1767     -1245.1712  d= 5.48e-03  FAIL
-  software   Firmness gblup_ar1res      BLUP correlation                   asreml         0.99999262             NA  d= 1.00e+00  FAIL
-  software   Firmness gblup_ar1res      BLUP max |diff| / sd               asreml        0.012922386             NA  d= 1.29e-02  FAIL
+  software   Firmness gblup_ar1res      sigma2 G                           asreml          2280.4978      2280.4722  d= 1.12e-05  OK
+  software   Firmness gblup_ar1res      sigma2 residual                    asreml          1226.1406      1226.1427  d= 1.79e-06  OK
+  software   Firmness gblup_ar1res      rho Row                            asreml         0.42241741     0.42240736  d= 2.38e-05  OK
+  software   Firmness gblup_ar1res      rho Col                            asreml        0.014365926    0.014365325  d= 4.18e-05  OK
+  software   Firmness gblup_ar1res      logLik (asreml convention)         asreml         -1245.1712     -1245.1712  d= 1.47e-08  OK
+  software   Firmness gblup_ar1res      BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   Firmness gblup_ar1res      BLUP max |diff| / sd               asreml      4.9592133e-05             NA  d= 4.96e-05  OK
                    component    std.error    z.ratio bound %ch
 vm(id, G_as)    2.282532e+03 490.39142731 4.65450960     P   0
 Row:Col!R       1.225095e+03 162.93209355 7.51905471     P   0
 Row:Col!Row!cor 4.219182e-01   0.08633106 4.88721216     U   0
 Row:Col!Col!cor 5.299737e-03   0.11500921 0.04608098     U   0
-  context    Firmness gblup_ar1res      logLik, grid without empty lines   asreml         -1245.1767     -1245.1767  d= 1.43e-08  ctx
-  context    Firmness gblup_ar1res      rho Col, grid without empty lines  asreml       0.0052995394   0.0052997367  d= 3.72e-05  ctx
-  context    Firmness gblup_ar1res      sigma2 G, grid without empty lines asreml          2282.5578      2282.5316  d= 1.15e-05  ctx
+  context    Firmness gblup_ar1res      logLik, grid without empty lines   asreml         -1245.1712     -1245.1767  d= 5.48e-03  ctx
+  context    Firmness gblup_ar1res      rho Col, grid without empty lines  asreml        0.014365926   0.0052997367  d= 1.71e+00  ctx
+  context    Firmness gblup_ar1res      sigma2 G, grid without empty lines asreml          2280.4978      2282.5316  d= 8.91e-04  ctx
 
 === Firmness gblup_ar1fld ===
-REML fit (cpu): logLik -1505.105158 | 5 parameters | 290 obs | 6.6 s
-  max|grad| 3.61e-13 | Newton decrement 4.50e-28 | 0 negative eigenvalue(s)
-  Sigma[id] 1x1, diagonal: 2308
-  Sigma[Row_Col] 1x1, diagonal: 337.5
-  residual: 851.4
-                   component   std.error    z.ratio bound %ch
-vm(id, G_as)    2315.0342771 494.9478797  4.6773294     P   0
-Row:Col          363.2663733 140.8561847  2.5789877     P   0
-Row:Col!Row!cor    0.9800000          NA         NA     F   0
-Row:Col!Col!cor   -0.1478977   0.3248021 -0.4553471     U   0
-units!R          826.9635910 136.1520616  6.0738235     P   0
-  context    Firmness gblup_ar1fld      sigma2 G                           asreml          2308.0631      2315.0343  d= 3.01e-03  ctx
-  context    Firmness gblup_ar1fld      sigma2 field                       asreml          337.50509      363.26637  d= 7.09e-02  ctx
-  context    Firmness gblup_ar1fld      rho Row                            asreml         0.99465788     0.98000002  d= 1.50e-02  ctx
-  context    Firmness gblup_ar1fld      rho Col                            asreml        -0.16629845    -0.14789772  d= 1.24e-01  ctx
-  context    Firmness gblup_ar1fld      sigma2 residual                    asreml          851.36172      826.96359  d= 2.95e-02  ctx
-  context    Firmness gblup_ar1fld      logLik (asreml convention)         asreml         -1239.5319     -1239.5751  d= 4.32e-02  ctx
-REML fit (cpu): logLik -1505.148371 | 5 parameters | 290 obs | 3.4 s
-  max|grad| 4.43e-01 | Newton decrement 2.44e-14 | 0 negative eigenvalue(s)
-  Sigma[id] 1x1, diagonal: 2315
-  Sigma[Row_Col] 1x1, diagonal: 363.3
-  residual: 827
-  software   Firmness gblup_ar1fld rho fixed sigma2 G                           asreml          2315.0367      2315.0343  d= 1.04e-06  OK
-  software   Firmness gblup_ar1fld rho fixed sigma2 field                       asreml          363.26654      363.26637  d= 4.65e-07  OK
+REML fit (cpu): logLik -1505.209675 | 5 parameters | 290 obs | 1.3 s
+  max|grad| 2.00e-06 | Newton decrement 1.24e-13 | 0 negative eigenvalue(s)
+  Sigma[id] 1x1, diagonal: 2297
+  Sigma[Row_Col] 1x1, diagonal: 339.5
+  residual: 851.7
+                    component   std.error    z.ratio bound %ch
+vm(id, G_as)    2302.51497081 493.2525959  4.6680240     P 0.0
+Row:Col          362.32583189 140.4714364  2.5793559     P 0.0
+Row:Col!Row!cor    0.98000002          NA         NA     F 0.0
+Row:Col!Col!cor   -0.09499807   0.3578178 -0.2654929     U 0.2
+units!R          830.61440873 136.4882238  6.0856123     P 0.0
+  context    Firmness gblup_ar1fld      sigma2 G                           asreml          2296.6258       2302.515  d= 2.56e-03  ctx
+  context    Firmness gblup_ar1fld      sigma2 field                       asreml           339.5424      362.32583  d= 6.29e-02  ctx
+  context    Firmness gblup_ar1fld      rho Row                            asreml         0.99250271     0.98000002  d= 1.28e-02  ctx
+  context    Firmness gblup_ar1fld      rho Col                            asreml         -0.1134994   -0.094998072  d= 1.95e-01  ctx
+  context    Firmness gblup_ar1fld      sigma2 residual                    asreml          851.67379      830.61441  d= 2.54e-02  ctx
+  context    Firmness gblup_ar1fld      logLik (asreml convention)         asreml         -1239.6364     -1239.6654  d= 2.89e-02  ctx
+REML fit (cpu): logLik -1505.238607 | 5 parameters | 290 obs | 1.6 s
+  max|grad| 3.52e-01 | Newton decrement 1.45e-12 | 0 negative eigenvalue(s)
+  Sigma[id] 1x1, diagonal: 2303
+  Sigma[Row_Col] 1x1, diagonal: 362.3
+  residual: 830.6
+  software   Firmness gblup_ar1fld rho fixed sigma2 G                           asreml          2302.5176       2302.515  d= 1.13e-06  OK
+  software   Firmness gblup_ar1fld rho fixed sigma2 field                       asreml          362.32632      362.32583  d= 1.36e-06  OK
   software   Firmness gblup_ar1fld rho fixed rho Row                            asreml         0.98000002     0.98000002  d= 0.00e+00  OK
-  software   Firmness gblup_ar1fld rho fixed rho Col                            asreml        -0.14788047    -0.14789772  d= 1.17e-04  OK
-  software   Firmness gblup_ar1fld rho fixed sigma2 residual                    asreml          826.96402      826.96359  d= 5.22e-07  OK
-  software   Firmness gblup_ar1fld rho fixed logLik (asreml convention)         asreml         -1239.5751     -1239.5751  d= 6.42e-09  OK
+  software   Firmness gblup_ar1fld rho fixed rho Col                            asreml       -0.094907085   -0.094998072  d= 9.58e-04  OK
+  software   Firmness gblup_ar1fld rho fixed sigma2 residual                    asreml          830.61485      830.61441  d= 5.32e-07  OK
+  software   Firmness gblup_ar1fld rho fixed logLik (asreml convention)         asreml         -1239.6654     -1239.6654  d= 6.29e-08  OK
   software   Firmness gblup_ar1fld rho fixed BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
-  software   Firmness gblup_ar1fld rho fixed BLUP max |diff| / sd               asreml      9.2133663e-06             NA  d= 9.21e-06  OK
+  software   Firmness gblup_ar1fld rho fixed BLUP max |diff| / sd               asreml      2.9023996e-05             NA  d= 2.90e-05  OK
 Messages d'avis :
-1: Dans asreml(y ~ 1, random = ~vm(id, G_as) + ar1(Row):ar1(Col), data = d,  :
+1: Dans asreml(y ~ 1, random = ~vm(id, G_as) + ar1(Row):ar1(Col), data = fu,  :
   Some components changed by more than 1% on the last iteration
 2: Dans asreml(fixed = y ~ 1, random = ~vm(id, G_as) + ar1(Row):ar1(Col),  :
   Some components changed by more than 1% on the last iteration
 3: Dans asreml(fixed = y ~ 1, random = ~vm(id, G_as) + ar1(Row):ar1(Col),  :
   Some components changed by more than 1% on the last iteration
+4: Dans asreml(fixed = y ~ 1, random = ~vm(id, G_as) + ar1(Row):ar1(Col),  :
+  Some components changed by more than 1% on the last iteration
 
 Elapsed seconds (remlax includes process start-up):
-  Yield gblup_rowcol         remlax 12.7 | asreml 28.4 | sommer 28.9
-  Yield gblup_ar1res         remlax 30.9 | asreml 31.0
-  Yield gblup_ar1fld         remlax 77.1 | asreml 47.9
-  Firmness gblup_rowcol      remlax 7.1 | asreml 26.0 | sommer 24.2
-  Firmness gblup_ar1res      remlax 19.3 | asreml 37.0
-  Firmness gblup_ar1fld      remlax 57.6 | asreml 52.0
+  Yield gblup_rowcol         remlax 4.7 | asreml 6.0 | sommer 0.3
+  Yield gblup_ar1res         remlax 7.6 | asreml 6.1
+  Yield gblup_ar1fld         remlax 19.2 | asreml 8.3
+  Firmness gblup_rowcol      remlax 1.6 | asreml 6.5 | sommer 0.3
+  Firmness gblup_ar1res      remlax 6.0 | asreml 6.5
+  Firmness gblup_ar1fld      remlax 17.0 | asreml 10.2
 
-cpdata_simulated: 56 checks counted, 51 pass, 5 fail; 15 context rows -> /home/salas/Documents/Git/remlax-validation/published_data/results/cpdata_simulated.csv
+cpdata_simulated: 56 checks counted, 56 pass, 0 fail; 15 context rows -> /home/salas/Documents/Git/remlax-validation/published_data/results/cpdata_simulated.csv
