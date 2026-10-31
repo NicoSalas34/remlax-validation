@@ -1,0 +1,60 @@
+Message d'avis :
+le package ‘Matrix’ a été compilé avec la version R 4.6.1 
+Online License checked out Sat Oct 31 22:36:48 2026
+
+######## maize_drops_multitrait (Millet et al. 2016 Plant Physiol; Millet et al. 2019 Sci Data)
+remlax 0.2.0.9000 | R 4.5.2
+  asreml       4.2.0.382
+  sommer       4.4.4
+  gaston       1.6
+  rrBLUP       4.6.3
+  statgenGWAS  1.0.12
+  BGLR         1.1.4
+  enhancer     1.1.2
+hybrids 246, records 738 (246/246/246)
+REML fit (cpu): logLik -928.810533 | 9 parameters | 738 obs | 8.1 s
+  max|grad| 2.23e-11 | Newton decrement 7.64e-24 | 0 negative eigenvalue(s)
+  Sigma[gen] 3x3, diagonal: 0.8122 0.7340 0.1555
+  residual: 0.3883 0.1686 0.3518
+scan of 41722 SNPs in 7.1 s
+  software   scan                       max |chi2(dir) - common - het| / chi2(dir) remlax      9.3570887e-10             NA  d= 9.36e-10  OK
+  software   A PZE-106021419            chi2_dir (fixed V)                 asreml          33.280645      33.280645  d= 1.48e-10  OK
+  software   A PZE-106021419            chi2_dir@common (fixed V)          asreml          28.071266      28.071266  d= 4.21e-11  OK
+  software   A PZE-106021419            chi2_dir@het (fixed V)             asreml          5.2093793      5.2093793  d= 5.18e-11  OK
+  software   A PZE-106021424            chi2_dir (fixed V)                 asreml          31.795679      31.795679  d= 4.03e-11  OK
+  software   A PZE-106021424            chi2_dir@common (fixed V)          asreml          26.955242      26.955242  d= 5.51e-11  OK
+  software   A PZE-106021424            chi2_dir@het (fixed V)             asreml          4.8404373      4.8404373  d= 3.48e-11  OK
+  software   A PZE-106021363            chi2_dir (fixed V)                 asreml          30.199316      30.199316  d= 8.58e-11  OK
+  software   A PZE-106021363            chi2_dir@common (fixed V)          asreml          21.698895      21.698895  d= 1.40e-10  OK
+  software   A PZE-106021363            chi2_dir@het (fixed V)             asreml          8.5004203      8.5004203  d= 4.67e-11  OK
+  software   A PZE-106021410            chi2_dir (fixed V)                 asreml          30.133281      30.133281  d= 2.08e-11  OK
+  software   A PZE-106021410            chi2_dir@common (fixed V)          asreml          21.028166      21.028166  d= 7.36e-11  OK
+  software   A PZE-106021410            chi2_dir@het (fixed V)             asreml          9.1051151      9.1051151  d= 2.04e-11  OK
+  software   A PZE-106021420            chi2_dir (fixed V)                 asreml          27.287325      27.287325  d= 1.81e-11  OK
+  software   A PZE-106021420            chi2_dir@common (fixed V)          asreml          19.674395      19.674395  d= 1.71e-10  OK
+  software   A PZE-106021420            chi2_dir@het (fixed V)             asreml          7.6129303      7.6129303  d= 1.80e-11  OK
+  software   A SYN37739                 chi2_dir (fixed V)                 asreml         0.28560921     0.28560921  d= 4.54e-12  OK
+  software   A SYN37739                 chi2_dir@common (fixed V)          asreml         0.22814774     0.22814774  d= 1.78e-10  OK
+  software   A SYN37739                 chi2_dir@het (fixed V)             asreml        0.057461472    0.057461472  d= 3.62e-10  OK
+  software   A PZA03427.2               chi2_dir (fixed V)                 asreml          3.4568146      3.4568146  d= 1.34e-10  OK
+  software   A PZA03427.2               chi2_dir@common (fixed V)          asreml        0.096220633    0.096220633  d= 3.50e-11  OK
+  software   A PZA03427.2               chi2_dir@het (fixed V)             asreml           3.360594       3.360594  d= 8.69e-11  OK
+  software   A PZE-102192763            chi2_dir (fixed V)                 asreml          2.9987754      2.9987754  d= 1.33e-11  OK
+  software   A PZE-102192763            chi2_dir@common (fixed V)          asreml        0.022817401    0.022817401  d= 1.08e-10  OK
+  software   A PZE-102192763            chi2_dir@het (fixed V)             asreml           2.975958       2.975958  d= 1.33e-10  OK
+  software   A PZE-105165862            chi2_dir (fixed V)                 asreml          1.5364409      1.5364409  d= 7.61e-11  OK
+  software   A PZE-105165862            chi2_dir@common (fixed V)          asreml          0.4885572      0.4885572  d= 1.95e-10  OK
+  software   A PZE-105165862            chi2_dir@het (fixed V)             asreml          1.0478837      1.0478837  d= 2.04e-10  OK
+  software   A PZE-108016518            chi2_dir (fixed V)                 asreml          3.6721319      3.6721319  d= 8.28e-11  OK
+  software   A PZE-108016518            chi2_dir@common (fixed V)          asreml          1.8528209      1.8528209  d= 7.53e-11  OK
+  software   A PZE-108016518            chi2_dir@het (fixed V)             asreml           1.819311       1.819311  d= 8.74e-11  OK
+Il y a eu 30 avis (utilisez warnings() pour les visionner)
+  software   B PZE-106021419            chi2 dir (refit)                   asreml           40.48963       40.48963  d= 3.74e-09  OK
+  context    B PZE-106021419            p fixed V / p refit                remlax          33.495559             NA  d= 3.35e+01  ctx
+  software   B PZE-106021424            chi2 dir (refit)                   asreml          38.472957      38.472957  d= 3.24e-09  OK
+  context    B PZE-106021424            p fixed V / p refit                remlax          25.748208             NA  d= 2.57e+01  ctx
+  software   B PZE-106021363            chi2 dir (refit)                   asreml          36.936413      36.915969  d= 5.54e-04  OK
+  context    B PZE-106021363            p fixed V / p refit                remlax           26.40134             NA  d= 2.64e+01  ctx
+Il y a eu 38 avis (utilisez warnings() pour les visionner)
+
+maize_drops_multitrait: 34 checks counted, 34 pass, 0 fail; 3 context rows -> /home/salas/Documents/Git/remlax-validation/published_data/results/maize_drops_multitrait.csv

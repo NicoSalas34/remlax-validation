@@ -1,0 +1,570 @@
+Message d'avis :
+le package ‘Matrix’ a été compilé avec la version R 4.6.1 
+Online License checked out Sat Oct 31 16:34:17 2026
+
+######## tilapia_joshi2018 (Joshi et al. 2018, doi:10.1038/s41437-017-0046-x)
+remlax 0.2.0 | R 4.5.2
+  asreml       4.2.0.382
+  sommer       4.4.4
+  gaston       1.6
+  rrBLUP       4.6.3
+  statgenGWAS  1.0.12
+  BGLR         1.1.4
+  enhancer     1.1.2
+  nadiv        2.18.0
+starting to make D....done 
+starting to invert D...'as(<dsCMatrix>, "dgCMatrix")' est obsolète.
+Utilisez plutôt ‘as(., "generalMatrix")’.
+Voir help("Deprecated") et help("Matrix-deprecated").
+.done 
+density of D^-1: 0.965 (the pedigree is deep: most pairs share a coefficient of fraternity)
+fish 2524, families 155, pedigree 4051
+
+=== BD A ===
+REML fit (cpu): logLik -2596.592123 | 2 parameters | 2524 obs | 72.1 s
+  max|grad| 3.55e-07 | Newton decrement 3.42e-17 | 0 negative eigenvalue(s)
+  Sigma[id] 1x1, diagonal: 0.2555
+  residual: 0.3221
+           component  std.error  z.ratio bound %ch
+vm(id, gA) 0.2554570 0.07737573 3.301514     P   0
+units!R    0.3221394 0.03869855 8.324327     P   0
+  software   BD A                       sigma2 A                           asreml         0.25545704     0.25545702  d= 9.12e-08  OK
+  published  BD A                       sigma2 A                           paper (Table S3.1)     0.25545704           0.26  d= 4.54e-03  OK
+  software   BD A                       sigma2 residual                    asreml          0.3221394      0.3221394  d= 4.44e-09  OK
+  published  BD A                       sigma2 residual                    paper (Table S3.1)      0.3221394           0.32  d= 2.14e-03  OK
+  context    BD A                       logLik (asreml convention)         asreml         -281.78596     -281.78595  d= 9.55e-06  ctx
+  software   BD A                       logLik (asreml convention)         dense R        -281.78596     -281.78596  d= 1.52e-10  OK
+  published  BD A                       logLik remainder modulo 100        paper (Table 2)  4.2576144e-05             NA  d= 4.26e-05  OK
+  software   BD A A                     BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   BD A A                     BLUP max |diff| / sd               asreml      4.6972472e-08             NA  d= 4.70e-08  OK
+
+=== BD AD ===
+REML fit (cpu): logLik -2594.300178 | 3 parameters | 2524 obs | 167.1 s
+  max|grad| 9.81e-13 | Newton decrement 2.55e-26 | 0 negative eigenvalue(s)
+  Sigma[id] 1x1, diagonal: 0.1537
+  Sigma[idD] 1x1, diagonal: 0.1507
+  residual: 0.2655
+            component  std.error  z.ratio bound %ch
+vm(id, gA)  0.1537477 0.09535939 1.612297     P   0
+vm(idD, gD) 0.1506917 0.08633868 1.745355     P   0
+units!R     0.2655026 0.04959091 5.353856     P   0
+  software   BD AD                      sigma2 A                           asreml         0.15374765     0.15374765  d= 2.50e-08  OK
+  published  BD AD                      sigma2 A                           paper (Table S3.1)     0.15374765           0.15  d= 3.75e-03  OK
+  software   BD AD                      sigma2 D                           asreml         0.15069165     0.15069168  d= 1.53e-07  OK
+  published  BD AD                      sigma2 D                           paper (Table S3.1)     0.15069165           0.15  d= 6.92e-04  OK
+  software   BD AD                      sigma2 residual                    asreml         0.26550261     0.26550257  d= 1.31e-07  OK
+  published  BD AD                      sigma2 residual                    paper (Table S3.1)     0.26550261           0.27  d= 4.50e-03  OK
+  context    BD AD                      logLik (asreml convention)         asreml         -279.49401       -279.494  d= 1.39e-05  ctx
+  software   BD AD                      logLik (asreml convention)         dense R        -279.49401     -279.49401  d= 3.47e-11  OK
+  published  BD AD                      logLik remainder modulo 100        paper (Table 2)  1.3073356e-05             NA  d= 1.31e-05  OK
+  software   BD AD A                    BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   BD AD A                    BLUP max |diff| / sd               asreml      3.6706303e-07             NA  d= 3.67e-07  OK
+
+=== BD AM ===
+REML fit (cpu): logLik -2593.026163 | 3 parameters | 2524 obs | 86.4 s
+  max|grad| 7.48e-08 | Newton decrement 1.36e-18 | 0 negative eigenvalue(s)
+  Sigma[id] 1x1, diagonal: 0.09075
+  Sigma[dam] 1x1, diagonal: 0.04744
+  residual: 0.3991
+            component  std.error   z.ratio bound %ch
+dam        0.04744351 0.02471058  1.919967     P   0
+vm(id, gA) 0.09075414 0.04270702  2.125040     P   0
+units!R    0.39905119 0.02386201 16.723286     P   0
+  software   BD AM                      sigma2 A                           asreml        0.090754141    0.090754142  d= 1.73e-08  OK
+  published  BD AM                      sigma2 A                           paper (Table S3.1)    0.090754141           0.09  d= 7.54e-04  OK
+  software   BD AM                      sigma2 M                           asreml        0.047443512    0.047443512  d= 4.96e-09  OK
+  published  BD AM                      sigma2 M                           paper (Table S3.1)    0.047443512           0.05  d= 2.56e-03  OK
+  software   BD AM                      sigma2 residual                    asreml         0.39905119     0.39905119  d= 4.31e-09  OK
+  published  BD AM                      sigma2 residual                    paper (Table S3.1)     0.39905119            0.4  d= 9.49e-04  OK
+  context    BD AM                      logLik (asreml convention)         asreml            -278.22     -278.21999  d= 1.22e-05  ctx
+  software   BD AM                      logLik (asreml convention)         dense R           -278.22        -278.22  d= 2.23e-10  OK
+  published  BD AM                      logLik remainder modulo 100        paper (Table 2)  2.2743868e-06             NA  d= 2.27e-06  OK
+  software   BD AM A                    BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   BD AM A                    BLUP max |diff| / sd               asreml      1.0293702e-07             NA  d= 1.03e-07  OK
+
+=== BD ADM ===
+REML fit (cpu): logLik -2590.465950 | 4 parameters | 2524 obs | 552.5 s
+  max|grad| 1.13e-07 | Newton decrement 6.19e-24 | 0 negative eigenvalue(s)
+  Sigma[id] 1x1, diagonal: 6.256e-09
+  Sigma[idD] 1x1, diagonal: 0.1385
+  Sigma[dam] 1x1, diagonal: 0.04705
+  residual: 0.3455
+               component  std.error  z.ratio bound %ch
+dam         4.705263e-02 0.02427820 1.938061     P   0
+vm(id, gA)  1.062850e-07         NA       NA     B  NA
+vm(idD, gD) 1.384918e-01 0.05139043 2.694895     P   0
+units!R     3.454549e-01 0.03711828 9.306866     P   0
+  software   BD ADM                     sigma2 A (at bound, / phenotypic var) asreml      1.8837883e-07             NA  d= 1.88e-07  OK
+  published  BD ADM                     sigma2 A                           paper (Table S3.1)  6.2559427e-09              0  d= 6.26e-09  OK
+  software   BD ADM                     sigma2 D                           asreml         0.13849187     0.13849179  d= 5.76e-07  OK
+  published  BD ADM                     sigma2 D                           paper (Table S3.1)     0.13849187           0.14  d= 1.51e-03  OK
+  software   BD ADM                     sigma2 M                           asreml        0.047052634    0.047052629  d= 1.06e-07  OK
+  published  BD ADM                     sigma2 M                           paper (Table S3.1)    0.047052634           0.05  d= 2.95e-03  OK
+  software   BD ADM                     sigma2 residual                    asreml         0.34545488     0.34545488  d= 1.82e-08  OK
+  published  BD ADM                     sigma2 residual                    paper (Table S3.1)     0.34545488           0.35  d= 4.55e-03  OK
+  context    BD ADM                     logLik (asreml convention)         asreml         -275.65979     -275.65977  d= 1.18e-05  ctx
+  software   BD ADM                     logLik (asreml convention)         dense R        -275.65979     -275.65979  d= 8.65e-11  OK
+  published  BD ADM                     logLik remainder modulo 100        paper (Table 2)  0.00021498707             NA  d= 2.15e-04  OK
+
+=== BL A ===
+REML fit (cpu): logLik -4905.410539 | 2 parameters | 2524 obs | 25.7 s
+  max|grad| 5.12e-08 | Newton decrement 3.86e-19 | 0 negative eigenvalue(s)
+  Sigma[id] 1x1, diagonal: 0.9657
+  residual: 2.326
+           component std.error   z.ratio bound %ch
+vm(id, gA) 0.9657209 0.3123717  3.091577     P   0
+units!R    2.3256654 0.1683527 13.814244     P   0
+  software   BL A                       sigma2 A                           asreml         0.96572093      0.9657209  d= 3.72e-08  OK
+  published  BL A                       sigma2 A                           paper (Table S3.1)     0.96572093           0.97  d= 4.28e-03  OK
+  software   BL A                       sigma2 residual                    asreml          2.3256654      2.3256654  d= 6.64e-10  OK
+  published  BL A                       sigma2 residual                    paper (Table S3.1)      2.3256654           2.33  d= 4.33e-03  OK
+  context    BL A                       logLik (asreml convention)         asreml         -2590.6044     -2590.6044  d= 1.00e-05  ctx
+  software   BL A                       logLik (asreml convention)         dense R        -2590.6044     -2590.6044  d= 3.68e-11  OK
+  published  BL A                       logLik remainder modulo 100        paper (Table 2)   0.0043740659             NA  d= 4.37e-03  OK
+  software   BL A A                     BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   BL A A                     BLUP max |diff| / sd               asreml      2.1235541e-08             NA  d= 2.12e-08  OK
+
+=== BL AD ===
+REML fit (cpu): logLik -4905.146102 | 3 parameters | 2524 obs | 70.8 s
+  max|grad| 3.29e-05 | Newton decrement 3.94e-12 | 0 negative eigenvalue(s)
+  Sigma[id] 1x1, diagonal: 0.7438
+  Sigma[idD] 1x1, diagonal: 0.3269
+  residual: 2.203
+            component std.error   z.ratio bound %ch
+vm(id, gA)  0.7437988 0.4319805 1.7218339     P   0
+vm(idD, gD) 0.3269308 0.4498997 0.7266748     P   0
+units!R     2.2034104 0.2369180 9.3003093     P   0
+  software   BL AD                      sigma2 A                           asreml         0.74379885     0.74379876  d= 1.27e-07  OK
+  published  BL AD                      sigma2 A                           paper (Table S3.1)     0.74379885           0.74  d= 3.80e-03  OK
+  software   BL AD                      sigma2 D                           asreml         0.32693031      0.3269308  d= 1.50e-06  OK
+  published  BL AD                      sigma2 D                           paper (Table S3.1)     0.32693031           0.33  d= 3.07e-03  OK
+  software   BL AD                      sigma2 residual                    asreml          2.2034107      2.2034104  d= 1.41e-07  OK
+  published  BL AD                      sigma2 residual                    paper (Table S3.1)      2.2034107            2.2  d= 3.41e-03  OK
+  context    BL AD                      logLik (asreml convention)         asreml         -2590.3399     -2590.3399  d= 1.04e-05  ctx
+  software   BL AD                      logLik (asreml convention)         dense R        -2590.3399     -2590.3399  d= 2.38e-10  OK
+  published  BL AD                      logLik remainder modulo 100        paper (Table 2)  6.2828564e-05             NA  d= 6.28e-05  OK
+  software   BL AD A                    BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   BL AD A                    BLUP max |diff| / sd               asreml      1.0685992e-06             NA  d= 1.07e-06  OK
+
+=== BL AM ===
+REML fit (cpu): logLik -4904.187820 | 3 parameters | 2524 obs | 51.7 s
+  max|grad| 1.21e-07 | Newton decrement 7.80e-18 | 0 negative eigenvalue(s)
+  Sigma[id] 1x1, diagonal: 0.5546
+  Sigma[dam] 1x1, diagonal: 0.1151
+  residual: 2.517
+           component  std.error   z.ratio bound %ch
+dam        0.1151177 0.08546121  1.347017     P   0
+vm(id, gA) 0.5545973 0.26289219  2.109600     P   0
+units!R    2.5174671 0.14782558 17.029984     P   0
+  software   BL AM                      sigma2 A                           asreml         0.55459731     0.55459731  d= 6.28e-09  OK
+  published  BL AM                      sigma2 A                           paper (Table S3.1)     0.55459731           0.55  d= 4.60e-03  OK
+  software   BL AM                      sigma2 M                           asreml         0.11511771     0.11511771  d= 9.67e-09  OK
+  published  BL AM                      sigma2 M                           paper (Table S3.1)     0.11511771           0.12  d= 4.88e-03  OK
+  software   BL AM                      sigma2 residual                    asreml          2.5174671      2.5174671  d= 5.15e-09  OK
+  published  BL AM                      sigma2 residual                    paper (Table S3.1)      2.5174671           2.52  d= 2.53e-03  OK
+  context    BL AM                      logLik (asreml convention)         asreml         -2589.3817     -2589.3816  d= 1.11e-05  ctx
+  software   BL AM                      logLik (asreml convention)         dense R        -2589.3817     -2589.3817  d= 8.46e-11  OK
+  published  BL AM                      logLik remainder modulo 100        paper (Table 2)   0.0016544322             NA  d= 1.65e-03  OK
+  software   BL AM A                    BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   BL AM A                    BLUP max |diff| / sd               asreml      1.5240742e-07             NA  d= 1.52e-07  OK
+
+=== BL ADM ===
+REML fit (cpu): logLik -4903.856639 | 4 parameters | 2524 obs | 132.4 s
+  max|grad| 8.31e-05 | Newton decrement 6.99e-12 | 0 negative eigenvalue(s)
+  Sigma[id] 1x1, diagonal: 0.2978
+  Sigma[idD] 1x1, diagonal: 0.365
+  Sigma[dam] 1x1, diagonal: 0.1175
+  residual: 2.385
+            component  std.error    z.ratio bound %ch
+dam         0.1174818 0.08536818  1.3761778     P   0
+vm(id, gA)  0.2977803 0.40227131  0.7402475     P   0
+vm(idD, gD) 0.3649694 0.45466267  0.8027257     P   0
+units!R     2.3853849 0.22102587 10.7923335     P   0
+  software   BL ADM                     sigma2 A                           asreml         0.29778106     0.29778034  d= 2.43e-06  OK
+  published  BL ADM                     sigma2 A                           paper (Table S3.1)     0.29778106            0.3  d= 2.22e-03  OK
+  software   BL ADM                     sigma2 D                           asreml         0.36496859     0.36496941  d= 2.26e-06  OK
+  published  BL ADM                     sigma2 D                           paper (Table S3.1)     0.36496859           0.36  d= 4.97e-03  OK
+  software   BL ADM                     sigma2 M                           asreml         0.11748178      0.1174818  d= 1.54e-07  OK
+  published  BL ADM                     sigma2 M                           paper (Table S3.1)     0.11748178           0.12  d= 2.52e-03  OK
+  software   BL ADM                     sigma2 residual                    asreml          2.3853852      2.3853849  d= 1.16e-07  OK
+  published  BL ADM                     sigma2 residual                    paper (Table S3.1)      2.3853852           2.39  d= 4.61e-03  OK
+  context    BL ADM                     logLik (asreml convention)         asreml         -2589.0505     -2589.0505  d= 1.19e-05  ctx
+  software   BL ADM                     logLik (asreml convention)         dense R        -2589.0505     -2589.0505  d= 1.98e-10  OK
+  published  BL ADM                     logLik remainder modulo 100        paper (Table 2)  0.00047430272             NA  d= 4.74e-04  OK
+  software   BL ADM A                   BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   BL ADM A                   BLUP max |diff| / sd               asreml      8.0941804e-06             NA  d= 8.09e-06  OK
+
+=== BT A ===
+REML fit (cpu): logLik -6261.639092 | 2 parameters | 2513 obs | 73.7 s
+  max|grad| 2.73e-05 | Newton decrement 4.18e-13 | 0 negative eigenvalue(s)
+  Sigma[id] 1x1, diagonal: 1.975
+  residual: 7.437
+           component std.error   z.ratio bound %ch
+vm(id, gA)  1.974854 0.6918981  2.854256     P   0
+units!R     7.436808 0.4088520 18.189483     P   0
+  software   BT A                       sigma2 A                           asreml          1.9748541      1.9748544  d= 1.35e-07  OK
+  published  BT A                       sigma2 A                           paper (Table S3.1)      1.9748541           1.97  d= 4.85e-03  OK
+  software   BT A                       sigma2 residual                    asreml          7.4368077      7.4368075  d= 2.11e-08  OK
+  published  BT A                       sigma2 residual                    paper (Table S3.1)      7.4368077           7.44  d= 3.19e-03  OK
+  context    BT A                       logLik (asreml convention)         asreml         -3956.9413     -3956.9412  d= 1.07e-05  ctx
+  software   BT A                       logLik (asreml convention)         dense R        -3956.9413     -3956.9413  d= 4.59e-11  OK
+  published  BT A                       logLik remainder modulo 100        paper (Table 2)   0.0012502438             NA  d= 1.25e-03  OK
+  software   BT A A                     BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   BT A A                     BLUP max |diff| / sd               asreml      4.0353913e-07             NA  d= 4.04e-07  OK
+
+=== BT AD ===
+REML fit (cpu): logLik -6260.838286 | 3 parameters | 2513 obs | 173.2 s
+  max|grad| 2.08e-06 | Newton decrement 6.80e-15 | 0 negative eigenvalue(s)
+  Sigma[id] 1x1, diagonal: 0.96
+  Sigma[idD] 1x1, diagonal: 1.513
+  residual: 6.864
+            component std.error    z.ratio bound %ch
+vm(id, gA)  0.9600244 1.1317524  0.8482636     P   0
+vm(idD, gD) 1.5132473 1.3616866  1.1113037     P   0
+units!R     6.8640606 0.6487242 10.5808602     P   0
+  software   BT AD                      sigma2 A                           asreml         0.96002429     0.96002437  d= 9.26e-08  OK
+  published  BT AD                      sigma2 A                           paper (Table S3.1)     0.96002429           0.96  d= 2.43e-05  OK
+  software   BT AD                      sigma2 D                           asreml          1.5132476      1.5132473  d= 2.01e-07  OK
+  published  BT AD                      sigma2 D                           paper (Table S3.1)      1.5132476           1.51  d= 3.25e-03  OK
+  software   BT AD                      sigma2 residual                    asreml          6.8640605      6.8640606  d= 3.70e-09  OK
+  published  BT AD                      sigma2 residual                    paper (Table S3.1)      6.8640605           6.86  d= 4.06e-03  OK
+  context    BT AD                      logLik (asreml convention)         asreml         -3956.1404     -3956.1404  d= 9.50e-06  ctx
+  software   BT AD                      logLik (asreml convention)         dense R        -3956.1404     -3956.1404  d= 7.59e-11  OK
+  published  BT AD                      logLik remainder modulo 100        paper (Table 2)  0.00044422568             NA  d= 4.44e-04  OK
+  software   BT AD A                    BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   BT AD A                    BLUP max |diff| / sd               asreml      6.5980868e-08             NA  d= 6.60e-08  OK
+
+=== BT AM ===
+REML fit (cpu): logLik -6260.245638 | 3 parameters | 2513 obs | 42.3 s
+  max|grad| 3.52e-06 | Newton decrement 3.27e-15 | 0 negative eigenvalue(s)
+  Sigma[id] 1x1, diagonal: 1.045
+  Sigma[dam] 1x1, diagonal: 0.2835
+  residual: 7.867
+           component std.error   z.ratio bound %ch
+dam        0.2835018 0.2030915  1.395932     P   0
+vm(id, gA) 1.0451859 0.5616494  1.860922     P   0
+units!R    7.8669518 0.3596024 21.876808     P   0
+  software   BT AM                      sigma2 A                           asreml          1.0451859      1.0451859  d= 1.26e-08  OK
+  published  BT AM                      sigma2 A                           paper (Table S3.1)      1.0451859           1.05  d= 4.81e-03  OK
+  software   BT AM                      sigma2 M                           asreml         0.28350179      0.2835018  d= 1.36e-08  OK
+  published  BT AM                      sigma2 M                           paper (Table S3.1)     0.28350179           0.28  d= 3.50e-03  OK
+  software   BT AM                      sigma2 residual                    asreml          7.8669518      7.8669518  d= 2.96e-09  OK
+  published  BT AM                      sigma2 residual                    paper (Table S3.1)      7.8669518           7.87  d= 3.05e-03  OK
+  context    BT AM                      logLik (asreml convention)         asreml         -3955.5478     -3955.5478  d= 9.65e-06  ctx
+  software   BT AM                      logLik (asreml convention)         dense R        -3955.5478     -3955.5478  d= 3.18e-12  OK
+  published  BT AM                      logLik remainder modulo 100        paper (Table 2)   0.0022030494             NA  d= 2.20e-03  OK
+  software   BT AM A                    BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   BT AM A                    BLUP max |diff| / sd               asreml      1.1871228e-07             NA  d= 1.19e-07  OK
+
+=== BT ADM ===
+REML fit (cpu): logLik -6259.264820 | 4 parameters | 2513 obs | 209.6 s
+  max|grad| 6.30e-09 | Newton decrement 1.55e-26 | 0 negative eigenvalue(s)
+  Sigma[id] 1x1, diagonal: 1.135e-08
+  Sigma[idD] 1x1, diagonal: 1.53
+  Sigma[dam] 1x1, diagonal: 0.2925
+  residual: 7.296
+               component std.error   z.ratio bound %ch
+dam         2.924678e-01 0.2003884  1.459505     P   0
+vm(id, gA)  2.395750e-06        NA        NA     B  NA
+vm(idD, gD) 1.529934e+00 0.7024480  2.178003     P   0
+units!R     7.295700e+00 0.5388357 13.539750     P   0
+  software   BT ADM                     sigma2 A (at bound, / phenotypic var) asreml      2.6150117e-07             NA  d= 2.62e-07  OK
+  published  BT ADM                     sigma2 A                           paper (Table S3.1)  1.1354716e-08              0  d= 1.14e-08  OK
+  software   BT ADM                     sigma2 D                           asreml          1.5299363       1.529934  d= 1.54e-06  OK
+  published  BT ADM                     sigma2 D                           paper (Table S3.1)      1.5299363           1.53  d= 6.37e-05  OK
+  software   BT ADM                     sigma2 M                           asreml         0.29246795     0.29246785  d= 3.60e-07  OK
+  published  BT ADM                     sigma2 M                           paper (Table S3.1)     0.29246795           0.29  d= 2.47e-03  OK
+  software   BT ADM                     sigma2 residual                    asreml          7.2956999      7.2957003  d= 6.16e-08  OK
+  published  BT ADM                     sigma2 residual                    paper (Table S3.1)      7.2956999            7.3  d= 4.30e-03  OK
+  context    BT ADM                     logLik (asreml convention)         asreml          -3954.567      -3954.567  d= 1.44e-05  ctx
+  software   BT ADM                     logLik (asreml convention)         dense R         -3954.567      -3954.567  d= 3.50e-11  OK
+  published  BT ADM                     logLik remainder modulo 100        paper (Table 2)   0.0030212496             NA  d= 3.02e-03  OK
+
+=== BWH A ===
+REML fit (cpu): logLik -14543.142712 | 2 parameters | 2524 obs | 86.7 s
+  max|grad| 9.77e-05 | Newton decrement 5.87e-12 | 0 negative eigenvalue(s)
+  Sigma[id] 1x1, diagonal: 3216
+  residual: 4312
+           component std.error  z.ratio bound %ch
+vm(id, gA)  3215.994  989.5722 3.249883     P   0
+units!R     4311.884  496.9978 8.675862     P   0
+  software   BWH A                      sigma2 A                           asreml          3215.9925      3215.9941  d= 5.03e-07  OK
+  published  BWH A                      sigma2 A                           paper (Table S3.1)      3215.9925           3216  d= 7.48e-03  OK
+  software   BWH A                      sigma2 residual                    asreml          4311.8848      4311.8843  d= 1.09e-07  OK
+  published  BWH A                      sigma2 residual                    paper (Table S3.1)      4311.8848           4312  d= 1.15e-01  OK
+  context    BWH A                      logLik (asreml convention)         asreml         -12228.337     -12228.337  d= 1.20e-05  ctx
+  software   BWH A                      logLik (asreml convention)         dense R        -12228.337     -12228.337  d= 6.18e-11  OK
+  published  BWH A                      logLik remainder modulo 100        paper (Table 2)   0.0034533129             NA  d= 3.45e-03  OK
+  software   BWH A A                    BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   BWH A A                    BLUP max |diff| / sd               asreml      1.3409894e-06             NA  d= 1.34e-06  OK
+
+=== BWH AD ===
+REML fit (cpu): logLik -14541.470433 | 3 parameters | 2524 obs | 237.7 s
+  max|grad| 1.20e-12 | Newton decrement 1.10e-26 | 0 negative eigenvalue(s)
+  Sigma[id] 1x1, diagonal: 2086
+  Sigma[idD] 1x1, diagonal: 1688
+  residual: 3673
+            component std.error  z.ratio bound %ch
+vm(id, gA)   2085.573 1218.3244 1.711837     P   0
+vm(idD, gD)  1688.116 1090.8656 1.547501     P   0
+units!R      3673.059  636.3264 5.772287     P   0
+  software   BWH AD                     sigma2 A                           asreml          2085.5732      2085.5731  d= 1.37e-08  OK
+  published  BWH AD                     sigma2 A                           paper (Table S3.1)      2085.5732           2085  d= 5.73e-01  OK
+  software   BWH AD                     sigma2 D                           asreml          1688.1156      1688.1156  d= 2.04e-08  OK
+  published  BWH AD                     sigma2 D                           paper (Table S3.1)      1688.1156           1688  d= 1.16e-01  OK
+  software   BWH AD                     sigma2 residual                    asreml          3673.0591      3673.0591  d= 5.61e-09  OK
+  published  BWH AD                     sigma2 residual                    paper (Table S3.1)      3673.0591           3673  d= 5.91e-02  OK
+  context    BWH AD                     logLik (asreml convention)         asreml         -12226.664     -12226.664  d= 1.13e-05  ctx
+  software   BWH AD                     logLik (asreml convention)         dense R        -12226.664     -12226.664  d= 1.11e-10  OK
+  published  BWH AD                     logLik remainder modulo 100        paper (Table 2)   0.0042680135             NA  d= 4.27e-03  OK
+  software   BWH AD A                   BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   BWH AD A                   BLUP max |diff| / sd               asreml      1.6910418e-08             NA  d= 1.69e-08  OK
+
+=== BWH AM ===
+REML fit (cpu): logLik -14538.954663 | 3 parameters | 2524 obs | 162.1 s
+  max|grad| 2.98e-12 | Newton decrement 1.13e-26 | 0 negative eigenvalue(s)
+  Sigma[id] 1x1, diagonal: 1009
+  Sigma[dam] 1x1, diagonal: 635.7
+  residual: 5342
+           component std.error   z.ratio bound %ch
+dam         635.7075  316.1592  2.010720     P   0
+vm(id, gA) 1008.8258  493.2484  2.045269     P   0
+units!R    5342.0598  287.3709 18.589426     P   0
+  software   BWH AM                     sigma2 A                           asreml          1008.8258      1008.8258  d= 2.30e-08  OK
+  published  BWH AM                     sigma2 A                           paper (Table S3.1)      1008.8258           1008  d= 8.26e-01  OK
+  software   BWH AM                     sigma2 M                           asreml          635.70754      635.70754  d= 1.61e-09  OK
+  published  BWH AM                     sigma2 M                           paper (Table S3.1)      635.70754            635  d= 7.08e-01  OK
+  software   BWH AM                     sigma2 residual                    asreml          5342.0598      5342.0598  d= 9.57e-10  OK
+  published  BWH AM                     sigma2 residual                    paper (Table S3.1)      5342.0598           5342  d= 5.98e-02  OK
+  context    BWH AM                     logLik (asreml convention)         asreml         -12224.148     -12224.148  d= 1.23e-05  ctx
+  software   BWH AM                     logLik (asreml convention)         dense R        -12224.148     -12224.148  d= 2.00e-11  OK
+  published  BWH AM                     logLik remainder modulo 100        paper (Table 2)   0.0015017786             NA  d= 1.50e-03  OK
+  software   BWH AM A                   BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   BWH AM A                   BLUP max |diff| / sd               asreml      1.6216919e-08             NA  d= 1.62e-08  OK
+
+=== BWH ADM ===
+REML fit (cpu): logLik -14537.000610 | 4 parameters | 2524 obs | 619.0 s
+  max|grad| 3.43e-10 | Newton decrement 2.40e-27 | 0 negative eigenvalue(s)
+  Sigma[id] 1x1, diagonal: 2.306e-07
+  Sigma[idD] 1x1, diagonal: 1548
+  Sigma[dam] 1x1, diagonal: 637.2
+  residual: 4739
+               component std.error   z.ratio bound %ch
+dam         6.372266e+02  314.7003  2.024868     P   0
+vm(id, gA)  1.241173e-03        NA        NA     B  NA
+vm(idD, gD) 1.548475e+03  614.4298  2.520183     P   0
+units!R     4.739438e+03  450.7117 10.515453     P   0
+  software   BWH ADM                    sigma2 A (at bound, / phenotypic var) asreml      1.7919382e-07             NA  d= 1.79e-07  OK
+  published  BWH ADM                    sigma2 A                           paper (Table S3.1)  2.3062471e-07              0  d= 2.31e-07  OK
+  software   BWH ADM                    sigma2 D                           asreml          1548.4766      1548.4754  d= 7.26e-07  OK
+  published  BWH ADM                    sigma2 D                           paper (Table S3.1)      1548.4766           1548  d= 4.77e-01  OK
+  software   BWH ADM                    sigma2 M                           asreml          637.22663      637.22658  d= 8.36e-08  OK
+  published  BWH ADM                    sigma2 M                           paper (Table S3.1)      637.22663            637  d= 2.27e-01  OK
+  software   BWH ADM                    sigma2 residual                    asreml           4739.438      4739.4381  d= 3.70e-08  OK
+  published  BWH ADM                    sigma2 residual                    paper (Table S3.1)       4739.438           4739  d= 4.38e-01  OK
+  context    BWH ADM                    logLik (asreml convention)         asreml         -12222.194     -12222.194  d= 1.12e-05  ctx
+  software   BWH ADM                    logLik (asreml convention)         dense R        -12222.194     -12222.194  d= 1.58e-10  OK
+  published  BWH ADM                    logLik remainder modulo 100        paper (Table 2)   0.0044446945             NA  d= 4.44e-03  OK
+
+=== FW A ===
+REML fit (cpu): logLik -12134.914795 | 2 parameters | 2524 obs | 128.1 s
+  max|grad| 4.93e-06 | Newton decrement 7.44e-15 | 0 negative eigenvalue(s)
+  Sigma[id] 1x1, diagonal: 503
+  residual: 626.2
+           component std.error  z.ratio bound %ch
+vm(id, gA)  503.0181 155.12502 3.242663     P   0
+units!R     626.1866  77.44756 8.085298     P   0
+  software   FW A                       sigma2 A                           asreml          503.01814      503.01815  d= 1.33e-08  OK
+  published  FW A                       sigma2 A                           paper (Table S3.1)      503.01814            503  d= 1.81e-02  OK
+  software   FW A                       sigma2 residual                    asreml           626.1866      626.18664  d= 5.38e-08  OK
+  published  FW A                       sigma2 residual                    paper (Table S3.1)       626.1866            626  d= 1.87e-01  OK
+  context    FW A                       logLik (asreml convention)         asreml         -9821.9465     -9821.9465  d= 1.14e-05  ctx
+  software   FW A                       logLik (asreml convention)         dense R        -9821.9465     -9821.9465  d= 5.46e-12  OK
+  published  FW A                       logLik remainder modulo 100        paper (Table 2)   0.0034930094             NA  d= 3.49e-03  OK
+  software   FW A A                     BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   FW A A                     BLUP max |diff| / sd               asreml      6.9040747e-07             NA  d= 6.90e-07  OK
+
+=== FW AD ===
+REML fit (cpu): logLik -12134.425316 | 3 parameters | 2524 obs | 220.5 s
+  max|grad| 5.53e-13 | Newton decrement 4.33e-27 | 0 negative eigenvalue(s)
+  Sigma[id] 1x1, diagonal: 425.5
+  Sigma[idD] 1x1, diagonal: 126.2
+  residual: 575
+            component std.error   z.ratio bound %ch
+vm(id, gA)   425.4502 180.13117 2.3618912     P   0
+vm(idD, gD)  126.1757 138.62589 0.9101887     P   0
+units!R      574.9944  94.48725 6.0854179     P   0
+  software   FW AD                      sigma2 A                           asreml          425.45025      425.45025  d= 1.02e-08  OK
+  published  FW AD                      sigma2 A                           paper (Table S3.1)      425.45025            425  d= 4.50e-01  OK
+  software   FW AD                      sigma2 D                           asreml          126.17573      126.17572  d= 3.63e-08  OK
+  published  FW AD                      sigma2 D                           paper (Table S3.1)      126.17573            126  d= 1.76e-01  OK
+  software   FW AD                      sigma2 residual                    asreml          574.99437      574.99438  d= 1.69e-08  OK
+  published  FW AD                      sigma2 residual                    paper (Table S3.1)      574.99437            575  d= 5.63e-03  OK
+  context    FW AD                      logLik (asreml convention)         asreml          -9821.457      -9821.457  d= 1.11e-05  ctx
+  software   FW AD                      logLik (asreml convention)         dense R         -9821.457      -9821.457  d= 3.64e-12  OK
+  published  FW AD                      logLik remainder modulo 100        paper (Table 2)   0.0029719362             NA  d= 2.97e-03  OK
+  software   FW AD A                    BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   FW AD A                    BLUP max |diff| / sd               asreml      1.5805739e-07             NA  d= 1.58e-07  OK
+
+=== FW AM ===
+REML fit (cpu): logLik -12128.560697 | 3 parameters | 2524 obs | 316.9 s
+  max|grad| 7.35e-05 | Newton decrement 2.35e-12 | 0 negative eigenvalue(s)
+  Sigma[id] 1x1, diagonal: 104.5
+  Sigma[dam] 1x1, diagonal: 116.4
+  residual: 812.1
+           component std.error   z.ratio bound %ch
+dam         116.4468  52.53643  2.216496     P   0
+vm(id, gA)  104.4627  56.22209  1.858036     P   0
+units!R     812.0774  36.44263 22.283719     P   0
+  software   FW AM                      sigma2 A                           asreml          104.46265      104.46266  d= 4.69e-08  OK
+  published  FW AM                      sigma2 A                           paper (Table S3.1)      104.46265            104  d= 4.63e-01  OK
+  software   FW AM                      sigma2 M                           asreml          116.44682      116.44677  d= 4.31e-07  OK
+  published  FW AM                      sigma2 M                           paper (Table S3.1)      116.44682            116  d= 4.47e-01  OK
+  software   FW AM                      sigma2 residual                    asreml          812.07745      812.07744  d= 1.86e-08  OK
+  published  FW AM                      sigma2 residual                    paper (Table S3.1)      812.07745            812  d= 7.75e-02  OK
+  context    FW AM                      logLik (asreml convention)         asreml         -9815.5924     -9815.5924  d= 1.18e-05  ctx
+  software   FW AM                      logLik (asreml convention)         dense R        -9815.5924     -9815.5924  d= 1.82e-11  OK
+  published  FW AM                      logLik remainder modulo 100        paper (Table 2)   0.0024092618             NA  d= 2.41e-03  OK
+  software   FW AM A                    BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   FW AM A                    BLUP max |diff| / sd               asreml      3.4503943e-07             NA  d= 3.45e-07  OK
+
+=== FW ADM ===
+REML fit (cpu): logLik -12127.769640 | 4 parameters | 2524 obs | 717.8 s
+  max|grad| 2.06e-10 | Newton decrement 1.37e-25 | 0 negative eigenvalue(s)
+  Sigma[id] 1x1, diagonal: 5.246e-08
+  Sigma[idD] 1x1, diagonal: 152.3
+  Sigma[dam] 1x1, diagonal: 119.2
+  residual: 755.4
+               component std.error   z.ratio bound %ch
+dam         1.192013e+02  53.16995  2.241891     P   0
+vm(id, gA)  3.135337e-04        NA        NA     B  NA
+vm(idD, gD) 1.523481e+02  71.06689  2.143728     P   0
+units!R     7.554381e+02  54.75156 13.797564     P   0
+  software   FW ADM                     sigma2 A (at bound, / phenotypic var) asreml      3.0524338e-07             NA  d= 3.05e-07  OK
+  published  FW ADM                     sigma2 A                           paper (Table S3.1)  5.2459812e-08              0  d= 5.25e-08  OK
+  software   FW ADM                     sigma2 D                           asreml          152.34842      152.34805  d= 2.39e-06  OK
+  published  FW ADM                     sigma2 D                           paper (Table S3.1)      152.34842            152  d= 3.48e-01  OK
+  software   FW ADM                     sigma2 M                           asreml          119.20127      119.20125  d= 1.04e-07  OK
+  published  FW ADM                     sigma2 M                           paper (Table S3.1)      119.20127            119  d= 2.01e-01  OK
+  software   FW ADM                     sigma2 residual                    asreml            755.438      755.43811  d= 1.37e-07  OK
+  published  FW ADM                     sigma2 residual                    paper (Table S3.1)        755.438            755  d= 4.38e-01  OK
+  context    FW ADM                     logLik (asreml convention)         asreml         -9814.8014     -9814.8013  d= 7.39e-06  ctx
+  software   FW ADM                     logLik (asreml convention)         dense R        -9814.8014     -9814.8014  d= 8.55e-11  OK
+  published  FW ADM                     logLik remainder modulo 100        paper (Table 2)   0.0013523262             NA  d= 1.35e-03  OK
+
+=== FY A ===
+REML fit (cpu): logLik -6271.227017 | 2 parameters | 2513 obs | 144.4 s
+  max|grad| 1.63e-12 | Newton decrement 4.20e-27 | 0 negative eigenvalue(s)
+  Sigma[id] 1x1, diagonal: 2.283
+  residual: 7.342
+           component std.error   z.ratio bound %ch
+vm(id, gA)  2.283456 0.7627090  2.993876     P   0
+units!R     7.342281 0.4360681 16.837465     P   0
+  software   FY A                       sigma2 A                           asreml          2.2834561      2.2834561  d= 6.63e-09  OK
+  published  FY A                       sigma2 A                           paper (Table S3.1)      2.2834561           2.28  d= 3.46e-03  OK
+  software   FY A                       sigma2 residual                    asreml          7.3422807      7.3422807  d= 2.75e-09  OK
+  published  FY A                       sigma2 residual                    paper (Table S3.1)      7.3422807           7.34  d= 2.28e-03  OK
+  context    FY A                       logLik (asreml convention)         asreml         -3968.3671      -3968.367  d= 1.10e-05  ctx
+  software   FY A                       logLik (asreml convention)         dense R        -3968.3671     -3968.3671  d= 1.18e-10  OK
+  published  FY A                       logLik remainder modulo 100        paper (Table 2)   0.0029474369             NA  d= 2.95e-03  OK
+  software   FY A A                     BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   FY A A                     BLUP max |diff| / sd               asreml      5.4470748e-08             NA  d= 5.45e-08  OK
+
+=== FY AD ===
+REML fit (cpu): logLik -6271.227017 | 3 parameters | 2513 obs | 399.9 s
+  max|grad| 1.30e-09 | Newton decrement 4.00e-27 | 0 negative eigenvalue(s)
+  Sigma[id] 1x1, diagonal: 2.283
+  Sigma[idD] 1x1, diagonal: 2.407e-10
+  residual: 7.342
+               component std.error   z.ratio bound %ch
+vm(id, gA)  2.283456e+00 0.7627091  2.993875     P   0
+vm(idD, gD) 7.429866e-07        NA        NA     B  NA
+units!R     7.342280e+00 0.4360680 16.837465     P   0
+  software   FY AD                      sigma2 A                           asreml          2.2834561      2.2834556  d= 2.18e-07  OK
+  published  FY AD                      sigma2 A                           paper (Table S3.1)      2.2834561           2.28  d= 3.46e-03  OK
+  software   FY AD                      sigma2 D (at bound, / phenotypic var) asreml      7.7162502e-08             NA  d= 7.72e-08  OK
+  published  FY AD                      sigma2 D                           paper (Table S3.1)  2.4067133e-10              0  d= 2.41e-10  OK
+  software   FY AD                      sigma2 residual                    asreml          7.3422807      7.3422804  d= 3.84e-08  OK
+  published  FY AD                      sigma2 residual                    paper (Table S3.1)      7.3422807           7.34  d= 2.28e-03  OK
+  context    FY AD                      logLik (asreml convention)         asreml         -3968.3671      -3968.367  d= 8.77e-06  ctx
+  software   FY AD                      logLik (asreml convention)         dense R        -3968.3671     -3968.3671  d= 3.18e-12  OK
+  published  FY AD                      logLik remainder modulo 100        paper (Table 2)   0.0029474366             NA  d= 2.95e-03  OK
+  software   FY AD A                    BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   FY AD A                    BLUP max |diff| / sd               asreml      8.7227738e-07             NA  d= 8.72e-07  OK
+
+=== FY AM ===
+REML fit (cpu): logLik -6271.188620 | 3 parameters | 2513 obs | 239.6 s
+  max|grad| 5.83e-13 | Newton decrement 2.49e-26 | 0 negative eigenvalue(s)
+  Sigma[id] 1x1, diagonal: 2.107
+  Sigma[dam] 1x1, diagonal: 0.05162
+  residual: 7.424
+           component std.error   z.ratio bound %ch
+dam        0.0516176 0.1856261  0.278073     P   0
+vm(id, gA) 2.1068467 0.9395302  2.242447     P   0
+units!R    7.4242640 0.5050900 14.698893     P   0
+  software   FY AM                      sigma2 A                           asreml          2.1068466      2.1068467  d= 2.30e-08  OK
+  published  FY AM                      sigma2 A                           paper (Table S3.1)      2.1068466           2.11  d= 3.15e-03  OK
+  software   FY AM                      sigma2 M                           asreml        0.051617606    0.051617601  d= 1.06e-07  OK
+  published  FY AM                      sigma2 M                           paper (Table S3.1)    0.051617606           0.05  d= 1.62e-03  OK
+  software   FY AM                      sigma2 residual                    asreml           7.424264       7.424264  d= 3.77e-09  OK
+  published  FY AM                      sigma2 residual                    paper (Table S3.1)       7.424264           7.42  d= 4.26e-03  OK
+  context    FY AM                      logLik (asreml convention)         asreml         -3968.3287     -3968.3286  d= 1.23e-05  ctx
+  software   FY AM                      logLik (asreml convention)         dense R        -3968.3287     -3968.3287  d= 7.23e-11  OK
+  published  FY AM                      logLik remainder modulo 100        paper (Table 2)   0.0013440081             NA  d= 1.34e-03  OK
+  software   FY AM A                    BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   FY AM A                    BLUP max |diff| / sd               asreml      8.2741109e-08             NA  d= 8.27e-08  OK
+
+=== FY ADM ===
+REML fit (cpu): logLik -6271.188620 | 4 parameters | 2513 obs | 1627.2 s
+  max|grad| 4.89e-08 | Newton decrement 3.93e-25 | 0 negative eigenvalue(s)
+  Sigma[id] 1x1, diagonal: 2.107
+  Sigma[idD] 1x1, diagonal: 9.085e-09
+  Sigma[dam] 1x1, diagonal: 0.05162
+  residual: 7.424
+               component std.error   z.ratio bound %ch
+dam         5.161760e-02 0.1856261  0.278073     P   0
+vm(id, gA)  2.106846e+00 0.9395303  2.242446     P   0
+vm(idD, gD) 7.512827e-07        NA        NA     B  NA
+units!R     7.424264e+00 0.5050900 14.698892     P   0
+  software   FY ADM                     sigma2 A                           asreml          2.1068466      2.1068462  d= 1.84e-07  OK
+  published  FY ADM                     sigma2 A                           paper (Table S3.1)      2.1068466           2.11  d= 3.15e-03  OK
+  software   FY ADM                     sigma2 D (at bound, / phenotypic var) asreml      7.7451573e-08             NA  d= 7.75e-08  OK
+  published  FY ADM                     sigma2 D                           paper (Table S3.1)  9.0853544e-09              0  d= 9.09e-09  OK
+  software   FY ADM                     sigma2 M                           asreml        0.051617606    0.051617598  d= 1.63e-07  OK
+  published  FY ADM                     sigma2 M                           paper (Table S3.1)    0.051617606           0.05  d= 1.62e-03  OK
+  software   FY ADM                     sigma2 residual                    asreml           7.424264      7.4242636  d= 4.52e-08  OK
+  published  FY ADM                     sigma2 residual                    paper (Table S3.1)       7.424264           7.42  d= 4.26e-03  OK
+  context    FY ADM                     logLik (asreml convention)         asreml         -3968.3287     -3968.3286  d= 1.10e-05  ctx
+  software   FY ADM                     logLik (asreml convention)         dense R        -3968.3287     -3968.3287  d= 8.46e-11  OK
+  published  FY ADM                     logLik remainder modulo 100        paper (Table 2)   0.0013439959             NA  d= 1.34e-03  OK
+  software   FY ADM A                   BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   FY ADM A                   BLUP max |diff| / sd               asreml      8.1038972e-07             NA  d= 8.10e-07  OK
+
+Runtimes (s, elapsed):
+         remlax asreml
+BD A      98.32  24.39
+BD AD    206.45 225.28
+BD AM     97.05   7.04
+BD ADM   577.02 159.97
+BL A      36.40   8.90
+BL AD     87.99 157.75
+BL AM     61.02   7.30
+BL ADM   149.21 154.12
+BT A      87.83  14.75
+BT AD    205.28 248.54
+BT AM     52.32   7.85
+BT ADM   231.38 383.31
+BWH A    106.45  27.88
+BWH AD   287.87 500.02
+BWH AM   191.20  41.06
+BWH ADM  688.55 646.16
+FW A     165.01  80.55
+FW AD    270.32 450.72
+FW AM    351.01  49.63
+FW ADM   793.88 678.78
+FY A     172.09  29.50
+FY AD    460.02 515.24
+FY AM    287.31  40.98
+FY ADM  1686.97 399.51
+
+tilapia_joshi2018: 232 checks counted, 232 pass, 0 fail; 24 context rows -> /home/salas/Documents/Git/remlax-validation/published_data/results/tilapia_joshi2018.csv

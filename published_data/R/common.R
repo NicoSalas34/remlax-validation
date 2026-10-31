@@ -155,5 +155,6 @@ as_asreml_G <- function(G) {
   G
 }
 
-# Shorthand used in every script.
-rx_cpu <- function(...) rx_reml(..., backend = "cpu", verbose = FALSE)
+# Shorthand used in every script. PD_BACKEND=gpu moves the remlax fits to the
+# GPU (cluster runs); the reference programs stay on the CPU.
+rx_cpu <- function(...) rx_reml(..., backend = Sys.getenv("PD_BACKEND", "cpu"), verbose = FALSE)
