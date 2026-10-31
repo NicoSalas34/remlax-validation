@@ -1,0 +1,164 @@
+
+######## wheat_crossa2010 (Crossa et al. 2010, doi:10.1534/genetics.110.118521)
+remlax0.1.0| R4.5.2
+  asreml       4.2.0.382
+  sommer       4.4.4
+  gaston       1.6
+  rrBLUP       4.6.3
+  statgenGWAS  1.0.12
+  BGLR         1.1.4
+  enhancer     1.1.2
+G: 599 x 599, mean diagonal 2.000; A: smallest eigenvalue 9.79e-04
+  software   GBLUP env 1                sigma2_g                           asreml          0.3014828      0.3014828  d= 2.06e-12  OK
+  software   GBLUP env 1                sigma2_e                           asreml         0.54096851     0.54096851  d= 2.38e-12  OK
+  software   GBLUP env 1                logLik (asreml convention)         asreml          -242.1307      -242.1307  d= 5.66e-12  OK
+  software   GBLUP env 1                BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   GBLUP env 1                BLUP max |diff| / sd               asreml      8.1794974e-12             NA  d= 8.18e-12  OK
+  software   GBLUP env 1                sigma2_g                           sommer          0.3014828     0.30148276  d= 1.38e-07  OK
+  software   GBLUP env 1                sigma2_e                           sommer         0.54096851     0.54096854  d= 4.90e-08  OK
+  software   GBLUP env 1                BLUP correlation                   sommer                  1             NA  d= 1.00e+00  OK
+  software   GBLUP env 1                BLUP max |diff| / sd               sommer      1.4694585e-07             NA  d= 1.47e-07  OK
+  software   GBLUP env 1                sigma2_g                           rrBLUP          0.3014828     0.30148425  d= 4.81e-06  OK
+  software   GBLUP env 1                sigma2_e                           rrBLUP         0.54096851     0.54096759  d= 1.70e-06  OK
+  software   GBLUP env 1                BLUP correlation                   rrBLUP                  1             NA  d= 1.00e+00  OK
+  software   GBLUP env 1                BLUP max |diff| / sd               rrBLUP      5.1075754e-06             NA  d= 5.11e-06  OK
+  software   GBLUP env 1                sigma2_g                           gaston          0.3014828      0.3014828  d= 8.73e-14  OK
+  software   GBLUP env 1                sigma2_e                           gaston         0.54096851     0.54096851  d= 2.40e-14  OK
+  software   GBLUP env 1                BLUP correlation                   gaston                  1             NA  d= 1.00e+00  OK
+  software   GBLUP env 1                BLUP max |diff| / sd               gaston      1.3892537e-12             NA  d= 1.39e-12  OK
+  software   GBLUP env 2                sigma2_g                           asreml         0.26751356     0.26751356  d= 2.39e-11  OK
+  software   GBLUP env 2                sigma2_e                           asreml         0.56507753     0.56507753  d= 3.44e-11  OK
+  software   GBLUP env 2                logLik (asreml convention)         asreml         -242.92061     -242.92061  d= 1.88e-12  OK
+  software   GBLUP env 2                BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   GBLUP env 2                BLUP max |diff| / sd               asreml      1.3562399e-10             NA  d= 1.36e-10  OK
+  software   GBLUP env 2                sigma2_g                           sommer         0.26751356     0.26751352  d= 1.48e-07  OK
+  software   GBLUP env 2                sigma2_e                           sommer         0.56507753     0.56507756  d= 4.70e-08  OK
+  software   GBLUP env 2                BLUP correlation                   sommer                  1             NA  d= 1.00e+00  OK
+  software   GBLUP env 2                BLUP max |diff| / sd               sommer      1.8473999e-07             NA  d= 1.85e-07  OK
+  software   GBLUP env 2                sigma2_g                           rrBLUP         0.26751356     0.26751266  d= 3.38e-06  OK
+  software   GBLUP env 2                sigma2_e                           rrBLUP         0.56507753     0.56507813  d= 1.07e-06  OK
+  software   GBLUP env 2                BLUP correlation                   rrBLUP                  1             NA  d= 1.00e+00  OK
+  software   GBLUP env 2                BLUP max |diff| / sd               rrBLUP      4.2087063e-06             NA  d= 4.21e-06  OK
+EM step failed to improve likelihood (this should not happen)
+  software   GBLUP env 2                sigma2_g                           gaston         0.26751356     0.26751356  d= 4.15e-16  OK
+  software   GBLUP env 2                sigma2_e                           gaston         0.56507753     0.56507753  d= 4.91e-15  OK
+  software   GBLUP env 2                BLUP correlation                   gaston                  1             NA  d= 1.00e+00  OK
+  software   GBLUP env 2                BLUP max |diff| / sd               gaston      1.5102256e-12             NA  d= 1.51e-12  OK
+  software   GBLUP env 4                sigma2_g                           asreml         0.21582201     0.21582201  d= 7.08e-10  OK
+  software   GBLUP env 4                sigma2_e                           asreml         0.65236641     0.65236641  d= 1.03e-09  OK
+  software   GBLUP env 4                logLik (asreml convention)         asreml         -262.34565     -262.34565  d= 2.27e-12  OK
+  software   GBLUP env 4                BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   GBLUP env 4                BLUP max |diff| / sd               asreml      1.0073549e-08             NA  d= 1.01e-08  OK
+  software   GBLUP env 4                sigma2_g                           sommer         0.21582201     0.21582187  d= 6.34e-07  OK
+  software   GBLUP env 4                sigma2_e                           sommer         0.65236641     0.65236651  d= 1.58e-07  OK
+  software   GBLUP env 4                BLUP correlation                   sommer                  1             NA  d= 1.00e+00  OK
+  software   GBLUP env 4                BLUP max |diff| / sd               sommer      1.4593842e-06             NA  d= 1.46e-06  OK
+  software   GBLUP env 4                sigma2_g                           rrBLUP         0.21582201     0.21582117  d= 3.88e-06  OK
+  software   GBLUP env 4                sigma2_e                           rrBLUP         0.65236641     0.65236704  d= 9.65e-07  OK
+  software   GBLUP env 4                BLUP correlation                   rrBLUP                  1             NA  d= 1.00e+00  OK
+  software   GBLUP env 4                BLUP max |diff| / sd               rrBLUP      8.9350157e-06             NA  d= 8.94e-06  OK
+  software   GBLUP env 4                sigma2_g                           gaston         0.21582201     0.21582201  d= 2.84e-10  OK
+  software   GBLUP env 4                sigma2_e                           gaston         0.65236641     0.65236641  d= 1.39e-10  OK
+  software   GBLUP env 4                BLUP correlation                   gaston                  1             NA  d= 1.00e+00  OK
+  software   GBLUP env 4                BLUP max |diff| / sd               gaston      7.8014675e-10             NA  d= 7.80e-10  OK
+  software   GBLUP env 5                sigma2_g                           asreml         0.24427763     0.24427763  d= 2.62e-09  OK
+  software   GBLUP env 5                sigma2_e                           asreml         0.59152915     0.59152915  d= 8.51e-10  OK
+  software   GBLUP env 5                logLik (asreml convention)         asreml         -247.10064     -247.10064  d= 1.05e-11  OK
+  software   GBLUP env 5                BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   GBLUP env 5                BLUP max |diff| / sd               asreml      7.8997751e-10             NA  d= 7.90e-10  OK
+  software   GBLUP env 5                sigma2_g                           sommer         0.24427763     0.24427755  d= 3.53e-07  OK
+  software   GBLUP env 5                sigma2_e                           sommer         0.59152915     0.59152921  d= 1.01e-07  OK
+  software   GBLUP env 5                BLUP correlation                   sommer                  1             NA  d= 1.00e+00  OK
+  software   GBLUP env 5                BLUP max |diff| / sd               sommer      4.4953978e-07             NA  d= 4.50e-07  OK
+  software   GBLUP env 5                sigma2_g                           rrBLUP         0.24427763     0.24427906  d= 5.84e-06  OK
+  software   GBLUP env 5                sigma2_e                           rrBLUP         0.59152915     0.59152815  d= 1.69e-06  OK
+  software   GBLUP env 5                BLUP correlation                   rrBLUP                  1             NA  d= 1.00e+00  OK
+  software   GBLUP env 5                BLUP max |diff| / sd               rrBLUP      7.4438804e-06             NA  d= 7.44e-06  OK
+  software   GBLUP env 5                sigma2_g                           gaston         0.24427763     0.24427763  d= 2.28e-09  OK
+  software   GBLUP env 5                sigma2_e                           gaston         0.59152915     0.59152915  d= 1.53e-09  OK
+  software   GBLUP env 5                BLUP correlation                   gaston                  1             NA  d= 1.00e+00  OK
+  software   GBLUP env 5                BLUP max |diff| / sd               gaston      3.7679751e-09             NA  d= 3.77e-09  OK
+  software   ABLUP env 1                sigma2_g                           asreml          0.2843281      0.2843281  d= 6.67e-10  OK
+  software   ABLUP env 1                sigma2_e                           asreml         0.56253848     0.56253848  d= 1.48e-10  OK
+  software   ABLUP env 1                logLik (asreml convention)         asreml            -265.01        -265.01  d= 2.05e-12  OK
+  software   ABLUP env 1                BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   ABLUP env 1                BLUP max |diff| / sd               asreml      1.1425271e-09             NA  d= 1.14e-09  OK
+  software   ABLUP env 2                sigma2_g                           asreml         0.24506206     0.24506206  d= 2.33e-13  OK
+  software   ABLUP env 2                sigma2_e                           asreml         0.58267872     0.58267872  d= 5.35e-14  OK
+  software   ABLUP env 2                logLik (asreml convention)         asreml         -259.02196     -259.02196  d= 6.82e-13  OK
+  software   ABLUP env 2                BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   ABLUP env 2                BLUP max |diff| / sd               asreml      3.1730362e-13             NA  d= 3.17e-13  OK
+  software   ABLUP env 4                sigma2_g                           asreml         0.34589179      0.3458918  d= 4.17e-09  OK
+  software   ABLUP env 4                sigma2_e                           asreml         0.48811657     0.48811658  d= 6.62e-09  OK
+  software   ABLUP env 4                logLik (asreml convention)         asreml         -257.37388     -257.37388  d= 1.36e-12  OK
+  software   ABLUP env 4                BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   ABLUP env 4                BLUP max |diff| / sd               asreml       3.679533e-08             NA  d= 3.68e-08  OK
+  software   ABLUP env 5                sigma2_g                           asreml         0.30127222     0.30127222  d= 5.45e-09  OK
+  software   ABLUP env 5                sigma2_e                           asreml         0.51609363     0.51609363  d= 4.85e-10  OK
+  software   ABLUP env 5                logLik (asreml convention)         asreml         -253.36076     -253.36076  d= 1.45e-12  OK
+  software   ABLUP env 5                BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   ABLUP env 5                BLUP max |diff| / sd               asreml      7.0458088e-09             NA  d= 7.05e-09  OK
+  software   A+G env 1                  sigma2_G                           asreml         0.24855023     0.24855023  d= 4.49e-10  OK
+  software   A+G env 1                  sigma2_A                           asreml         0.10962608     0.10962608  d= 9.96e-11  OK
+  software   A+G env 1                  sigma2_e                           asreml         0.43769407     0.43769407  d= 4.45e-10  OK
+  software   A+G env 1                  logLik (asreml convention)         asreml         -234.85473     -234.85473  d= 8.53e-13  OK
+  software   A+G env 1 G part           BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   A+G env 1 G part           BLUP max |diff| / sd               asreml      1.9817115e-09             NA  d= 1.98e-09  OK
+  software   A+G env 1 A part           BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   A+G env 1 A part           BLUP max |diff| / sd               asreml      1.4523919e-09             NA  d= 1.45e-09  OK
+  software   A+G env 1                  sigma2_G                           sommer         0.24855023     0.24855019  d= 1.70e-07  OK
+  software   A+G env 1                  sigma2_A                           sommer         0.10962608      0.1096261  d= 1.33e-07  OK
+  software   A+G env 1                  sigma2_e                           sommer         0.43769407     0.43769408  d= 2.93e-08  OK
+multi-env us x G: asreml from its default start: logLik -851.532601, converged FALSE
+smallest eigenvalue of the remlax genetic us matrix: 5.281e-13
+  software   multi-env us x G           logLik vs dense REML at remlax estimates dense R        -850.93171     -850.93171  d= 5.68e-13  OK
+  software   multi-env us x G           logLik asreml (default start) minus remlax asreml        -0.60088762             NA  d=-6.01e-01  OK
+multi-env us x G: asreml started at the remlax estimates (+1e-7 I): logLik -851.372380, converged TRUE
+  software   multi-env us x G           logLik asreml (remlax start) minus remlax asreml        -0.44066702             NA  d=-4.41e-01  OK
+  context    multi-env us x G           logLik asreml, all fixed at remlax estimates asreml         -850.93171     -850.93156  d= 1.52e-04  ctx
+  software   multi-env us x G (asreml fixed at remlax estimates) BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   multi-env us x G (asreml fixed at remlax estimates) BLUP max |diff| / sd               asreml      3.9952524e-05             NA  d= 4.00e-05  OK
+  context    multi-env us x G (asreml from remlax start) G var E1-E1                        asreml          0.3051462     0.30518909  d= 1.41e-04  ctx
+  context    multi-env us x G (asreml from remlax start) G cov E1-E2                        asreml       -0.077280691   -0.077491727  d= 2.72e-03  ctx
+  context    multi-env us x G (asreml from remlax start) G var E2-E2                        asreml         0.61574902     0.61632614  d= 9.36e-04  ctx
+  context    multi-env us x G (asreml from remlax start) G cov E1-E4                        asreml        -0.10922944     -0.1093528  d= 1.13e-03  ctx
+  context    multi-env us x G (asreml from remlax start) G cov E2-E4                        asreml         0.57238231     0.57326215  d= 1.53e-03  ctx
+  context    multi-env us x G (asreml from remlax start) G var E4-E4                        asreml          0.5391831     0.54217049  d= 5.51e-03  ctx
+  context    multi-env us x G (asreml from remlax start) G cov E1-E5                        asreml          -0.124926    -0.12499986  d= 5.91e-04  ctx
+  context    multi-env us x G (asreml from remlax start) G cov E2-E5                        asreml         0.36249722     0.36279539  d= 8.22e-04  ctx
+  context    multi-env us x G (asreml from remlax start) G cov E4-E5                        asreml         0.36360216     0.36406742  d= 1.28e-03  ctx
+  context    multi-env us x G (asreml from remlax start) G var E5-E5                        asreml         0.35025372     0.35048674  d= 6.65e-04  ctx
+multi-env fa1 x G: asreml from its default start: logLik -856.320467, converged TRUE
+  software   multi-env fa1 x G          G var E1                           asreml         0.30113679     0.30113691  d= 4.04e-07  OK
+  software   multi-env fa1 x G          G cov E1-E2 (/ sqrt(var var))      asreml      1.5991965e-06             NA  d= 1.60e-06  OK
+  software   multi-env fa1 x G          G var E2                           asreml         0.59371596     0.59371409  d= 3.14e-06  OK
+  software   multi-env fa1 x G          G cov E1-E4 (/ sqrt(var var))      asreml      1.8704924e-06             NA  d= 1.87e-06  OK
+  software   multi-env fa1 x G          G cov E2-E4 (/ sqrt(var var))      asreml      2.0188182e-06             NA  d= 2.02e-06  OK
+  software   multi-env fa1 x G          G var E4                           asreml         0.54385913     0.54385865  d= 8.94e-07  OK
+  software   multi-env fa1 x G          G cov E1-E5 (/ sqrt(var var))      asreml      1.7423491e-06             NA  d= 1.74e-06  OK
+  software   multi-env fa1 x G          G cov E2-E5 (/ sqrt(var var))      asreml      5.5967821e-07             NA  d= 5.60e-07  OK
+  software   multi-env fa1 x G          G cov E4-E5 (/ sqrt(var var))      asreml      3.3633778e-07             NA  d= 3.36e-07  OK
+  software   multi-env fa1 x G          G var E5                           asreml         0.36438234     0.36438261  d= 7.56e-07  OK
+  software   multi-env fa1 x G          residual var E1                    asreml         0.54370765     0.54370768  d= 6.09e-08  OK
+  software   multi-env fa1 x G          residual var E2                    asreml          0.4162886     0.41628906  d= 1.12e-06  OK
+  software   multi-env fa1 x G          residual var E4                    asreml          0.4653053      0.4653054  d= 2.05e-07  OK
+  software   multi-env fa1 x G          residual var E5                    asreml         0.54412243     0.54412243  d= 1.13e-08  OK
+  software   multi-env fa1 x G          logLik (asreml convention)         asreml         -856.32047     -856.32047  d= 6.41e-09  OK
+  software   multi-env fa1 x G          BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   multi-env fa1 x G          BLUP max |diff| / sd               asreml      1.1058989e-05             NA  d= 1.11e-05  OK
+
+Runtimes (s, elapsed, remlax CPU vs asreml):
+                  remlax.elapsed asreml.elapsed
+GBLUP env 1                 4.41          10.82
+GBLUP env 2                 2.20          11.23
+GBLUP env 4                 1.80          11.21
+GBLUP env 5                 1.39          11.14
+ABLUP env 1                 1.47          11.11
+ABLUP env 2                 1.35          11.30
+ABLUP env 4                 1.49          11.28
+ABLUP env 5                 1.68          11.05
+A+G env 1                   9.74          17.20
+multi-env us x G          208.67         753.91
+multi-env fa1 x G         163.69          22.10
+
+wheat_crossa2010: 121 checks counted, 121 pass, 0 fail; 11 context rows -> /home/salas/Documents/Git/remlax-validation/published_data/results/wheat_crossa2010.csv

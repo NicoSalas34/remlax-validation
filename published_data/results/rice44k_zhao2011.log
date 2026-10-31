@@ -1,0 +1,175 @@
+Online License checked out Sat Oct 31 02:13:14 2026
+
+######## rice44k_zhao2011 (Zhao et al. 2011 Nat Commun 2:467)
+remlax0.1.0| R4.5.2
+  asreml       4.2.0.382
+  sommer       4.4.4
+  gaston       1.6
+  rrBLUP       4.6.3
+  statgenGWAS  1.0.12
+  BGLR         1.1.4
+  enhancer     1.1.2
+413 accessions, 36901 SNPs, 4.34 % missing calls imputed
+
+==== Amylose content: 401 accessions, 34139 SNPs ====
+remlax: s2_g 25.64841446 s2_e 3.845717688 logLik_asreml -745.8061998150 (6.7 s)
+  software   Amylose content            null s2_g                          asreml          25.648414      25.648414  d= 6.34e-10  OK
+  software   Amylose content            null s2_e                          asreml          3.8457177      3.8457177  d= 1.36e-09  OK
+  software   Amylose content            null logLik                        asreml          -745.8062      -745.8062  d= 1.00e-11  OK
+  software   Amylose content            heritability s2_g/(s2_g+s2_e)      asreml         0.86961075     0.86961075  d= 9.52e-11  OK
+  software   Amylose content            null s2_g                          gaston          25.648414      25.648414  d= 2.73e-10  OK
+  software   Amylose content            null s2_e                          gaston          3.8457177      3.8457177  d= 9.52e-10  OK
+statgenGWAS EMMA: s2_g 25.88449014 s2_e 3.781183875 (2.6 s)
+  context    Amylose content            null s2_g                          statgenGWAS      25.648414       25.88449  d= 9.12e-03  ctx
+  context    Amylose content            null s2_e                          statgenGWAS      3.8457177      3.7811839  d= 1.71e-02  ctx
+  software   Amylose content            REML logLik gain over statgen comps statgenGWAS   0.0025711236             NA  d= 2.57e-03  OK
+  software   Amylose content            effect, statgen V (max|d|/sd)      statgenGWAS  1.1107693e-09             NA  d= 1.11e-09  OK
+  software   Amylose content            effectSe, statgen V (max rel)      statgenGWAS  4.8345902e-10             NA  d= 4.83e-10  OK
+  software   Amylose content            -log10 p, statgen V (max|d|)       statgenGWAS  1.2321681e-09             NA  d= 1.23e-09  OK
+EM step failed to improve likelihood (this should not happen)
+EM step failed to improve likelihood (this should not happen)
+  software   Amylose content            score chi2, gaston V (max rel)     gaston      5.0031345e-10             NA  d= 5.00e-10  OK
+  context    Amylose content            score chi2 native output (max rel) gaston      3.9067293e-06             NA  d= 3.91e-06  ctx
+  context    Amylose content            -log10 p own REML (max|d|)         statgenGWAS    0.061904077             NA  d= 6.19e-02  ctx
+  context    Amylose content            -log10 p own REML (max|d|)         gaston      7.6501475e-06             NA  d= 7.65e-06  ctx
+  context    Amylose content            top SNP identical                  statgenGWAS              1              1  d= 0.00e+00  ctx
+  software   Amylose content            top SNP identical                  gaston                  1              1  d= 0.00e+00  OK
+  context    Amylose content            Bonferroni set symmetric diff      statgenGWAS              1              0  d= 1.00e+00  ctx
+  software   Amylose content            Bonferroni set symmetric diff      gaston                  0              0  d= 0.00e+00  OK
+  context    Amylose content            Bonferroni set, native output      gaston                  0              0  d= 0.00e+00  ctx
+  context    Amylose content            lambda GC (F convention)           statgenGWAS     0.69065003     0.68751595  d= 4.56e-03  ctx
+  context    Amylose content            lead SNP within 1 Mb of Waxy       Zhao 2011               1              1  d= 0.00e+00  ctx
+
+==== Seed length: 377 accessions, 34191 SNPs ====
+remlax: s2_g 1.159394526 s2_e 0.006027857626 logLik_asreml -39.3851341929 (5.8 s)
+  software   Seed length                null s2_g                          asreml          1.1593945      1.1593948  d= 2.54e-07  OK
+  software   Seed length                null s2_e                          asreml       0.0060278576   0.0060278594  d= 3.02e-07  OK
+  software   Seed length                null logLik                        asreml         -39.385134     -39.385134  d= 4.13e-09  OK
+  software   Seed length                heritability s2_g/(s2_g+s2_e)      asreml         0.99482775     0.99482775  d= 2.49e-10  OK
+EM step failed to improve likelihood (this should not happen)
+  software   Seed length                null s2_g                          gaston          1.1593945      1.1593945  d= 5.98e-14  OK
+  software   Seed length                null s2_e                          gaston       0.0060278576   0.0060278576  d= 1.52e-11  OK
+statgenGWAS EMMA: s2_g 1.161390439 s2_e 0.005661939057 (3.4 s)
+  context    Seed length                null s2_g                          statgenGWAS      1.1593945      1.1613904  d= 1.72e-03  ctx
+  context    Seed length                null s2_e                          statgenGWAS   0.0060278576   0.0056619391  d= 6.46e-02  ctx
+  software   Seed length                REML logLik gain over statgen comps statgenGWAS  0.00038903422             NA  d= 3.89e-04  OK
+  software   Seed length                effect, statgen V (max|d|/sd)      statgenGWAS  5.4687752e-10             NA  d= 5.47e-10  OK
+  software   Seed length                effectSe, statgen V (max rel)      statgenGWAS  4.9778499e-10             NA  d= 4.98e-10  OK
+  software   Seed length                -log10 p, statgen V (max|d|)       statgenGWAS  1.1351999e-09             NA  d= 1.14e-09  OK
+EM step failed to improve likelihood (this should not happen)
+EM step failed to improve likelihood (this should not happen)
+EM step failed to improve likelihood (this should not happen)
+EM step failed to improve likelihood (this should not happen)
+EM step failed to improve likelihood (this should not happen)
+EM step failed to improve likelihood (this should not happen)
+EM step failed to improve likelihood (this should not happen)
+EM step failed to improve likelihood (this should not happen)
+EM step failed to improve likelihood (this should not happen)
+EM step failed to improve likelihood (this should not happen)
+EM step failed to improve likelihood (this should not happen)
+EM step failed to improve likelihood (this should not happen)
+EM step failed to improve likelihood (this should not happen)
+EM step failed to improve likelihood (this should not happen)
+EM step failed to improve likelihood (this should not happen)
+EM step failed to improve likelihood (this should not happen)
+EM step failed to improve likelihood (this should not happen)
+EM step failed to improve likelihood (this should not happen)
+EM step failed to improve likelihood (this should not happen)
+EM step failed to improve likelihood (this should not happen)
+EM step failed to improve likelihood (this should not happen)
+EM step failed to improve likelihood (this should not happen)
+EM step failed to improve likelihood (this should not happen)
+EM step failed to improve likelihood (this should not happen)
+EM step failed to improve likelihood (this should not happen)
+EM step failed to improve likelihood (this should not happen)
+EM step failed to improve likelihood (this should not happen)
+  software   Seed length                score chi2, gaston V (max rel)     gaston      4.9982634e-10             NA  d= 5.00e-10  OK
+  context    Seed length                score chi2 native output (max rel) gaston       9.370865e-06             NA  d= 9.37e-06  ctx
+  context    Seed length                -log10 p own REML (max|d|)         statgenGWAS    0.014905235             NA  d= 1.49e-02  ctx
+  context    Seed length                -log10 p own REML (max|d|)         gaston      1.1433115e-05             NA  d= 1.14e-05  ctx
+  context    Seed length                top SNP identical                  statgenGWAS              1              1  d= 0.00e+00  ctx
+  software   Seed length                top SNP identical                  gaston                  1              1  d= 0.00e+00  OK
+  context    Seed length                Bonferroni set symmetric diff      statgenGWAS              0              0  d= 0.00e+00  ctx
+  software   Seed length                Bonferroni set symmetric diff      gaston                  0              0  d= 0.00e+00  OK
+  context    Seed length                Bonferroni set, native output      gaston                  0              0  d= 0.00e+00  ctx
+  context    Seed length                lambda GC (F convention)           statgenGWAS     0.82069261     0.81942443  d= 1.55e-03  ctx
+  context    Seed length                lead SNP within 1 Mb of GS3        Zhao 2011               1              1  d= 0.00e+00  ctx
+
+==== Plant height: 383 accessions, 34132 SNPs ====
+remlax: s2_g 350.2745609 s2_e 68.88365589 logLik_asreml -1229.0820526093 (6.0 s)
+  software   Plant height               null s2_g                          asreml          350.27456      350.27455  d= 2.19e-08  OK
+  software   Plant height               null s2_e                          asreml          68.883656      68.883655  d= 1.70e-08  OK
+  software   Plant height               null logLik                        asreml         -1229.0821     -1229.0821  d= 1.43e-11  OK
+  software   Plant height               heritability s2_g/(s2_g+s2_e)      asreml         0.83566192     0.83566192  d= 7.93e-10  OK
+EM step failed to improve likelihood (this should not happen)
+  software   Plant height               null s2_g                          gaston          350.27456      350.27456  d= 9.18e-12  OK
+  software   Plant height               null s2_e                          gaston          68.883656      68.883656  d= 1.31e-11  OK
+statgenGWAS EMMA: s2_g 363.8858292 s2_e 64.92503942 (5.7 s)
+  context    Plant height               null s2_g                          statgenGWAS      350.27456      363.88583  d= 3.74e-02  ctx
+  context    Plant height               null s2_e                          statgenGWAS      68.883656      64.925039  d= 6.10e-02  ctx
+  software   Plant height               REML logLik gain over statgen comps statgenGWAS    0.059466382             NA  d= 5.95e-02  OK
+  software   Plant height               effect, statgen V (max|d|/sd)      statgenGWAS  2.3067408e-09             NA  d= 2.31e-09  OK
+  software   Plant height               effectSe, statgen V (max rel)      statgenGWAS  4.9449815e-10             NA  d= 4.94e-10  OK
+  software   Plant height               -log10 p, statgen V (max|d|)       statgenGWAS  1.2473382e-09             NA  d= 1.25e-09  OK
+EM step failed to improve likelihood (this should not happen)
+  software   Plant height               score chi2, gaston V (max rel)     gaston      5.9693879e-10             NA  d= 5.97e-10  OK
+  context    Plant height               score chi2 native output (max rel) gaston          3.2920675             NA  d= 3.29e+00  ctx
+  context    Plant height               -log10 p own REML (max|d|)         statgenGWAS     0.14094389             NA  d= 1.41e-01  ctx
+  context    Plant height               -log10 p own REML (max|d|)         gaston          1.7821687             NA  d= 1.78e+00  ctx
+  context    Plant height               top SNP identical                  statgenGWAS              1              1  d= 0.00e+00  ctx
+  software   Plant height               top SNP identical                  gaston                  1              1  d= 0.00e+00  OK
+  context    Plant height               Bonferroni set symmetric diff      statgenGWAS              0              0  d= 0.00e+00  ctx
+  software   Plant height               Bonferroni set symmetric diff      gaston                  0              0  d= 0.00e+00  OK
+  context    Plant height               Bonferroni set, native output      gaston                  0              0  d= 0.00e+00  ctx
+  context    Plant height               lambda GC (F convention)           statgenGWAS      0.9513001     0.93368714  d= 1.89e-02  ctx
+  context    Plant height               lead SNP within 1 Mb of SD1        Zhao 2011               1              1  d= 0.00e+00  ctx
+
+==== Flowering time at Aberdeen: 359 accessions, 34185 SNPs ====
+remlax: s2_g 1527.683031 s2_e 514.9930513 logLik_asreml -1455.6136343916 (4.9 s)
+  software   Flowering time at Aberdeen null s2_g                          asreml           1527.683       1527.683  d= 1.24e-10  OK
+  software   Flowering time at Aberdeen null s2_e                          asreml          514.99305      514.99305  d= 1.04e-10  OK
+  software   Flowering time at Aberdeen null logLik                        asreml         -1455.6136     -1455.6136  d= 6.14e-12  OK
+  software   Flowering time at Aberdeen heritability s2_g/(s2_g+s2_e)      asreml         0.74788315     0.74788315  d= 4.95e-12  OK
+EM step failed to improve likelihood (this should not happen)
+  software   Flowering time at Aberdeen null s2_g                          gaston           1527.683       1527.683  d= 2.50e-10  OK
+  software   Flowering time at Aberdeen null s2_e                          gaston          514.99305      514.99305  d= 2.43e-10  OK
+statgenGWAS EMMA: s2_g 1555.863983 s2_e 505.8192988 (3.9 s)
+  context    Flowering time at Aberdeen null s2_g                          statgenGWAS       1527.683       1555.864  d= 1.81e-02  ctx
+  context    Flowering time at Aberdeen null s2_e                          statgenGWAS      514.99305       505.8193  d= 1.81e-02  ctx
+  software   Flowering time at Aberdeen REML logLik gain over statgen comps statgenGWAS   0.0069844573             NA  d= 6.98e-03  OK
+  software   Flowering time at Aberdeen effect, statgen V (max|d|/sd)      statgenGWAS  1.1161992e-09             NA  d= 1.12e-09  OK
+  software   Flowering time at Aberdeen effectSe, statgen V (max rel)      statgenGWAS  4.7714571e-10             NA  d= 4.77e-10  OK
+  software   Flowering time at Aberdeen -log10 p, statgen V (max|d|)       statgenGWAS  1.6548718e-09             NA  d= 1.65e-09  OK
+EM step failed to improve likelihood (this should not happen)
+  software   Flowering time at Aberdeen score chi2, gaston V (max rel)     gaston      5.2072252e-10             NA  d= 5.21e-10  OK
+  context    Flowering time at Aberdeen score chi2 native output (max rel) gaston          1.8813538             NA  d= 1.88e+00  ctx
+  context    Flowering time at Aberdeen -log10 p own REML (max|d|)         statgenGWAS    0.079055285             NA  d= 7.91e-02  ctx
+  context    Flowering time at Aberdeen -log10 p own REML (max|d|)         gaston          1.0440268             NA  d= 1.04e+00  ctx
+  context    Flowering time at Aberdeen top SNP identical                  statgenGWAS              1              1  d= 0.00e+00  ctx
+  software   Flowering time at Aberdeen top SNP identical                  gaston                  1              1  d= 0.00e+00  OK
+  context    Flowering time at Aberdeen Bonferroni set symmetric diff      statgenGWAS              1              0  d= 1.00e+00  ctx
+  software   Flowering time at Aberdeen Bonferroni set symmetric diff      gaston                  0              0  d= 0.00e+00  OK
+  context    Flowering time at Aberdeen Bonferroni set, native output      gaston                  7              0  d= 7.00e+00  ctx
+  context    Flowering time at Aberdeen lambda GC (F convention)           statgenGWAS     0.78556015     0.78005311  d= 7.06e-03  ctx
+  context    Flowering time at Aberdeen lead SNP within 1 Mb of HD1        Zhao 2011               1              1  d= 0.00e+00  ctx
+Messages d'avis :
+1: Dans asreml(y ~ PC1 + PC2 + PC3 + PC4, random = ~vm(gid, as_asreml_G(K)),  :
+  Some components changed by more than 1% on the last iteration
+2: Dans asreml(fixed = y ~ PC1 + PC2 + PC3 + PC4, random = ~vm(gid, as_asreml_G(K)),  :
+  Some components changed by more than 1% on the last iteration
+
+Timings (elapsed seconds):
+                      trait   n     p remlax_null_fit_s remlax_scan_s
+            Amylose content 401 34139             6.661         9.085
+                Seed length 377 34191             5.838         9.088
+               Plant height 383 34132             6.015         9.663
+ Flowering time at Aberdeen 359 34185             4.876        10.633
+ statgenGWAS_s gaston_aireml_s gaston_score_s
+         2.558           0.131          1.450
+         3.403           0.200          1.968
+         5.676           0.162          0.889
+         3.910           0.143          0.832
+null device 
+          1 
+
+rice44k_zhao2011: 52 checks counted, 52 pass, 0 fail; 40 context rows -> /home/salas/Documents/Git/remlax-validation/published_data/results/rice44k_zhao2011.csv

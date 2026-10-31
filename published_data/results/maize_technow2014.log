@@ -1,0 +1,75 @@
+
+######## maize_technow2014 (Technow et al. 2014, doi:10.1534/genetics.114.165860)
+remlax0.1.0| R4.5.2
+  asreml       4.2.0.382
+  sommer       4.4.4
+  gaston       1.6
+  rrBLUP       4.6.3
+  statgenGWAS  1.0.12
+  BGLR         1.1.4
+  enhancer     1.1.2
+Gd: 123 x 123, Gf: 86 x 86
+1254 hybrids, 123 dent and 86 flint parents used
+  software   2 GCA kernels GY           sigma2_GCA dent                    asreml          16.753359      16.753359  d= 6.28e-12  OK
+  software   2 GCA kernels GY           sigma2_GCA flint                   asreml          10.863635      10.863635  d= 1.23e-12  OK
+  software   2 GCA kernels GY           sigma2_e                           asreml          17.780215      17.780215  d= 9.56e-12  OK
+  software   2 GCA kernels GY           logLik (asreml convention)         asreml         -2646.0087     -2646.0087  d= 2.73e-12  OK
+  software   2 GCA kernels GY dent      BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   2 GCA kernels GY dent      BLUP max |diff| / sd               asreml      1.9784695e-11             NA  d= 1.98e-11  OK
+  software   2 GCA kernels GY flint     BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   2 GCA kernels GY flint     BLUP max |diff| / sd               asreml      5.3424726e-11             NA  d= 5.34e-11  OK
+  software   2 GCA kernels GY           sigma2_GCA dent                    sommer          16.753359      16.753357  d= 1.31e-07  OK
+  software   2 GCA kernels GY           sigma2_GCA flint                   sommer          10.863635      10.863632  d= 3.23e-07  OK
+  software   2 GCA kernels GY           sigma2_e                           sommer          17.780215      17.780216  d= 3.15e-08  OK
+  software   2 GCA kernels GY dent      BLUP correlation                   sommer                  1             NA  d= 1.00e+00  OK
+  software   2 GCA kernels GY dent      BLUP max |diff| / sd               sommer      6.6317612e-08             NA  d= 6.63e-08  OK
+  software   2 GCA kernels GY flint     BLUP correlation                   sommer                  1             NA  d= 1.00e+00  OK
+  software   2 GCA kernels GY flint     BLUP max |diff| / sd               sommer      1.7316995e-07             NA  d= 1.73e-07  OK
+  software   2 GCA kernels GM           sigma2_GCA dent                    asreml          1.3185015      1.3185015  d= 4.48e-12  OK
+  software   2 GCA kernels GM           sigma2_GCA flint                   asreml          1.1138799      1.1138799  d= 1.03e-11  OK
+  software   2 GCA kernels GM           sigma2_e                           asreml          0.4890673      0.4890673  d= 1.10e-11  OK
+  software   2 GCA kernels GM           logLik (asreml convention)         asreml         -497.56516     -497.56516  d= 7.05e-12  OK
+  software   2 GCA kernels GM dent      BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   2 GCA kernels GM dent      BLUP max |diff| / sd               asreml      2.6332387e-11             NA  d= 2.63e-11  OK
+  software   2 GCA kernels GM flint     BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   2 GCA kernels GM flint     BLUP max |diff| / sd               asreml      6.9419096e-12             NA  d= 6.94e-12  OK
+  software   2 GCA kernels GM           sigma2_GCA dent                    sommer          1.3185015      1.3185013  d= 1.50e-07  OK
+  software   2 GCA kernels GM           sigma2_GCA flint                   sommer          1.1138799      1.1138799  d= 5.82e-09  OK
+  software   2 GCA kernels GM           sigma2_e                           sommer          0.4890673     0.48906731  d= 1.59e-08  OK
+  software   2 GCA kernels GM dent      BLUP correlation                   sommer                  1             NA  d= 1.00e+00  OK
+  software   2 GCA kernels GM dent      BLUP max |diff| / sd               sommer       3.773072e-08             NA  d= 3.77e-08  OK
+  software   2 GCA kernels GM flint     BLUP correlation                   sommer                  1             NA  d= 1.00e+00  OK
+  software   2 GCA kernels GM flint     BLUP max |diff| / sd               sommer      9.8940482e-09             NA  d= 9.89e-09  OK
+                                  component  std.error   z.ratio bound %ch
+trait:vm(flint, Gfa)!trait_GY:GY 10.8955334 2.12615890  5.124515     P   0
+trait:vm(flint, Gfa)!trait_GM:GY -1.7163814 0.48714017 -3.523383     P   0
+trait:vm(flint, Gfa)!trait_GM:GM  1.1212646 0.18734387  5.985061     P   0
+trait:vm(dent, Gda)!trait_GY:GY  17.1862568 2.77292275  6.197885     P   0
+trait:vm(dent, Gda)!trait_GM:GY  -2.1912176 0.56140335 -3.903107     P   0
+trait:vm(dent, Gda)!trait_GM:GM   1.3253581 0.19197242  6.903899     P   0
+units:trait!R                     1.0000000         NA        NA     F   0
+units:trait!trait_GY:GY          17.7619892 0.77606111 22.887359     P   0
+units:trait!trait_GM:GY          -0.2743892 0.09168388 -2.992775     P   0
+units:trait!trait_GM:GM           0.4887370 0.02141116 22.826278     P   0
+  software   bivariate GY+GM            GCA dent var GY                    asreml          17.186257      17.186257  d= 2.38e-14  OK
+  software   bivariate GY+GM            GCA dent var GM                    asreml          1.3253581      1.3253581  d= 4.26e-13  OK
+  software   bivariate GY+GM            GCA dent cov (/ sqrt(var var))     asreml      5.0804899e-14             NA  d= 5.08e-14  OK
+  software   bivariate GY+GM            GCA flint var GY                   asreml          10.895533      10.895533  d= 5.10e-13  OK
+  software   bivariate GY+GM            GCA flint var GM                   asreml          1.1212646      1.1212646  d= 1.41e-13  OK
+  software   bivariate GY+GM            GCA flint cov (/ sqrt(var var))    asreml      2.8968551e-14             NA  d= 2.90e-14  OK
+  software   bivariate GY+GM            residual var GY                    asreml          17.761989      17.761989  d= 3.34e-14  OK
+  software   bivariate GY+GM            residual var GM                    asreml         0.48873703     0.48873703  d= 4.71e-14  OK
+  software   bivariate GY+GM            residual cov (/ sqrt(var var))     asreml      6.5377195e-15             NA  d= 6.54e-15  OK
+  software   bivariate GY+GM            logLik (asreml convention)         asreml         -3120.0982     -3120.0982  d= 4.55e-13  OK
+  software   bivariate GY+GM dent       BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   bivariate GY+GM dent       BLUP max |diff| / sd               asreml      1.2135423e-12             NA  d= 1.21e-12  OK
+  software   bivariate GY+GM flint      BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   bivariate GY+GM flint      BLUP max |diff| / sd               asreml      6.0803144e-12             NA  d= 6.08e-12  OK
+
+Runtimes (s, elapsed, remlax CPU vs asreml):
+                 remlax.elapsed asreml.elapsed
+2 GCA kernels GY          26.62          10.83
+2 GCA kernels GM          30.08          10.92
+bivariate GY+GM          324.73          10.79
+
+maize_technow2014: 44 checks counted, 44 pass, 0 fail; 0 context rows -> /home/salas/Documents/Git/remlax-validation/published_data/results/maize_technow2014.csv

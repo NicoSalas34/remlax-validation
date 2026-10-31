@@ -1,0 +1,271 @@
+Message d'avis :
+le package ‘Matrix’ a été compilé avec la version R 4.6.1 
+Online License checked out Sat Oct 31 01:39:38 2026
+
+######## gryphon_wilson2010 (Wilson et al. 2010, doi:10.1111/j.1365-2656.2009.01639.x)
+remlax0.1.0| R4.5.2
+  asreml       4.2.0.382
+  sommer       4.4.4
+  gaston       1.6
+  rrBLUP       4.6.3
+  statgenGWAS  1.0.12
+  BGLR         1.1.4
+  enhancer     1.1.2
+records 1084, BWT 854, TARSUS 683, pedigree 1309
+
+=== model1: BWT ~ 1 | ~vm(ANIMAL, K = A) ===
+REML fit (cpu): logLik -2031.037261 | 2 parameters | 854 obs | 15.0 s
+  max|grad| 2.78e-06 | Newton decrement 1.28e-14 | 0 negative eigenvalue(s)
+  Sigma[ANIMAL] 1x1, diagonal: 3.395
+  residual: 3.829
+  components (vpredict): V1 = ANIMAL, V2 = residual
+  vpredict:
+    h2            0.47002   SE  0.07458   [V1/(V1+V2)]
+                 component std.error  z.ratio bound %ch
+vm(ANIMAL, A_as)  3.395393 0.6350058 5.347026     P   0
+units!R           3.828605 0.5185971 7.382620     P   0
+  software   model1                     sigma2 ANIMAL                      asreml          3.3953928      3.3953929  d= 1.20e-08  OK
+  software   model1                     sigma2 ANIMAL                      sommer          3.3953928      3.3953929  d= 1.20e-08  OK
+  published  model1                     sigma2 ANIMAL                      tutorial        3.3953928       3.395398  d= 1.53e-06  OK
+  software   model1                     sigma2 residual                    asreml          3.8286053      3.8286053  d= 3.28e-09  OK
+  software   model1                     sigma2 residual                    sommer          3.8286053      3.8286053  d= 3.30e-09  OK
+  published  model1                     sigma2 residual                    tutorial        3.8286053       3.828602  d= 8.61e-07  OK
+  software   model1                     logLik (asreml convention)         asreml         -1247.1827     -1247.1827  d= 1.93e-11  OK
+  software   model1                     BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   model1                     BLUP max |diff| / sd               asreml      2.0779176e-08             NA  d= 2.08e-08  OK
+  software   model1                     BLUP correlation                   sommer                  1             NA  d= 1.00e+00  OK
+  software   model1                     BLUP max |diff| / sd               sommer      2.0823025e-08             NA  d= 2.08e-08  OK
+
+=== model2: BWT ~ 1 + SEX | ~vm(ANIMAL, K = A) ===
+REML fit (cpu): logLik -1948.028931 | 2 parameters | 854 obs | 7.6 s
+  max|grad| 2.92e-08 | Newton decrement 1.09e-18 | 0 negative eigenvalue(s)
+  Sigma[ANIMAL] 1x1, diagonal: 3.06
+  residual: 2.938
+  components (vpredict): V1 = ANIMAL, V2 = residual
+  vpredict:
+    h2            0.51017   SE  0.07107   [V1/(V1+V2)]
+                 component std.error  z.ratio bound %ch
+vm(ANIMAL, A_as)  3.060439 0.5243585 5.836539     P   0
+units!R           2.938413 0.4161473 7.060993     P   0
+  software   model2                     sigma2 ANIMAL                      asreml          3.0604392      3.0604392  d= 6.40e-10  OK
+  software   model2                     sigma2 ANIMAL                      sommer          3.0604392      3.0604297  d= 3.07e-06  OK
+  published  model2                     sigma2 ANIMAL                      tutorial        3.0604392       3.060441  d= 6.04e-07  OK
+  software   model2                     sigma2 residual                    asreml          2.9384134      2.9384134  d= 6.80e-10  OK
+  software   model2                     sigma2 residual                    sommer          2.9384134      2.9384207  d= 2.49e-06  OK
+  published  model2                     sigma2 residual                    tutorial        2.9384134       2.938412  d= 4.72e-07  OK
+  software   model2                     logLik (asreml convention)         asreml         -1165.0933     -1165.0933  d= 2.23e-11  OK
+  software   model2                     BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   model2                     BLUP max |diff| / sd               asreml      2.0305918e-09             NA  d= 2.03e-09  OK
+  software   model2                     BLUP correlation                   sommer                  1             NA  d= 1.00e+00  OK
+  software   model2                     BLUP max |diff| / sd               sommer      7.6858303e-06             NA  d= 7.69e-06  OK
+
+=== model3: BWT ~ 1 + SEX | ~vm(ANIMAL, K = A) + BYEAR ===
+REML fit (cpu): logLik -1896.707545 | 3 parameters | 854 obs | 6.6 s
+  max|grad| 1.81e-06 | Newton decrement 1.66e-14 | 0 negative eigenvalue(s)
+  Sigma[ANIMAL] 1x1, diagonal: 2.707
+  Sigma[BYEAR] 1x1, diagonal: 0.8863
+  residual: 2.309
+  components (vpredict): V1 = ANIMAL, V2 = BYEAR, V3 = residual
+  vpredict:
+    h2            0.45861   SE  0.06365   [V1/(V1+V2+V3)]
+                 component std.error  z.ratio bound %ch
+BYEAR            0.8862599 0.2695932 3.287397     P   0
+vm(ANIMAL, A_as) 2.7068553 0.4422184 6.121083     P   0
+units!R          2.3092502 0.3451001 6.691537     P   0
+  software   model3                     sigma2 ANIMAL                      asreml          2.7068554      2.7068553  d= 9.56e-09  OK
+  software   model3                     sigma2 ANIMAL                      sommer          2.7068554       2.706721  d= 4.96e-05  OK
+  published  model3                     sigma2 ANIMAL                      tutorial        2.7068554      2.7068665  d= 4.12e-06  OK
+  software   model3                     sigma2 BYEAR                       asreml         0.88625989     0.88625991  d= 1.49e-08  OK
+  software   model3                     sigma2 BYEAR                       sommer         0.88625989     0.88625437  d= 6.24e-06  OK
+  published  model3                     sigma2 BYEAR                       tutorial       0.88625989      0.8862604  d= 5.73e-07  OK
+  software   model3                     sigma2 residual                    asreml          2.3092502      2.3092502  d= 1.20e-08  OK
+  software   model3                     sigma2 residual                    sommer          2.3092502      2.3093549  d= 4.53e-05  OK
+  published  model3                     sigma2 residual                    tutorial        2.3092502      2.3092415  d= 3.77e-06  OK
+  software   model3                     logLik (asreml convention)         asreml         -1113.7719     -1113.7719  d= 2.23e-11  OK
+  published  model3                     logLik (asreml convention)         tutorial       -1113.7719      -1113.772  d= 8.53e-05  OK
+  software   model3                     BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   model3                     BLUP max |diff| / sd               asreml      3.6486427e-08             NA  d= 3.65e-08  OK
+  software   model3                     BLUP correlation                   sommer                  1             NA  d= 1.00e+00  OK
+  software   model3                     BLUP max |diff| / sd               sommer      0.00012610119             NA  d= 1.26e-04  OK
+
+=== model4: BWT ~ 1 + SEX | ~vm(ANIMAL, K = A) + BYEAR + MOTHER ===
+REML fit (cpu): logLik -1877.750209 | 4 parameters | 854 obs | 8.8 s
+  max|grad| 3.07e-06 | Newton decrement 3.50e-14 | 0 negative eigenvalue(s)
+  Sigma[ANIMAL] 1x1, diagonal: 2.299
+  Sigma[BYEAR] 1x1, diagonal: 0.882
+  Sigma[MOTHER] 1x1, diagonal: 1.118
+  residual: 1.629
+  components (vpredict): V1 = ANIMAL, V2 = BYEAR, V3 = MOTHER, V4 = residual
+  vpredict:
+    h2            0.38774   SE  0.07825   [V1/(V1+V2+V3+V4)]
+                 component std.error  z.ratio bound %ch
+BYEAR            0.8820305 0.2632465 3.350588     P   0
+MOTHER           1.1184667 0.2386229 4.687172     P   0
+vm(ANIMAL, A_as) 2.2985331 0.4962670 4.631646     P   0
+units!R          1.6290046 0.3714179 4.385907     P   0
+  software   model4                     sigma2 ANIMAL                      asreml          2.2985331      2.2985331  d= 1.59e-08  OK
+  software   model4                     sigma2 ANIMAL                      sommer          2.2985331      2.2984804  d= 2.29e-05  OK
+  published  model4                     sigma2 ANIMAL                      tutorial        2.2985331       2.298532  d= 4.85e-07  OK
+  software   model4                     sigma2 BYEAR                       asreml         0.88203046     0.88203046  d= 6.08e-09  OK
+  software   model4                     sigma2 BYEAR                       sommer         0.88203046       0.882035  d= 5.15e-06  OK
+  published  model4                     sigma2 BYEAR                       tutorial       0.88203046      0.8820313  d= 9.50e-07  OK
+  software   model4                     sigma2 MOTHER                      asreml          1.1184667      1.1184667  d= 1.00e-08  OK
+  software   model4                     sigma2 MOTHER                      sommer          1.1184667      1.1184814  d= 1.31e-05  OK
+  published  model4                     sigma2 MOTHER                      tutorial        1.1184667      1.1184698  d= 2.79e-06  OK
+  software   model4                     sigma2 residual                    asreml          1.6290045      1.6290046  d= 2.70e-08  OK
+  software   model4                     sigma2 residual                    sommer          1.6290045      1.6290356  d= 1.90e-05  OK
+  published  model4                     sigma2 residual                    tutorial        1.6290045      1.6290034  d= 7.01e-07  OK
+  software   model4                     logLik (asreml convention)         asreml         -1094.8146     -1094.8146  d= 7.89e-11  OK
+  published  model4                     logLik (asreml convention)         tutorial       -1094.8146      -1094.815  d= 4.21e-04  OK
+  software   model4                     BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   model4                     BLUP max |diff| / sd               asreml      4.6998451e-08             NA  d= 4.70e-08  OK
+  software   model4                     BLUP correlation                   sommer                  1             NA  d= 1.00e+00  OK
+  software   model4                     BLUP max |diff| / sd               sommer      6.0789876e-05             NA  d= 6.08e-05  OK
+
+=== modela: cbind(BWT, TARSUS) ~ trait, us animal, us residual ===
+REML fit (cpu): logLik -4090.312079 | 6 parameters | 1537 obs | 90.5 s
+  max|grad| 9.92e-12 | Newton decrement 3.48e-25 | 0 negative eigenvalue(s)
+  Sigma[ANIMAL] 2x2, diagonal:  3.368 12.346
+  residual:  3.85 17.65
+                                           component std.error  z.ratio bound
+trait:vm(ANIMAL, A_as)!trait_BWT:BWT        3.368396 0.6348299 5.305982     P
+trait:vm(ANIMAL, A_as)!trait_TARSUS:BWT     2.459806 1.0732616 2.291898     P
+trait:vm(ANIMAL, A_as)!trait_TARSUS:TARSUS 12.345782 3.0744201 4.015646     P
+units:trait!R                               1.000000        NA       NA     F
+units:trait!trait_BWT:BWT                   3.849917 0.5200102 7.403542     P
+units:trait!trait_TARSUS:BWT                3.313285 0.9129236 3.629312     P
+units:trait!trait_TARSUS:TARSUS            17.646440 2.6670391 6.616491     P
+                                           %ch
+trait:vm(ANIMAL, A_as)!trait_BWT:BWT         0
+trait:vm(ANIMAL, A_as)!trait_TARSUS:BWT      0
+trait:vm(ANIMAL, A_as)!trait_TARSUS:TARSUS   0
+units:trait!R                                0
+units:trait!trait_BWT:BWT                    0
+units:trait!trait_TARSUS:BWT                 0
+units:trait!trait_TARSUS:TARSUS              0
+  software   modela                     animal BWT                         asreml           3.368396       3.368396  d= 1.11e-11  OK
+  software   modela                     animal cov                         asreml          2.4598064      2.4598064  d= 4.10e-12  OK
+  software   modela                     animal TARSUS                      asreml          12.345782      12.345782  d= 1.30e-11  OK
+  software   modela                     residual BWT                       asreml          3.8499172      3.8499172  d= 7.61e-12  OK
+  software   modela                     residual cov                       asreml          3.3132846      3.3132846  d= 1.87e-12  OK
+  software   modela                     residual TARSUS                    asreml           17.64644       17.64644  d= 7.42e-12  OK
+  published  modela                     animal BWT                         tutorial         3.368396       3.368397  d= 2.89e-07  OK
+  published  modela                     animal cov                         tutorial        2.4598064       2.459809  d= 1.07e-06  OK
+  published  modela                     animal TARSUS                      tutorial        12.345782      12.345792  d= 7.75e-07  OK
+  published  modela                     residual BWT                       tutorial        3.8499172       3.849916  d= 3.15e-07  OK
+  published  modela                     residual cov                       tutorial        3.3132846       3.313282  d= 7.78e-07  OK
+  published  modela                     residual TARSUS                    tutorial         17.64644      17.646432  d= 4.50e-07  OK
+  software   modela                     logLik (asreml convention)         asreml         -2679.7414     -2679.7414  d= 1.16e-10  OK
+  published  modela                     logLik (asreml convention)         tutorial       -2679.7414      -2679.741  d= 4.31e-04  OK
+
+=== modelb: + at(trait):sex, us animal + us byear + us mother ===
+REML fit (cpu): logLik -3788.979009 | 12 parameters | 1537 obs | 204.0 s
+  max|grad| 6.57e-11 | Newton decrement 1.37e-22 | 0 negative eigenvalue(s)
+  Sigma[ANIMAL] 2x2, diagonal:  1.989 10.230
+  Sigma[BYEAR] 2x2, diagonal: 0.9746 3.7384
+  Sigma[MOTHER] 2x2, diagonal: 1.145 4.821
+  residual:  1.844 12.484
+                                            component std.error    z.ratio
+trait:BYEAR!trait_BWT:BWT                   0.9746377 0.2825695  3.4491969
+trait:BYEAR!trait_TARSUS:BWT                0.1624051 0.4184999  0.3880648
+trait:BYEAR!trait_TARSUS:TARSUS             3.7383615 1.2065726  3.0983313
+trait:MOTHER!trait_BWT:BWT                  1.1445196 0.2302189  4.9714401
+trait:MOTHER!trait_TARSUS:BWT              -1.5567330 0.4051848 -3.8420319
+trait:MOTHER!trait_TARSUS:TARSUS            4.8206115 1.3201253  3.6516317
+trait:vm(ANIMAL, A_as)!trait_BWT:BWT        1.9893541 0.4410240  4.5107615
+trait:vm(ANIMAL, A_as)!trait_TARSUS:BWT     3.3170603 0.9032506  3.6723590
+trait:vm(ANIMAL, A_as)!trait_TARSUS:TARSUS 10.2296507 2.8078093  3.6432855
+units:trait!R                               1.0000000        NA         NA
+units:trait!trait_BWT:BWT                   1.8443107 0.3443173  5.3564274
+units:trait!trait_TARSUS:BWT                4.0142732 0.7412583  5.4154848
+units:trait!trait_TARSUS:TARSUS            12.4844852 2.2893597  5.4532651
+                                           bound %ch
+trait:BYEAR!trait_BWT:BWT                      P   0
+trait:BYEAR!trait_TARSUS:BWT                   P   0
+trait:BYEAR!trait_TARSUS:TARSUS                P   0
+trait:MOTHER!trait_BWT:BWT                     P   0
+trait:MOTHER!trait_TARSUS:BWT                  P   0
+trait:MOTHER!trait_TARSUS:TARSUS               P   0
+trait:vm(ANIMAL, A_as)!trait_BWT:BWT           P   0
+trait:vm(ANIMAL, A_as)!trait_TARSUS:BWT        P   0
+trait:vm(ANIMAL, A_as)!trait_TARSUS:TARSUS     P   0
+units:trait!R                                  F   0
+units:trait!trait_BWT:BWT                      P   0
+units:trait!trait_TARSUS:BWT                   P   0
+units:trait!trait_TARSUS:TARSUS                P   0
+  software   modelb                     animal BWT                         asreml          1.9893541      1.9893541  d= 1.59e-11  OK
+  software   modelb                     animal cov                         asreml          3.3170603      3.3170603  d= 2.87e-10  OK
+  software   modelb                     animal TARSUS                      asreml          10.229651      10.229651  d= 9.80e-10  OK
+  software   modelb                     byear BWT                          asreml         0.97463773     0.97463773  d= 6.68e-11  OK
+  software   modelb                     byear cov                          asreml          0.1624051      0.1624051  d= 7.11e-10  OK
+  software   modelb                     byear TARSUS                       asreml          3.7383615      3.7383615  d= 1.91e-10  OK
+  software   modelb                     mother BWT                         asreml          1.1445196      1.1445196  d= 4.47e-11  OK
+  software   modelb                     mother cov                         asreml          -1.556733      -1.556733  d= 3.06e-11  OK
+  software   modelb                     mother TARSUS                      asreml          4.8206115      4.8206115  d= 8.45e-11  OK
+  software   modelb                     residual BWT                       asreml          1.8443107      1.8443107  d= 3.17e-11  OK
+  software   modelb                     residual cov                       asreml          4.0142732      4.0142732  d= 1.26e-10  OK
+  software   modelb                     residual TARSUS                    asreml          12.484485      12.484485  d= 5.40e-10  OK
+  published  modelb                     animal BWT                         tutorial        1.9893541      1.9893546  d= 2.28e-07  OK
+  published  modelb                     animal cov                         tutorial        3.3170603      3.3170404  d= 6.01e-06  OK
+  published  modelb                     animal TARSUS                      tutorial        10.229651      10.229489  d= 1.58e-05  OK
+  published  modelb                     byear BWT                          tutorial       0.97463773      0.9746385  d= 7.94e-07  OK
+  published  modelb                     byear cov                          tutorial        0.1624051      0.1624076  d= 1.54e-05  OK
+  published  modelb                     byear TARSUS                       tutorial        3.7383615      3.7383721  d= 2.84e-06  OK
+  published  modelb                     mother BWT                         tutorial        1.1445196      1.1445184  d= 1.05e-06  OK
+  published  modelb                     mother cov                         tutorial        -1.556733     -1.5567306  d= 1.55e-06  OK
+  published  modelb                     mother TARSUS                      tutorial        4.8206115      4.8206132  d= 3.48e-07  OK
+  published  modelb                     residual BWT                       tutorial        1.8443107       1.844311  d= 1.88e-07  OK
+  published  modelb                     residual cov                       tutorial        4.0142732      4.0142841  d= 2.73e-06  OK
+  published  modelb                     residual TARSUS                    tutorial        12.484485      12.484595  d= 8.84e-06  OK
+  software   modelb                     logLik (asreml convention)         asreml         -2380.2462     -2380.2462  d= 7.61e-10  OK
+  published  modelb                     logLik (asreml convention)         tutorial       -2380.2462      -2380.246  d= 2.37e-04  OK
+  published  modelb                     genetic correlation r_A            tutorial       0.73530398      0.7353053  d= 1.80e-06  OK
+remlax BLUP matrix for the bivariate animal term: 854 2 
+
+=== modelc: maternal covariance set to zero ===
+REML fit (cpu): logLik -3794.778159 | 11 parameters | 1537 obs | 120.3 s
+  max|grad| 3.64e-10 | Newton decrement 5.41e-22 | 0 negative eigenvalue(s)
+  Sigma[ANIMAL] 2x2, diagonal: 1.821 8.710
+  Sigma[BYEAR] 2x2, diagonal: 0.9515 3.8567
+  Sigma[MOTHER] 2x2, diagonal: 1.579 7.381
+  residual:  1.756 12.175
+                                            component std.error   z.ratio bound
+trait:BYEAR!trait_BWT:BWT                   0.9514561 0.2771424 3.4330947     P
+trait:BYEAR!trait_TARSUS:BWT                0.1816731 0.4207795 0.4317535     P
+trait:BYEAR!trait_TARSUS:TARSUS             3.8567263 1.2399822 3.1103079     P
+trait:MOTHER!trait_BWT                      1.5790649 0.2273370 6.9459213     P
+trait:MOTHER!trait_TARSUS                   7.3812867 1.3058840 5.6523297     P
+trait:vm(ANIMAL, A_as)!trait_BWT:BWT        1.8214694 0.4717586 3.8610196     P
+trait:vm(ANIMAL, A_as)!trait_TARSUS:BWT     2.6185274 0.9608349 2.7252626     P
+trait:vm(ANIMAL, A_as)!trait_TARSUS:TARSUS  8.7099570 2.9808910 2.9219307     P
+units:trait!R                               1.0000000        NA        NA     F
+units:trait!trait_BWT:BWT                   1.7560245 0.3624306 4.8451330     P
+units:trait!trait_TARSUS:BWT                3.9200584 0.7827448 5.0080923     P
+units:trait!trait_TARSUS:TARSUS            12.1751369 2.4049143 5.0626074     P
+                                           %ch
+trait:BYEAR!trait_BWT:BWT                    0
+trait:BYEAR!trait_TARSUS:BWT                 0
+trait:BYEAR!trait_TARSUS:TARSUS              0
+trait:MOTHER!trait_BWT                       0
+trait:MOTHER!trait_TARSUS                    0
+trait:vm(ANIMAL, A_as)!trait_BWT:BWT         0
+trait:vm(ANIMAL, A_as)!trait_TARSUS:BWT      0
+trait:vm(ANIMAL, A_as)!trait_TARSUS:TARSUS   0
+units:trait!R                                0
+units:trait!trait_BWT:BWT                    0
+units:trait!trait_TARSUS:BWT                 0
+units:trait!trait_TARSUS:TARSUS              0
+  software   modelc                     logLik (asreml convention)         asreml         -2386.0454     -2386.0454  d= 1.10e-10  OK
+  published  modelc                     logLik (asreml convention)         tutorial       -2386.0454      -2386.045  d= 3.87e-04  OK
+  published  modelb vs modelc           LRT statistic                      tutorial          11.5983       11.59835  d= 5.03e-05  OK
+
+Elapsed seconds (remlax includes process start-up):
+         remlax asreml sommer
+model1   23.591 36.412 25.474
+model2   11.124 44.346  6.424
+model3   10.796 39.083  4.466
+model4   16.554 15.136  0.996
+modela  421.074 83.477     NA
+modelb 1002.014 94.163     NA
+
+gryphon_wilson2010: 99 checks counted, 99 pass, 0 fail; 0 context rows -> /home/salas/Documents/Git/remlax-validation/published_data/results/gryphon_wilson2010.csv

@@ -1,0 +1,119 @@
+Message d'avis :
+le package ‘Matrix’ a été compilé avec la version R 4.6.1 
+Online License checked out Sat Oct 31 01:43:56 2026
+
+######## potato_tetraploid (Rosyara et al. 2016, doi:10.3835/plantgenome2015.08.0073)
+remlax0.1.0| R4.5.2
+  asreml       4.2.0.382
+  sommer       4.4.4
+  gaston       1.6
+  rrBLUP       4.6.3
+  statgenGWAS  1.0.12
+  BGLR         1.1.4
+  enhancer     1.1.2
+clones 221, SNPs kept 3521 of 3522, missing calls imputed 7.47%
+Initial data: 
+	Number of Individuals: 221 
+	Number of Markers: 3521 
+
+Missing data check: 
+	Total SNPs: 3521 
+	 0 SNPs dropped due to missing data threshold of 0.5 
+	Total of: 3521  SNPs 
+
+MAF check: 
+	No SNPs with MAF below 0 
+
+Heterozigosity data check: 
+	No SNPs with heterozygosity, missing threshold of =  0 
+
+Summary check: 
+	Initial:  3521 SNPs 
+	Final:  3521  SNPs ( 0  SNPs removed) 
+ 
+Completed! Time = 0.708  seconds 
+  software   G matrix                   max |G_rx - G_AGHmatrix|           AGHmatrix               0             NA  d= 0.00e+00  OK
+  software   G matrix                   mean diagonal                      AGHmatrix      0.96217706     0.96217706  d= 0.00e+00  OK
+Initial data: 
+	Number of Individuals: 221 
+	Number of Markers: 3521 
+
+Missing data check: 
+	Total SNPs: 3521 
+	 0 SNPs dropped due to missing data threshold of 0.5 
+	Total of: 3521  SNPs 
+
+MAF check: 
+	No SNPs with MAF below 0 
+
+Heterozigosity data check: 
+	No SNPs with heterozygosity, missing threshold of =  0 
+
+Summary check: 
+	Initial:  3521 SNPs 
+	Final:  3521  SNPs ( 0  SNPs removed) 
+ 
+Completed! Time = 0.503  seconds 
+  context    G matrix                   mean diagonal                      AGHmatrix default     0.96217706     0.99547511  d= 3.34e-02  ctx
+phenotyped clones with genotypes: 187
+
+=== total_yield gblup: 187 records ===
+REML fit (cpu): logLik -422.038522 | 2 parameters | 187 obs | 0.7 s
+  max|grad| 7.04e-14 | Newton decrement 9.81e-30 | 0 negative eigenvalue(s)
+  Sigma[id] 1x1, diagonal: 1.161
+  residual: 4.338
+             component std.error  z.ratio bound %ch
+vm(id, G_as)  1.161322 0.8398699 1.382740     P   0
+units!R       4.338138 0.7890082 5.498216     P   0
+  software   total_yield gblup          sigma2 G                           asreml          1.1613218      1.1613218  d= 3.21e-09  OK
+  software   total_yield gblup          sigma2 residual                    asreml          4.3381375      4.3381375  d= 1.22e-08  OK
+  software   total_yield gblup          sigma2 G                           sommer          1.1613218      1.1613165  d= 4.55e-06  OK
+  software   total_yield gblup          sigma2 residual                    sommer          4.3381375      4.3381416  d= 9.50e-07  OK
+  software   total_yield gblup          logLik (asreml convention)         asreml         -251.11595     -251.11595  d= 7.08e-12  OK
+  software   total_yield gblup          BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   total_yield gblup          BLUP max |diff| / sd               asreml      1.5456031e-07             NA  d= 1.55e-07  OK
+  software   total_yield gblup          BLUP correlation                   sommer                  1             NA  d= 1.00e+00  OK
+  software   total_yield gblup          BLUP max |diff| / sd               sommer       1.203847e-05             NA  d= 1.20e-05  OK
+
+=== chip_color gblup: 187 records ===
+REML fit (cpu): logLik -159.443390 | 2 parameters | 187 obs | 1.0 s
+  max|grad| 3.00e-14 | Newton decrement 1.79e-30 | 0 negative eigenvalue(s)
+  Sigma[id] 1x1, diagonal: 0.4122
+  residual: 0.04578
+              component  std.error  z.ratio bound %ch
+vm(id, G_as) 0.41215006 0.07911991 5.209182     P   0
+units!R      0.04577962 0.03374192 1.356758     P   0
+  software   chip_color gblup           sigma2 G                           asreml         0.41215006     0.41215006  d= 3.47e-10  OK
+  software   chip_color gblup           sigma2 residual                    asreml        0.045779615    0.045779615  d= 3.19e-10  OK
+  software   chip_color gblup           sigma2 G                           sommer         0.41215006     0.41215009  d= 7.40e-08  OK
+  software   chip_color gblup           sigma2 residual                    sommer        0.045779615      0.0457796  d= 3.34e-07  OK
+  software   chip_color gblup           logLik (asreml convention)         asreml          11.479177      11.479177  d= 3.44e-12  OK
+  software   chip_color gblup           BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   chip_color gblup           BLUP max |diff| / sd               asreml      1.0699495e-10             NA  d= 1.07e-10  OK
+  software   chip_color gblup           BLUP correlation                   sommer                  1             NA  d= 1.00e+00  OK
+  software   chip_color gblup           BLUP max |diff| / sd               sommer      1.1209586e-07             NA  d= 1.12e-07  OK
+
+=== tuber_shape gblup: 187 records ===
+REML fit (cpu): logLik -194.571623 | 2 parameters | 187 obs | 0.4 s
+  max|grad| 1.35e-09 | Newton decrement 4.05e-21 | 0 negative eigenvalue(s)
+  Sigma[id] 1x1, diagonal: 0.6387
+  residual: 0.04829
+             component  std.error  z.ratio bound %ch
+vm(id, G_as) 0.6387254 0.11576759 5.517307     P   0
+units!R      0.0482882 0.04653703 1.037630     P   0
+  software   tuber_shape gblup          sigma2 G                           asreml         0.63872539     0.63872539  d= 1.59e-09  OK
+  software   tuber_shape gblup          sigma2 residual                    asreml        0.048288197    0.048288197  d= 1.40e-09  OK
+  software   tuber_shape gblup          sigma2 G                           sommer         0.63872539     0.63872537  d= 2.79e-08  OK
+  software   tuber_shape gblup          sigma2 residual                    sommer        0.048288197    0.048288206  d= 1.80e-07  OK
+  software   tuber_shape gblup          logLik (asreml convention)         asreml         -23.649056     -23.649056  d= 5.29e-12  OK
+  software   tuber_shape gblup          BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   tuber_shape gblup          BLUP max |diff| / sd               asreml      3.6812142e-10             NA  d= 3.68e-10  OK
+  software   tuber_shape gblup          BLUP correlation                   sommer                  1             NA  d= 1.00e+00  OK
+  software   tuber_shape gblup          BLUP max |diff| / sd               sommer      4.7338422e-08             NA  d= 4.73e-08  OK
+
+Elapsed seconds (remlax includes process start-up):
+  total_yield gblup          remlax 5.1 | asreml 24.5 | sommer 4.7
+  chip_color gblup           remlax 2.6 | asreml 18.0 | sommer 5.5
+  tuber_shape gblup          remlax 1.2 | asreml 14.5 | sommer 3.9
+
+potato_tetraploid: 29 checks counted, 29 pass, 0 fail; 1 context rows -> /home/salas/Documents/Git/remlax-validation/published_data/results/potato_tetraploid.csv

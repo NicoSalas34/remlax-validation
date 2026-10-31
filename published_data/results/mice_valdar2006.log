@@ -1,0 +1,176 @@
+Message d'avis :
+le package ‘Matrix’ a été compilé avec la version R 4.6.1 
+Online License checked out Sat Oct 31 02:45:55 2026
+
+######## mice_valdar2006 (Valdar et al. 2006, doi:10.1038/ng1840)
+remlax0.1.0| R4.5.2
+  asreml       4.2.0.382
+  sommer       4.4.4
+  gaston       1.6
+  rrBLUP       4.6.3
+  statgenGWAS  1.0.12
+  BGLR         1.1.4
+  enhancer     1.1.2
+mice 1814, SNPs 10346, cages 523
+
+================ trait BMI: 1814 records ================
+
+=== BMI gblup_cage ===
+REML fit (cpu): logLik 2843.999512 | 3 parameters | 1814 obs | 41.1 s
+  max|grad| 4.19e-13 | Newton decrement 2.70e-28 | 0 negative eigenvalue(s)
+  Sigma[cage] 1x1, diagonal: 0.0004834
+  Sigma[id] 1x1, diagonal: 0.0003743
+  residual: 0.001858
+  components (vpredict): V1 = cage, V2 = id, V3 = residual
+  vpredict:
+    h2            0.13784   SE  0.02904   [V2/(V1+V2+V3)]
+                component    std.error   z.ratio bound %ch
+cage         0.0004834163 7.521961e-05  6.426733     P   0
+vm(id, G_as) 0.0003743421 8.472572e-05  4.418282     P   0
+units!R      0.0018580988 8.121230e-05 22.879524     P   0
+  software   BMI gblup_cage             sigma2 cage                        asreml      0.00048341633  0.00048341633  d= 1.30e-12  OK
+  software   BMI gblup_cage             sigma2 cage                        sommer      0.00048341633  0.00048341629  d= 8.63e-08  OK
+  software   BMI gblup_cage             sigma2 G                           asreml      0.00037434212  0.00037434212  d= 1.74e-11  OK
+  software   BMI gblup_cage             sigma2 G                           sommer      0.00037434212  0.00037434213  d= 1.83e-08  OK
+  software   BMI gblup_cage             sigma2 residual                    asreml       0.0018580988   0.0018580988  d= 2.43e-12  OK
+  software   BMI gblup_cage             sigma2 residual                    sommer       0.0018580988   0.0018580989  d= 1.07e-08  OK
+  software   BMI gblup_cage             logLik (asreml convention)         asreml          4502.6836      4502.6836  d= 1.36e-09  OK
+  software   BMI gblup_cage             BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   BMI gblup_cage             BLUP max |diff| / sd               asreml      2.0770293e-11             NA  d= 2.08e-11  OK
+  software   BMI gblup_cage             BLUP correlation                   sommer                  1             NA  d= 1.00e+00  OK
+  software   BMI gblup_cage             BLUP max |diff| / sd               sommer      6.5943545e-08             NA  d= 6.59e-08  OK
+  context    BMI gblup_cage             h2 (genomic, cage in the denominator) Valdar 2006b     0.13783571           0.21  d= 3.44e-01  ctx
+
+=== BMI ped_gen ===
+REML fit (cpu): logLik 2844.027618 | 4 parameters | 1814 obs | 67.8 s
+  max|grad| 9.79e-09 | Newton decrement 5.04e-19 | 0 negative eigenvalue(s)
+  Sigma[cage] 1x1, diagonal: 0.0004753
+  Sigma[idA] 1x1, diagonal: 2.535e-05
+  Sigma[id] 1x1, diagonal: 0.0003692
+  residual: 0.001847
+                 component    std.error    z.ratio bound %ch
+cage          4.753192e-04 8.145212e-05  5.8355655     P   0
+vm(idA, A_as) 2.535244e-05 1.077964e-04  0.2351882     P   0
+vm(id, G_as)  3.691539e-04 8.737590e-05  4.2248939     P   0
+units!R       1.846787e-03 9.464250e-05 19.5132963     P   0
+  software   BMI ped_gen                sigma2 cage                        asreml      0.00047531918  0.00047531918  d= 2.90e-11  OK
+  software   BMI ped_gen                sigma2 cage                        sommer      0.00047531918  0.00047531911  d= 1.53e-07  OK
+  software   BMI ped_gen                sigma2 A                           asreml      2.5352436e-05  2.5352436e-05  d= 1.90e-09  OK
+  software   BMI ped_gen                sigma2 A                           sommer      2.5352436e-05  2.5352552e-05  d= 4.58e-06  OK
+  software   BMI ped_gen                sigma2 G                           asreml       0.0003691539   0.0003691539  d= 3.22e-11  OK
+  software   BMI ped_gen                sigma2 G                           sommer       0.0003691539   0.0003691539  d= 1.35e-08  OK
+  software   BMI ped_gen                sigma2 residual                    asreml       0.0018467872   0.0018467872  d= 6.52e-12  OK
+  software   BMI ped_gen                sigma2 residual                    sommer       0.0018467872   0.0018467871  d= 2.18e-08  OK
+  software   BMI ped_gen                logLik (asreml convention)         asreml          4502.7117      4502.7117  d= 1.88e-09  OK
+  software   BMI ped_gen                BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   BMI ped_gen                BLUP max |diff| / sd               asreml      1.2403362e-10             NA  d= 1.24e-10  OK
+
+=== BMI gblup_only ===
+REML fit (cpu): logLik 2829.565863 | 2 parameters | 1814 obs | 17.1 s
+  max|grad| 2.84e-08 | Newton decrement 3.99e-18 | 0 negative eigenvalue(s)
+  Sigma[id] 1x1, diagonal: 0.0004657
+  residual: 0.002261
+               component    std.error   z.ratio bound %ch
+vm(id, G_as) 0.000465686 9.027311e-05  5.158635     P   0
+units!R      0.002261266 8.667601e-05 26.088720     P   0
+EM step failed to improve likelihood (this should not happen)
+EM step failed to improve likelihood (this should not happen)
+EM step failed to improve likelihood (this should not happen)
+  software   BMI gblup_only             sigma2 G                           asreml      0.00046568598  0.00046568598  d= 2.75e-10  OK
+  software   BMI gblup_only             sigma2 residual                    asreml       0.0022612663   0.0022612663  d= 2.21e-11  OK
+  software   BMI gblup_only             sigma2 G                           gaston      0.00046568598  0.00046568598  d= 2.78e-10  OK
+  software   BMI gblup_only             sigma2 residual                    gaston       0.0022612663   0.0022612663  d= 2.08e-11  OK
+  software   BMI gblup_only             sigma2 G                           rrBLUP      0.00046568598  0.00046568763  d= 3.54e-06  OK
+  software   BMI gblup_only             sigma2 residual                    rrBLUP       0.0022612663   0.0022612655  d= 3.54e-07  OK
+  software   BMI gblup_only             logLik (asreml convention)         asreml          4494.6825      4494.6825  d= 3.32e-09  OK
+  software   BMI gblup_only             BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   BMI gblup_only             BLUP max |diff| / sd               asreml      4.9538137e-10             NA  d= 4.95e-10  OK
+  software   BMI gblup_only             BLUP correlation                   gaston                  1             NA  d= 1.00e+00  OK
+  software   BMI gblup_only             BLUP max |diff| / sd               gaston      4.6774276e-10             NA  d= 4.68e-10  OK
+  software   BMI gblup_only             BLUP correlation                   rrBLUP                  1             NA  d= 1.00e+00  OK
+  software   BMI gblup_only             BLUP max |diff| / sd               rrBLUP      6.1016524e-06             NA  d= 6.10e-06  OK
+
+================ trait BodyLength: 1814 records ================
+
+=== BodyLength gblup_cage ===
+REML fit (cpu): logLik -1303.799397 | 3 parameters | 1814 obs | 39.6 s
+  max|grad| 1.72e-05 | Newton decrement 1.97e-12 | 0 negative eigenvalue(s)
+  Sigma[cage] 1x1, diagonal: 0.08091
+  Sigma[id] 1x1, diagonal: 0.05521
+  residual: 0.1603
+  components (vpredict): V1 = cage, V2 = id, V3 = residual
+  vpredict:
+    h2            0.18626   SE  0.03547   [V2/(V1+V2+V3)]
+              component   std.error   z.ratio bound %ch
+cage         0.08090748 0.009495435  8.520671     P   0
+vm(id, G_as) 0.05520805 0.010816430  5.104092     P   0
+units!R      0.16028436 0.007412013 21.624943     P   0
+  software   BodyLength gblup_cage      sigma2 cage                        asreml        0.080907486     0.08090748  d= 6.66e-08  OK
+  software   BodyLength gblup_cage      sigma2 cage                        sommer        0.080907486    0.080907435  d= 6.32e-07  OK
+  software   BodyLength gblup_cage      sigma2 G                           asreml        0.055208044    0.055208054  d= 1.89e-07  OK
+  software   BodyLength gblup_cage      sigma2 G                           sommer        0.055208044    0.055208147  d= 1.87e-06  OK
+  software   BodyLength gblup_cage      sigma2 residual                    asreml         0.16028437     0.16028436  d= 1.87e-08  OK
+  software   BodyLength gblup_cage      sigma2 residual                    sommer         0.16028437     0.16028435  d= 1.35e-07  OK
+  software   BodyLength gblup_cage      logLik (asreml convention)         asreml          354.88466      354.88466  d= 1.11e-09  OK
+  software   BodyLength gblup_cage      BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   BodyLength gblup_cage      BLUP max |diff| / sd               asreml      3.2142579e-07             NA  d= 3.21e-07  OK
+  software   BodyLength gblup_cage      BLUP correlation                   sommer                  1             NA  d= 1.00e+00  OK
+  software   BodyLength gblup_cage      BLUP max |diff| / sd               sommer      3.1770568e-06             NA  d= 3.18e-06  OK
+  context    BodyLength gblup_cage      h2 (genomic, cage in the denominator) Valdar 2006b     0.18626202           0.13  d= 4.33e-01  ctx
+
+=== BodyLength ped_gen ===
+REML fit (cpu): logLik -1291.612039 | 4 parameters | 1814 obs | 46.3 s
+  max|grad| 6.82e-05 | Newton decrement 2.12e-12 | 0 negative eigenvalue(s)
+  Sigma[cage] 1x1, diagonal: 0.05764
+  Sigma[idA] 1x1, diagonal: 0.08145
+  Sigma[id] 1x1, diagonal: 0.03842
+  residual: 0.1231
+               component   std.error  z.ratio bound %ch
+cage          0.05764199 0.008639234 6.672118     P   0
+vm(idA, A_as) 0.08144579 0.021942164 3.711839     P   0
+vm(id, G_as)  0.03841623 0.010018828 3.834404     P   0
+units!R       0.12313837 0.012954965 9.505110     P   0
+  software   BodyLength ped_gen         sigma2 cage                        asreml        0.057641995    0.057641993  d= 2.99e-08  OK
+  software   BodyLength ped_gen         sigma2 cage                        sommer        0.057641995    0.057641978  d= 2.91e-07  OK
+  software   BodyLength ped_gen         sigma2 A                           asreml        0.081445782     0.08144579  d= 9.85e-08  OK
+  software   BodyLength ped_gen         sigma2 A                           sommer        0.081445782    0.081445907  d= 1.54e-06  OK
+  software   BodyLength ped_gen         sigma2 G                           asreml        0.038416235    0.038416231  d= 8.70e-08  OK
+  software   BodyLength ped_gen         sigma2 G                           sommer        0.038416235    0.038416067  d= 4.36e-06  OK
+  software   BodyLength ped_gen         sigma2 residual                    asreml         0.12313836     0.12313837  d= 2.81e-08  OK
+  software   BodyLength ped_gen         sigma2 residual                    sommer         0.12313836     0.12313837  d= 7.96e-08  OK
+  software   BodyLength ped_gen         logLik (asreml convention)         asreml          367.07201      367.07201  d= 5.88e-10  OK
+  software   BodyLength ped_gen         BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   BodyLength ped_gen         BLUP max |diff| / sd               asreml      2.7709749e-07             NA  d= 2.77e-07  OK
+
+=== BodyLength gblup_only ===
+REML fit (cpu): logLik -1383.193093 | 2 parameters | 1814 obs | 34.0 s
+  max|grad| 2.79e-04 | Newton decrement 2.54e-11 | 0 negative eigenvalue(s)
+  Sigma[id] 1x1, diagonal: 0.0911
+  residual: 0.2183
+              component   std.error   z.ratio bound %ch
+vm(id, G_as) 0.09109535 0.013532745  6.731476     P   0
+units!R      0.21825437 0.008844766 24.676106     P   0
+EM step failed to improve likelihood (this should not happen)
+  software   BodyLength gblup_only      sigma2 G                           asreml        0.091095381    0.091095347  d= 3.74e-07  OK
+  software   BodyLength gblup_only      sigma2 residual                    asreml         0.21825434     0.21825437  d= 1.39e-07  OK
+  software   BodyLength gblup_only      sigma2 G                           gaston        0.091095381    0.091095347  d= 3.74e-07  OK
+  software   BodyLength gblup_only      sigma2 residual                    gaston         0.21825434     0.21825437  d= 1.39e-07  OK
+  software   BodyLength gblup_only      sigma2 G                           rrBLUP        0.091095381    0.091095999  d= 6.78e-06  OK
+  software   BodyLength gblup_only      sigma2 residual                    rrBLUP         0.21825434     0.21825412  d= 1.01e-06  OK
+  software   BodyLength gblup_only      logLik (asreml convention)         asreml          281.92353      281.92353  d= 8.87e-09  OK
+  software   BodyLength gblup_only      BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   BodyLength gblup_only      BLUP max |diff| / sd               asreml      6.0218779e-07             NA  d= 6.02e-07  OK
+  software   BodyLength gblup_only      BLUP correlation                   gaston                  1             NA  d= 1.00e+00  OK
+  software   BodyLength gblup_only      BLUP max |diff| / sd               gaston      6.0181861e-07             NA  d= 6.02e-07  OK
+  software   BodyLength gblup_only      BLUP correlation                   rrBLUP                  1             NA  d= 1.00e+00  OK
+  software   BodyLength gblup_only      BLUP max |diff| / sd               rrBLUP      9.1472527e-06             NA  d= 9.15e-06  OK
+
+Elapsed seconds (remlax includes process start-up):
+  BMI gblup_cage             remlax 52.6 | asreml 34.5 | sommer 10.0
+  BMI ped_gen                remlax 270.8 | asreml 45.0 | sommer 13.3
+  BMI gblup_only             remlax 26.6 | asreml 36.2 | gaston 11.8 | rrBLUP 1.6
+  BodyLength gblup_cage      remlax 51.2 | asreml 34.2 | sommer 11.0
+  BodyLength ped_gen         remlax 275.0 | asreml 41.2 | sommer 10.9
+  BodyLength gblup_only      remlax 43.0 | asreml 36.6 | gaston 10.1 | rrBLUP 1.6
+
+mice_valdar2006: 70 checks counted, 70 pass, 0 fail; 2 context rows -> /home/salas/Documents/Git/remlax-validation/published_data/results/mice_valdar2006.csv

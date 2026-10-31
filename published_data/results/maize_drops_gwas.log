@@ -1,0 +1,123 @@
+Online License checked out Sat Oct 31 02:04:31 2026
+
+######## maize_drops_gwas (Millet et al. 2016 Plant Physiol; Millet et al. 2019 Sci Data)
+remlax0.1.0| R4.5.2
+  asreml       4.2.0.382
+  sommer       4.4.4
+  gaston       1.6
+  rrBLUP       4.6.3
+  statgenGWAS  1.0.12
+  BGLR         1.1.4
+  enhancer     1.1.2
+trial Mur13W: 246 hybrids, 41722 SNPs after MAF >= 0.05
+K: condition number 3.35e+05
+
+==== Mur13W anthesis ====
+remlax: s2_g 4.076346022 s2_e 0.8692130319 logLik_asreml -353.5193517030 (9.0 s)
+  software   Mur13W anthesis            null s2_g                          asreml           4.076346      4.0763462  d= 4.88e-08  OK
+  software   Mur13W anthesis            null s2_e                          asreml         0.86921303     0.86921271  d= 3.72e-07  OK
+  software   Mur13W anthesis            null logLik                        asreml         -353.51935     -353.51935  d= 2.77e-10  OK
+EM step failed to improve likelihood (this should not happen)
+  software   Mur13W anthesis            null s2_g                          gaston           4.076346      4.0763462  d= 4.87e-08  OK
+  software   Mur13W anthesis            null s2_e                          gaston         0.86921303     0.86921271  d= 3.72e-07  OK
+statgenGWAS EMMA: s2_g 4.061206091 s2_e 0.8850361374 (4.7 s)
+  context    Mur13W anthesis            null s2_g                          statgenGWAS       4.076346      4.0612061  d= 3.73e-03  ctx
+  context    Mur13W anthesis            null s2_e                          statgenGWAS     0.86921303     0.88503614  d= 1.79e-02  ctx
+  software   Mur13W anthesis            REML logLik gain over statgen comps statgenGWAS  0.00041656893             NA  d= 4.17e-04  OK
+  software   Mur13W anthesis            effect, statgen V (max|d|/sd)      statgenGWAS  1.9883709e-09             NA  d= 1.99e-09  OK
+  software   Mur13W anthesis            effectSe, statgen V (max rel)      statgenGWAS  2.9594688e-10             NA  d= 2.96e-10  OK
+  software   Mur13W anthesis            -log10 p, statgen V (max|d|)       statgenGWAS  1.1655552e-09             NA  d= 1.17e-09  OK
+EM step failed to improve likelihood (this should not happen)
+  software   Mur13W anthesis            score chi2, gaston V (max rel)     gaston      5.0142969e-10             NA  d= 5.01e-10  OK
+  context    Mur13W anthesis            score chi2 native output (max rel) gaston      3.1223747e-06             NA  d= 3.12e-06  ctx
+  context    Mur13W anthesis            -log10 p own REML (max|d|)         statgenGWAS    0.011586716             NA  d= 1.16e-02  ctx
+  context    Mur13W anthesis            -log10 p own REML (max|d|)         gaston      1.9074097e-06             NA  d= 1.91e-06  ctx
+  context    Mur13W anthesis            top SNP identical                  statgenGWAS              1              1  d= 0.00e+00  ctx
+  software   Mur13W anthesis            top SNP identical                  gaston                  1              1  d= 0.00e+00  OK
+  context    Mur13W anthesis            Bonferroni set symmetric diff      statgenGWAS              0              0  d= 0.00e+00  ctx
+  software   Mur13W anthesis            Bonferroni set symmetric diff      gaston                  0              0  d= 0.00e+00  OK
+  context    Mur13W anthesis            Bonferroni set, native output      gaston                  0              0  d= 0.00e+00  ctx
+  context    Mur13W anthesis            lambda GC (F convention)           statgenGWAS     0.97725728     0.97785075  d= 6.07e-04  ctx
+  context    Mur13W anthesis            lambda GC (chi2 fixed V)           remlax         0.98237784             NA  d=      Inf  ctx
+  software   Mur13W anthesis            top-10 refit beta (max rel)        gaston      1.4259384e-07             NA  d= 1.43e-07  OK
+  software   Mur13W anthesis            top-10 refit -log10 p (max|d|)     gaston      4.1520648e-06             NA  d= 4.15e-06  OK
+  software   Mur13W anthesis            top-10 refit all converged         remlax                  1             NA  d= 1.00e+00  OK
+
+==== Mur13W grain.yield ====
+remlax: s2_g 0.9635149588 s2_e 0.2323759915 logLik_asreml -179.5111078526 (2.1 s)
+  software   Mur13W grain.yield         null s2_g                          asreml         0.96351496     0.96351496  d= 5.49e-11  OK
+  software   Mur13W grain.yield         null s2_e                          asreml         0.23237599     0.23237599  d= 1.27e-11  OK
+  software   Mur13W grain.yield         null logLik                        asreml         -179.51111     -179.51111  d= 1.34e-12  OK
+EM step failed to improve likelihood (this should not happen)
+  software   Mur13W grain.yield         null s2_g                          gaston         0.96351496     0.96351496  d= 1.56e-11  OK
+  software   Mur13W grain.yield         null s2_e                          gaston         0.23237599     0.23237599  d= 4.97e-11  OK
+statgenGWAS EMMA: s2_g 0.9812621007 s2_e 0.2138410118 (1.7 s)
+  context    Mur13W grain.yield         null s2_g                          statgenGWAS     0.96351496      0.9812621  d= 1.81e-02  ctx
+  context    Mur13W grain.yield         null s2_e                          statgenGWAS     0.23237599     0.21384101  d= 8.67e-02  ctx
+  software   Mur13W grain.yield         REML logLik gain over statgen comps statgenGWAS    0.010190332             NA  d= 1.02e-02  OK
+  software   Mur13W grain.yield         effect, statgen V (max|d|/sd)      statgenGWAS  4.0949399e-10             NA  d= 4.09e-10  OK
+  software   Mur13W grain.yield         effectSe, statgen V (max rel)      statgenGWAS  4.9792439e-10             NA  d= 4.98e-10  OK
+  software   Mur13W grain.yield         -log10 p, statgen V (max|d|)       statgenGWAS  1.1652701e-09             NA  d= 1.17e-09  OK
+EM step failed to improve likelihood (this should not happen)
+EM step failed to improve likelihood (this should not happen)
+EM step failed to improve likelihood (this should not happen)
+  software   Mur13W grain.yield         score chi2, gaston V (max rel)     gaston      4.9547049e-10             NA  d= 4.95e-10  OK
+  context    Mur13W grain.yield         score chi2 native output (max rel) gaston      2.9812275e-06             NA  d= 2.98e-06  ctx
+  context    Mur13W grain.yield         -log10 p own REML (max|d|)         statgenGWAS    0.057574651             NA  d= 5.76e-02  ctx
+  context    Mur13W grain.yield         -log10 p own REML (max|d|)         gaston      2.3527269e-06             NA  d= 2.35e-06  ctx
+  context    Mur13W grain.yield         top SNP identical                  statgenGWAS              1              1  d= 0.00e+00  ctx
+  software   Mur13W grain.yield         top SNP identical                  gaston                  1              1  d= 0.00e+00  OK
+  context    Mur13W grain.yield         Bonferroni set symmetric diff      statgenGWAS              0              0  d= 0.00e+00  ctx
+  software   Mur13W grain.yield         Bonferroni set symmetric diff      gaston                  0              0  d= 0.00e+00  OK
+  context    Mur13W grain.yield         Bonferroni set, native output      gaston                  0              0  d= 0.00e+00  ctx
+  context    Mur13W grain.yield         lambda GC (F convention)           statgenGWAS     0.98473054     0.98279864  d= 1.97e-03  ctx
+  context    Mur13W grain.yield         lambda GC (chi2 fixed V)           remlax         0.98988337             NA  d=      Inf  ctx
+  software   Mur13W grain.yield         top-10 refit beta (max rel)        gaston      9.1207209e-09             NA  d= 9.12e-09  OK
+  software   Mur13W grain.yield         top-10 refit -log10 p (max|d|)     gaston      7.1483081e-07             NA  d= 7.15e-07  OK
+  software   Mur13W grain.yield         top-10 refit all converged         remlax                  1             NA  d= 1.00e+00  OK
+
+==== Mur13W anthesis LOCO ====
+statgenGWAS varComp per chromosome:
+List of 10
+ $ chr 1 : Named num [1:2] 3.95 1.19
+  ..- attr(*, "names")= chr [1:2] "Vg" "Ve"
+ $ chr 2 : Named num [1:2] 4.343 0.634
+  ..- attr(*, "names")= chr [1:2] "Vg" "Ve"
+ $ chr 3 : Named num [1:2] 4.01 1.07
+  ..- attr(*, "names")= chr [1:2] "Vg" "Ve"
+ $ chr 4 : Named num [1:2] 3.98 1.06
+  ..- attr(*, "names")= chr [1:2] "Vg" "Ve"
+ $ chr 5 : Named num [1:2] 4.247 0.758
+  ..- attr(*, "names")= chr [1:2] "Vg" "Ve"
+ $ chr 6 : Named num [1:2] 4.22 0.698
+  ..- attr(*, "names")= chr [1:2] "Vg" "Ve"
+ $ chr 7 : Named num [1:2] 4.236 0.756
+  ..- attr(*, "names")= chr [1:2] "Vg" "Ve"
+ $ chr 8 : Named num [1:2] 4.08 0.889
+  ..- attr(*, "names")= chr [1:2] "Vg" "Ve"
+ $ chr 9 : Named num [1:2] 4.081 0.889
+  ..- attr(*, "names")= chr [1:2] "Vg" "Ve"
+ $ chr 10: Named num [1:2] 3.958 0.976
+  ..- attr(*, "names")= chr [1:2] "Vg" "Ve"
+NULL
+  software   Mur13W anthesis LOCO       effect, statgen V (max|d|/sd)      statgenGWAS  2.0369865e-09             NA  d= 2.04e-09  OK
+  software   Mur13W anthesis LOCO       -log10 p, statgen V (max|d|)       statgenGWAS  1.2242443e-09             NA  d= 1.22e-09  OK
+  context    Mur13W anthesis LOCO       per-chromosome components (max rel) statgenGWAS     0.10405629             NA  d= 1.04e-01  ctx
+  software   Mur13W anthesis LOCO       min REML logLik gain over statgen  statgenGWAS  1.7532283e-05             NA  d= 1.75e-05  OK
+  software   Mur13W anthesis LOCO       all chromosome nulls converged     remlax                  1             NA  d= 1.00e+00  OK
+  context    Mur13W anthesis LOCO       -log10 p own REML (max|d|)         statgenGWAS    0.068678738             NA  d= 6.87e-02  ctx
+  context    Mur13W anthesis LOCO       Bonferroni set symmetric diff      statgenGWAS              0              0  d= 0.00e+00  ctx
+
+Timings (elapsed seconds):
+         trait remlax_null_fit_s remlax_scan_s remlax_exact_top10_s
+      anthesis             9.023        12.383               34.083
+   grain.yield             2.093        10.079               27.492
+ anthesis LOCO                NA       216.225                   NA
+ statgenGWAS_s gaston_aireml_s gaston_score_s
+         4.700           0.096          0.740
+         1.699           0.071          0.748
+         7.893              NA             NA
+null device 
+          1 
+
+maize_drops_gwas: 34 checks counted, 34 pass, 0 fail; 23 context rows -> /home/salas/Documents/Git/remlax-validation/published_data/results/maize_drops_gwas.csv
