@@ -1,0 +1,160 @@
+Message d'avis :
+le package ‘Matrix’ a été compilé avec la version R 4.6.1 
+Online License checked out Sat Oct 31 13:26:09 2026
+
+######## warcolak_nadiv (Wolak 2012, doi:10.1111/j.2041-210X.2012.00213.x (simulated data))
+remlax 0.2.0 | R 4.5.2
+  asreml       4.2.0.382
+  sommer       4.4.4
+  gaston       1.6
+  rrBLUP       4.6.3
+  statgenGWAS  1.0.12
+  BGLR         1.1.4
+  enhancer     1.1.2
+  nadiv        2.18.0
+starting to make D....done 
+starting to invert D...'as(<dsCMatrix>, "dgCMatrix")' est obsolète.
+Utilisez plutôt ‘as(., "generalMatrix")’.
+Voir help("Deprecated") et help("Matrix-deprecated").
+.done 
+individuals 5400, nonzeros A^-1 27000, D^-1 43800, AA^-1 139196, S^-1 22800
+
+=== trait1 A: ~vm(id, Kinv = Ai) ===
+REML fit (cpu): logLik -7228.759422 | 2 parameters | 5400 obs | 9.4 s
+  max|grad| 6.49e-08 | Newton decrement 3.37e-18 | 0 negative eigenvalue(s)
+  Sigma[id] 1x1, diagonal: 0.397
+  residual: 0.5603
+           component  std.error  z.ratio bound %ch
+vm(id, gA) 0.3969813 0.02931254 13.54306     P   0
+units!R    0.5603204 0.02031781 27.57780     P   0
+  software   trait1 A                   sigma2 A                           asreml          0.3969813      0.3969813  d= 9.56e-11  OK
+  software   trait1 A                   sigma2 residual                    asreml         0.56032037     0.56032037  d= 3.08e-11  OK
+  software   trait1 A                   logLik (asreml convention)         asreml         -2268.3292     -2268.3292  d= 1.65e-09  OK
+  software   trait1 A A                 BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   trait1 A A                 BLUP max |diff| / sd               asreml      1.7392399e-10             NA  d= 1.74e-10  OK
+
+=== trait1 A+D: ~vm(id, Kinv = Ai) + vm(idD, Kinv = Di) ===
+REML fit (cpu): logLik -7214.577812 | 3 parameters | 5400 obs | 59.6 s
+  max|grad| 8.07e-05 | Newton decrement 4.93e-12 | 0 negative eigenvalue(s)
+  Sigma[id] 1x1, diagonal: 0.3772
+  Sigma[idD] 1x1, diagonal: 0.2291
+  residual: 0.3547
+            component  std.error   z.ratio bound %ch
+vm(id, gA)  0.3771663 0.03132418 12.040738     P   0
+vm(idD, gD) 0.2290614 0.04959102  4.619008     P   0
+units!R     0.3546582 0.04622465  7.672490     P   0
+  software   trait1 A+D                 sigma2 A                           asreml          0.3771663     0.37716629  d= 2.05e-08  OK
+  software   trait1 A+D                 sigma2 D                           asreml         0.22906129     0.22906136  d= 2.84e-07  OK
+  software   trait1 A+D                 sigma2 residual                    asreml         0.35465824     0.35465818  d= 1.85e-07  OK
+  software   trait1 A+D                 logLik (asreml convention)         asreml         -2254.1476     -2254.1476  d= 3.24e-09  OK
+  software   trait1 A+D A               BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   trait1 A+D A               BLUP max |diff| / sd               asreml      9.3292876e-08             NA  d= 9.33e-08  OK
+  software   trait1 A+D D               BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   trait1 A+D D               BLUP max |diff| / sd               asreml      1.1622957e-06             NA  d= 1.16e-06  OK
+  context    trait1 A+D                 sigma2 A                           simulation      0.3771663     0.36767742  d= 2.58e-02  ctx
+  context    trait1 A+D                 sigma2 D                           simulation     0.22906129     0.29124634  d= 2.14e-01  ctx
+  context    trait1 A+D                 sigma2 residual                    simulation     0.35465824     0.30234644  d= 1.73e-01  ctx
+
+=== trait1 A+D+AA: ~vm(id, Kinv = Ai) + vm(idD, Kinv = Di) + vm(idAA, Kinv = AAi) ===
+REML fit (cpu): logLik -7214.577812 | 4 parameters | 5400 obs | 40.9 s
+  max|grad| 1.36e-06 | Newton decrement 2.47e-14 | 0 negative eigenvalue(s)
+  Sigma[id] 1x1, diagonal: 0.3772
+  Sigma[idD] 1x1, diagonal: 0.2291
+  Sigma[idAA] 1x1, diagonal: 9.668e-09
+  residual: 0.3547
+                 component  std.error   z.ratio bound %ch
+vm(id, gA)    3.771662e-01 0.03132418 12.040737     P   0
+vm(idD, gD)   2.290613e-01 0.04959103  4.619008     P   0
+vm(idAA, gAA) 9.242913e-08         NA        NA     B  NA
+units!R       3.546581e-01 0.04622465  7.672489     P   0
+  software   trait1 A+D+AA              sigma2 A                           asreml         0.37716628     0.37716624  d= 1.10e-07  OK
+  software   trait1 A+D+AA              sigma2 D                           asreml         0.22906136     0.22906134  d= 8.01e-08  OK
+  software   trait1 A+D+AA              sigma2 AA                          asreml      9.6677386e-09  9.2429133e-08  d= 0.00e+00  OK
+  software   trait1 A+D+AA              sigma2 residual                    asreml         0.35465817     0.35465814  d= 7.45e-08  OK
+  software   trait1 A+D+AA              logLik (asreml convention)         asreml         -2254.1476     -2254.1476  d= 4.41e-07  OK
+  software   trait1 A+D+AA A            BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   trait1 A+D+AA A            BLUP max |diff| / sd               asreml      3.7651914e-07             NA  d= 3.77e-07  OK
+  software   trait1 A+D+AA D            BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   trait1 A+D+AA D            BLUP max |diff| / sd               asreml      3.3332564e-07             NA  d= 3.33e-07  OK
+
+=== trait2 A+S+D: ~vm(id, Kinv = Ai) + vm(idS, Kinv = Si) + vm(idD, Kinv = Di) ===
+REML fit (cpu): logLik -7249.591208 | 4 parameters | 5400 obs | 42.6 s
+  max|grad| 2.78e-05 | Newton decrement 1.16e-12 | 0 negative eigenvalue(s)
+  Sigma[id] 1x1, diagonal: 0.2629
+  Sigma[idS] 1x1, diagonal: 0.09535
+  Sigma[idD] 1x1, diagonal: 0.3471
+  residual: 0.2843
+             component  std.error  z.ratio bound %ch
+vm(id, gA)  0.26290682 0.03619400 7.263823     P   0
+vm(idS, gS) 0.09534591 0.02909033 3.277581     P   0
+vm(idD, gD) 0.34709306 0.05603537 6.194178     P   0
+units!R     0.28429983 0.04988186 5.699464     P   0
+  software   trait2 A+S+D               sigma2 A                           asreml         0.26290682     0.26290682  d= 2.05e-08  OK
+  software   trait2 A+S+D               sigma2 S                           asreml        0.095345895    0.095345906  d= 1.15e-07  OK
+  software   trait2 A+S+D               sigma2 D                           asreml         0.34709309     0.34709306  d= 1.04e-07  OK
+  software   trait2 A+S+D               sigma2 residual                    asreml          0.2842998     0.28429983  d= 9.84e-08  OK
+  software   trait2 A+S+D               logLik (asreml convention)         asreml          -2289.161      -2289.161  d= 3.45e-09  OK
+  software   trait2 A+S+D A             BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   trait2 A+S+D A             BLUP max |diff| / sd               asreml      7.9032332e-08             NA  d= 7.90e-08  OK
+  software   trait2 A+S+D S             BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   trait2 A+S+D S             BLUP max |diff| / sd               asreml      4.5256059e-07             NA  d= 4.53e-07  OK
+  software   trait2 A+S+D D             BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   trait2 A+S+D D             BLUP max |diff| / sd               asreml      3.7055485e-07             NA  d= 3.71e-07  OK
+  context    trait2 A+S+D               sigma2 A                           simulation     0.26290682     0.30322002  d= 1.33e-01  ctx
+  context    trait2 A+S+D               sigma2 S                           simulation    0.095345895    0.073804688  d= 2.92e-01  ctx
+  context    trait2 A+S+D               sigma2 D                           simulation     0.34709309     0.29898851  d= 1.61e-01  ctx
+  context    trait2 A+S+D               sigma2 residual                    simulation      0.2842998     0.29819445  d= 4.66e-02  ctx
+  software   trait1 A                   sigma2 A                           sommer          0.3969813     0.39698129  d= 2.83e-08  OK
+  software   trait1 A                   sigma2 residual                    sommer         0.56032037     0.56032037  d= 1.22e-08  OK
+
+=== bivariate A+D ===
+REML fit (cpu): logLik -14469.190356 | 9 parameters | 10800 obs | 74.4 s
+  max|grad| 3.96e-04 | Newton decrement 5.35e-10 | 0 negative eigenvalue(s)
+  Sigma[id] 2x2, diagonal: 0.3754 0.3371
+  Sigma[idD] 2x2, diagonal: 0.2298 0.3396
+  residual: 0.3551 0.2909
+                                component  std.error    z.ratio bound %ch
+trait:vm(id, gA)!trait_y1:y1   0.37537116 0.03126935 12.0044460     P   0
+trait:vm(id, gA)!trait_y2:y1   0.01063287 0.02209566  0.4812197     P   0
+trait:vm(id, gA)!trait_y2:y2   0.33709495 0.03121190 10.8002043     P   0
+trait:vm(idD, gD)!trait_y1:y1  0.22979569 0.04960764  4.6322641     P   0
+trait:vm(idD, gD)!trait_y2:y1 -0.07499616 0.03739689 -2.0054116     P   0
+trait:vm(idD, gD)!trait_y2:y2  0.33962684 0.05605675  6.0586251     P   0
+units:trait!R                  1.00000000         NA         NA     F   0
+units:trait!trait_y1:y1        0.35509179 0.04619852  7.6862164     P   0
+units:trait!trait_y2:y1        0.05599098 0.03400274  1.6466609     P   0
+units:trait!trait_y2:y2        0.29089865 0.04995865  5.8227882     P   0
+  software   bivariate A+D              A var trait1                       asreml         0.37537138     0.37537116  d= 5.79e-07  OK
+  software   bivariate A+D              A var trait2                       asreml         0.33709503     0.33709495  d= 2.27e-07  OK
+  software   bivariate A+D              A cov (/ sqrt(var var))            asreml      2.1622212e-07             NA  d= 2.16e-07  OK
+  software   bivariate A+D              D var trait1                       asreml         0.22979499     0.22979569  d= 3.02e-06  OK
+  software   bivariate A+D              D var trait2                       asreml          0.3396268     0.33962684  d= 1.14e-07  OK
+  software   bivariate A+D              D cov (/ sqrt(var var))            asreml       4.028035e-07             NA  d= 4.03e-07  OK
+  software   bivariate A+D              residual var trait1                asreml         0.35509225     0.35509179  d= 1.30e-06  OK
+  software   bivariate A+D              residual var trait2                asreml         0.29089863     0.29089865  d= 8.07e-08  OK
+  software   bivariate A+D              residual cov (/ sqrt(var var))     asreml       4.573768e-07             NA  d= 4.57e-07  OK
+  software   bivariate A+D              logLik (asreml convention)         asreml           -4548.33       -4548.33  d= 5.33e-09  OK
+
+Runtimes (s, elapsed):
+$`trait1 A`
+ remlax  asreml  sommer 
+ 12.205  19.906 175.349 
+
+$`trait1 A+D`
+remlax asreml 
+70.422 11.033 
+
+$`trait1 A+D+AA`
+remlax asreml 
+46.282 10.480 
+
+$`trait2 A+S+D`
+remlax asreml 
+51.449 10.593 
+
+$`bivariate A+D`
+remlax asreml 
+98.516 18.377 
+
+
+warcolak_nadiv: 45 checks counted, 45 pass, 0 fail; 7 context rows -> /home/salas/Documents/Git/remlax-validation/published_data/results/warcolak_nadiv.csv

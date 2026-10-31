@@ -153,7 +153,7 @@ def main() -> None:
     md.append("## Context rows\n")
     md.append(rows_md(ctx) + "\n" if len(ctx) else "None.\n")
     md.append("## Rerun\n")
-    md.append("```\nfor s in published_data/scripts/0[1-9]_*.R; do Rscript \"$s\"; done\n"
+    md.append("```\nfor s in published_data/scripts/[0-9][0-9]_*.R; do Rscript \"$s\"; done\n"
               "python3 published_data/make_report.py\n```\n")
     with open(OUT_MD, "w") as fh:
         fh.write("\n".join(md))

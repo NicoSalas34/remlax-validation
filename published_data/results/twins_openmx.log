@@ -1,0 +1,75 @@
+Message d'avis :
+le package ‘Matrix’ a été compilé avec la version R 4.6.1 
+Online License checked out Sat Oct 31 13:37:03 2026
+
+######## twins_openmx (OpenMx twinData, Neale et al. 2016, doi:10.1007/s11336-014-9435-8)
+remlax 0.2.0 | R 4.5.2
+  asreml       4.2.0.382
+  sommer       4.4.4
+  gaston       1.6
+  rrBLUP       4.6.3
+  statgenGWAS  1.0.12
+  BGLR         1.1.4
+  enhancer     1.1.2
+  OpenMx       2.21.11
+pairs MZ 1232, DZ 751; individuals with BMI 3855
+genotype levels 2684 (MZ pairs count once)
+
+=== ACE: ~vm(geno, Kinv = KAi) + pair ===
+REML fit (cpu): logLik -4832.625577 | 3 parameters | 3855 obs | 4.7 s
+  max|grad| 6.34e-07 | Newton decrement 4.02e-18 | 0 negative eigenvalue(s)
+  Sigma[geno] 1x1, diagonal: 0.6996
+  Sigma[pair] 1x1, diagonal: 9.385e-09
+  residual: 0.2417
+                   component   std.error  z.ratio bound %ch
+pair            2.445696e-08          NA       NA     B  NA
+vm(geno, KA_as) 6.995997e-01 0.025834350 27.08021     P   0
+units!R         2.416865e-01 0.009793262 24.67886     P   0
+  software   ACE                        sigma2 A                           asreml         0.69959972     0.69959971  d= 2.06e-08  OK
+  software   ACE                        sigma2 A                           gaston         0.69959972     0.69959973  d= 1.27e-08  OK
+  software   ACE                        sigma2 A                           sommer         0.69959972      0.6995976  d= 3.02e-06  OK
+  software   ACE                        sigma2 C                           asreml      9.3848455e-09   2.445696e-08  d= 0.00e+00  OK
+  software   ACE                        sigma2 C                           gaston      9.3848455e-09  1.390654e-309  d= 0.00e+00  OK
+  software   ACE                        sigma2 C                           sommer      9.3848455e-09              0  d= 0.00e+00  OK
+  software   ACE                        sigma2 E                           asreml         0.24168653     0.24168653  d= 1.32e-09  OK
+  software   ACE                        sigma2 E                           gaston         0.24168653     0.24168653  d= 1.29e-09  OK
+  software   ACE                        sigma2 E                           sommer         0.24168653     0.24168738  d= 3.50e-06  OK
+  software   ACE                        logLik (asreml convention)         asreml         -1291.0365     -1291.0365  d= 4.80e-07  OK
+  software   ACE                        logLik (asreml convention)         gaston         -1291.0365     -1291.0365  d= 2.92e-08  OK
+OpenMx ACE (ML): A 0.69923  C 0.00000  E 0.24170  -2LL 9659.2152  status 0
+  context    ACE                        sigma2 A                           OpenMx (ML)     0.69959972     0.69922842  d= 5.31e-04  ctx
+  context    ACE                        sigma2 C                           OpenMx (ML)  9.3848455e-09  8.1231794e-13  d= 0.00e+00  ctx
+  context    ACE                        sigma2 E                           OpenMx (ML)     0.24168653     0.24169948  d= 5.36e-05  ctx
+
+=== ADE: ~vm(geno, Kinv = KAi) + vm(genoD, Kinv = KDi) ===
+REML fit (cpu): logLik -4832.139727 | 3 parameters | 3855 obs | 13.1 s
+  max|grad| 2.65e-05 | Newton decrement 1.75e-13 | 0 negative eigenvalue(s)
+  Sigma[geno] 1x1, diagonal: 0.5808
+  Sigma[genoD] 1x1, diagonal: 0.1169
+  residual: 0.2399
+                 component   std.error    z.ratio bound %ch
+vm(geno, KA_as)  0.5807933 0.124079701  4.6808084     P   0
+vm(genoD, KD_as) 0.1169105 0.120412923  0.9709132     P   0
+units!R          0.2398816 0.009859303 24.3304847     P   0
+  software   ADE                        sigma2 A                           asreml          0.5807933      0.5807933  d= 1.36e-08  OK
+  software   ADE                        sigma2 A                           gaston          0.5807933      0.5807933  d= 1.36e-08  OK
+  software   ADE                        sigma2 A                           sommer          0.5807933     0.58079207  d= 2.11e-06  OK
+  software   ADE                        sigma2 D                           asreml          0.1169105      0.1169105  d= 3.83e-08  OK
+  software   ADE                        sigma2 D                           gaston          0.1169105      0.1169105  d= 3.55e-08  OK
+  software   ADE                        sigma2 D                           sommer          0.1169105     0.11691088  d= 3.20e-06  OK
+  software   ADE                        sigma2 E                           asreml         0.23988161     0.23988161  d= 8.72e-09  OK
+  software   ADE                        sigma2 E                           gaston         0.23988161     0.23988161  d= 8.44e-09  OK
+  software   ADE                        sigma2 E                           sommer         0.23988161     0.23988194  d= 1.40e-06  OK
+  software   ADE                        logLik (asreml convention)         asreml         -1290.5506     -1290.5506  d= 5.89e-07  OK
+  software   ADE                        logLik (asreml convention)         gaston         -1290.5506     -1290.5506  d= 2.57e-07  OK
+OpenMx ADE (ML): A 0.57966  D 0.11767  E 0.23988  -2LL 9658.2303  status 0
+  context    ADE                        sigma2 A                           OpenMx (ML)      0.5807933     0.57966053  d= 1.95e-03  ctx
+  context    ADE                        sigma2 D                           OpenMx (ML)      0.1169105     0.11766782  d= 6.44e-03  ctx
+  context    ADE                        sigma2 E                           OpenMx (ML)     0.23988161     0.23988141  d= 8.38e-07  ctx
+
+Runtimes (s, elapsed):
+    remlax asreml gaston sommer
+ACE  8.295 23.905  48.74 42.044
+ADE 14.374 40.721  44.52 43.005
+
+twins_openmx: 22 checks counted, 22 pass, 0 fail; 6 context rows -> /home/salas/Documents/Git/remlax-validation/published_data/results/twins_openmx.csv
