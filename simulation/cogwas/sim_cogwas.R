@@ -151,3 +151,115 @@ sim_pheno <- function(gen, des, dge = 0.3, ige_intra = 0.05, ige_inter = 0.05,
   }
   list(y = y, truth = truth, share = share)
 }
+
+# ==============================================================================
+# sim_pheno_full() -- wheat phenotypes with every kind of effect
+# ------------------------------------------------------------------------------
+# Genotype-level variances (what the mixed model estimates):
+#   g_dge   (lines)          polygenic + major direct QTL
+#   g_ige   (lines)          polygenic + major indirect QTL, acting on wheat neighbours
+#   g_inter (alfalfa plants) polygenic + major QTL, acting on wheat neighbours
+# Partial pleiotropy: the polygenic causal SNPs are split into direct only,
+# indirect only and shared. On shared SNPs the indirect effect is
+# rho z_d + sqrt(1 - rho^2) z_i; rho is set by bisection so that the REALISED
+# correlation between g_dge and g_ige (majors included, LD included) equals r_g.
+# Non-additive effects, in phenotype units (variance of the term):
+#   sim        focal dose at s x mean wheat-neighbour dose at the same s (Sato)
+#   pair_intra focal dose at a x mean wheat-neighbour dose at b (a != b)
+#   pair_inter focal dose at a x mean alfalfa-neighbour dose at b (plant genotype)
+# Spatial (bin, bin:row, bin:col) and residual, also in phenotype units.
+# All causal loci are drawn among gen$*$causal, hence off the chip.
+# ==============================================================================
+sim_par_default <- function() list(
+  n_poly = 1000L, frac_shared = 0.5, frac_dir_only = 0.25,
+  var_dge = 0.30, var_ige = 0.30, r_g = -0.4, var_inter = 0.30, n_poly_inter = 500L,
+  n_major_dir = 3L, n_major_ige = 3L, n_major_inter = 2L, pve_major = 0.10,
+  n_sim = 2L, var_sim = 0.02, var_pair_intra = 0.03, var_pair_inter = 0.03,
+  var_bin = 0.05, var_row = 0.03, var_col = 0.03, var_res = 0.50)
+
+sim_pheno_full <- function(gen, des, par = sim_par_default(), seed = 1L) {
+  set.seed(seed)
+  cells <- des$cells; cw <- cells[des$wheat, ]
+  line_of <- match(cw$line, rownames(gen$wheat$G))
+  plant_of <- cells$plant[des$alfalfa]
+  Gw <- gen$wheat$G; Ga <- gen$alfalfa$G_plant
+  Xw <- sweep(Gw, 2, colMeans(Gw), "-"); Xa <- sweep(Ga, 2, colMeans(Ga), "-")
+  pool <- sample(gen$wheat$causal)
+  take <- function(k) { s <- pool[seq_len(k)]; pool <<- pool[-seq_len(k)]; unname(s) }
+  maj_d <- take(par$n_major_dir); maj_i <- take(par$n_major_ige); sim_s <- take(par$n_sim)
+  pair_intra <- take(2L); pair_inter_a <- take(1L)
+  if (length(pool) < par$n_poly) stop("sim_pheno_full: not enough causal wheat sites.")
+  poly <- pool[seq_len(par$n_poly)]
+  n_sh <- round(par$frac_shared * par$n_poly); n_d <- round(par$frac_dir_only * par$n_poly)
+  sh <- poly[seq_len(n_sh)]; d_only <- poly[n_sh + seq_len(n_d)]
+  i_only <- poly[-seq_len(n_sh + n_d)]
+  # majors: effect so that var(X_s beta) = pve x target variance, random sign
+  major <- function(X, s, v) sample(c(-1, 1), length(s), TRUE) * sqrt(par$pve_major * v / apply(X[, s, drop = FALSE], 2, stats::var))
+  b_maj_d <- major(Xw, maj_d, par$var_dge); b_maj_i <- major(Xw, maj_i, par$var_ige)
+  g_maj_d <- drop(Xw[, maj_d, drop = FALSE] %*% b_maj_d)
+  g_maj_i <- drop(Xw[, maj_i, drop = FALSE] %*% b_maj_i)
+  scale_to <- function(g, v) g * sqrt(v / stats::var(g))
+  zd_sh <- rnorm(n_sh); zi_sh <- rnorm(n_sh)
+  bd <- c(zd_sh, rnorm(length(d_only))); names(bd) <- c(sh, d_only)
+  g_poly_d <- scale_to(drop(Xw[, c(sh, d_only)] %*% bd), par$var_dge * (1 - par$n_major_dir * par$pve_major))
+  g_d <- g_poly_d + g_maj_d
+  zi_only <- rnorm(length(i_only))
+  g_i_of <- function(rho) {
+    bi <- c(rho * zd_sh + sqrt(1 - rho^2) * zi_sh, zi_only)
+    g_poly_i <- scale_to(drop(Xw[, c(sh, i_only)] %*% bi), par$var_ige * (1 - par$n_major_ige * par$pve_major))
+    list(g = g_poly_i + g_maj_i, b = bi)
+  }
+  r_of <- function(rho) stats::cor(g_d, g_i_of(rho)$g)
+  lo <- -0.999; hi <- 0.999; r_lo <- r_of(lo); r_hi <- r_of(hi)
+  if (par$r_g < min(r_lo, r_hi) || par$r_g > max(r_lo, r_hi))
+    stop(sprintf("sim_pheno_full: r_g = %.2f not reachable with this pleiotropy (range %.2f to %.2f).",
+                 par$r_g, min(r_lo, r_hi), max(r_lo, r_hi)))
+  for (it in 1:60) {                       # r_of is monotone in rho
+    mid <- (lo + hi) / 2
+    if ((r_of(mid) - par$r_g) * (r_lo - par$r_g) > 0) { lo <- mid; r_lo <- r_of(lo) } else hi <- mid
+  }
+  rho <- (lo + hi) / 2; gi <- g_i_of(rho); g_i <- gi$g
+  # IGE inter: alfalfa plants
+  pool_a <- sample(gen$alfalfa$causal)
+  maj_a <- unname(pool_a[seq_len(par$n_major_inter)])
+  poly_a <- unname(pool_a[par$n_major_inter + seq_len(par$n_poly_inter)])
+  pair_inter_b <- unname(pool_a[par$n_major_inter + par$n_poly_inter + 1L])
+  b_maj_a <- major(Xa, maj_a, par$var_inter)
+  g_a <- scale_to(drop(Xa[, poly_a] %*% rnorm(length(poly_a))), par$var_inter * (1 - par$n_major_inter * par$pve_major)) +
+    drop(Xa[, maj_a, drop = FALSE] %*% b_maj_a)
+  # phenotype contributions on wheat plants
+  Wi <- des$W_intra; Wa <- des$W_inter
+  parts <- list(dge = g_d[line_of], ige = as.numeric(Wi %*% g_i[line_of]),
+                inter = as.numeric(Wa %*% g_a[plant_of]))
+  inter_term <- function(x_focal, x_neigh, W, v) {
+    u <- x_focal * as.numeric(W %*% x_neigh); s <- sample(c(-1, 1), 1)
+    list(u = s * u * sqrt(v / stats::var(u)), beta = s * sqrt(v / stats::var(u)))
+  }
+  sims <- lapply(sim_s, function(s) inter_term(Xw[line_of, s], Xw[line_of, s], Wi, par$var_sim))
+  parts$sim <- Reduce(`+`, lapply(sims, `[[`, "u"))
+  pi_ <- inter_term(Xw[line_of, pair_intra[1]], Xw[line_of, pair_intra[2]], Wi, par$var_pair_intra)
+  pe_ <- inter_term(Xw[line_of, pair_inter_a], Xa[plant_of, pair_inter_b], Wa, par$var_pair_inter)
+  parts$pair_intra <- pi_$u; parts$pair_inter <- pe_$u
+  nb <- max(cw$bin)
+  e_bin <- rnorm(nb, sd = sqrt(par$var_bin)); e_row <- rnorm(nb * 16, sd = sqrt(par$var_row))
+  e_col <- rnorm(nb * 20, sd = sqrt(par$var_col))
+  parts$spatial <- e_bin[cw$bin] + e_row[(cw$bin - 1) * 16 + cw$row] + e_col[(cw$bin - 1) * 20 + cw$col]
+  parts$residual <- rnorm(nrow(cw), sd = sqrt(par$var_res))
+  y <- Reduce(`+`, parts)
+  fam <- gen$alfalfa$fam_of_plant
+  g_a_fam <- tapply(g_a, fam, mean)
+  truth <- list(
+    par = par, rho_shared = rho,
+    sets = list(shared = sh, dir_only = d_only, ind_only = i_only, major_dir = maj_d, major_ige = maj_i,
+                sim = sim_s, pair_intra = pair_intra, pair_inter = c(a = pair_inter_a, b = pair_inter_b),
+                major_inter = maj_a),
+    beta = list(major_dir = b_maj_d, major_ige = b_maj_i, major_inter = b_maj_a,
+                sim = vapply(sims, `[[`, 0, "beta"), pair_intra = pi_$beta, pair_inter = pe_$beta),
+    g = list(dge = g_d, ige = g_i, inter = g_a, inter_fam = g_a_fam),
+    realised = c(var_dge = stats::var(g_d), var_ige = stats::var(g_i), r_g = stats::cor(g_d, g_i),
+                 var_inter_plant = stats::var(g_a), var_inter_fam = stats::var(g_a_fam),
+                 var_bin = stats::var(e_bin), var_row = stats::var(e_row), var_col = stats::var(e_col),
+                 var_res = stats::var(parts$residual), var_y = stats::var(y)),
+    share_y = vapply(parts, stats::var, 0) / stats::var(y))
+  list(y = y, truth = truth)
+}
