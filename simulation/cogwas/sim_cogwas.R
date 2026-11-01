@@ -175,7 +175,20 @@ sim_par_default <- function() list(
   var_dge = 0.30, var_ige = 0.30, r_g = -0.4, var_inter = 0.30, n_poly_inter = 500L,
   n_major_dir = 3L, n_major_ige = 3L, n_major_inter = 2L, pve_major = 0.10,
   n_sim = 2L, var_sim = 0.02, var_pair_intra = 0.03, var_pair_inter = 0.03,
+  n_poly_sim = 500L, var_poly_sim = 0.02, n_poly_pair_intra = 2000L, var_poly_pair_intra = 0.03,
+  n_poly_pair_inter = 2000L, var_poly_pair_inter = 0.03,
   var_bin = 0.05, var_row = 0.03, var_col = 0.03, var_res = 0.50)
+
+#' Scenarios of the campaign: S0 additive only (polygenic and major additive
+#' QTL), S1 adds the major similarity and pair QTL, S2 adds the polygenic
+#' interaction background (explicit pairs).
+sim_scenario <- function(name) {
+  p <- sim_par_default()
+  if (name %in% c("S0", "S1")) { p$var_poly_sim <- 0; p$var_poly_pair_intra <- 0; p$var_poly_pair_inter <- 0 }
+  if (name == "S0") { p$n_sim <- 0L; p$var_pair_intra <- 0; p$var_pair_inter <- 0 }
+  if (!name %in% c("S0", "S1", "S2")) stop("unknown scenario ", name)
+  p
+}
 
 sim_pheno_full <- function(gen, des, par = sim_par_default(), seed = 1L) {
   set.seed(seed)
@@ -185,7 +198,7 @@ sim_pheno_full <- function(gen, des, par = sim_par_default(), seed = 1L) {
   Gw <- gen$wheat$G; Ga <- gen$alfalfa$G_plant
   Xw <- sweep(Gw, 2, colMeans(Gw), "-"); Xa <- sweep(Ga, 2, colMeans(Ga), "-")
   pool <- sample(gen$wheat$causal)
-  take <- function(k) { s <- pool[seq_len(k)]; pool <<- pool[-seq_len(k)]; unname(s) }
+  take <- function(k) { if (k == 0) return(integer(0)); s <- pool[seq_len(k)]; pool <<- pool[-seq_len(k)]; unname(s) }
   maj_d <- take(par$n_major_dir); maj_i <- take(par$n_major_ige); sim_s <- take(par$n_sim)
   pair_intra <- take(2L); pair_inter_a <- take(1L)
   if (length(pool) < par$n_poly) stop("sim_pheno_full: not enough causal wheat sites.")
@@ -232,20 +245,38 @@ sim_pheno_full <- function(gen, des, par = sim_par_default(), seed = 1L) {
   parts <- list(dge = g_d[line_of], ige = as.numeric(Wi %*% g_i[line_of]),
                 inter = as.numeric(Wa %*% g_a[plant_of]))
   inter_term <- function(x_focal, x_neigh, W, v) {
+    if (v <= 0) return(list(u = 0, beta = 0))
     u <- x_focal * as.numeric(W %*% x_neigh); s <- sample(c(-1, 1), 1)
     list(u = s * u * sqrt(v / stats::var(u)), beta = s * sqrt(v / stats::var(u)))
   }
   sims <- lapply(sim_s, function(s) inter_term(Xw[line_of, s], Xw[line_of, s], Wi, par$var_sim))
-  parts$sim <- Reduce(`+`, lapply(sims, `[[`, "u"))
+  parts$sim <- if (length(sims)) Reduce(`+`, lapply(sims, `[[`, "u")) else 0
   pi_ <- inter_term(Xw[line_of, pair_intra[1]], Xw[line_of, pair_intra[2]], Wi, par$var_pair_intra)
   pe_ <- inter_term(Xw[line_of, pair_inter_a], Xa[plant_of, pair_inter_b], Wa, par$var_pair_inter)
   parts$pair_intra <- pi_$u; parts$pair_inter <- pe_$u
+  # polygenic interaction background: explicit pairs of causal loci, small
+  # normal effects, the sum scaled to its variance
+  poly_pairs <- function(F, N, v) {          # F, N: plants x pairs (focal, neighbour mean)
+    if (v <= 0) return(0)
+    scale_to(drop((F * N) %*% rnorm(ncol(F))), v)
+  }
+  cwz <- gen$wheat$causal; caz <- gen$alfalfa$causal
+  ps <- if (par$var_poly_sim > 0) sample(cwz, par$n_poly_sim) else integer(0)
+  parts$poly_sim <- poly_pairs(Xw[line_of, ps, drop = FALSE], as.matrix(Wi %*% Xw[line_of, ps, drop = FALSE]),
+                               par$var_poly_sim)
+  pia <- sample(cwz, par$n_poly_pair_intra, TRUE); pib <- sample(cwz, par$n_poly_pair_intra, TRUE)
+  parts$poly_pair_intra <- poly_pairs(Xw[line_of, pia, drop = FALSE], as.matrix(Wi %*% Xw[line_of, pib, drop = FALSE]),
+                                      par$var_poly_pair_intra)
+  pea <- sample(cwz, par$n_poly_pair_inter, TRUE); peb <- sample(caz, par$n_poly_pair_inter, TRUE)
+  parts$poly_pair_inter <- poly_pairs(Xw[line_of, pea, drop = FALSE], as.matrix(Wa %*% Xa[plant_of, peb, drop = FALSE]),
+                                      par$var_poly_pair_inter)
   nb <- max(cw$bin)
   e_bin <- rnorm(nb, sd = sqrt(par$var_bin)); e_row <- rnorm(nb * 16, sd = sqrt(par$var_row))
   e_col <- rnorm(nb * 20, sd = sqrt(par$var_col))
   parts$spatial <- e_bin[cw$bin] + e_row[(cw$bin - 1) * 16 + cw$row] + e_col[(cw$bin - 1) * 20 + cw$col]
   parts$residual <- rnorm(nrow(cw), sd = sqrt(par$var_res))
   y <- Reduce(`+`, parts)
+  if (length(y) == 1L) stop("sim_pheno_full: empty phenotype.")
   fam <- gen$alfalfa$fam_of_plant
   g_a_fam <- tapply(g_a, fam, mean)
   truth <- list(
@@ -260,6 +291,7 @@ sim_pheno_full <- function(gen, des, par = sim_par_default(), seed = 1L) {
                  var_inter_plant = stats::var(g_a), var_inter_fam = stats::var(g_a_fam),
                  var_bin = stats::var(e_bin), var_row = stats::var(e_row), var_col = stats::var(e_col),
                  var_res = stats::var(parts$residual), var_y = stats::var(y)),
-    share_y = vapply(parts, stats::var, 0) / stats::var(y))
+    share_y = vapply(parts, function(x) if (length(x) > 1) stats::var(x) else 0, 0) / stats::var(y),
+    var_parts = vapply(parts, function(x) if (length(x) > 1) stats::var(x) else 0, 0))
   list(y = y, truth = truth)
 }
