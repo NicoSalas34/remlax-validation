@@ -171,7 +171,7 @@ sim_pheno <- function(gen, des, dge = 0.3, ige_intra = 0.05, ige_inter = 0.05,
 # All causal loci are drawn among gen$*$causal, hence off the chip.
 # ==============================================================================
 sim_par_default <- function() list(
-  n_poly = 1000L, frac_shared = 0.5, frac_dir_only = 0.25,
+  n_poly = 1000L, frac_shared = 0.7, frac_dir_only = 0.15,
   var_dge = 0.30, var_ige = 0.30, r_g = -0.4, var_inter = 0.30, n_poly_inter = 500L,
   n_major_dir = 3L, n_major_ige = 3L, n_major_inter = 2L, pve_major = 0.10,
   n_sim = 2L, var_sim = 0.02, var_pair_intra = 0.03, var_pair_inter = 0.03,
@@ -212,21 +212,26 @@ sim_pheno_full <- function(gen, des, par = sim_par_default(), seed = 1L) {
   g_maj_d <- drop(Xw[, maj_d, drop = FALSE] %*% b_maj_d)
   g_maj_i <- drop(Xw[, maj_i, drop = FALSE] %*% b_maj_i)
   scale_to <- function(g, v) g * sqrt(v / stats::var(g))
-  zd_sh <- rnorm(n_sh); zi_sh <- rnorm(n_sh)
-  bd <- c(zd_sh, rnorm(length(d_only))); names(bd) <- c(sh, d_only)
-  g_poly_d <- scale_to(drop(Xw[, c(sh, d_only)] %*% bd), par$var_dge * (1 - par$n_major_dir * par$pve_major))
-  g_d <- g_poly_d + g_maj_d
-  zi_only <- rnorm(length(i_only))
-  g_i_of <- function(rho) {
-    bi <- c(rho * zd_sh + sqrt(1 - rho^2) * zi_sh, zi_only)
-    g_poly_i <- scale_to(drop(Xw[, c(sh, i_only)] %*% bi), par$var_ige * (1 - par$n_major_ige * par$pve_major))
-    list(g = g_poly_i + g_maj_i, b = bi)
+  # The reachable range of the realised r_g depends on the draws (LD between
+  # sets, majors). Out of reach: new polygenic draws, up to 20 attempts.
+  for (attempt in 1:20) {
+    zd_sh <- rnorm(n_sh); zi_sh <- rnorm(n_sh)
+    bd <- c(zd_sh, rnorm(length(d_only))); names(bd) <- c(sh, d_only)
+    g_poly_d <- scale_to(drop(Xw[, c(sh, d_only)] %*% bd), par$var_dge * (1 - par$n_major_dir * par$pve_major))
+    g_d <- g_poly_d + g_maj_d
+    zi_only <- rnorm(length(i_only))
+    g_i_of <- function(rho) {
+      bi <- c(rho * zd_sh + sqrt(1 - rho^2) * zi_sh, zi_only)
+      g_poly_i <- scale_to(drop(Xw[, c(sh, i_only)] %*% bi), par$var_ige * (1 - par$n_major_ige * par$pve_major))
+      list(g = g_poly_i + g_maj_i, b = bi)
+    }
+    r_of <- function(rho) stats::cor(g_d, g_i_of(rho)$g)
+    lo <- -0.999; hi <- 0.999; r_lo <- r_of(lo); r_hi <- r_of(hi)
+    if (par$r_g >= min(r_lo, r_hi) && par$r_g <= max(r_lo, r_hi)) break
+    if (attempt == 20)
+      stop(sprintf("sim_pheno_full: r_g = %.2f not reachable with this pleiotropy (last range %.2f to %.2f).",
+                   par$r_g, min(r_lo, r_hi), max(r_lo, r_hi)))
   }
-  r_of <- function(rho) stats::cor(g_d, g_i_of(rho)$g)
-  lo <- -0.999; hi <- 0.999; r_lo <- r_of(lo); r_hi <- r_of(hi)
-  if (par$r_g < min(r_lo, r_hi) || par$r_g > max(r_lo, r_hi))
-    stop(sprintf("sim_pheno_full: r_g = %.2f not reachable with this pleiotropy (range %.2f to %.2f).",
-                 par$r_g, min(r_lo, r_hi), max(r_lo, r_hi)))
   for (it in 1:60) {                       # r_of is monotone in rho
     mid <- (lo + hi) / 2
     if ((r_of(mid) - par$r_g) * (r_lo - par$r_g) > 0) { lo <- mid; r_lo <- r_of(lo) } else hi <- mid
@@ -280,7 +285,7 @@ sim_pheno_full <- function(gen, des, par = sim_par_default(), seed = 1L) {
   fam <- gen$alfalfa$fam_of_plant
   g_a_fam <- tapply(g_a, fam, mean)
   truth <- list(
-    par = par, rho_shared = rho,
+    par = par, rho_shared = rho, attempts = attempt,
     sets = list(shared = sh, dir_only = d_only, ind_only = i_only, major_dir = maj_d, major_ige = maj_i,
                 sim = sim_s, pair_intra = pair_intra, pair_inter = c(a = pair_inter_a, b = pair_inter_b),
                 major_inter = maj_a),
