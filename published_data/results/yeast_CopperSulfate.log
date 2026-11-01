@@ -1,0 +1,75 @@
+Online License checked out Sat Oct 31 21:31:17 2026
+
+######## yeast_bloom2015 (Bloom et al. 2015, doi:10.1038/ncomms9712)
+remlax 0.2.0.9000 | R 4.6.0
+  asreml       4.2.0.480
+  sommer       4.4.5
+  gaston       1.6
+  rrBLUP       4.6.3
+  statgenGWAS  1.0.13
+  enhancer     1.1.1
+segregants 4390, markers 28220; mean diag A 1.0000, A#A 1.0000
+
+######## CopperSulfate: 7385 records on 4276 segregants
+
+=== CopperSulfate P ===
+REML fit (gpu): logLik -6297.578642 | 2 parameters | 7385 obs | 24.0 s
+  max|grad| 1.23e-06 | Newton decrement 1.22e-16 | 0 negative eigenvalue(s)
+  Sigma[p] 1x1, diagonal: 0.4588
+  residual: 0.08496
+         component   std.error  z.ratio bound %ch
+p       0.45879181 0.011153947 41.13269     P   0
+units!R 0.08495584 0.002153321 39.45341     P   0
+  software   CopperSulfate P            sigma2 P                           asreml         0.45879181     0.45879181  d= 2.34e-11  OK
+  software   CopperSulfate P            sigma2 residual                    asreml        0.084955843    0.084955843  d= 1.92e-10  OK
+  software   CopperSulfate P            logLik (asreml convention)         asreml          487.86349      487.86349  d= 5.09e-11  OK
+  published  CopperSulfate P            share P                            paper           0.8437587     0.84375869  d= 1.57e-09  OK
+  published  CopperSulfate P            share E                            paper           0.1562413     0.15624131  d= 1.57e-09  OK
+
+=== CopperSulfate A+P ===
+REML fit (gpu): logLik -5155.792950 | 3 parameters | 7385 obs | 58.3 s
+  max|grad| 4.35e-12 | Newton decrement 2.09e-26 | 0 negative eigenvalue(s)
+  Sigma[a] 1x1, diagonal: 0.2317
+  Sigma[p] 1x1, diagonal: 0.1994
+  residual: 0.08521
+              component   std.error  z.ratio bound %ch
+vm(a, As_as) 0.23167558 0.022467372 10.31165     P   0
+p            0.19942068 0.006060137 32.90696     P   0
+units!R      0.08520923 0.002158544 39.47533     P   0
+  software   CopperSulfate A+P          sigma2 A                           asreml         0.23167558     0.23167558  d= 3.14e-11  OK
+  software   CopperSulfate A+P          sigma2 P                           asreml         0.19942068     0.19942068  d= 2.13e-13  OK
+  software   CopperSulfate A+P          sigma2 residual                    asreml        0.085209227    0.085209227  d= 5.49e-13  OK
+  software   CopperSulfate A+P          logLik (asreml convention)         asreml          1629.6492      1629.6492  d= 9.55e-11  OK
+  published  CopperSulfate A+P          share A                            paper          0.44871803     0.44872385  d= 5.82e-06  OK
+  published  CopperSulfate A+P          share P                            paper          0.38624552     0.38624111  d= 4.41e-06  OK
+  published  CopperSulfate A+P          share E                            paper          0.16503646     0.16503504  d= 1.41e-06  OK
+
+=== CopperSulfate A+AA+P ===
+REML fit (gpu): logLik -5041.077372 | 4 parameters | 7385 obs | 100.4 s
+  max|grad| 4.70e-05 | Newton decrement 1.72e-13 | 0 negative eigenvalue(s)
+  Sigma[a] 1x1, diagonal: 0.243
+  Sigma[i] 1x1, diagonal: 0.1118
+  Sigma[p] 1x1, diagonal: 0.08648
+  residual: 0.08517
+               component   std.error  z.ratio bound %ch
+vm(a, As_as)  0.24304257 0.022907471 10.60975     P   0
+vm(i, AAs_as) 0.11181075 0.009645048 11.59256     P   0
+p             0.08648251 0.008174211 10.57992     P   0
+units!R       0.08517156 0.002155895 39.50636     P   0
+  software   CopperSulfate A+AA+P       sigma2 A                           asreml         0.24304257     0.24304257  d= 3.41e-09  OK
+  software   CopperSulfate A+AA+P       sigma2 AA                          asreml         0.11181075     0.11181075  d= 2.70e-09  OK
+  software   CopperSulfate A+AA+P       sigma2 P                           asreml        0.086482508    0.086482508  d= 4.49e-09  OK
+  software   CopperSulfate A+AA+P       sigma2 residual                    asreml        0.085171559    0.085171559  d= 7.25e-09  OK
+  software   CopperSulfate A+AA+P       logLik (asreml convention)         asreml          1744.3648      1744.3648  d= 1.12e-10  OK
+  published  CopperSulfate A+AA+P       share A                            paper          0.46161283     0.46137932  d= 2.34e-04  OK
+  published  CopperSulfate A+AA+P       share AA                           paper          0.21236312     0.21256835  d= 2.05e-04  OK
+  published  CopperSulfate A+AA+P       share P                            paper          0.16425697     0.16422726  d= 2.97e-05  OK
+  published  CopperSulfate A+AA+P       share E                            paper          0.16176707     0.16182507  d= 5.80e-05  OK
+
+Runtimes (s, elapsed):
+                     remlax asreml
+CopperSulfate P        56.0   19.3
+CopperSulfate A+P      96.7 5953.9
+CopperSulfate A+AA+P  343.5 9073.4
+
+yeast_bloom2015: 21 checks counted, 21 pass, 0 fail; 0 context rows -> /scratch/users/salasn/pubdata_20261031/remlax-validation/published_data/results/yeast_bloom2015_CopperSulfate.csv

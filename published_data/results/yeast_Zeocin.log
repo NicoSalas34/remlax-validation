@@ -1,0 +1,77 @@
+Online License checked out Sat Oct 31 21:31:17 2026
+
+######## yeast_bloom2015 (Bloom et al. 2015, doi:10.1038/ncomms9712)
+remlax 0.2.0.9000 | R 4.6.0
+  asreml       4.2.0.480
+  sommer       4.4.5
+  gaston       1.6
+  rrBLUP       4.6.3
+  statgenGWAS  1.0.13
+  enhancer     1.1.1
+segregants 4390, markers 28220; mean diag A 1.0000, A#A 1.0000
+
+######## Zeocin: 7624 records on 4316 segregants
+
+=== Zeocin P ===
+REML fit (gpu): logLik -8288.451552 | 2 parameters | 7624 obs | 26.0 s
+  max|grad| 6.69e-08 | Newton decrement 3.21e-19 | 0 negative eigenvalue(s)
+  Sigma[p] 1x1, diagonal: 0.8645
+  residual: 0.1178
+        component   std.error  z.ratio bound %ch
+p       0.8645022 0.020227378 42.73921     P   0
+units!R 0.1177694 0.002893895 40.69583     P   0
+  software   Zeocin P                   sigma2 P                           asreml         0.86450221     0.86450221  d= 9.22e-12  OK
+  software   Zeocin P                   sigma2 residual                    asreml         0.11776945     0.11776945  d= 2.21e-12  OK
+  software   Zeocin P                   logLik (asreml convention)         asreml         -1283.3831     -1283.3831  d= 3.09e-11  OK
+  published  Zeocin P                   share P                            paper          0.88010502     0.88010502  d= 2.75e-09  OK
+  published  Zeocin P                   share E                            paper          0.11989498     0.11989498  d= 2.75e-09  OK
+
+=== Zeocin A+P ===
+REML fit (gpu): logLik -6560.188939 | 3 parameters | 7624 obs | 67.0 s
+  max|grad| 7.42e-12 | Newton decrement 1.57e-26 | 0 negative eigenvalue(s)
+  Sigma[a] 1x1, diagonal: 0.8232
+  Sigma[p] 1x1, diagonal: 0.2439
+  residual: 0.118
+             component   std.error  z.ratio bound %ch
+vm(a, As_as) 0.8231647 0.066844710 12.31458     P   0
+p            0.2438730 0.008029923 30.37053     P   0
+units!R      0.1180257 0.002896973 40.74106     P   0
+  software   Zeocin A+P                 sigma2 A                           asreml          0.8231647      0.8231647  d= 1.25e-12  OK
+  software   Zeocin A+P                 sigma2 P                           asreml         0.24387297     0.24387297  d= 2.68e-13  OK
+  software   Zeocin A+P                 sigma2 residual                    asreml         0.11802575     0.11802575  d= 4.47e-13  OK
+  software   Zeocin A+P                 logLik (asreml convention)         asreml           444.8795       444.8795  d= 8.73e-11  OK
+  published  Zeocin A+P                 share A                            paper          0.69461658     0.69461444  d= 2.14e-06  OK
+  published  Zeocin A+P                 share P                            paper          0.20578896     0.20579051  d= 1.55e-06  OK
+  published  Zeocin A+P                 share E                            paper         0.099594456    0.099595045  d= 5.89e-07  OK
+
+=== Zeocin A+AA+P ===
+REML fit (gpu): logLik -6539.912484 | 4 parameters | 7624 obs | 103.2 s
+  max|grad| 1.60e-11 | Newton decrement 2.04e-25 | 0 negative eigenvalue(s)
+  Sigma[a] 1x1, diagonal: 0.8567
+  Sigma[i] 1x1, diagonal: 0.05675
+  Sigma[p] 1x1, diagonal: 0.1846
+  residual: 0.1181
+               component   std.error   z.ratio bound %ch
+vm(a, As_as)  0.85668991 0.068700807 12.469867     P   0
+vm(i, AAs_as) 0.05675165 0.010343931  5.486469     P   0
+p             0.18463382 0.011591671 15.928146     P   0
+units!R       0.11805656 0.002897775 40.740411     P   0
+  software   Zeocin A+AA+P              sigma2 A                           asreml         0.85668991     0.85668991  d= 3.04e-12  OK
+  software   Zeocin A+AA+P              sigma2 AA                          asreml        0.056751651    0.056751651  d= 1.29e-11  OK
+  software   Zeocin A+AA+P              sigma2 P                           asreml         0.18463382     0.18463382  d= 3.46e-12  OK
+  software   Zeocin A+AA+P              sigma2 residual                    asreml         0.11805656     0.11805656  d= 1.06e-14  OK
+  software   Zeocin A+AA+P              logLik (asreml convention)         asreml          465.15595      465.15595  d= 2.24e-10  OK
+  published  Zeocin A+AA+P              share A                            paper          0.70443829      0.7044361  d= 2.19e-06  OK
+  published  Zeocin A+AA+P              share AA                           paper         0.046665702    0.046665974  d= 2.71e-07  OK
+  published  Zeocin A+AA+P              share P                            paper          0.15182055     0.15182183  d= 1.28e-06  OK
+  published  Zeocin A+AA+P              share E                            paper         0.097075455    0.097076094  d= 6.40e-07  OK
+
+Runtimes (s, elapsed):
+              remlax asreml
+Zeocin P       148.9   10.6
+Zeocin A+P     234.2 3357.8
+Zeocin A+AA+P  340.6 7880.1
+
+yeast_bloom2015: 21 checks counted, 21 pass, 0 fail; 0 context rows -> /scratch/users/salasn/pubdata_20261031/remlax-validation/published_data/results/yeast_bloom2015_Zeocin.csv
+INFO:    Terminating squashfuse_ll after timeout
+INFO:    Timeouts can be caused by a running background process

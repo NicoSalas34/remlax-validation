@@ -1,0 +1,75 @@
+Online License checked out Sat Oct 31 21:31:17 2026
+
+######## yeast_bloom2015 (Bloom et al. 2015, doi:10.1038/ncomms9712)
+remlax 0.2.0.9000 | R 4.6.0
+  asreml       4.2.0.480
+  sommer       4.4.5
+  gaston       1.6
+  rrBLUP       4.6.3
+  statgenGWAS  1.0.13
+  enhancer     1.1.1
+segregants 4390, markers 28220; mean diag A 1.0000, A#A 1.0000
+
+######## CobaltChloride: 6435 records on 4168 segregants
+
+=== CobaltChloride P ===
+REML fit (gpu): logLik -8561.379100 | 2 parameters | 6435 obs | 16.3 s
+  max|grad| 2.19e-06 | Newton decrement 9.50e-16 | 0 negative eigenvalue(s)
+  Sigma[p] 1x1, diagonal: 0.5784
+  residual: 0.3967
+        component  std.error  z.ratio bound %ch
+p       0.5784500 0.02017308 28.67435     P   0
+units!R 0.3967473 0.01162566 34.12685     P   0
+  software   CobaltChloride P           sigma2 P                           asreml         0.57844999     0.57844999  d= 7.36e-10  OK
+  software   CobaltChloride P           sigma2 residual                    asreml         0.39674734     0.39674734  d= 3.77e-10  OK
+  software   CobaltChloride P           logLik (asreml convention)         asreml         -2648.9286     -2648.9286  d= 4.64e-11  OK
+  published  CobaltChloride P           share P                            paper          0.59316199     0.59316232  d= 3.29e-07  OK
+  published  CobaltChloride P           share E                            paper          0.40683801     0.40683768  d= 3.29e-07  OK
+
+=== CobaltChloride A+P ===
+REML fit (gpu): logLik -7688.202141 | 3 parameters | 6435 obs | 43.5 s
+  max|grad| 5.32e-05 | Newton decrement 2.02e-13 | 0 negative eigenvalue(s)
+  Sigma[a] 1x1, diagonal: 0.4326
+  Sigma[p] 1x1, diagonal: 0.1857
+  residual: 0.4057
+             component  std.error   z.ratio bound %ch
+vm(a, As_as) 0.4325922 0.04339941  9.967697     P   0
+p            0.1856900 0.01335714 13.901934     P   0
+units!R      0.4057235 0.01178109 34.438538     P   0
+  software   CobaltChloride A+P         sigma2 A                           asreml         0.43259217     0.43259217  d= 3.63e-09  OK
+  software   CobaltChloride A+P         sigma2 P                           asreml         0.18569005     0.18569005  d= 2.43e-09  OK
+  software   CobaltChloride A+P         sigma2 residual                    asreml         0.40572348     0.40572348  d= 7.92e-09  OK
+  software   CobaltChloride A+P         logLik (asreml convention)         asreml         -1775.7516     -1775.7516  d= 8.82e-11  OK
+  published  CobaltChloride A+P         share A                            paper          0.42245094      0.4224498  d= 1.14e-06  OK
+  published  CobaltChloride A+P         share P                            paper          0.18133693     0.18133784  d= 9.12e-07  OK
+  published  CobaltChloride A+P         share E                            paper          0.39621213     0.39621236  d= 2.31e-07  OK
+
+=== CobaltChloride A+AA+P ===
+REML fit (gpu): logLik -7673.547151 | 4 parameters | 6435 obs | 89.0 s
+  max|grad| 1.52e-11 | Newton decrement 1.13e-25 | 0 negative eigenvalue(s)
+  Sigma[a] 1x1, diagonal: 0.4385
+  Sigma[i] 1x1, diagonal: 0.07265
+  Sigma[p] 1x1, diagonal: 0.1111
+  residual: 0.4069
+               component  std.error   z.ratio bound %ch
+vm(a, As_as)  0.43847129 0.04362314 10.051345     P   0
+vm(i, AAs_as) 0.07265344 0.01503176  4.833329     P   0
+p             0.11105967 0.01824027  6.088708     P   0
+units!R       0.40689051 0.01181721 34.432020     P   0
+  software   CobaltChloride A+AA+P      sigma2 A                           asreml         0.43847129     0.43847129  d= 1.01e-11  OK
+  software   CobaltChloride A+AA+P      sigma2 AA                          asreml        0.072653437    0.072653437  d= 9.08e-12  OK
+  software   CobaltChloride A+AA+P      sigma2 P                           asreml         0.11105967     0.11105967  d= 3.91e-12  OK
+  software   CobaltChloride A+AA+P      sigma2 residual                    asreml         0.40689051     0.40689051  d= 5.33e-13  OK
+  software   CobaltChloride A+AA+P      logLik (asreml convention)         asreml         -1761.0966     -1761.0966  d= 7.50e-11  OK
+  published  CobaltChloride A+AA+P      share A                            paper          0.42608297     0.42607276  d= 1.02e-05  OK
+  published  CobaltChloride A+AA+P      share AA                           paper         0.070600727    0.070613804  d= 1.31e-05  OK
+  published  CobaltChloride A+AA+P      share P                            paper          0.10792185     0.10791443  d= 7.42e-06  OK
+  published  CobaltChloride A+AA+P      share E                            paper          0.39539446     0.39539901  d= 4.55e-06  OK
+
+Runtimes (s, elapsed):
+                      remlax asreml
+CobaltChloride P        39.1   14.8
+CobaltChloride A+P      69.8 5444.8
+CobaltChloride A+AA+P  125.6 8233.5
+
+yeast_bloom2015: 21 checks counted, 21 pass, 0 fail; 0 context rows -> /scratch/users/salasn/pubdata_20261031/remlax-validation/published_data/results/yeast_bloom2015_CobaltChloride.csv

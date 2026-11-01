@@ -1,0 +1,75 @@
+Online License checked out Sat Oct 31 21:31:17 2026
+
+######## yeast_bloom2015 (Bloom et al. 2015, doi:10.1038/ncomms9712)
+remlax 0.2.0.9000 | R 4.6.0
+  asreml       4.2.0.480
+  sommer       4.4.5
+  gaston       1.6
+  rrBLUP       4.6.3
+  statgenGWAS  1.0.13
+  enhancer     1.1.1
+segregants 4390, markers 28220; mean diag A 1.0000, A#A 1.0000
+
+######## Hydroxyurea: 7434 records on 4297 segregants
+
+=== Hydroxyurea P ===
+REML fit (gpu): logLik -4304.024976 | 2 parameters | 7434 obs | 32.9 s
+  max|grad| 1.33e-05 | Newton decrement 8.42e-15 | 0 negative eigenvalue(s)
+  Sigma[p] 1x1, diagonal: 0.02086
+  residual: 0.1663
+        component   std.error   z.ratio bound %ch
+p       0.0208580 0.003412160  6.112844     P   0
+units!R 0.1663181 0.004110549 40.461289     P   0
+  software   Hydroxyurea P              sigma2 P                           asreml        0.020858002    0.020858002  d= 3.98e-09  OK
+  software   Hydroxyurea P              sigma2 residual                    asreml         0.16631812     0.16631812  d= 1.51e-09  OK
+  software   Hydroxyurea P              logLik (asreml convention)         asreml          2526.4451      2526.4451  d= 1.69e-10  OK
+  published  Hydroxyurea P              share P                            paper          0.11143516     0.11144512  d= 9.96e-06  OK
+  published  Hydroxyurea P              share E                            paper          0.88856484     0.88855488  d= 9.96e-06  OK
+
+=== Hydroxyurea A+P ===
+REML fit (gpu): logLik -4154.139637 | 3 parameters | 7434 obs | 61.7 s
+  max|grad| 2.38e-06 | Newton decrement 1.00e-14 | 0 negative eigenvalue(s)
+  Sigma[a] 1x1, diagonal: 0.01601
+  Sigma[p] 1x1, diagonal: 0.005664
+  residual: 0.1668
+              component   std.error   z.ratio bound %ch
+vm(a, As_as) 0.01601379 0.002458682  6.513160     P   0
+p            0.00566380 0.003214869  1.761752     P   0
+units!R      0.16681250 0.004106585 40.620733     P   0
+  software   Hydroxyurea A+P            sigma2 A                           asreml        0.016013789    0.016013789  d= 7.99e-09  OK
+  software   Hydroxyurea A+P            sigma2 P                           asreml       0.0056638002      0.0056638  d= 2.98e-08  OK
+  software   Hydroxyurea A+P            sigma2 residual                    asreml          0.1668125      0.1668125  d= 6.66e-10  OK
+  software   Hydroxyurea A+P            logLik (asreml convention)         asreml          2676.3305      2676.3305  d= 6.83e-10  OK
+  published  Hydroxyurea A+P            share A                            paper         0.084958253    0.084958775  d= 5.22e-07  OK
+  published  Hydroxyurea A+P            share P                            paper         0.030048265    0.030061889  d= 1.36e-05  OK
+  published  Hydroxyurea A+P            share E                            paper          0.88499348     0.88497934  d= 1.41e-05  OK
+
+=== Hydroxyurea A+AA+P ===
+REML fit (gpu): logLik -4152.644658 | 4 parameters | 7434 obs | 148.0 s
+  max|grad| 1.19e-08 | Newton decrement 3.28e-20 | 0 negative eigenvalue(s)
+  Sigma[a] 1x1, diagonal: 0.01615
+  Sigma[i] 1x1, diagonal: 0.00432
+  Sigma[p] 1x1, diagonal: 0.00136
+  residual: 0.1668
+                component   std.error    z.ratio bound %ch
+vm(a, As_as)  0.016146600 0.002472653  6.5300714     P   0
+vm(i, AAs_as) 0.004320326 0.002648113  1.6314738     P   0
+p             0.001359501 0.004052306  0.3354882     P   0
+units!R       0.166781904 0.004105472 40.6242918     P   0
+  software   Hydroxyurea A+AA+P         sigma2 A                           asreml          0.0161466      0.0161466  d= 1.00e-10  OK
+  software   Hydroxyurea A+AA+P         sigma2 AA                          asreml       0.0043203263   0.0043203263  d= 1.00e-10  OK
+  software   Hydroxyurea A+AA+P         sigma2 P                           asreml       0.0013595009   0.0013595009  d= 7.41e-11  OK
+  software   Hydroxyurea A+AA+P         sigma2 residual                    asreml          0.1667819      0.1667819  d= 2.20e-12  OK
+  software   Hydroxyurea A+AA+P         logLik (asreml convention)         asreml          2677.8255      2677.8255  d= 3.97e-10  OK
+  published  Hydroxyurea A+AA+P         share A                            paper         0.085609158    0.085613493  d= 4.34e-06  OK
+  published  Hydroxyurea A+AA+P         share AA                           paper         0.022906338    0.022881781  d= 2.46e-05  OK
+  published  Hydroxyurea A+AA+P         share P                            paper        0.0072080641   0.0072481694  d= 4.01e-05  OK
+  published  Hydroxyurea A+AA+P         share E                            paper          0.88427644     0.88425656  d= 1.99e-05  OK
+
+Runtimes (s, elapsed):
+                   remlax asreml
+Hydroxyurea P       164.4   16.9
+Hydroxyurea A+P     229.1 6286.7
+Hydroxyurea A+AA+P  414.0 7273.3
+
+yeast_bloom2015: 21 checks counted, 21 pass, 0 fail; 0 context rows -> /scratch/users/salasn/pubdata_20261031/remlax-validation/published_data/results/yeast_bloom2015_Hydroxyurea.csv

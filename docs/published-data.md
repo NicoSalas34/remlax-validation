@@ -11,24 +11,35 @@ Each script of `published_data/scripts/` fits remlax on a published data set and
 | cpdata_simulated | Covarrubias-Pazaran 2016, doi:10.1371/journal.pone.0156744 (simulated data) | 56 | 56 | 0 | 15 |
 | gryphon_wilson2010 | Wilson et al. 2010, doi:10.1111/j.1365-2656.2009.01639.x | 99 | 99 | 0 | 0 |
 | maize_drops_gwas | Millet et al. 2016 Plant Physiol; Millet et al. 2019 Sci Data | 34 | 34 | 0 | 23 |
+| maize_drops_multitrait | Millet et al. 2016 Plant Physiol; Millet et al. 2019 Sci Data | 34 | 34 | 0 | 3 |
 | maize_technow2014 | Technow et al. 2014, doi:10.1534/genetics.114.165860 | 44 | 44 | 0 | 0 |
 | mice_valdar2006 | Valdar et al. 2006, doi:10.1038/ng1840 | 70 | 70 | 0 | 2 |
+| milk_pedigreemm | Vazquez et al. 2010, doi:10.2527/jas.2009-1952 | 62 | 62 | 0 | 1 |
+| pig_cleveland2012 | Cleveland et al. 2012, doi:10.1534/g3.111.001453 | 223 | 223 | 0 | 10 |
 | potato_tetraploid | Rosyara et al. 2016, doi:10.3835/plantgenome2015.08.0073 | 29 | 29 | 0 | 1 |
 | rice44k_zhao2011 | Zhao et al. 2011 Nat Commun 2:467 | 52 | 52 | 0 | 40 |
+| tilapia_joshi2018 | Joshi et al. 2018, doi:10.1038/s41437-017-0046-x | 232 | 232 | 0 | 24 |
+| twins_openmx | OpenMx twinData, Neale et al. 2016, doi:10.1007/s11336-014-9435-8 | 22 | 22 | 0 | 6 |
+| warcolak_nadiv | Wolak 2012, doi:10.1111/j.2041-210X.2012.00213.x (simulated data) | 45 | 45 | 0 | 7 |
 | wheat_crossa2010 | Crossa et al. 2010, doi:10.1534/genetics.110.118521 | 121 | 121 | 0 | 11 |
-| total | | 505 | 505 | 0 | 92 |
+| yeast_bloom2015 | Bloom et al. 2015, doi:10.1038/ncomms9712 | 84 | 84 | 0 | 0 |
+| total | | 1207 | 1207 | 0 | 143 |
 
 ## By reference program
 
 | reference | checks | pass | largest discrepancy / tolerance |
 |---|---|---|---|
 | AGHmatrix | 2 | 2 | 0 |
-| asreml | 260 | 260 | 0.9578 |
-| dense R | 1 | 1 | 5.684e-08 |
-| gaston | 58 | 58 | 0.004152 |
-| remlax | 3 | 3 |  |
-| rrBLUP | 24 | 24 | 0.009147 |
-| sommer | 94 | 94 | 0.1261 |
+| asreml | 670 | 670 | 0.9598 |
+| dense R | 27 | 27 | 0.001734 |
+| gaston | 126 | 126 | 0.0166 |
+| paper | 36 | 36 | 0.2335 |
+| paper (Table 2) | 24 | 24 | 0.635 |
+| paper (Table S3.1) | 72 | 72 | 0.9317 |
+| pedigreemm | 22 | 22 | 0.04841 |
+| remlax | 4 | 4 | 0.09357 |
+| rrBLUP | 34 | 34 | 0.009719 |
+| sommer | 127 | 127 | 0.9541 |
 | statgenGWAS | 27 | 27 | 0.002307 |
 | tutorial | 36 | 36 | 0.4305 |
 
@@ -40,18 +51,18 @@ None.
 
 | data set | model | quantity | reference | remlax | reference value | discrepancy | note |
 |---|---|---|---|---|---|---|---|
-| gryphon_wilson2010 | model1 | sigma2 ANIMAL | tutorial | 3.395 | 3.395 | 1.528e-06 | wam-tutorial.github.io (updated Wilson et al. 2010 ASReml-R tutorial) |
-| gryphon_wilson2010 | model1 | sigma2 residual | tutorial | 3.829 | 3.829 | 8.606e-07 | wam-tutorial.github.io (updated Wilson et al. 2010 ASReml-R tutorial) |
-| gryphon_wilson2010 | model2 | sigma2 ANIMAL | tutorial | 3.06 | 3.06 | 6.04e-07 | wam-tutorial.github.io (updated Wilson et al. 2010 ASReml-R tutorial) |
-| gryphon_wilson2010 | model2 | sigma2 residual | tutorial | 2.938 | 2.938 | 4.716e-07 | wam-tutorial.github.io (updated Wilson et al. 2010 ASReml-R tutorial) |
+| gryphon_wilson2010 | model1 | sigma2 ANIMAL | tutorial | 3.395 | 3.395 | 1.532e-06 | wam-tutorial.github.io (updated Wilson et al. 2010 ASReml-R tutorial) |
+| gryphon_wilson2010 | model1 | sigma2 residual | tutorial | 3.829 | 3.829 | 8.617e-07 | wam-tutorial.github.io (updated Wilson et al. 2010 ASReml-R tutorial) |
+| gryphon_wilson2010 | model2 | sigma2 ANIMAL | tutorial | 3.06 | 3.06 | 5.83e-07 | wam-tutorial.github.io (updated Wilson et al. 2010 ASReml-R tutorial) |
+| gryphon_wilson2010 | model2 | sigma2 residual | tutorial | 2.938 | 2.938 | 4.491e-07 | wam-tutorial.github.io (updated Wilson et al. 2010 ASReml-R tutorial) |
 | gryphon_wilson2010 | model3 | sigma2 ANIMAL | tutorial | 2.707 | 2.707 | 4.118e-06 | wam-tutorial.github.io (updated Wilson et al. 2010 ASReml-R tutorial) |
 | gryphon_wilson2010 | model3 | sigma2 BYEAR | tutorial | 0.8863 | 0.8863 | 5.728e-07 | wam-tutorial.github.io (updated Wilson et al. 2010 ASReml-R tutorial) |
 | gryphon_wilson2010 | model3 | sigma2 residual | tutorial | 2.309 | 2.309 | 3.769e-06 | wam-tutorial.github.io (updated Wilson et al. 2010 ASReml-R tutorial) |
 | gryphon_wilson2010 | model3 | logLik (asreml convention) | tutorial | -1114 | -1114 | 8.531e-05 | wam-tutorial.github.io (updated Wilson et al. 2010 ASReml-R tutorial) |
-| gryphon_wilson2010 | model4 | sigma2 ANIMAL | tutorial | 2.299 | 2.299 | 4.85e-07 | wam-tutorial.github.io (updated Wilson et al. 2010 ASReml-R tutorial) |
-| gryphon_wilson2010 | model4 | sigma2 BYEAR | tutorial | 0.882 | 0.882 | 9.504e-07 | wam-tutorial.github.io (updated Wilson et al. 2010 ASReml-R tutorial) |
-| gryphon_wilson2010 | model4 | sigma2 MOTHER | tutorial | 1.118 | 1.118 | 2.786e-06 | wam-tutorial.github.io (updated Wilson et al. 2010 ASReml-R tutorial) |
-| gryphon_wilson2010 | model4 | sigma2 residual | tutorial | 1.629 | 1.629 | 7.01e-07 | wam-tutorial.github.io (updated Wilson et al. 2010 ASReml-R tutorial) |
+| gryphon_wilson2010 | model4 | sigma2 ANIMAL | tutorial | 2.299 | 2.299 | 4.903e-07 | wam-tutorial.github.io (updated Wilson et al. 2010 ASReml-R tutorial) |
+| gryphon_wilson2010 | model4 | sigma2 BYEAR | tutorial | 0.882 | 0.882 | 9.484e-07 | wam-tutorial.github.io (updated Wilson et al. 2010 ASReml-R tutorial) |
+| gryphon_wilson2010 | model4 | sigma2 MOTHER | tutorial | 1.118 | 1.118 | 2.783e-06 | wam-tutorial.github.io (updated Wilson et al. 2010 ASReml-R tutorial) |
+| gryphon_wilson2010 | model4 | sigma2 residual | tutorial | 1.629 | 1.629 | 6.92e-07 | wam-tutorial.github.io (updated Wilson et al. 2010 ASReml-R tutorial) |
 | gryphon_wilson2010 | model4 | logLik (asreml convention) | tutorial | -1095 | -1095 | 0.0004208 | wam-tutorial.github.io (updated Wilson et al. 2010 ASReml-R tutorial) |
 | gryphon_wilson2010 | modela | animal BWT | tutorial | 3.368 | 3.368 | 2.887e-07 | wam-tutorial.github.io (updated Wilson et al. 2010 ASReml-R tutorial) |
 | gryphon_wilson2010 | modela | animal cov | tutorial | 2.46 | 2.46 | 1.068e-06 | wam-tutorial.github.io (updated Wilson et al. 2010 ASReml-R tutorial) |
@@ -76,6 +87,138 @@ None.
 | gryphon_wilson2010 | modelb | genetic correlation r_A | tutorial | 0.7353 | 0.7353 | 1.8e-06 | wam-tutorial.github.io (updated Wilson et al. 2010 ASReml-R tutorial) |
 | gryphon_wilson2010 | modelc | logLik (asreml convention) | tutorial | -2386 | -2386 | 0.0003873 | wam-tutorial.github.io (updated Wilson et al. 2010 ASReml-R tutorial) |
 | gryphon_wilson2010 | modelb vs modelc | LRT statistic | tutorial | 11.6 | 11.6 | 5.033e-05 | wam-tutorial.github.io (updated Wilson et al. 2010 ASReml-R tutorial) ; tolerance = twice the logLik rounding |
+| tilapia_joshi2018 | BD A | sigma2 A | paper (Table S3.1) | 0.2555 | 0.26 | 0.004543 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BD A | sigma2 residual | paper (Table S3.1) | 0.3221 | 0.32 | 0.002139 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BD A | logLik remainder modulo 100 | paper (Table 2) | 4.258e-05 |  | 4.258e-05 | Joshi et al. 2018; printed value = remlax + 200 |
+| tilapia_joshi2018 | BD AD | sigma2 A | paper (Table S3.1) | 0.1537 | 0.15 | 0.003748 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BD AD | sigma2 D | paper (Table S3.1) | 0.1507 | 0.15 | 0.0006917 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BD AD | sigma2 residual | paper (Table S3.1) | 0.2655 | 0.27 | 0.004497 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BD AD | logLik remainder modulo 100 | paper (Table 2) | 1.307e-05 |  | 1.307e-05 | Joshi et al. 2018; printed value = remlax + 200 |
+| tilapia_joshi2018 | BD AM | sigma2 A | paper (Table S3.1) | 0.09075 | 0.09 | 0.0007541 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BD AM | sigma2 M | paper (Table S3.1) | 0.04744 | 0.05 | 0.002556 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BD AM | sigma2 residual | paper (Table S3.1) | 0.3991 | 0.4 | 0.0009488 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BD AM | logLik remainder modulo 100 | paper (Table 2) | 2.274e-06 |  | 2.274e-06 | Joshi et al. 2018; printed value = remlax + 200 |
+| tilapia_joshi2018 | BD ADM | sigma2 A | paper (Table S3.1) | 6.256e-09 | 0 | 6.256e-09 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BD ADM | sigma2 D | paper (Table S3.1) | 0.1385 | 0.14 | 0.001508 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BD ADM | sigma2 M | paper (Table S3.1) | 0.04705 | 0.05 | 0.002947 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BD ADM | sigma2 residual | paper (Table S3.1) | 0.3455 | 0.35 | 0.004545 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BD ADM | logLik remainder modulo 100 | paper (Table 2) | 0.000215 |  | 0.000215 | Joshi et al. 2018; printed value = remlax + 200 |
+| tilapia_joshi2018 | BL A | sigma2 A | paper (Table S3.1) | 0.9657 | 0.97 | 0.004279 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BL A | sigma2 residual | paper (Table S3.1) | 2.326 | 2.33 | 0.004335 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BL A | logLik remainder modulo 100 | paper (Table 2) | 0.004374 |  | 0.004374 | Joshi et al. 2018; printed value = remlax + 2500 |
+| tilapia_joshi2018 | BL AD | sigma2 A | paper (Table S3.1) | 0.7438 | 0.74 | 0.003799 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BL AD | sigma2 D | paper (Table S3.1) | 0.3269 | 0.33 | 0.003069 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BL AD | sigma2 residual | paper (Table S3.1) | 2.203 | 2.2 | 0.00341 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BL AD | logLik remainder modulo 100 | paper (Table 2) | 6.283e-05 |  | 6.283e-05 | Joshi et al. 2018; printed value = remlax + 2500 |
+| tilapia_joshi2018 | BL AM | sigma2 A | paper (Table S3.1) | 0.5546 | 0.55 | 0.004597 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BL AM | sigma2 M | paper (Table S3.1) | 0.1151 | 0.12 | 0.004882 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BL AM | sigma2 residual | paper (Table S3.1) | 2.517 | 2.52 | 0.002533 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BL AM | logLik remainder modulo 100 | paper (Table 2) | 0.001654 |  | 0.001654 | Joshi et al. 2018; printed value = remlax + 2500 |
+| tilapia_joshi2018 | BL ADM | sigma2 A | paper (Table S3.1) | 0.2978 | 0.3 | 0.002219 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BL ADM | sigma2 D | paper (Table S3.1) | 0.365 | 0.36 | 0.004969 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BL ADM | sigma2 M | paper (Table S3.1) | 0.1175 | 0.12 | 0.002518 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BL ADM | sigma2 residual | paper (Table S3.1) | 2.385 | 2.39 | 0.004615 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BL ADM | logLik remainder modulo 100 | paper (Table 2) | 0.0004743 |  | 0.0004743 | Joshi et al. 2018; printed value = remlax + 2500 |
+| tilapia_joshi2018 | BT A | sigma2 A | paper (Table S3.1) | 1.975 | 1.97 | 0.004854 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BT A | sigma2 residual | paper (Table S3.1) | 7.437 | 7.44 | 0.003192 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BT A | logLik remainder modulo 100 | paper (Table 2) | 0.00125 |  | 0.00125 | Joshi et al. 2018; printed value = remlax + 3900 |
+| tilapia_joshi2018 | BT AD | sigma2 A | paper (Table S3.1) | 0.96 | 0.96 | 2.432e-05 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BT AD | sigma2 D | paper (Table S3.1) | 1.513 | 1.51 | 0.003248 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BT AD | sigma2 residual | paper (Table S3.1) | 6.864 | 6.86 | 0.004061 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BT AD | logLik remainder modulo 100 | paper (Table 2) | 0.0004442 |  | 0.0004442 | Joshi et al. 2018; printed value = remlax + 3900 |
+| tilapia_joshi2018 | BT AM | sigma2 A | paper (Table S3.1) | 1.045 | 1.05 | 0.004814 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BT AM | sigma2 M | paper (Table S3.1) | 0.2835 | 0.28 | 0.003502 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BT AM | sigma2 residual | paper (Table S3.1) | 7.867 | 7.87 | 0.003048 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BT AM | logLik remainder modulo 100 | paper (Table 2) | 0.002203 |  | 0.002203 | Joshi et al. 2018; printed value = remlax + 3900 |
+| tilapia_joshi2018 | BT ADM | sigma2 A | paper (Table S3.1) | 1.135e-08 | 0 | 1.135e-08 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BT ADM | sigma2 D | paper (Table S3.1) | 1.53 | 1.53 | 6.366e-05 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BT ADM | sigma2 M | paper (Table S3.1) | 0.2925 | 0.29 | 0.002468 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BT ADM | sigma2 residual | paper (Table S3.1) | 7.296 | 7.3 | 0.0043 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BT ADM | logLik remainder modulo 100 | paper (Table 2) | 0.003021 |  | 0.003021 | Joshi et al. 2018; printed value = remlax + 3900 |
+| tilapia_joshi2018 | BWH A | sigma2 A | paper (Table S3.1) | 3216 | 3216 | 0.007479 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BWH A | sigma2 residual | paper (Table S3.1) | 4312 | 4312 | 0.1152 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BWH A | logLik remainder modulo 100 | paper (Table 2) | 0.003453 |  | 0.003453 | Joshi et al. 2018; printed value = remlax + 12200 |
+| tilapia_joshi2018 | BWH AD | sigma2 A | paper (Table S3.1) | 2086 | 2085 | 0.5732 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BWH AD | sigma2 D | paper (Table S3.1) | 1688 | 1688 | 0.1156 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BWH AD | sigma2 residual | paper (Table S3.1) | 3673 | 3673 | 0.05911 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BWH AD | logLik remainder modulo 100 | paper (Table 2) | 0.004268 |  | 0.004268 | Joshi et al. 2018; printed value = remlax + 12200 |
+| tilapia_joshi2018 | BWH AM | sigma2 A | paper (Table S3.1) | 1009 | 1008 | 0.8258 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BWH AM | sigma2 M | paper (Table S3.1) | 635.7 | 635 | 0.7075 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BWH AM | sigma2 residual | paper (Table S3.1) | 5342 | 5342 | 0.05983 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BWH AM | logLik remainder modulo 100 | paper (Table 2) | 0.001502 |  | 0.001502 | Joshi et al. 2018; printed value = remlax + 12200 |
+| tilapia_joshi2018 | BWH ADM | sigma2 A | paper (Table S3.1) | 4.795e-07 | 0 | 4.795e-07 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BWH ADM | sigma2 D | paper (Table S3.1) | 1548 | 1548 | 0.4766 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BWH ADM | sigma2 M | paper (Table S3.1) | 637.2 | 637 | 0.2266 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BWH ADM | sigma2 residual | paper (Table S3.1) | 4739 | 4739 | 0.438 | Joshi et al. 2018 |
+| tilapia_joshi2018 | BWH ADM | logLik remainder modulo 100 | paper (Table 2) | 0.004445 |  | 0.004445 | Joshi et al. 2018; printed value = remlax + 12200 |
+| tilapia_joshi2018 | FW A | sigma2 A | paper (Table S3.1) | 503 | 503 | 0.01814 | Joshi et al. 2018 |
+| tilapia_joshi2018 | FW A | sigma2 residual | paper (Table S3.1) | 626.2 | 626 | 0.1866 | Joshi et al. 2018 |
+| tilapia_joshi2018 | FW A | logLik remainder modulo 100 | paper (Table 2) | 0.003493 |  | 0.003493 | Joshi et al. 2018; printed value = remlax + 9800 |
+| tilapia_joshi2018 | FW AD | sigma2 A | paper (Table S3.1) | 425.5 | 425 | 0.4502 | Joshi et al. 2018 |
+| tilapia_joshi2018 | FW AD | sigma2 D | paper (Table S3.1) | 126.2 | 126 | 0.1757 | Joshi et al. 2018 |
+| tilapia_joshi2018 | FW AD | sigma2 residual | paper (Table S3.1) | 575 | 575 | 0.00563 | Joshi et al. 2018 |
+| tilapia_joshi2018 | FW AD | logLik remainder modulo 100 | paper (Table 2) | 0.002972 |  | 0.002972 | Joshi et al. 2018; printed value = remlax + 9800 |
+| tilapia_joshi2018 | FW AM | sigma2 A | paper (Table S3.1) | 104.5 | 104 | 0.4627 | Joshi et al. 2018 |
+| tilapia_joshi2018 | FW AM | sigma2 M | paper (Table S3.1) | 116.4 | 116 | 0.4468 | Joshi et al. 2018 |
+| tilapia_joshi2018 | FW AM | sigma2 residual | paper (Table S3.1) | 812.1 | 812 | 0.07744 | Joshi et al. 2018 |
+| tilapia_joshi2018 | FW AM | logLik remainder modulo 100 | paper (Table 2) | 0.002409 |  | 0.002409 | Joshi et al. 2018; printed value = remlax + 9800 |
+| tilapia_joshi2018 | FW ADM | sigma2 A | paper (Table S3.1) | 5.248e-08 | 0 | 5.248e-08 | Joshi et al. 2018 |
+| tilapia_joshi2018 | FW ADM | sigma2 D | paper (Table S3.1) | 152.3 | 152 | 0.3485 | Joshi et al. 2018 |
+| tilapia_joshi2018 | FW ADM | sigma2 M | paper (Table S3.1) | 119.2 | 119 | 0.2012 | Joshi et al. 2018 |
+| tilapia_joshi2018 | FW ADM | sigma2 residual | paper (Table S3.1) | 755.4 | 755 | 0.4379 | Joshi et al. 2018 |
+| tilapia_joshi2018 | FW ADM | logLik remainder modulo 100 | paper (Table 2) | 0.001352 |  | 0.001352 | Joshi et al. 2018; printed value = remlax + 9800 |
+| tilapia_joshi2018 | FY A | sigma2 A | paper (Table S3.1) | 2.283 | 2.28 | 0.003456 | Joshi et al. 2018 |
+| tilapia_joshi2018 | FY A | sigma2 residual | paper (Table S3.1) | 7.342 | 7.34 | 0.002281 | Joshi et al. 2018 |
+| tilapia_joshi2018 | FY A | logLik remainder modulo 100 | paper (Table 2) | 0.002947 |  | 0.002947 | Joshi et al. 2018; printed value = remlax + 3900 |
+| tilapia_joshi2018 | FY AD | sigma2 A | paper (Table S3.1) | 2.283 | 2.28 | 0.003456 | Joshi et al. 2018 |
+| tilapia_joshi2018 | FY AD | sigma2 D | paper (Table S3.1) | 2.404e-10 | 0 | 2.404e-10 | Joshi et al. 2018 |
+| tilapia_joshi2018 | FY AD | sigma2 residual | paper (Table S3.1) | 7.342 | 7.34 | 0.002281 | Joshi et al. 2018 |
+| tilapia_joshi2018 | FY AD | logLik remainder modulo 100 | paper (Table 2) | 0.002947 |  | 0.002947 | Joshi et al. 2018; printed value = remlax + 3900 |
+| tilapia_joshi2018 | FY AM | sigma2 A | paper (Table S3.1) | 2.107 | 2.11 | 0.003153 | Joshi et al. 2018 |
+| tilapia_joshi2018 | FY AM | sigma2 M | paper (Table S3.1) | 0.05162 | 0.05 | 0.001618 | Joshi et al. 2018 |
+| tilapia_joshi2018 | FY AM | sigma2 residual | paper (Table S3.1) | 7.424 | 7.42 | 0.004264 | Joshi et al. 2018 |
+| tilapia_joshi2018 | FY AM | logLik remainder modulo 100 | paper (Table 2) | 0.001344 |  | 0.001344 | Joshi et al. 2018; printed value = remlax + 3900 |
+| tilapia_joshi2018 | FY ADM | sigma2 A | paper (Table S3.1) | 2.107 | 2.11 | 0.003153 | Joshi et al. 2018 |
+| tilapia_joshi2018 | FY ADM | sigma2 D | paper (Table S3.1) | 9.085e-09 | 0 | 9.085e-09 | Joshi et al. 2018 |
+| tilapia_joshi2018 | FY ADM | sigma2 M | paper (Table S3.1) | 0.05162 | 0.05 | 0.001618 | Joshi et al. 2018 |
+| tilapia_joshi2018 | FY ADM | sigma2 residual | paper (Table S3.1) | 7.424 | 7.42 | 0.004264 | Joshi et al. 2018 |
+| tilapia_joshi2018 | FY ADM | logLik remainder modulo 100 | paper (Table 2) | 0.001344 |  | 0.001344 | Joshi et al. 2018; printed value = remlax + 3900 |
+| yeast_bloom2015 | CobaltChloride P | share P | paper | 0.5932 | 0.5932 | 3.29e-07 | Bloom et al. 2015, Supplementary Data 2 |
+| yeast_bloom2015 | CobaltChloride P | share E | paper | 0.4068 | 0.4068 | 3.29e-07 | Bloom et al. 2015, Supplementary Data 2 |
+| yeast_bloom2015 | CobaltChloride A+P | share A | paper | 0.4225 | 0.4224 | 1.142e-06 | Bloom et al. 2015, Supplementary Data 2 |
+| yeast_bloom2015 | CobaltChloride A+P | share P | paper | 0.1813 | 0.1813 | 9.118e-07 | Bloom et al. 2015, Supplementary Data 2 |
+| yeast_bloom2015 | CobaltChloride A+P | share E | paper | 0.3962 | 0.3962 | 2.305e-07 | Bloom et al. 2015, Supplementary Data 2 |
+| yeast_bloom2015 | CobaltChloride A+AA+P | share A | paper | 0.4261 | 0.4261 | 1.021e-05 | Bloom et al. 2015, Supplementary Data 2 |
+| yeast_bloom2015 | CobaltChloride A+AA+P | share AA | paper | 0.0706 | 0.07061 | 1.308e-05 | Bloom et al. 2015, Supplementary Data 2 |
+| yeast_bloom2015 | CobaltChloride A+AA+P | share P | paper | 0.1079 | 0.1079 | 7.418e-06 | Bloom et al. 2015, Supplementary Data 2 |
+| yeast_bloom2015 | CobaltChloride A+AA+P | share E | paper | 0.3954 | 0.3954 | 4.553e-06 | Bloom et al. 2015, Supplementary Data 2 |
+| yeast_bloom2015 | CopperSulfate P | share P | paper | 0.8438 | 0.8438 | 1.566e-09 | Bloom et al. 2015, Supplementary Data 2 |
+| yeast_bloom2015 | CopperSulfate P | share E | paper | 0.1562 | 0.1562 | 1.566e-09 | Bloom et al. 2015, Supplementary Data 2 |
+| yeast_bloom2015 | CopperSulfate A+P | share A | paper | 0.4487 | 0.4487 | 5.821e-06 | Bloom et al. 2015, Supplementary Data 2 |
+| yeast_bloom2015 | CopperSulfate A+P | share P | paper | 0.3862 | 0.3862 | 4.408e-06 | Bloom et al. 2015, Supplementary Data 2 |
+| yeast_bloom2015 | CopperSulfate A+P | share E | paper | 0.165 | 0.165 | 1.413e-06 | Bloom et al. 2015, Supplementary Data 2 |
+| yeast_bloom2015 | CopperSulfate A+AA+P | share A | paper | 0.4616 | 0.4614 | 0.0002335 | Bloom et al. 2015, Supplementary Data 2 |
+| yeast_bloom2015 | CopperSulfate A+AA+P | share AA | paper | 0.2124 | 0.2126 | 0.0002052 | Bloom et al. 2015, Supplementary Data 2 |
+| yeast_bloom2015 | CopperSulfate A+AA+P | share P | paper | 0.1643 | 0.1642 | 2.971e-05 | Bloom et al. 2015, Supplementary Data 2 |
+| yeast_bloom2015 | CopperSulfate A+AA+P | share E | paper | 0.1618 | 0.1618 | 5.8e-05 | Bloom et al. 2015, Supplementary Data 2 |
+| yeast_bloom2015 | Hydroxyurea P | share P | paper | 0.1114 | 0.1114 | 9.961e-06 | Bloom et al. 2015, Supplementary Data 2 |
+| yeast_bloom2015 | Hydroxyurea P | share E | paper | 0.8886 | 0.8886 | 9.961e-06 | Bloom et al. 2015, Supplementary Data 2 |
+| yeast_bloom2015 | Hydroxyurea A+P | share A | paper | 0.08496 | 0.08496 | 5.223e-07 | Bloom et al. 2015, Supplementary Data 2 |
+| yeast_bloom2015 | Hydroxyurea A+P | share P | paper | 0.03005 | 0.03006 | 1.362e-05 | Bloom et al. 2015, Supplementary Data 2 |
+| yeast_bloom2015 | Hydroxyurea A+P | share E | paper | 0.885 | 0.885 | 1.415e-05 | Bloom et al. 2015, Supplementary Data 2 |
+| yeast_bloom2015 | Hydroxyurea A+AA+P | share A | paper | 0.08561 | 0.08561 | 4.335e-06 | Bloom et al. 2015, Supplementary Data 2 |
+| yeast_bloom2015 | Hydroxyurea A+AA+P | share AA | paper | 0.02291 | 0.02288 | 2.456e-05 | Bloom et al. 2015, Supplementary Data 2 |
+| yeast_bloom2015 | Hydroxyurea A+AA+P | share P | paper | 0.007208 | 0.007248 | 4.011e-05 | Bloom et al. 2015, Supplementary Data 2 |
+| yeast_bloom2015 | Hydroxyurea A+AA+P | share E | paper | 0.8843 | 0.8843 | 1.988e-05 | Bloom et al. 2015, Supplementary Data 2 |
+| yeast_bloom2015 | Zeocin P | share P | paper | 0.8801 | 0.8801 | 2.749e-09 | Bloom et al. 2015, Supplementary Data 2 |
+| yeast_bloom2015 | Zeocin P | share E | paper | 0.1199 | 0.1199 | 2.749e-09 | Bloom et al. 2015, Supplementary Data 2 |
+| yeast_bloom2015 | Zeocin A+P | share A | paper | 0.6946 | 0.6946 | 2.141e-06 | Bloom et al. 2015, Supplementary Data 2 |
+| yeast_bloom2015 | Zeocin A+P | share P | paper | 0.2058 | 0.2058 | 1.552e-06 | Bloom et al. 2015, Supplementary Data 2 |
+| yeast_bloom2015 | Zeocin A+P | share E | paper | 0.09959 | 0.0996 | 5.889e-07 | Bloom et al. 2015, Supplementary Data 2 |
+| yeast_bloom2015 | Zeocin A+AA+P | share A | paper | 0.7044 | 0.7044 | 2.191e-06 | Bloom et al. 2015, Supplementary Data 2 |
+| yeast_bloom2015 | Zeocin A+AA+P | share AA | paper | 0.04667 | 0.04667 | 2.714e-07 | Bloom et al. 2015, Supplementary Data 2 |
+| yeast_bloom2015 | Zeocin A+AA+P | share P | paper | 0.1518 | 0.1518 | 1.28e-06 | Bloom et al. 2015, Supplementary Data 2 |
+| yeast_bloom2015 | Zeocin A+AA+P | share E | paper | 0.09708 | 0.09708 | 6.395e-07 | Bloom et al. 2015, Supplementary Data 2 |
 
 ## Context rows
 
@@ -100,11 +243,11 @@ None.
 | maize_drops_gwas | Mur13W anthesis | null s2_e | statgenGWAS | 0.8692 | 0.885 | 0.01788 | statgenGWAS EMMA does not reach the REML optimum, see logLik row |
 | maize_drops_gwas | Mur13W anthesis | score chi2 native output (max rel) | gaston | 3.122e-06 |  | 3.122e-06 | gaston native output vs its own double recomputation: 3.12e-06 |
 | maize_drops_gwas | Mur13W anthesis | -log10 p own REML (max|d|) | statgenGWAS | 0.01159 |  | 0.01159 | remlax REML vs statgenGWAS EMMA components, F convention on both sides |
-| maize_drops_gwas | Mur13W anthesis | -log10 p own REML (max|d|) | gaston | 1.907e-06 |  | 1.907e-06 | remlax REML vs gaston AI-REML components, chi2 at fixed V on both sides |
+| maize_drops_gwas | Mur13W anthesis | -log10 p own REML (max|d|) | gaston | 1.949e-06 |  | 1.949e-06 | remlax REML vs gaston AI-REML components, chi2 at fixed V on both sides |
 | maize_drops_gwas | Mur13W anthesis | top SNP identical | statgenGWAS | 1 | 1 | 0 | remlax PZA00712.4 / statgenGWAS PZA00712.4 |
 | maize_drops_gwas | Mur13W anthesis | Bonferroni set symmetric diff | statgenGWAS | 0 | 0 | 0 | 0 SNPs above 5.92 in remlax (F), 0 in statgenGWAS |
 | maize_drops_gwas | Mur13W anthesis | Bonferroni set, native output | gaston | 0 | 0 | 0 | association.test null refit on trans.X(X): tau 4.07635 sigma2 0.869213 logL -350.7667 |
-| maize_drops_gwas | Mur13W anthesis | lambda GC (F convention) | statgenGWAS | 0.9773 | 0.9779 | 0.0006069 |  |
+| maize_drops_gwas | Mur13W anthesis | lambda GC (F convention) | statgenGWAS | 0.9773 | 0.9779 | 0.000607 |  |
 | maize_drops_gwas | Mur13W anthesis | lambda GC (chi2 fixed V) | remlax | 0.9824 |  | inf | lambda reported by rx_scan |
 | maize_drops_gwas | Mur13W grain.yield | null s2_g | statgenGWAS | 0.9635 | 0.9813 | 0.01809 | statgenGWAS EMMA does not reach the REML optimum, see logLik row |
 | maize_drops_gwas | Mur13W grain.yield | null s2_e | statgenGWAS | 0.2324 | 0.2138 | 0.08668 | statgenGWAS EMMA does not reach the REML optimum, see logLik row |
@@ -119,8 +262,22 @@ None.
 | maize_drops_gwas | Mur13W anthesis LOCO | per-chromosome components (max rel) | statgenGWAS | 0.1041 |  | 0.1041 | rx_scan_loco REML vs statgenGWAS EMMA |
 | maize_drops_gwas | Mur13W anthesis LOCO | -log10 p own REML (max|d|) | statgenGWAS | 0.06868 |  | 0.06868 |  |
 | maize_drops_gwas | Mur13W anthesis LOCO | Bonferroni set symmetric diff | statgenGWAS | 0 | 0 | 0 | 0 SNPs in remlax LOCO, 0 in statgenGWAS multi |
+| maize_drops_multitrait | B PZE-106021419 | p fixed V / p refit | remlax | 33.5 |  | 33.5 | fixed V is conservative for large effects (Zhou & Stephens 2014) |
+| maize_drops_multitrait | B PZE-106021424 | p fixed V / p refit | remlax | 25.75 |  | 25.75 | fixed V is conservative for large effects (Zhou & Stephens 2014) |
+| maize_drops_multitrait | B PZE-106021363 | p fixed V / p refit | remlax | 26.4 |  | 26.4 | fixed V is conservative for large effects (Zhou & Stephens 2014) |
 | mice_valdar2006 | BMI gblup_cage | h2 (genomic, cage in the denominator) | Valdar 2006b | 0.1378 | 0.21 | 0.3436 | pedigree h2 of Valdar et al. 2006b quoted by Legarra et al. 2008, doi:10.1534/genetics.108.088575 |
 | mice_valdar2006 | BodyLength gblup_cage | h2 (genomic, cage in the denominator) | Valdar 2006b | 0.1863 | 0.13 | 0.4328 | pedigree h2 of Valdar et al. 2006b quoted by Legarra et al. 2008, doi:10.1534/genetics.108.088575 |
+| milk_pedigreemm | bivariate milk+prot repeatability | logLik asreml vs dense R at the asreml estimates | dense R | 3348 | 3348 | 1.639e-08 | checks the arbiter on the asreml side |
+| pig_cleveland2012 | t1 A+D | h2 (A share) | Da 2014 | 0.03268 | 0.03 | 0.08923 | Da et al. 2014 Table 1 (GVCBLUP, other SNP filters and dominance coding) |
+| pig_cleveland2012 | t1 A+D | d2 (D share) | Da 2014 | 2.863e-11 | 7.2e-07 | 0 | Da et al. 2014 Table 1 (GVCBLUP, other SNP filters and dominance coding) |
+| pig_cleveland2012 | t2 A+D | h2 (A share) | Da 2014 | 0.2632 | 0.27 | 0.02515 | Da et al. 2014 Table 1 (GVCBLUP, other SNP filters and dominance coding) |
+| pig_cleveland2012 | t2 A+D | d2 (D share) | Da 2014 | 0.015 | 0.02 | 0.2502 | Da et al. 2014 Table 1 (GVCBLUP, other SNP filters and dominance coding) |
+| pig_cleveland2012 | t3 A+D | h2 (A share) | Da 2014 | 0.2166 | 0.22 | 0.01536 | Da et al. 2014 Table 1 (GVCBLUP, other SNP filters and dominance coding) |
+| pig_cleveland2012 | t3 A+D | d2 (D share) | Da 2014 | 0.06506 | 0.07 | 0.07055 | Da et al. 2014 Table 1 (GVCBLUP, other SNP filters and dominance coding) |
+| pig_cleveland2012 | t4 A+D | h2 (A share) | Da 2014 | 0.3449 | 0.35 | 0.01448 | Da et al. 2014 Table 1 (GVCBLUP, other SNP filters and dominance coding) |
+| pig_cleveland2012 | t4 A+D | d2 (D share) | Da 2014 | 0.006591 | 0.01 | 0.3409 | Da et al. 2014 Table 1 (GVCBLUP, other SNP filters and dominance coding) |
+| pig_cleveland2012 | t5 A+D | h2 (A share) | Da 2014 | 0.3751 | 0.38 | 0.01291 | Da et al. 2014 Table 1 (GVCBLUP, other SNP filters and dominance coding) |
+| pig_cleveland2012 | t5 A+D | d2 (D share) | Da 2014 | 0.05326 | 0.05 | 0.06514 | Da et al. 2014 Table 1 (GVCBLUP, other SNP filters and dominance coding) |
 | potato_tetraploid | G matrix | mean diagonal | AGHmatrix default | 0.9622 | 0.9955 | 0.03345 | default scaling: sum of sample variances of the centred dosages |
 | rice44k_zhao2011 | Amylose content | null s2_g | statgenGWAS | 25.65 | 25.88 | 0.00912 | statgenGWAS EMMA does not reach the REML optimum, see logLik row |
 | rice44k_zhao2011 | Amylose content | null s2_e | statgenGWAS | 3.846 | 3.781 | 0.01707 | statgenGWAS EMMA does not reach the REML optimum, see logLik row |
@@ -162,21 +319,58 @@ None.
 | rice44k_zhao2011 | Flowering time at Aberdeen | Bonferroni set, native output | gaston | 7 | 0 | 7 | association.test null refit on trans.X(X): tau 1622.01 sigma2 497.324 logL Inf |
 | rice44k_zhao2011 | Flowering time at Aberdeen | lambda GC (F convention) | statgenGWAS | 0.7856 | 0.7801 | 0.00706 |  |
 | rice44k_zhao2011 | Flowering time at Aberdeen | lead SNP within 1 Mb of HD1 | Zhao 2011 | 1 | 1 | 0 | lead id6006091 chr6:9531374 -log10p 12.40; best within 1 Mb of HD1 (chr6 ~9.34 Mb) 12.40; threshold 5.83 |
-| wheat_crossa2010 | multi-env us x G | logLik asreml, all fixed at remlax estimates | asreml | -850.9 | -850.9 | 0.0001516 | Sigma + 1e-9 I; dense REML at the same point gives -850.93171385 |
-| wheat_crossa2010 | multi-env us x G (asreml from remlax start) | G var E1-E1 | asreml | 0.3051 | 0.3052 | 0.0001405 | asreml drifts away from the boundary optimum to a lower likelihood |
-| wheat_crossa2010 | multi-env us x G (asreml from remlax start) | G cov E1-E2 | asreml | -0.07728 | -0.07749 | 0.002723 | asreml drifts away from the boundary optimum to a lower likelihood |
-| wheat_crossa2010 | multi-env us x G (asreml from remlax start) | G var E2-E2 | asreml | 0.6157 | 0.6163 | 0.0009364 | asreml drifts away from the boundary optimum to a lower likelihood |
-| wheat_crossa2010 | multi-env us x G (asreml from remlax start) | G cov E1-E4 | asreml | -0.1092 | -0.1094 | 0.001128 | asreml drifts away from the boundary optimum to a lower likelihood |
-| wheat_crossa2010 | multi-env us x G (asreml from remlax start) | G cov E2-E4 | asreml | 0.5724 | 0.5733 | 0.001535 | asreml drifts away from the boundary optimum to a lower likelihood |
-| wheat_crossa2010 | multi-env us x G (asreml from remlax start) | G var E4-E4 | asreml | 0.5392 | 0.5422 | 0.00551 | asreml drifts away from the boundary optimum to a lower likelihood |
-| wheat_crossa2010 | multi-env us x G (asreml from remlax start) | G cov E1-E5 | asreml | -0.1249 | -0.125 | 0.0005908 | asreml drifts away from the boundary optimum to a lower likelihood |
-| wheat_crossa2010 | multi-env us x G (asreml from remlax start) | G cov E2-E5 | asreml | 0.3625 | 0.3628 | 0.0008219 | asreml drifts away from the boundary optimum to a lower likelihood |
-| wheat_crossa2010 | multi-env us x G (asreml from remlax start) | G cov E4-E5 | asreml | 0.3636 | 0.3641 | 0.001278 | asreml drifts away from the boundary optimum to a lower likelihood |
-| wheat_crossa2010 | multi-env us x G (asreml from remlax start) | G var E5-E5 | asreml | 0.3503 | 0.3505 | 0.0006649 | asreml drifts away from the boundary optimum to a lower likelihood |
+| tilapia_joshi2018 | BD A | logLik (asreml convention) | asreml | -281.8 | -281.8 | 1.082e-05 | asreml loglik with the nadiv ginv is about 1e-5 off the dense REML value |
+| tilapia_joshi2018 | BD AD | logLik (asreml convention) | asreml | -279.5 | -279.5 | 8.114e-06 | asreml loglik with the nadiv ginv is about 1e-5 off the dense REML value |
+| tilapia_joshi2018 | BD AM | logLik (asreml convention) | asreml | -278.2 | -278.2 | 1.007e-05 | asreml loglik with the nadiv ginv is about 1e-5 off the dense REML value |
+| tilapia_joshi2018 | BD ADM | logLik (asreml convention) | asreml | -275.7 | -275.7 | 1.197e-05 | asreml loglik with the nadiv ginv is about 1e-5 off the dense REML value |
+| tilapia_joshi2018 | BL A | logLik (asreml convention) | asreml | -2591 | -2591 | 1.096e-05 | asreml loglik with the nadiv ginv is about 1e-5 off the dense REML value |
+| tilapia_joshi2018 | BL AD | logLik (asreml convention) | asreml | -2590 | -2590 | 9.993e-06 | asreml loglik with the nadiv ginv is about 1e-5 off the dense REML value |
+| tilapia_joshi2018 | BL AM | logLik (asreml convention) | asreml | -2589 | -2589 | 1.225e-05 | asreml loglik with the nadiv ginv is about 1e-5 off the dense REML value |
+| tilapia_joshi2018 | BL ADM | logLik (asreml convention) | asreml | -2589 | -2589 | 1.197e-05 | asreml loglik with the nadiv ginv is about 1e-5 off the dense REML value |
+| tilapia_joshi2018 | BT A | logLik (asreml convention) | asreml | -3957 | -3957 | 1.076e-05 | asreml loglik with the nadiv ginv is about 1e-5 off the dense REML value |
+| tilapia_joshi2018 | BT AD | logLik (asreml convention) | asreml | -3956 | -3956 | 1.508e-05 | asreml loglik with the nadiv ginv is about 1e-5 off the dense REML value |
+| tilapia_joshi2018 | BT AM | logLik (asreml convention) | asreml | -3956 | -3956 | 7.706e-06 | asreml loglik with the nadiv ginv is about 1e-5 off the dense REML value |
+| tilapia_joshi2018 | BT ADM | logLik (asreml convention) | asreml | -3955 | -3955 | 1.515e-05 | asreml loglik with the nadiv ginv is about 1e-5 off the dense REML value |
+| tilapia_joshi2018 | BWH A | logLik (asreml convention) | asreml | -1.223e+04 | -1.223e+04 | 1.077e-05 | asreml loglik with the nadiv ginv is about 1e-5 off the dense REML value |
+| tilapia_joshi2018 | BWH AD | logLik (asreml convention) | asreml | -1.223e+04 | -1.223e+04 | 1.234e-05 | asreml loglik with the nadiv ginv is about 1e-5 off the dense REML value |
+| tilapia_joshi2018 | BWH AM | logLik (asreml convention) | asreml | -1.222e+04 | -1.222e+04 | 1.194e-05 | asreml loglik with the nadiv ginv is about 1e-5 off the dense REML value |
+| tilapia_joshi2018 | BWH ADM | logLik (asreml convention) | asreml | -1.222e+04 | -1.222e+04 | 1.121e-05 | asreml loglik with the nadiv ginv is about 1e-5 off the dense REML value |
+| tilapia_joshi2018 | FW A | logLik (asreml convention) | asreml | -9822 | -9822 | 1.244e-05 | asreml loglik with the nadiv ginv is about 1e-5 off the dense REML value |
+| tilapia_joshi2018 | FW AD | logLik (asreml convention) | asreml | -9821 | -9821 | 4.799e-06 | asreml loglik with the nadiv ginv is about 1e-5 off the dense REML value |
+| tilapia_joshi2018 | FW AM | logLik (asreml convention) | asreml | -9816 | -9816 | 1.419e-05 | asreml loglik with the nadiv ginv is about 1e-5 off the dense REML value |
+| tilapia_joshi2018 | FW ADM | logLik (asreml convention) | asreml | -9815 | -9815 | 1.53e-05 | asreml loglik with the nadiv ginv is about 1e-5 off the dense REML value |
+| tilapia_joshi2018 | FY A | logLik (asreml convention) | asreml | -3968 | -3968 | 1.167e-05 | asreml loglik with the nadiv ginv is about 1e-5 off the dense REML value |
+| tilapia_joshi2018 | FY AD | logLik (asreml convention) | asreml | -3968 | -3968 | 9.595e-06 | asreml loglik with the nadiv ginv is about 1e-5 off the dense REML value |
+| tilapia_joshi2018 | FY AM | logLik (asreml convention) | asreml | -3968 | -3968 | 1.167e-05 | asreml loglik with the nadiv ginv is about 1e-5 off the dense REML value |
+| tilapia_joshi2018 | FY ADM | logLik (asreml convention) | asreml | -3968 | -3968 | 1.173e-05 | asreml loglik with the nadiv ginv is about 1e-5 off the dense REML value |
+| twins_openmx | ACE | sigma2 A | OpenMx (ML) | 0.6996 | 0.6992 | 0.000531 | OpenMx maximum likelihood on the wide pair format; REML differs by the df of the mean |
+| twins_openmx | ACE | sigma2 C | OpenMx (ML) | 9.385e-09 | 8.123e-13 | 0 | OpenMx maximum likelihood on the wide pair format; REML differs by the df of the mean |
+| twins_openmx | ACE | sigma2 E | OpenMx (ML) | 0.2417 | 0.2417 | 5.356e-05 | OpenMx maximum likelihood on the wide pair format; REML differs by the df of the mean |
+| twins_openmx | ADE | sigma2 A | OpenMx (ML) | 0.5808 | 0.5797 | 0.001954 | OpenMx maximum likelihood on the wide pair format; REML differs by the df of the mean |
+| twins_openmx | ADE | sigma2 D | OpenMx (ML) | 0.1169 | 0.1177 | 0.006436 | OpenMx maximum likelihood on the wide pair format; REML differs by the df of the mean |
+| twins_openmx | ADE | sigma2 E | OpenMx (ML) | 0.2399 | 0.2399 | 8.385e-07 | OpenMx maximum likelihood on the wide pair format; REML differs by the df of the mean |
+| warcolak_nadiv | trait1 A+D | sigma2 A | simulation | 0.3772 | 0.3677 | 0.02581 | realised variance of the simulated effects (warcolak columns) |
+| warcolak_nadiv | trait1 A+D | sigma2 D | simulation | 0.2291 | 0.2912 | 0.2135 | realised variance of the simulated effects (warcolak columns) |
+| warcolak_nadiv | trait1 A+D | sigma2 residual | simulation | 0.3547 | 0.3023 | 0.173 | realised variance of the simulated effects (warcolak columns) |
+| warcolak_nadiv | trait2 A+S+D | sigma2 A | simulation | 0.2629 | 0.3032 | 0.133 | realised variance of the simulated effects (warcolak columns) |
+| warcolak_nadiv | trait2 A+S+D | sigma2 S | simulation | 0.09535 | 0.0738 | 0.2919 | realised variance of the simulated effects (warcolak columns) |
+| warcolak_nadiv | trait2 A+S+D | sigma2 D | simulation | 0.3471 | 0.299 | 0.1609 | realised variance of the simulated effects (warcolak columns) |
+| warcolak_nadiv | trait2 A+S+D | sigma2 residual | simulation | 0.2843 | 0.2982 | 0.0466 | realised variance of the simulated effects (warcolak columns) |
+| wheat_crossa2010 | multi-env us x G | logLik asreml, all fixed at remlax estimates | asreml | -850.9 | -850.9 | 8.206e-05 | Sigma + 1e-9 I; dense REML at the same point gives -850.93171385 |
+| wheat_crossa2010 | multi-env us x G (asreml from remlax start) | G var E1-E1 | asreml | 0.3051 | 0.3052 | 0.0003267 | asreml drifts away from the boundary optimum to a lower likelihood |
+| wheat_crossa2010 | multi-env us x G (asreml from remlax start) | G cov E1-E2 | asreml | -0.07728 | -0.07761 | 0.004297 | asreml drifts away from the boundary optimum to a lower likelihood |
+| wheat_crossa2010 | multi-env us x G (asreml from remlax start) | G var E2-E2 | asreml | 0.6157 | 0.6157 | 3.581e-05 | asreml drifts away from the boundary optimum to a lower likelihood |
+| wheat_crossa2010 | multi-env us x G (asreml from remlax start) | G cov E1-E4 | asreml | -0.1092 | -0.1096 | 0.003656 | asreml drifts away from the boundary optimum to a lower likelihood |
+| wheat_crossa2010 | multi-env us x G (asreml from remlax start) | G cov E2-E4 | asreml | 0.5724 | 0.5739 | 0.002716 | asreml drifts away from the boundary optimum to a lower likelihood |
+| wheat_crossa2010 | multi-env us x G (asreml from remlax start) | G var E4-E4 | asreml | 0.5392 | 0.5445 | 0.009761 | asreml drifts away from the boundary optimum to a lower likelihood |
+| wheat_crossa2010 | multi-env us x G (asreml from remlax start) | G cov E1-E5 | asreml | -0.1249 | -0.125 | 0.000566 | asreml drifts away from the boundary optimum to a lower likelihood |
+| wheat_crossa2010 | multi-env us x G (asreml from remlax start) | G cov E2-E5 | asreml | 0.3625 | 0.3627 | 0.0004321 | asreml drifts away from the boundary optimum to a lower likelihood |
+| wheat_crossa2010 | multi-env us x G (asreml from remlax start) | G cov E4-E5 | asreml | 0.3636 | 0.3643 | 0.001816 | asreml drifts away from the boundary optimum to a lower likelihood |
+| wheat_crossa2010 | multi-env us x G (asreml from remlax start) | G var E5-E5 | asreml | 0.3503 | 0.3506 | 0.001102 | asreml drifts away from the boundary optimum to a lower likelihood |
 
 ## Rerun
 
 ```
-for s in published_data/scripts/0[1-9]_*.R; do Rscript "$s"; done
+for s in published_data/scripts/[0-9][0-9]_*.R; do Rscript "$s"; done
 python3 published_data/make_report.py
 ```

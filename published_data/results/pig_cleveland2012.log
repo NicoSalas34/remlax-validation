@@ -1,0 +1,587 @@
+Message d'avis :
+le package ‘Matrix’ a été compilé avec la version R 4.6.1 
+Online License checked out Sat Oct 31 16:22:18 2026
+
+######## pig_cleveland2012 (Cleveland et al. 2012, doi:10.1534/g3.111.001453)
+remlax 0.2.0 | R 4.5.2
+  asreml       4.2.0.382
+  sommer       4.4.4
+  gaston       1.6
+  rrBLUP       4.6.3
+  statgenGWAS  1.0.12
+  BGLR         1.1.4
+  enhancer     1.1.2
+genotyped 3534, SNPs 52843, pedigree 6473
+SNPs kept 52843; mean diag G 1.034, D 1.038, AA 1.000
+
+######## t1: 2804 genotyped pigs with a record
+
+=== t1 GBLUP ===
+REML fit (cpu): logLik -4505.803625 | 2 parameters | 2804 obs | 51.9 s
+  max|grad| 1.42e-07 | Newton decrement 5.70e-16 | 0 negative eigenvalue(s)
+  Sigma[g] 1x1, diagonal: 0.04765
+  residual: 1.411
+              component  std.error   z.ratio bound %ch
+vm(g, Gs_as) 0.04765087 0.02202536  2.163454     P   0
+units!R      1.41058598 0.04195308 33.622938     P   0
+  software   t1 GBLUP                   sigma2 A                           asreml        0.047650869    0.047650869  d= 7.98e-09  OK
+  software   t1 GBLUP                   sigma2 A                           gaston        0.047650869    0.047650869  d= 7.81e-09  OK
+  software   t1 GBLUP                   sigma2 residual                    asreml           1.410586       1.410586  d= 2.25e-10  OK
+  software   t1 GBLUP                   sigma2 residual                    gaston           1.410586       1.410586  d= 2.20e-10  OK
+  software   t1 GBLUP                   logLik (asreml convention)         asreml         -1930.0189     -1930.0189  d= 5.00e-12  OK
+  software   t1 GBLUP                   logLik (asreml convention)         gaston         -1930.0189     -1930.0189  d= 2.27e-13  OK
+  software   t1 GBLUP A                 BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   t1 GBLUP A                 BLUP max |diff| / sd               asreml      3.0388661e-08             NA  d= 3.04e-08  OK
+  software   t1 GBLUP                   sigma2 A                           sommer        0.047650869    0.047652833  d= 4.12e-05  OK
+  software   t1 GBLUP                   sigma2 residual                    sommer           1.410586      1.4105843  d= 1.17e-06  OK
+  software   t1 GBLUP                   sigma2 A                           rrBLUP        0.047650869    0.047650867  d= 5.66e-08  OK
+  software   t1 GBLUP                   sigma2 residual                    rrBLUP           1.410586       1.410586  d= 1.60e-09  OK
+
+=== t1 A+D ===
+REML fit (cpu): logLik -4505.803625 | 3 parameters | 2804 obs | 164.7 s
+  max|grad| 1.65e-09 | Newton decrement 8.13e-28 | 0 negative eigenvalue(s)
+  Sigma[g] 1x1, diagonal: 0.04765
+  Sigma[d] 1x1, diagonal: 4.175e-11
+  residual: 1.411
+                component  std.error   z.ratio bound %ch
+vm(g, Gs_as) 4.765085e-02 0.02202536  2.163454     P   0
+vm(d, Ds_as) 2.496998e-07         NA        NA     B  NA
+units!R      1.410586e+00 0.04195308 33.622939     P   0
+  software   t1 A+D                     sigma2 A                           asreml        0.047650869    0.047650851  d= 3.86e-07  OK
+  software   t1 A+D                     sigma2 A                           gaston        0.047650869    0.047650869  d= 6.62e-11  OK
+  software   t1 A+D                     sigma2 D                           asreml      4.1754855e-11  2.4969984e-07  d= 0.00e+00  OK
+  software   t1 A+D                     sigma2 D                           gaston      4.1754855e-11 1.3906527e-309  d= 0.00e+00  OK
+  software   t1 A+D                     sigma2 residual                    asreml           1.410586      1.4105857  d= 1.69e-07  OK
+  software   t1 A+D                     sigma2 residual                    gaston           1.410586       1.410586  d= 2.79e-11  OK
+  software   t1 A+D                     logLik (asreml convention)         asreml         -1930.0189     -1930.0189  d= 2.47e-06  OK
+  software   t1 A+D                     logLik (asreml convention)         gaston         -1930.0189     -1930.0189  d= 4.12e-10  OK
+  software   t1 A+D A                   BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   t1 A+D A                   BLUP max |diff| / sd               asreml      1.5790855e-06             NA  d= 1.58e-06  OK
+  software   t1 A+D                     sigma2 A                           sommer        0.047650869    0.047651443  d= 1.20e-05  OK
+  software   t1 A+D                     sigma2 D                           sommer      4.1754855e-11              0  d= 0.00e+00  OK
+  software   t1 A+D                     sigma2 residual                    sommer           1.410586      1.4105855  d= 3.41e-07  OK
+  context    t1 A+D                     h2 (A share)                       Da 2014       0.032677044           0.03  d= 8.92e-02  ctx
+  context    t1 A+D                     d2 (D share)                       Da 2014     2.8633795e-11        7.2e-07  d= 0.00e+00  ctx
+
+=== t1 A+D+AA ===
+REML fit (cpu): logLik -4505.032742 | 4 parameters | 2804 obs | 352.5 s
+  max|grad| 2.86e-09 | Newton decrement 7.34e-24 | 0 negative eigenvalue(s)
+  Sigma[g] 1x1, diagonal: 0.02732
+  Sigma[d] 1x1, diagonal: 3.775e-11
+  Sigma[aa] 1x1, diagonal: 0.1113
+  residual: 1.32
+                  component  std.error   z.ratio bound %ch
+vm(g, Gs_as)   2.732100e-02 0.02507111  1.089741     P   0
+vm(d, Ds_as)   6.272567e-08         NA        NA     B  NA
+vm(aa, AAs_as) 1.113188e-01 0.08437211  1.319380     P   0
+units!R        1.320487e+00 0.07870194 16.778330     P   0
+EM step failed to improve likelihood (this should not happen)
+  software   t1 A+D+AA                  sigma2 A                           asreml        0.027321003    0.027321005  d= 5.99e-08  OK
+  software   t1 A+D+AA                  sigma2 A                           gaston        0.027321003    0.027321003  d= 5.09e-11  OK
+  software   t1 A+D+AA                  sigma2 D                           asreml      3.7751345e-11  6.2725671e-08  d= 0.00e+00  OK
+  software   t1 A+D+AA                  sigma2 D                           gaston      3.7751345e-11 1.3906527e-309  d= 0.00e+00  OK
+  software   t1 A+D+AA                  sigma2 AA                          asreml         0.11131888     0.11131885  d= 2.98e-07  OK
+  software   t1 A+D+AA                  sigma2 AA                          gaston         0.11131888     0.11131888  d= 2.06e-10  OK
+  software   t1 A+D+AA                  sigma2 residual                    asreml          1.3204871      1.3204871  d= 2.79e-08  OK
+  software   t1 A+D+AA                  sigma2 residual                    gaston          1.3204871      1.3204871  d= 1.24e-11  OK
+  software   t1 A+D+AA                  logLik (asreml convention)         asreml          -1929.248      -1929.248  d= 1.19e-06  OK
+  software   t1 A+D+AA                  logLik (asreml convention)         gaston          -1929.248      -1929.248  d= 7.14e-10  OK
+  software   t1 A+D+AA A                BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   t1 A+D+AA A                BLUP max |diff| / sd               asreml       2.088459e-07             NA  d= 2.09e-07  OK
+
+=== t1 ABLUP (2804 records) ===
+REML fit (cpu): logLik -4502.816429 | 2 parameters | 2804 obs | 42.3 s
+  max|grad| 3.11e-06 | Newton decrement 1.82e-13 | 0 negative eigenvalue(s)
+  Sigma[a] 1x1, diagonal: 0.1133
+  residual: 1.347
+          component  std.error   z.ratio bound %ch
+vm(a, gA) 0.1132745 0.04044186  2.800922     P   0
+units!R   1.3473205 0.05001717 26.937160     P   0
+  software   t1 ABLUP                   sigma2 A                           asreml         0.11327452      0.1132745  d= 1.12e-07  OK
+  software   t1 ABLUP                   sigma2 residual                    asreml          1.3473205      1.3473205  d= 7.91e-09  OK
+  software   t1 ABLUP                   logLik (asreml convention)         asreml         -1927.0317     -1927.0317  d= 7.80e-08  OK
+  software   t1 ABLUP A                 BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   t1 ABLUP A                 BLUP max |diff| / sd               asreml      7.6541711e-07             NA  d= 7.65e-07  OK
+
+######## t2: 2715 genotyped pigs with a record
+
+=== t2 GBLUP ===
+REML fit (cpu): logLik -3840.917748 | 2 parameters | 2715 obs | 103.2 s
+  max|grad| 1.11e-13 | Newton decrement 2.23e-29 | 0 negative eigenvalue(s)
+  Sigma[g] 1x1, diagonal: 0.2863
+  residual: 0.7958
+             component  std.error   z.ratio bound %ch
+vm(g, Gs_as) 0.2863110 0.03355031  8.533782     P   0
+units!R      0.7957991 0.02776460 28.662360     P   0
+  software   t2 GBLUP                   sigma2 A                           asreml         0.28631103     0.28631103  d= 4.32e-11  OK
+  software   t2 GBLUP                   sigma2 A                           gaston         0.28631103     0.28631103  d= 2.66e-13  OK
+  software   t2 GBLUP                   sigma2 residual                    asreml         0.79579905     0.79579905  d= 2.63e-11  OK
+  software   t2 GBLUP                   sigma2 residual                    gaston         0.79579905     0.79579905  d= 3.33e-14  OK
+  software   t2 GBLUP                   logLik (asreml convention)         asreml         -1346.9186     -1346.9186  d= 7.05e-12  OK
+  software   t2 GBLUP                   logLik (asreml convention)         gaston         -1346.9186     -1346.9186  d= 0.00e+00  OK
+  software   t2 GBLUP A                 BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   t2 GBLUP A                 BLUP max |diff| / sd               asreml      1.5762807e-10             NA  d= 1.58e-10  OK
+  software   t2 GBLUP                   sigma2 A                           sommer         0.28631103     0.28631042  d= 2.12e-06  OK
+  software   t2 GBLUP                   sigma2 residual                    sommer         0.79579905     0.79579938  d= 4.08e-07  OK
+  software   t2 GBLUP                   sigma2 A                           rrBLUP         0.28631103     0.28631002  d= 3.52e-06  OK
+  software   t2 GBLUP                   sigma2 residual                    rrBLUP         0.79579905     0.79579959  d= 6.77e-07  OK
+
+=== t2 A+D ===
+REML fit (cpu): logLik -3840.671555 | 3 parameters | 2715 obs | 276.1 s
+  max|grad| 1.76e-13 | Newton decrement 3.12e-29 | 0 negative eigenvalue(s)
+  Sigma[g] 1x1, diagonal: 0.2846
+  Sigma[d] 1x1, diagonal: 0.01621
+  residual: 0.7805
+              component  std.error    z.ratio bound %ch
+vm(g, Gs_as) 0.28460985 0.03360342  8.4696686     P   0
+vm(d, Ds_as) 0.01621427 0.02431580  0.6668204     P   0
+units!R      0.78047581 0.03548125 21.9968493     P   0
+EM step failed to improve likelihood (this should not happen)
+  software   t2 A+D                     sigma2 A                           asreml         0.28460985     0.28460985  d= 5.72e-11  OK
+  software   t2 A+D                     sigma2 A                           gaston         0.28460985     0.28460985  d= 8.64e-14  OK
+  software   t2 A+D                     sigma2 D                           asreml        0.016214275    0.016214275  d= 3.41e-11  OK
+  software   t2 A+D                     sigma2 D                           gaston        0.016214275    0.016214275  d= 4.05e-12  OK
+  software   t2 A+D                     sigma2 residual                    asreml         0.78047581     0.78047581  d= 3.69e-11  OK
+  software   t2 A+D                     sigma2 residual                    gaston         0.78047581     0.78047581  d= 7.00e-14  OK
+  software   t2 A+D                     logLik (asreml convention)         asreml         -1346.6724     -1346.6724  d= 2.07e-11  OK
+  software   t2 A+D                     logLik (asreml convention)         gaston         -1346.6724     -1346.6724  d= 4.55e-13  OK
+  software   t2 A+D A                   BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   t2 A+D A                   BLUP max |diff| / sd               asreml      2.2570075e-10             NA  d= 2.26e-10  OK
+  software   t2 A+D                     sigma2 A                           sommer         0.28460985     0.28460919  d= 2.33e-06  OK
+  software   t2 A+D                     sigma2 D                           sommer        0.016214275    0.016214665  d= 2.41e-05  OK
+  software   t2 A+D                     sigma2 residual                    sommer         0.78047581     0.78047579  d= 3.53e-08  OK
+  context    t2 A+D                     h2 (A share)                       Da 2014        0.26321083           0.27  d= 2.51e-02  ctx
+  context    t2 A+D                     d2 (D share)                       Da 2014       0.014995168           0.02  d= 2.50e-01  ctx
+
+=== t2 A+D+AA ===
+REML fit (cpu): logLik -3836.322475 | 4 parameters | 2715 obs | 150.1 s
+  max|grad| 2.48e-09 | Newton decrement 7.90e-21 | 0 negative eigenvalue(s)
+  Sigma[g] 1x1, diagonal: 0.2282
+  Sigma[d] 1x1, diagonal: 0.01348
+  Sigma[aa] 1x1, diagonal: 0.2023
+  residual: 0.634
+                component  std.error    z.ratio bound %ch
+vm(g, Gs_as)   0.22819177 0.03613747  6.3145468     P   0
+vm(d, Ds_as)   0.01348127 0.02401309  0.5614132     P   0
+vm(aa, AAs_as) 0.20234985 0.07187523  2.8152931     P   0
+units!R        0.63402857 0.05942081 10.6701434     P   0
+EM step failed to improve likelihood (this should not happen)
+EM step failed to improve likelihood (this should not happen)
+  software   t2 A+D+AA                  sigma2 A                           asreml         0.22819177     0.22819177  d= 1.57e-09  OK
+  software   t2 A+D+AA                  sigma2 A                           gaston         0.22819177     0.22819177  d= 1.89e-13  OK
+  software   t2 A+D+AA                  sigma2 D                           asreml        0.013481266    0.013481266  d= 2.72e-09  OK
+  software   t2 A+D+AA                  sigma2 D                           gaston        0.013481266    0.013481266  d= 1.00e-10  OK
+  software   t2 A+D+AA                  sigma2 AA                          asreml         0.20234985     0.20234985  d= 1.59e-10  OK
+  software   t2 A+D+AA                  sigma2 AA                          gaston         0.20234985     0.20234985  d= 3.23e-12  OK
+  software   t2 A+D+AA                  sigma2 residual                    asreml         0.63402857     0.63402857  d= 5.66e-10  OK
+  software   t2 A+D+AA                  sigma2 residual                    gaston         0.63402857     0.63402857  d= 2.72e-13  OK
+  software   t2 A+D+AA                  logLik (asreml convention)         asreml         -1342.3233     -1342.3233  d= 4.09e-12  OK
+  software   t2 A+D+AA                  logLik (asreml convention)         gaston         -1342.3233     -1342.3233  d= 0.00e+00  OK
+  software   t2 A+D+AA A                BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   t2 A+D+AA A                BLUP max |diff| / sd               asreml      9.1093366e-09             NA  d= 9.11e-09  OK
+
+=== t2 ABLUP (2715 records) ===
+REML fit (cpu): logLik -3847.551985 | 2 parameters | 2715 obs | 11.2 s
+  max|grad| 2.74e-07 | Newton decrement 2.51e-17 | 0 negative eigenvalue(s)
+  Sigma[a] 1x1, diagonal: 0.4532
+  residual: 0.6406
+          component  std.error   z.ratio bound %ch
+vm(a, gA) 0.4531512 0.04893609  9.260063     P   0
+units!R   0.6405853 0.03671381 17.448076     P   0
+  software   t2 ABLUP                   sigma2 A                           asreml         0.45315124     0.45315124  d= 4.90e-10  OK
+  software   t2 ABLUP                   sigma2 residual                    asreml         0.64058531     0.64058531  d= 2.01e-10  OK
+  software   t2 ABLUP                   logLik (asreml convention)         asreml         -1353.5528     -1353.5528  d= 7.80e-08  OK
+  software   t2 ABLUP A                 BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   t2 ABLUP A                 BLUP max |diff| / sd               asreml      5.2979617e-10             NA  d= 5.30e-10  OK
+
+######## t3: 3141 genotyped pigs with a record
+
+=== t3 GBLUP ===
+REML fit (cpu): logLik -4185.923900 | 2 parameters | 3141 obs | 56.7 s
+  max|grad| 3.06e-05 | Newton decrement 1.06e-13 | 0 negative eigenvalue(s)
+  Sigma[g] 1x1, diagonal: 0.2065
+  residual: 0.7004
+             component  std.error   z.ratio bound %ch
+vm(g, Gs_as) 0.2064656 0.02720497  7.589262     P   0
+units!R      0.7004198 0.02274490 30.794590     P   0
+EM step failed to improve likelihood (this should not happen)
+  software   t3 GBLUP                   sigma2 A                           asreml         0.20646564     0.20646564  d= 9.48e-09  OK
+  software   t3 GBLUP                   sigma2 A                           gaston         0.20646564     0.20646564  d= 9.46e-09  OK
+  software   t3 GBLUP                   sigma2 residual                    asreml         0.70041975     0.70041975  d= 5.29e-09  OK
+  software   t3 GBLUP                   sigma2 residual                    gaston         0.70041975     0.70041975  d= 5.18e-09  OK
+  software   t3 GBLUP                   logLik (asreml convention)         asreml         -1300.4569     -1300.4569  d= 9.55e-12  OK
+  software   t3 GBLUP                   logLik (asreml convention)         gaston         -1300.4569     -1300.4569  d= 2.27e-13  OK
+  software   t3 GBLUP A                 BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   t3 GBLUP A                 BLUP max |diff| / sd               asreml      5.7029456e-09             NA  d= 5.70e-09  OK
+  software   t3 GBLUP                   sigma2 A                           sommer         0.20646564     0.20644543  d= 9.79e-05  OK
+  software   t3 GBLUP                   sigma2 residual                    sommer         0.70041975     0.70043059  d= 1.55e-05  OK
+  software   t3 GBLUP                   sigma2 A                           rrBLUP         0.20646564     0.20646489  d= 3.64e-06  OK
+  software   t3 GBLUP                   sigma2 residual                    rrBLUP         0.70041975     0.70042016  d= 5.82e-07  OK
+
+=== t3 A+D ===
+REML fit (cpu): logLik -4183.268088 | 3 parameters | 3141 obs | 109.4 s
+  max|grad| 1.25e-07 | Newton decrement 4.23e-17 | 0 negative eigenvalue(s)
+  Sigma[g] 1x1, diagonal: 0.1957
+  Sigma[d] 1x1, diagonal: 0.05879
+  residual: 0.649
+              component  std.error   z.ratio bound %ch
+vm(g, Gs_as) 0.19573122 0.02677706  7.309662     P   0
+vm(d, Ds_as) 0.05878688 0.02434837  2.414407     P   0
+units!R      0.64904409 0.02976433 21.806105     P   0
+  software   t3 A+D                     sigma2 A                           asreml         0.19573124     0.19573122  d= 7.31e-08  OK
+  software   t3 A+D                     sigma2 A                           gaston         0.19573124     0.19573124  d= 6.42e-10  OK
+  software   t3 A+D                     sigma2 D                           asreml        0.058786864    0.058786876  d= 2.04e-07  OK
+  software   t3 A+D                     sigma2 D                           gaston        0.058786864    0.058786864  d= 2.14e-10  OK
+  software   t3 A+D                     sigma2 residual                    asreml         0.64904414     0.64904409  d= 6.61e-08  OK
+  software   t3 A+D                     sigma2 residual                    gaston         0.64904414     0.64904414  d= 1.01e-10  OK
+  software   t3 A+D                     logLik (asreml convention)         asreml         -1297.8011     -1297.8011  d= 3.00e-11  OK
+  software   t3 A+D                     logLik (asreml convention)         gaston         -1297.8011     -1297.8011  d= 4.55e-13  OK
+  software   t3 A+D A                   BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   t3 A+D A                   BLUP max |diff| / sd               asreml      3.1854024e-07             NA  d= 3.19e-07  OK
+  software   t3 A+D                     sigma2 A                           sommer         0.19573124     0.19571295  d= 9.35e-05  OK
+  software   t3 A+D                     sigma2 D                           sommer        0.058786864    0.058843009  d= 9.54e-04  OK
+  software   t3 A+D                     sigma2 residual                    sommer         0.64904414     0.64900282  d= 6.37e-05  OK
+  context    t3 A+D                     h2 (A share)                       Da 2014        0.21662176           0.22  d= 1.54e-02  ctx
+  context    t3 A+D                     d2 (D share)                       Da 2014       0.065061223           0.07  d= 7.06e-02  ctx
+
+=== t3 A+D+AA ===
+REML fit (cpu): logLik -4154.505033 | 4 parameters | 3141 obs | 220.4 s
+  max|grad| 1.99e-10 | Newton decrement 1.20e-22 | 0 negative eigenvalue(s)
+  Sigma[g] 1x1, diagonal: 0.09523
+  Sigma[d] 1x1, diagonal: 0.01196
+  Sigma[aa] 1x1, diagonal: 0.4438
+  residual: 0.3583
+                component  std.error   z.ratio bound %ch
+vm(g, Gs_as)   0.09523211 0.02433874 3.9127793     P   0
+vm(d, Ds_as)   0.01196429 0.02038198 0.5870034     P   0
+vm(aa, AAs_as) 0.44378377 0.06236632 7.1157602     P   0
+units!R        0.35833631 0.04711079 7.6062471     P   0
+EM step failed to improve likelihood (this should not happen)
+  software   t3 A+D+AA                  sigma2 A                           asreml        0.095232117    0.095232114  d= 3.41e-08  OK
+  software   t3 A+D+AA                  sigma2 A                           gaston        0.095232117    0.095232117  d= 9.99e-13  OK
+  software   t3 A+D+AA                  sigma2 D                           asreml        0.011964287    0.011964293  d= 4.97e-07  OK
+  software   t3 A+D+AA                  sigma2 D                           gaston        0.011964287    0.011964287  d= 3.50e-12  OK
+  software   t3 A+D+AA                  sigma2 AA                          asreml         0.44378379     0.44378377  d= 3.89e-08  OK
+  software   t3 A+D+AA                  sigma2 AA                          gaston         0.44378379     0.44378379  d= 7.62e-13  OK
+  software   t3 A+D+AA                  sigma2 residual                    asreml         0.35833632     0.35833631  d= 4.13e-08  OK
+  software   t3 A+D+AA                  sigma2 residual                    gaston         0.35833632     0.35833632  d= 6.21e-13  OK
+  software   t3 A+D+AA                  logLik (asreml convention)         asreml          -1269.038      -1269.038  d= 5.12e-11  OK
+  software   t3 A+D+AA                  logLik (asreml convention)         gaston          -1269.038      -1269.038  d= 4.55e-13  OK
+  software   t3 A+D+AA A                BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   t3 A+D+AA A                BLUP max |diff| / sd               asreml       7.501699e-08             NA  d= 7.50e-08  OK
+
+=== t3 ABLUP (3141 records) ===
+REML fit (cpu): logLik -4181.451691 | 2 parameters | 3141 obs | 7.9 s
+  max|grad| 5.46e-07 | Newton decrement 9.39e-17 | 0 negative eigenvalue(s)
+  Sigma[a] 1x1, diagonal: 0.3581
+  residual: 0.5588
+          component  std.error   z.ratio bound %ch
+vm(a, gA) 0.3581125 0.04011070  8.928104     P   0
+units!R   0.5588237 0.03025782 18.468736     P   0
+  software   t3 ABLUP                   sigma2 A                           asreml         0.35811252     0.35811252  d= 5.36e-10  OK
+  software   t3 ABLUP                   sigma2 residual                    asreml         0.55882365     0.55882365  d= 2.44e-11  OK
+  software   t3 ABLUP                   logLik (asreml convention)         asreml         -1295.9847     -1295.9847  d= 7.82e-08  OK
+  software   t3 ABLUP A                 BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   t3 ABLUP A                 BLUP max |diff| / sd               asreml      1.4463705e-09             NA  d= 1.45e-09  OK
+
+######## t4: 3152 genotyped pigs with a record
+
+=== t4 GBLUP ===
+REML fit (cpu): logLik -6834.527842 | 2 parameters | 3152 obs | 45.3 s
+  max|grad| 2.54e-05 | Newton decrement 7.64e-14 | 0 negative eigenvalue(s)
+  Sigma[g] 1x1, diagonal: 1.788
+  residual: 3.386
+             component std.error  z.ratio bound %ch
+vm(g, Gs_as)  1.787541 0.1748692 10.22216     P   0
+units!R       3.386437 0.1149654 29.45613     P   0
+  software   t4 GBLUP                   sigma2 A                           asreml          1.7875409      1.7875409  d= 3.47e-09  OK
+  software   t4 GBLUP                   sigma2 A                           gaston          1.7875409      1.7875409  d= 3.47e-09  OK
+  software   t4 GBLUP                   sigma2 residual                    asreml          3.3864372      3.3864372  d= 6.35e-09  OK
+  software   t4 GBLUP                   sigma2 residual                    gaston          3.3864372      3.3864372  d= 6.35e-09  OK
+  software   t4 GBLUP                   logLik (asreml convention)         asreml         -3938.9525     -3938.9525  d= 1.05e-11  OK
+  software   t4 GBLUP                   logLik (asreml convention)         gaston         -3938.9525     -3938.9525  d= 1.36e-12  OK
+  software   t4 GBLUP A                 BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   t4 GBLUP A                 BLUP max |diff| / sd               asreml      1.7637898e-08             NA  d= 1.76e-08  OK
+  software   t4 GBLUP                   sigma2 A                           sommer          1.7875409      1.7875253  d= 8.73e-06  OK
+  software   t4 GBLUP                   sigma2 residual                    sommer          3.3864372      3.3864443  d= 2.10e-06  OK
+  software   t4 GBLUP                   sigma2 A                           rrBLUP          1.7875409       1.787538  d= 1.63e-06  OK
+  software   t4 GBLUP                   sigma2 residual                    rrBLUP          3.3864372      3.3864385  d= 3.86e-07  OK
+
+=== t4 A+D ===
+REML fit (cpu): logLik -6834.436065 | 3 parameters | 3152 obs | 103.8 s
+  max|grad| 4.14e-07 | Newton decrement 1.95e-16 | 0 negative eigenvalue(s)
+  Sigma[g] 1x1, diagonal: 1.784
+  Sigma[d] 1x1, diagonal: 0.03409
+  residual: 3.354
+              component  std.error    z.ratio bound %ch
+vm(g, Gs_as) 1.78420966 0.17503696 10.1933309     P   0
+vm(d, Ds_as) 0.03409319 0.08637097  0.3947297     P   0
+units!R      3.35431288 0.13941148 24.0605214     P   0
+EM step failed to improve likelihood (this should not happen)
+EM step failed to improve likelihood (this should not happen)
+  software   t4 A+D                     sigma2 A                           asreml          1.7842097      1.7842097  d= 9.60e-10  OK
+  software   t4 A+D                     sigma2 A                           gaston          1.7842097      1.7842097  d= 9.66e-10  OK
+  software   t4 A+D                     sigma2 D                           asreml        0.034093185    0.034093185  d= 1.19e-09  OK
+  software   t4 A+D                     sigma2 D                           gaston        0.034093185    0.034093185  d= 6.62e-10  OK
+  software   t4 A+D                     sigma2 residual                    asreml          3.3543129      3.3543129  d= 1.33e-10  OK
+  software   t4 A+D                     sigma2 residual                    gaston          3.3543129      3.3543129  d= 1.31e-10  OK
+  software   t4 A+D                     logLik (asreml convention)         asreml         -3938.8607     -3938.8607  d= 1.59e-11  OK
+  software   t4 A+D                     logLik (asreml convention)         gaston         -3938.8607     -3938.8607  d= 4.55e-13  OK
+  software   t4 A+D A                   BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   t4 A+D A                   BLUP max |diff| / sd               asreml      1.9851748e-09             NA  d= 1.99e-09  OK
+  software   t4 A+D                     sigma2 A                           sommer          1.7842097      1.7841938  d= 8.90e-06  OK
+  software   t4 A+D                     sigma2 D                           sommer        0.034093185    0.034095474  d= 6.71e-05  OK
+  software   t4 A+D                     sigma2 residual                    sommer          3.3543129      3.3543179  d= 1.50e-06  OK
+  context    t4 A+D                     h2 (A share)                       Da 2014        0.34493373           0.35  d= 1.45e-02  ctx
+  context    t4 A+D                     d2 (D share)                       Da 2014      0.0065910919           0.01  d= 3.41e-01  ctx
+
+=== t4 A+D+AA ===
+REML fit (cpu): logLik -6834.060092 | 4 parameters | 3152 obs | 205.5 s
+  max|grad| 3.25e-06 | Newton decrement 1.78e-14 | 0 negative eigenvalue(s)
+  Sigma[g] 1x1, diagonal: 1.701
+  Sigma[d] 1x1, diagonal: 0.02037
+  Sigma[aa] 1x1, diagonal: 0.2341
+  residual: 3.204
+                component  std.error    z.ratio bound %ch
+vm(g, Gs_as)   1.70066641 0.19505753  8.7187941     P   0
+vm(d, Ds_as)   0.02036712 0.08597204  0.2369040     P   0
+vm(aa, AAs_as) 0.23412927 0.28206678  0.8300491     P   0
+units!R        3.20412516 0.22924483 13.9768702     P   0
+  software   t4 A+D+AA                  sigma2 A                           asreml          1.7006664      1.7006664  d= 7.96e-09  OK
+  software   t4 A+D+AA                  sigma2 A                           gaston          1.7006664      1.7006664  d= 7.94e-09  OK
+  software   t4 A+D+AA                  sigma2 D                           asreml        0.020367122    0.020367118  d= 1.95e-07  OK
+  software   t4 A+D+AA                  sigma2 D                           gaston        0.020367122    0.020367118  d= 1.97e-07  OK
+  software   t4 A+D+AA                  sigma2 AA                          asreml         0.23412927     0.23412927  d= 4.46e-10  OK
+  software   t4 A+D+AA                  sigma2 AA                          gaston         0.23412927     0.23412928  d= 6.75e-10  OK
+  software   t4 A+D+AA                  sigma2 residual                    asreml          3.2041252      3.2041252  d= 2.24e-09  OK
+  software   t4 A+D+AA                  sigma2 residual                    gaston          3.2041252      3.2041252  d= 2.26e-09  OK
+  software   t4 A+D+AA                  logLik (asreml convention)         asreml         -3938.4848     -3938.4848  d= 3.68e-11  OK
+  software   t4 A+D+AA                  logLik (asreml convention)         gaston         -3938.4848     -3938.4848  d= 3.64e-12  OK
+  software   t4 A+D+AA A                BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   t4 A+D+AA A                BLUP max |diff| / sd               asreml      1.7631972e-08             NA  d= 1.76e-08  OK
+
+=== t4 ABLUP (3152 records) ===
+REML fit (cpu): logLik -6932.710136 | 2 parameters | 3152 obs | 8.2 s
+  max|grad| 9.26e-05 | Newton decrement 1.63e-12 | 0 negative eigenvalue(s)
+  Sigma[a] 1x1, diagonal: 1.969
+  residual: 3.217
+          component std.error   z.ratio bound %ch
+vm(a, gA)  1.969316 0.2131086  9.240904     P   0
+units!R    3.216891 0.1643366 19.575011     P   0
+  software   t4 ABLUP                   sigma2 A                           asreml           1.969316      1.9693159  d= 3.93e-08  OK
+  software   t4 ABLUP                   sigma2 residual                    asreml           3.216891       3.216891  d= 1.20e-08  OK
+  software   t4 ABLUP                   logLik (asreml convention)         asreml         -4037.1348     -4037.1348  d= 7.81e-08  OK
+  software   t4 ABLUP A                 BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   t4 ABLUP A                 BLUP max |diff| / sd               asreml      1.1188987e-07             NA  d= 1.12e-07  OK
+
+######## t5: 3184 genotyped pigs with a record
+
+=== t5 GBLUP ===
+REML fit (cpu): logLik -17233.454136 | 2 parameters | 3184 obs | 26.0 s
+  max|grad| 8.11e-06 | Newton decrement 8.20e-15 | 0 negative eigenvalue(s)
+  Sigma[g] 1x1, diagonal: 1324
+  residual: 2166
+             component std.error  z.ratio bound %ch
+vm(g, Gs_as)  1324.258 122.52743 10.80785     P   0
+units!R       2166.488  74.76699 28.97653     P   0
+  software   t5 GBLUP                   sigma2 A                           asreml          1324.2576      1324.2576  d= 1.50e-09  OK
+  software   t5 GBLUP                   sigma2 A                           gaston          1324.2576      1324.2576  d= 2.25e-09  OK
+  software   t5 GBLUP                   sigma2 residual                    asreml          2166.4879      2166.4879  d= 2.16e-09  OK
+  software   t5 GBLUP                   sigma2 residual                    gaston          2166.4879      2166.4879  d= 2.32e-09  OK
+  software   t5 GBLUP                   logLik (asreml convention)         asreml         -14308.473     -14308.473  d= 1.82e-12  OK
+  software   t5 GBLUP                   logLik (asreml convention)         gaston         -14308.473     -14308.473  d= 5.46e-12  OK
+  software   t5 GBLUP A                 BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   t5 GBLUP A                 BLUP max |diff| / sd               asreml      3.9360615e-09             NA  d= 3.94e-09  OK
+  software   t5 GBLUP                   sigma2 A                           sommer          1324.2576      1324.2527  d= 3.66e-06  OK
+  software   t5 GBLUP                   sigma2 residual                    sommer          2166.4879        2166.49  d= 9.74e-07  OK
+  software   t5 GBLUP                   sigma2 A                           rrBLUP          1324.2576      1324.2581  d= 3.81e-07  OK
+  software   t5 GBLUP                   sigma2 residual                    rrBLUP          2166.4879      2166.4877  d= 1.03e-07  OK
+
+=== t5 A+D ===
+REML fit (cpu): logLik -17227.274513 | 3 parameters | 3184 obs | 89.7 s
+  max|grad| 1.27e-12 | Newton decrement 2.23e-26 | 0 negative eigenvalue(s)
+  Sigma[g] 1x1, diagonal: 1305
+  Sigma[d] 1x1, diagonal: 185.3
+  residual: 1989
+             component std.error   z.ratio bound %ch
+vm(g, Gs_as) 1305.3411 122.11068 10.689819     P   0
+vm(d, Ds_as)  185.3356  67.90948  2.729156     P   0
+units!R      1989.3416  91.57336 21.724020     P   0
+  software   t5 A+D                     sigma2 A                           asreml          1305.3411      1305.3411  d= 2.78e-12  OK
+  software   t5 A+D                     sigma2 A                           gaston          1305.3411      1305.3411  d= 9.01e-13  OK
+  software   t5 A+D                     sigma2 D                           asreml          185.33556      185.33556  d= 9.36e-12  OK
+  software   t5 A+D                     sigma2 D                           gaston          185.33556      185.33556  d= 8.01e-11  OK
+  software   t5 A+D                     sigma2 residual                    asreml          1989.3416      1989.3416  d= 5.65e-12  OK
+  software   t5 A+D                     sigma2 residual                    gaston          1989.3416      1989.3416  d= 6.48e-12  OK
+  software   t5 A+D                     logLik (asreml convention)         asreml         -14302.293     -14302.293  d= 3.46e-11  OK
+  software   t5 A+D                     logLik (asreml convention)         gaston         -14302.293     -14302.293  d= 3.64e-12  OK
+  software   t5 A+D A                   BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   t5 A+D A                   BLUP max |diff| / sd               asreml      1.1109614e-11             NA  d= 1.11e-11  OK
+  software   t5 A+D                     sigma2 A                           sommer          1305.3411      1305.3364  d= 3.60e-06  OK
+  software   t5 A+D                     sigma2 D                           sommer          185.33556       185.3344  d= 6.27e-06  OK
+  software   t5 A+D                     sigma2 residual                    sommer          1989.3416      1989.3447  d= 1.56e-06  OK
+  context    t5 A+D                     h2 (A share)                       Da 2014        0.37509605           0.38  d= 1.29e-02  ctx
+  context    t5 A+D                     d2 (D share)                       Da 2014       0.053257066           0.05  d= 6.51e-02  ctx
+
+=== t5 A+D+AA ===
+REML fit (cpu): logLik -17226.785130 | 4 parameters | 3184 obs | 141.5 s
+  max|grad| 9.79e-11 | Newton decrement 1.40e-23 | 0 negative eigenvalue(s)
+  Sigma[g] 1x1, diagonal: 1242
+  Sigma[d] 1x1, diagonal: 175
+  Sigma[aa] 1x1, diagonal: 193.6
+  residual: 1861
+               component std.error    z.ratio bound %ch
+vm(g, Gs_as)   1242.2706 135.31999  9.1802450     P   0
+vm(d, Ds_as)    174.9948  68.21089  2.5654959     P   0
+vm(aa, AAs_as)  193.5635 196.26982  0.9862114     P   0
+units!R        1861.3657 156.62496 11.8842210     P   0
+  software   t5 A+D+AA                  sigma2 A                           asreml          1242.2706      1242.2706  d= 3.52e-12  OK
+  software   t5 A+D+AA                  sigma2 A                           gaston          1242.2706      1242.2706  d= 1.68e-12  OK
+  software   t5 A+D+AA                  sigma2 D                           asreml          174.99477      174.99477  d= 1.35e-11  OK
+  software   t5 A+D+AA                  sigma2 D                           gaston          174.99477      174.99477  d= 1.21e-09  OK
+  software   t5 A+D+AA                  sigma2 AA                          asreml          193.56354      193.56354  d= 4.45e-12  OK
+  software   t5 A+D+AA                  sigma2 AA                          gaston          193.56354      193.56354  d= 3.95e-10  OK
+  software   t5 A+D+AA                  sigma2 residual                    asreml          1861.3657      1861.3657  d= 1.78e-12  OK
+  software   t5 A+D+AA                  sigma2 residual                    gaston          1861.3657      1861.3657  d= 6.40e-11  OK
+  software   t5 A+D+AA                  logLik (asreml convention)         asreml         -14301.804     -14301.804  d= 4.18e-11  OK
+  software   t5 A+D+AA                  logLik (asreml convention)         gaston         -14301.804     -14301.804  d= 3.64e-12  OK
+  software   t5 A+D+AA A                BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   t5 A+D+AA A                BLUP max |diff| / sd               asreml      6.7820186e-12             NA  d= 6.78e-12  OK
+
+=== t5 ABLUP (3184 records) ===
+REML fit (cpu): logLik -17345.505229 | 2 parameters | 3184 obs | 4.9 s
+  max|grad| 9.54e-12 | Newton decrement 1.82e-26 | 0 negative eigenvalue(s)
+  Sigma[a] 1x1, diagonal: 1579
+  residual: 1953
+          component std.error  z.ratio bound %ch
+vm(a, gA)  1579.022  153.6734 10.27518     P   0
+units!R    1953.383  110.4719 17.68218     P   0
+  software   t5 ABLUP                   sigma2 A                           asreml          1579.0215      1579.0215  d= 2.13e-10  OK
+  software   t5 ABLUP                   sigma2 residual                    asreml          1953.3831      1953.3831  d= 1.65e-10  OK
+  software   t5 ABLUP                   logLik (asreml convention)         asreml         -14420.524     -14420.524  d= 7.81e-08  OK
+  software   t5 ABLUP A                 BLUP correlation                   asreml                  1             NA  d= 1.00e+00  OK
+  software   t5 ABLUP A                 BLUP max |diff| / sd               asreml      8.6414326e-10             NA  d= 8.64e-10  OK
+Message d'avis :
+Dans asreml(y ~ 1, random = s$as, data = dt, trace = FALSE, maxit = 100,  :
+  Some components changed by more than 1% on the last iteration
+
+=== t3+t4+t5 us G (3107 pigs) ===
+REML fit (cpu): logLik -27708.130211 | 12 parameters | 9321 obs | 19544.6 s
+  max|grad| 5.19e-06 | Newton decrement 5.05e-15 | 0 negative eigenvalue(s)
+  Sigma[g] 3x3, diagonal:    0.2065    1.8168 1318.6490
+  residual:    0.699    3.419 2177.461
+                                   component    std.error    z.ratio bound %ch
+trait:vm(g, Gs_as)!trait_t3:t3    0.20649251   0.02733256  7.5548192     P   0
+trait:vm(g, Gs_as)!trait_t4:t3    0.03176726   0.04965094  0.6398118     P   0
+trait:vm(g, Gs_as)!trait_t4:t4    1.81681274   0.17927687 10.1341166     P   0
+trait:vm(g, Gs_as)!trait_t5:t3    0.86878571   1.30619425  0.6651275     P   0
+trait:vm(g, Gs_as)!trait_t5:t4    2.40247590   3.33480557  0.7204246     P   0
+trait:vm(g, Gs_as)!trait_t5:t5 1318.64900709 123.87839628 10.6447052     P   0
+units:trait!R                     1.00000000           NA         NA     F   0
+units:trait!trait_t3:t3           0.69904603   0.02283996 30.6062783     P   0
+units:trait!trait_t4:t3           0.07084149   0.03671008  1.9297558     P   0
+units:trait!trait_t4:t4           3.41913502   0.11724815 29.1615259     P   0
+units:trait!trait_t5:t3           0.23565319   0.93432901  0.2522165     P   0
+units:trait!trait_t5:t4          -3.47767483   2.11252385 -1.6462180     P   0
+units:trait!trait_t5:t5        2177.46119941  76.01853040 28.6438213     P   0
+  software   t3+t4+t5 us G              G var t3                           asreml         0.20649251     0.20649251  d= 8.71e-10  OK
+  software   t3+t4+t5 us G              G var t4                           asreml          1.8168127      1.8168127  d= 1.80e-10  OK
+  software   t3+t4+t5 us G              G var t5                           asreml           1318.649       1318.649  d= 2.26e-09  OK
+  software   t3+t4+t5 us G              G cov t4-t3 (/ sqrt(var var))      asreml      7.3524891e-10             NA  d= 7.35e-10  OK
+  software   t3+t4+t5 us G              G cov t5-t3 (/ sqrt(var var))      asreml      4.4796696e-10             NA  d= 4.48e-10  OK
+  software   t3+t4+t5 us G              G cov t5-t4 (/ sqrt(var var))      asreml      1.3360374e-10             NA  d= 1.34e-10  OK
+  software   t3+t4+t5 us G              residual var t3                    asreml         0.69904603     0.69904603  d= 6.00e-10  OK
+  software   t3+t4+t5 us G              residual var t4                    asreml           3.419135       3.419135  d= 2.39e-11  OK
+  software   t3+t4+t5 us G              residual var t5                    asreml          2177.4612      2177.4612  d= 7.22e-11  OK
+  software   t3+t4+t5 us G              residual cov t4-t3 (/ sqrt(var var)) asreml      2.7434234e-10             NA  d= 2.74e-10  OK
+  software   t3+t4+t5 us G              residual cov t5-t3 (/ sqrt(var var)) asreml      9.5576093e-11             NA  d= 9.56e-11  OK
+  software   t3+t4+t5 us G              residual cov t5-t4 (/ sqrt(var var)) asreml      1.8943675e-11             NA  d= 1.89e-11  OK
+  software   t3+t4+t5 us G              logLik (asreml convention)         asreml         -19145.461     -19145.461  d= 2.04e-09  OK
+
+Runtimes (s, elapsed):
+$`t1 GBLUP`
+remlax asreml gaston sommer 
+63.223 72.282 26.224 21.037 
+
+$`t1 A+D`
+  remlax   asreml   gaston   sommer 
+ 179.833 2387.036   33.208   85.731 
+
+$`t1 A+D+AA`
+  remlax   asreml   gaston 
+ 391.633 6870.149  187.808 
+
+$`t1 ABLUP`
+remlax asreml 
+49.737 29.072 
+
+$`t2 GBLUP`
+ remlax  asreml  gaston  sommer 
+140.114 331.437 106.522 321.235 
+
+$`t2 A+D`
+  remlax   asreml   gaston   sommer 
+ 350.129 2062.972   51.496   21.349 
+
+$`t2 A+D+AA`
+  remlax   asreml   gaston 
+ 184.004 1662.439   51.472 
+
+$`t2 ABLUP`
+remlax asreml 
+13.074  8.002 
+
+$`t3 GBLUP`
+remlax asreml gaston sommer 
+72.246 95.478 37.520 45.117 
+
+$`t3 A+D`
+  remlax   asreml   gaston   sommer 
+ 141.054 1853.887   59.912   73.055 
+
+$`t3 A+D+AA`
+  remlax   asreml   gaston 
+ 272.978 2391.940   56.769 
+
+$`t3 ABLUP`
+remlax asreml 
+ 9.559  6.800 
+
+$`t4 GBLUP`
+ remlax  asreml  gaston  sommer 
+ 80.155 107.919  13.041  24.476 
+
+$`t4 A+D`
+  remlax   asreml   gaston   sommer 
+ 140.232 2093.234   46.733   29.730 
+
+$`t4 A+D+AA`
+  remlax   asreml   gaston 
+ 240.810 2267.953   65.283 
+
+$`t4 ABLUP`
+remlax asreml 
+ 9.808  6.673 
+
+$`t5 GBLUP`
+remlax asreml gaston sommer 
+36.251 90.641 12.528 25.578 
+
+$`t5 A+D`
+  remlax   asreml   gaston   sommer 
+ 113.153 1692.334   38.367   31.287 
+
+$`t5 A+D+AA`
+  remlax   asreml   gaston 
+ 176.035 2347.930   42.655 
+
+$`t5 ABLUP`
+remlax asreml 
+ 6.627  6.425 
+
+$`t3+t4+t5 us G`
+   remlax    asreml 
+20613.638  1231.522 
+
+
+pig_cleveland2012: 223 checks counted, 223 pass, 0 fail; 10 context rows -> /home/salas/Documents/Git/remlax-validation/published_data/results/pig_cleveland2012.csv
