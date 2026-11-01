@@ -43,7 +43,8 @@ def functions(path):
             if isinstance(child, (ast.FunctionDef, ast.AsyncFunctionDef)):
                 c = _Counter()
                 for stmt in child.body:
-                    c.visit(stmt)
+                    if not isinstance(stmt, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+                        c.visit(stmt)
                 name = prefix + child.name
                 out.append((c.n, path, child.lineno, name,
                             (child.end_lineno or child.lineno) - child.lineno + 1))
