@@ -106,6 +106,15 @@ one <- function(kind) {
     out$p_window <- if (any(hit)) min(top$p[hit]) else NA
     out$sig_window <- any(hit & top$p < thr)
     out$false_sig <- sum(!hit & top$p < thr)
+    # where the significant pairs outside the windows lie
+    sig <- top$p < thr & !hit
+    ca <- gen$wheat$map$chr[tr[["a"]]]; cb <- map_b$chr[tr[["b"]]]
+    fch <- DW$map$chr[top$focal]; nch <- Mb$map$chr[top$neighbour]
+    out$sig_same_chr <- sum(sig & fch == ca & nch == cb)
+    out$sig_swapped <- if (kind == "intra") sum(sig & fch == cb & nch == ca & !(fch == ca & nch == cb)) else NA
+    out$sig_focal_chr_only <- sum(sig & fch == ca & nch != cb)
+    out$sig_neighbour_chr_only <- sum(sig & fch != ca & nch == cb)
+    out$sig_elsewhere <- sum(sig & fch != ca & nch != cb & !(kind == "intra" & fch == cb & nch == ca))
     ta <- causal_tags(gen$wheat$G, tr[["a"]], DW); tb <- causal_tags(Gb, tr[["b"]], Mb)
     cb <- rx_cogwas(fit, mod, DW$M[, ta$best, drop = FALSE], Mb$M[, tb$best, drop = FALSE],
                     incidences = inc, tests = "pair|dir+ind", top = 1, backend = BACKEND,
@@ -113,6 +122,8 @@ one <- function(kind) {
     out$r2_tag_focal <- ta$r2; out$r2_tag_neighbour <- tb$r2; out$p_best_tag <- cb$top$p[1]
   } else {
     out$p_window <- NA; out$sig_window <- NA; out$false_sig <- out$n_sig
+    out$sig_same_chr <- NA; out$sig_swapped <- NA; out$sig_focal_chr_only <- NA
+    out$sig_neighbour_chr_only <- NA; out$sig_elsewhere <- out$n_sig
     out$r2_tag_focal <- NA; out$r2_tag_neighbour <- NA; out$p_best_tag <- NA
   }
   out
@@ -124,5 +135,6 @@ res <- cbind(rep = REP, pair_inter = P_INTER, pair_intra = P_INTRA, kernel = KER
              seconds_total = as.numeric(difftime(Sys.time(), t0, units = "secs")))
 utils::write.table(res, OUT, sep = ",", row.names = FALSE, append = file.exists(OUT),
                    col.names = !file.exists(OUT))
-print(res[, c("rep", "kind", "n_pairs", "lambda", "p_min", "n_sig", "p_window", "sig_window",
-              "false_sig", "p_best_tag", "r2_tag_focal", "r2_tag_neighbour", "seconds")], row.names = FALSE)
+print(res[, c("rep", "kind", "lambda", "p_min", "n_sig", "p_window", "sig_window", "false_sig",
+              "sig_same_chr", "sig_swapped", "sig_focal_chr_only", "sig_neighbour_chr_only",
+              "sig_elsewhere", "p_best_tag", "r2_tag_focal", "r2_tag_neighbour", "seconds")], row.names = FALSE)
