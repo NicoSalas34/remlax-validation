@@ -1,0 +1,391 @@
+remlax 0.2.0.9000 /scratch/users/salasn/validation_2026-11-04_3bfae58/rlib/remlax 
+ajustement: ................
+cache: ......
+centred-y: ...
+cogwas: ..............
+comptages: ...........................
+decalage: ....................................................................S................
+defauts: .rx_reml: 3 incomplete row(s) removed.
+........................
+design: .......................................................................................
+formula-kinv: .............
+grammaire: .............................................................................................................................................................................................................................................................
+grid-lag: ............................
+ld-prune: ...........
+neighbor-gwas: SS......
+options-ajustement: ..........................................................................................
+portee: ........
+python-check: ...................
+ratios: ...............................................................................................................................
+scan-multitrait: .........................................................
+scan-plus: ...........................................
+scan: ........................Traceback (most recent call last):
+  File "/scratch/users/salasn/validation_2026-11-04_3bfae58/rlib/remlax/python/remlax_run.py", line 24, in <module>
+    runpy.run_module("remlax." + sys.argv.pop(1), run_name="__main__", alter_sys=True)
+  File "<frozen runpy>", line 226, in run_module
+  File "<frozen runpy>", line 98, in _run_module_code
+  File "<frozen runpy>", line 88, in _run_code
+  File "/scratch/users/salasn/validation_2026-11-04_3bfae58/rlib/remlax/python/remlax/scan_cli.py", line 227, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/scratch/users/salasn/validation_2026-11-04_3bfae58/rlib/remlax/python/remlax/scan_cli.py", line 205, in main
+    r = scan(proj, inp["M"], tests=tests, block=a.block, verbose=not a.quiet, keep=inp["keep"],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/users/salasn/validation_2026-11-04_3bfae58/rlib/remlax/python/remlax/scan.py", line 509, in scan
+    _check_scan_inputs(proj, Mf, needed, tests)
+  File "/scratch/users/salasn/validation_2026-11-04_3bfae58/rlib/remlax/python/remlax/scan.py", line 547, in _check_scan_inputs
+    _check_sim_inputs(proj, Mf)
+  File "/scratch/users/salasn/validation_2026-11-04_3bfae58/rlib/remlax/python/remlax/scan.py", line 561, in _check_sim_inputs
+    raise ValueError(
+ValueError: family 'sim': the doses of 'dir' are not centred (mean 0.985 for a standard deviation 1). The product of the doses is an allelic similarity only under centred coding (+/-1). Centre the doses, or do not request 'sim'.
+.
+spatial: .....................SS
+spl2d-formule: .........................................
+summary: ....................
+
+══ Skipped ═════════════════════════════════════════════════════════════════════
+1. VP+, TB et TB+ : memes logLik et estimations que le moteur igepath_reml ('test-decalage.R:228:3') - Reason: REMLAX_IGEPATH ne designe pas le repertoire python/ du depot IGE
+
+2. neighbour covariates and kinships follow rNeighborGWAS ('test-neighbor-gwas.R:18:3') - Reason: {rNeighborGWAS} is not installed
+
+3. univariate Neighbor GWAS: same p-values as rNeighborGWAS::nei_lmm ('test-neighbor-gwas.R:27:3') - Reason: {rNeighborGWAS} is not installed
+
+4. spl2d : memes covariances que PSANOVA de SpATS, terme a terme ('test-spatial.R:62:3') - Reason: {SpATS} is not installed
+
+5. spl2d : meme ajustement que SpATS (variances, dimensions, H2, valeurs ajustees) ('test-spatial.R:83:3') - Reason: {SpATS} is not installed
+
+══ DONE ════════════════════════════════════════════════════════════════════════
+    file                     
+1   test-ajustement.R        
+2   test-ajustement.R        
+3   test-ajustement.R        
+4   test-cache.R             
+5   test-cache.R             
+6   test-centred-y.R         
+7   test-cogwas.R            
+8   test-cogwas.R            
+9   test-comptages.R         
+10  test-comptages.R         
+11  test-comptages.R         
+12  test-comptages.R         
+13  test-comptages.R         
+14  test-decalage.R          
+15  test-decalage.R          
+16  test-decalage.R          
+17  test-decalage.R          
+18  test-decalage.R          
+19  test-decalage.R          
+20  test-decalage.R          
+21  test-decalage.R          
+22  test-decalage.R          
+23  test-decalage.R          
+24  test-decalage.R          
+25  test-decalage.R          
+26  test-decalage.R          
+27  test-defauts.R           
+28  test-defauts.R           
+29  test-defauts.R           
+30  test-defauts.R           
+31  test-defauts.R           
+32  test-defauts.R           
+33  test-defauts.R           
+34  test-defauts.R           
+35  test-defauts.R           
+36  test-design.R            
+37  test-design.R            
+38  test-design.R            
+39  test-design.R            
+40  test-design.R            
+41  test-design.R            
+42  test-design.R            
+43  test-design.R            
+44  test-design.R            
+45  test-design.R            
+46  test-design.R            
+47  test-formula-kinv.R      
+48  test-formula-kinv.R      
+49  test-grammaire.R         
+50  test-grammaire.R         
+51  test-grammaire.R         
+52  test-grammaire.R         
+53  test-grammaire.R         
+54  test-grammaire.R         
+55  test-grammaire.R         
+56  test-grid-lag.R          
+57  test-grid-lag.R          
+58  test-grid-lag.R          
+59  test-grid-lag.R          
+60  test-ld-prune.R          
+61  test-neighbor-gwas.R     
+62  test-neighbor-gwas.R     
+63  test-neighbor-gwas.R     
+64  test-options-ajustement.R
+65  test-options-ajustement.R
+66  test-options-ajustement.R
+67  test-options-ajustement.R
+68  test-options-ajustement.R
+69  test-portee.R            
+70  test-python-check.R      
+71  test-python-check.R      
+72  test-python-check.R      
+73  test-python-check.R      
+74  test-python-check.R      
+75  test-python-check.R      
+76  test-python-check.R      
+77  test-ratios.R            
+78  test-ratios.R            
+79  test-ratios.R            
+80  test-ratios.R            
+81  test-ratios.R            
+82  test-ratios.R            
+83  test-ratios.R            
+84  test-ratios.R            
+85  test-ratios.R            
+86  test-ratios.R            
+87  test-ratios.R            
+88  test-ratios.R            
+89  test-scan-multitrait.R   
+90  test-scan-plus.R         
+91  test-scan-plus.R         
+92  test-scan-plus.R         
+93  test-scan-plus.R         
+94  test-scan.R              
+95  test-scan.R              
+96  test-spatial.R           
+97  test-spatial.R           
+98  test-spatial.R           
+99  test-spatial.R           
+100 test-spl2d-formule.R     
+101 test-spl2d-formule.R     
+102 test-spl2d-formule.R     
+103 test-spl2d-formule.R     
+104 test-spl2d-formule.R     
+105 test-spl2d-formule.R     
+106 test-spl2d-formule.R     
+107 test-summary.R           
+108 test-summary.R           
+109 test-summary.R           
+110 test-summary.R           
+    test                                                                                         
+1   rx_reml ajuste un facteur aleatoire et retrouve la variance simulee                          
+2   rx_fit refuse un terme Kinv sans facteur de K                                                
+3   le plancher et le plafond demandes sont ceux que le solveur applique                         
+4   le cache va dans tempdir pendant un check ou sur demande                                     
+5   la purge retire les fichiers anciens et garde les recents                                    
+6   dense and MME engines agree on a bivariate model with a large mean                           
+7   rx_cogwas : diagonale = sim de rx_scan, inter et intra espece                                
+8   rx_cogwas_kernel : somme des u u' sur toutes les paires, normalisee                          
+9   rx_n_params reproduit le catalogue                                                           
+10  rx_n_level compte les parametres entre niveaux                                               
+11  rx_term et rx_model construisent et comptent                                                 
+12  rx_export ecrit un manifeste relisible                                                       
+13  le solveur Python livre avec le paquet est present                                           
+14  rx_lag : entrees libres, ordre des parametres, alignement par noms                           
+15  rx_lag refuse les specifications ambigues ou fausses                                         
+16  decalage et residuelle none : KR refuse, residuelle none comptee                             
+17  Psi tenue a 0 reproduit EXACTEMENT l'ajustement sans decalage                                
+18  l'objectif egale un calcul dense independant (3 criteres, chemins fast et general)           
+19  Psi est retrouvee sur un jeu simule avec retroaction (boucle a l'equilibre)                  
+20  decalage + residuelle spatiale us(trait):ar1(row):ar1(col) par rx_reml                       
+21  residuelle none : V non definie positive refusee en clair, VP+ ajuste                        
+22  TB+ avec IEE* et Psi reciproque libre : avertissement ; masque : rien                        
+23  VP+, TB et TB+ : memes logLik et estimations que le moteur igepath_reml                      
+24  rx_border : W 1 par caractere, puissances, etiquettes, W par caractere                       
+25  rx_border : la moyenne structurelle sans boucle est dans [X, rx_border]                      
+26  rx_border dans X : ajustement TB avec un effet de bordure qui n'est pas une interaction      
+27  X garde toutes les lignes quelle que soit l'option na.action                                 
+28  un trait donne par son nom de colonne reste un nom apres les lignes incompletes              
+29  rx_reml avec trait par nom et lignes incompletes egale l'ajustement sur donnees nettoyees    
+30  deux scans successifs n'utilisent pas le meme dossier                                        
+31  Wald et Kenward-Roger tiennent compte des poids a priori                                     
+32  le produit separable est refuse pour la residuelle                                           
+33  un ajustement REML non converge est signale                                                  
+34  un echantillon a posteriori immobile est declare inexploitable                               
+35  les anciens noms des arguments du scan restent acceptes, avec un avertissement               
+36  rx_neighbourhood : comptes de voisins a rank 1 sur la grille alternee (T1)                   
+37  rx_neighbourhood : poids en distance physique, spacing c(5, 5) (T2)                          
+38  rx_neighbourhood : dilution par le NOMBRE de voisins (T3, T4)                                
+39  rx_neighbourhood : normalisation L2 apres dilution (T5)                                      
+40  rx_neighbourhood : rang par paire = rang scalaire paire a paire (T6)                         
+41  rx_neighbourhood : deux blocs ne se voient pas (T7) ; rank 0 = vide                          
+42  rx_neighbourhood : sparse = FALSE rend des matrices denses identiques                        
+43  rx_exposure : K = NULL, K = I, un seul voisin (T1, T2, T3)                                   
+44  rx_exposure : invariance d'echelle et restriction aux lignes (T4, T5)                        
+45  rx_exposure : forme modele, K lu dans le terme, rows = auto                                  
+46  rx_grm : VanRaden 1 a ploidie 2, diagonale moyenne proche de 1, blending                     
+47  vm(id, Kinv =) matches vm(id, K =), founders without records included                        
+48  Kinv in the formula: checks                                                                  
+49  structures de Sigma : compte de parametres par formule                                       
+50  structures entre niveaux : compte de parametres par formule                                  
+51  grammaire de la residuelle : formes, comptes et refus                                        
+52  rx_term : trois formes de Z, et chaque refus                                                 
+53  rx_spl2d : partie nulle, cinq termes PS-ANOVA, tailles                                       
+54  rx_export ecrit chaque champ d'un terme structure et le relit                                
+55  rank, struct et order sont lus dans l'environnement de la formule                            
+56  grid levels keep empty rows and columns                                                      
+57  ar1(row):ar1(col) residual keeps an empty column                                             
+58  lag structures on a gappy grid match the dense REML                                          
+59  every parameter fixed: evaluation at the given point                                         
+60  rx_ld_prune garde un SNP par profil et respecte le seuil dans la fenetre                     
+61  neighbour covariates and kinships follow rNeighborGWAS                                       
+62  univariate Neighbor GWAS: same p-values as rNeighborGWAS::nei_lmm                            
+63  multi-trait Neighbor GWAS with independent traits = univariate scans                         
+64  theta_init en evaluation seule, fixed_theta, hessian/blups coupes                            
+65  wald, kenward_roger et vpredict : formules exactes du plan equilibre                         
+66  rx_predict : classify, at, levels, average, sed, part aleatoire, vcov                        
+67  dsum, produit separable, spline 2D, pev, multi-caractere                                     
+68  engine = 'auto' choisit le MME et l'AI, meme vraisemblance que le dense                      
+69  sph et cir atteignent le maximum global du profil REML en la portee                          
+70  un Python sans jax est refuse avant le lancement, avec un message actionnable                
+71  rx_python_check rend les versions quand jax est present                                      
+72  le lancement du moteur pose puis restaure ses variables d'environnement                      
+73  pendant R CMD check, un seul fil de calcul est demande                                       
+74  une expression vpredict fautive est refusee avant l'ajustement, avec la liste des composantes
+75  rx_python_check() confirme l'interpreteur quand il convient                                  
+76  dsum : sections nommees d'apres la variable, toutes imprimees, V numerotes                   
+77  rx_cor_z : symetrie a r = 0, exemples de la table, bornes, Pearson (T1-T5)                   
+78  rx_sigma_of : us ligne par ligne, iid, diag, fa, rr, chol, ante, corh                        
+79  rx_sigmas_from_theta : ordre du solveur (termes puis sections) et dimnames                   
+80  rx_ratios : SE d'une variance = 2 var se_theta ; parts a 1 ; invariance (T4, T5)             
+81  rx_ratios : controle theta -> Sigma, references illisibles, jacobian solver                  
+82  rx_ratios : parametre a la borne -> hors sous-espace, COND_BOUND, se_theta NA (T6)           
+83  rx_ratios : courbure negative -> refuse (NA) ou projette (NOT_IDENTIFIED) (T7)               
+84  rx_ratios : deux groupes, effet croise, tau2 au denominateur de la cible recevante           
+85  rx_ratios et se_theta egalent vpredict du solveur sur un jouet (T1, T8)                      
+86  rx_term(colnames) : dimnames sur fit$sigmas et fit$blups, colnames refuses                   
+87  rx_grid_summary : best, supported, ranges, manquants, best_pd (T1)                           
+88  rx_grid_summary : by, AIC recalcule ou controle, effective (T2, T3, T4)                      
+89  rx_scan on a multi-trait model matches a dense GLS at fixed V                                
+90  rx_scan_loco et rx_scan_exact refusent ce qui ne peut pas s'interpreter                      
+91  rx_scan_loco : un nul par chromosome, chaque SNP sous le nul de son chromosome               
+92  rx_scan_exact : effet et erreur-type egaux a un ajustement direct                            
+93  rx_scan_exact(batch = ) : memes tests que les reajustements un par un                        
+94  rx_scan refuse ce qui ne peut pas s'interpreter, avant tout appel Python                     
+95  rx_scan sur un jeu simule : colonnes, causal en tete, seuil                                  
+96  dimension effective : plan equilibre, ratio = heritabilite sur moyennes, somme = n           
+97  spl2d : PEV demandees par defaut, dimensions, tendance, cartes exportees                     
+98  spl2d : memes covariances que PSANOVA de SpATS, terme a terme                                
+99  spl2d : meme ajustement que SpATS (variances, dimensions, H2, valeurs ajustees)              
+100 spl2d() dans rx_reml() equivaut a rx_spl2d() + rx_model()                                    
+101 spl2d() : nom, arguments nommes, coordonnees en facteur, erreurs                             
+102 spl2d() : predictions, Wald et summary tiennent compte de la partie nulle                    
+103 spl2d(at = ) : une surface par niveau, egale a la voie explicite                             
+104 spl2d(at = ) : un seul niveau equivaut a une surface sans at                                 
+105 spl2d(at = ) : at.levels, at.var, message et erreurs                                         
+106 spl2d(at = ) : tendance et cartes de toutes les surfaces                                     
+107 summary : table des composantes, effets fixes, criteres                                      
+108 summary : une variance nulle est marquee B sans erreur-type, les autres gardent la leur      
+109 summary : covariances multi-caracteres codees U, variances P                                 
+110 summary(coef = TRUE) rend les BLUP avec leur erreur-type si pev = TRUE                       
+    nb  failed skipped error
+1     9 0      FALSE   FALSE
+2     1 0      FALSE   FALSE
+3     6 0      FALSE   FALSE
+4     3 0      FALSE   FALSE
+5     3 0      FALSE   FALSE
+6     3 0      FALSE   FALSE
+7    11 0      FALSE   FALSE
+8     3 0      FALSE   FALSE
+9     8 0      FALSE   FALSE
+10    4 0      FALSE   FALSE
+11    8 0      FALSE   FALSE
+12    4 0      FALSE   FALSE
+13    3 0      FALSE   FALSE
+14    9 0      FALSE   FALSE
+15    8 0      FALSE   FALSE
+16    3 0      FALSE   FALSE
+17   10 0      FALSE   FALSE
+18   12 0      FALSE   FALSE
+19    5 0      FALSE   FALSE
+20    6 0      FALSE   FALSE
+21   12 0      FALSE   FALSE
+22    3 0      FALSE   FALSE
+23    1 0       TRUE   FALSE
+24    9 0      FALSE   FALSE
+25    4 0      FALSE   FALSE
+26    3 0      FALSE   FALSE
+27    3 0      FALSE   FALSE
+28    2 0      FALSE   FALSE
+29    1 0      FALSE   FALSE
+30    1 0      FALSE   FALSE
+31    3 0      FALSE   FALSE
+32    1 0      FALSE   FALSE
+33    5 0      FALSE   FALSE
+34    3 0      FALSE   FALSE
+35    6 0      FALSE   FALSE
+36   14 0      FALSE   FALSE
+37    7 0      FALSE   FALSE
+38    6 0      FALSE   FALSE
+39    8 0      FALSE   FALSE
+40    7 0      FALSE   FALSE
+41    6 0      FALSE   FALSE
+42    4 0      FALSE   FALSE
+43   13 0      FALSE   FALSE
+44   10 0      FALSE   FALSE
+45    6 0      FALSE   FALSE
+46    6 0      FALSE   FALSE
+47    5 0      FALSE   FALSE
+48    8 0      FALSE   FALSE
+49   45 0      FALSE   FALSE
+50  105 0      FALSE   FALSE
+51   32 0      FALSE   FALSE
+52   40 0      FALSE   FALSE
+53   14 0      FALSE   FALSE
+54   13 0      FALSE   FALSE
+55    4 0      FALSE   FALSE
+56    8 0      FALSE   FALSE
+57    4 0      FALSE   FALSE
+58   11 0      FALSE   FALSE
+59    5 0      FALSE   FALSE
+60   11 0      FALSE   FALSE
+61    1 0       TRUE   FALSE
+62    1 0       TRUE   FALSE
+63    6 0      FALSE   FALSE
+64   21 0      FALSE   FALSE
+65   19 0      FALSE   FALSE
+66   26 0      FALSE   FALSE
+67   20 0      FALSE   FALSE
+68    4 0      FALSE   FALSE
+69    8 0      FALSE   FALSE
+70    5 0      FALSE   FALSE
+71    2 0      FALSE   FALSE
+72    3 0      FALSE   FALSE
+73    2 0      FALSE   FALSE
+74    2 0      FALSE   FALSE
+75    2 0      FALSE   FALSE
+76    3 0      FALSE   FALSE
+77   15 0      FALSE   FALSE
+78   10 0      FALSE   FALSE
+79    8 0      FALSE   FALSE
+80   18 0      FALSE   FALSE
+81    7 0      FALSE   FALSE
+82    9 0      FALSE   FALSE
+83   11 0      FALSE   FALSE
+84    7 0      FALSE   FALSE
+85    6 0      FALSE   FALSE
+86    5 0      FALSE   FALSE
+87   20 0      FALSE   FALSE
+88   11 0      FALSE   FALSE
+89   57 0      FALSE   FALSE
+90    5 0      FALSE   FALSE
+91   10 0      FALSE   FALSE
+92   16 0      FALSE   FALSE
+93   12 0      FALSE   FALSE
+94    9 0      FALSE   FALSE
+95   16 0      FALSE   FALSE
+96    5 0      FALSE   FALSE
+97   16 0      FALSE   FALSE
+98    1 0       TRUE   FALSE
+99    1 0       TRUE   FALSE
+100   4 0      FALSE   FALSE
+101   3 0      FALSE   FALSE
+102   6 0      FALSE   FALSE
+103  10 0      FALSE   FALSE
+104   2 0      FALSE   FALSE
+105   5 0      FALSE   FALSE
+106  11 0      FALSE   FALSE
+107  12 0      FALSE   FALSE
+108   3 0      FALSE   FALSE
+109   2 0      FALSE   FALSE
+110   3 0      FALSE   FALSE
+TOTAL expectations 1029 | failed 0 | errors 0 | skipped tests 5

@@ -1,0 +1,56 @@
+"case","replicate","family","note","seconds"
+"ige_mixture_two_species",1,"DGE / IGE","2 trays 30 x 20, alternate columns; DGE + IGE intra + IGE inter us (3 x 3) per species with GRM; IEE iid; diag residual per species; ranks 2 (intra) and 1 (inter), L2 normalisation; h2 0.30, IGE 7 and 5 %, IEE 5 %, r(DGE, IGE) -0.4",348.065010070801
+"mt_g_fa2",1,"multi-trait","fa rank 2, 5 traits (rank 2 is not identified with 4 traits)",107.528017759323
+"lag_rx_lag",1,"spatial lag","y = (I - Psi (x) W)^-1 (Xb + Zu + e), queen W 15 x 20, 2 traits, reml_y criterion",112.171044826508
+"mt_residual_fa1",1,"multi-trait","residual fa rank 1 between traits of a plant",60.2676529884338
+"mt_g_rr2",1,"multi-trait","reduced rank 2 without specific variance: singular genetic Sigma",63.8184294700623
+"mt_g_ante1",1,"multi-trait","antedependence of order 1",50.2378125190735
+"mt_g_chol1",1,"multi-trait","banded Cholesky of order 1",51.1527671813965
+"mt_g_fa1",1,"multi-trait","fa rank 1, 4 traits",72.5689668655396
+"spline_spl2d",1,"splines","rx_spl2d(nseg = c(6, 8)): five PS-ANOVA terms, null part as fixed effects",15.9159622192383
+"levels_corg_ge",1,"structures between levels","general correlation between 4 environments; correlations by the delta method on theta",12.8328444957733
+"boundary_mixture_iee_zero_us_rank2",1,"boundary cases","mixture of two species: IEE of zero variance, and (DGE, IGE intra, IGE inter) us(3) of rank 2 for each species",349.593474388123
+"boundary_us8_near_rank2",1,"boundary cases","genetic us(8) nearly of rank 2 (LL' + 0.01 I), as in the absolute benchmark; 100 genotypes",2078.93531990051
+"boundary_fa2_true_rank1",1,"boundary cases","fa rank 2 fitted, truth of rank 1: zero second factor, flat direction",162.830724477768
+"boundary_two_us_at_bound",1,"boundary cases","two us terms on the bound at once: genotype us(3) of rank 2, family us(3) of rank 1",292.723490715027
+"iid_one_term",1,"simple terms","one random factor, unbalanced group sizes",6.32057285308838
+"iid_two_crossed_terms",1,"simple terms","genotype x environment crossed, 8 % of cells missing",7.05459499359131
+"kinship_grm_dense",1,"kinship","VanRaden GRM (rx_grm, blending 0.05), 200 genotypes x 3 replicates",6.1538553237915
+"kinship_pedigree_kinv",1,"kinship","animal model, 500 individuals over 3 generations; A^-1 by Henderson (R function, asreml::ainverse not used); Kinv alone: MME engine (AI and L-BFGS-B); rx_fit on the same model with dense K = A",7.67062592506409
+"mt_g_diag_r_diag",1,"multi-trait","3 traits, 120 genotypes x 3 plants, 5 % missing",18.477813243866
+"mt_g_us_r_us",1,"multi-trait","genetic Sigma us, residual us between traits of the same plant",29.2814321517944
+"mt_g_corh",1,"multi-trait","heterogeneous variances, uniform correlation 0.4",20.1571955680847
+"residual_ar1xar1",1,"residuals","complete 30 x 20 field, residual = ~ ar1(row):ar1(col)",8.56445932388306
+"residual_ar1xar1_missing",1,"residuals","5 % of cells missing from the 30 x 20 field",7.66565442085266
+"dsum_ar1xar1_and_iid",1,"residuals","two sites, dsum(~ ar1(row):ar1(col) + units | site): different structures",10.3953533172607
+"dsum_iid_heterogeneous",1,"residuals","iid residual specific to each site, dsum(~ units | site)",6.28772282600403
+"residual_none_plant_term",1,"residuals","residual none, the us plant term carries the residual; twin with residual us(trait):units",14.1806025505066
+"levels_ar1",1,"structures between levels","transect of 100 plots x 4 subsamples, ar1 term",6.54691123962402
+"levels_ar1xar1_field",1,"structures between levels","ar1 x ar1 random field on 20 x 25 cells, with nugget and genotype",11.5644943714142
+"levels_cor_ge",1,"structures between levels","60 genotypes x 4 environments x 2 reps, uniform correlation between environments",6.91954803466797
+"metric_exp",1,"structures between levels","exp, 1D, 150 positions x 3 obs",7.73820972442627
+"metric_gau",1,"structures between levels","gau, 1D, 150 positions x 3 obs",7.2222375869751
+"metric_lvr",1,"structures between levels","lvr, 1D, 150 positions x 3 obs",35.7372682094574
+"metric_iexp",1,"structures between levels","iexp, 2D, 150 positions x 3 obs",6.69023370742798
+"metric_igau",1,"structures between levels","igau, 2D, 150 positions x 3 obs",7.21998858451843
+"metric_ieuc",1,"structures between levels","ieuc, 2D, 150 positions x 3 obs",6.25222277641296
+"metric_sph",1,"structures between levels","sph, 2D, 150 positions x 3 obs",8.31877636909485
+"metric_cir",1,"structures between levels","cir, 2D, 150 positions x 3 obs",8.37199831008911
+"metric_aexp",1,"structures between levels","aexp, 2D, 150 positions x 3 obs",7.77785706520081
+"metric_agau",1,"structures between levels","agau, 2D, 150 positions x 3 obs",7.90364909172058
+"metric_mtrn",1,"structures between levels","mtrn, 2D, 150 positions x 3 obs, nu fixed at 1.5",21.4030299186707
+"ige_univariate_one_species",1,"DGE / IGE","monoculture 30 x 20, 120 genotypes x 5, DGE iid + IGE iid (rank 1, L2)",6.61879253387451
+"boundary_us_rank1_t4",1,"boundary cases","genetic Sigma us of rank 1, residual us: optimum on the boundary of the cone",180.671675205231
+"boundary_us_correlation_097",1,"boundary cases","us(3) of full rank but genetic correlations of 0.97: ill-conditioned interior",73.4432859420776
+"boundary_fa1_psi_zero",1,"boundary cases","fa rank 1, zero specific variance for trait 2 (Heywood case)",70.7323215007782
+"boundary_rr2_true_rank1",1,"boundary cases","rr rank 2 fitted, truth of rank 1 without specific variance",139.059977054596
+"boundary_diag_zero_variance",1,"boundary cases","genetic diag, zero variance for trait 2",30.3139193058014
+"boundary_iid_zero_variance",1,"boundary cases","one random factor of zero true variance",7.69734048843384
+"boundary_ar1_rho_097",1,"boundary cases","ar1 term on a transect of 100 plots, rho = 0.97",65.8025362491608
+"boundary_ar1_rho_negative",1,"boundary cases","ar1 term on a transect of 100 plots, rho = -0.6",5.71004462242126
+"boundary_residual_ar1xar1_strong",1,"boundary cases","residual ar1(row):ar1(col) with rho = 0.95 and 0.90 on a 30 x 20 field",7.78700876235962
+"boundary_cor_097",1,"boundary cases","uniform correlation of 0.97 between 4 environments",10.4425642490387
+"boundary_ige_zero",1,"boundary cases","monoculture 30 x 20, DGE iid + IGE iid of zero true variance",7.76685857772827
+"boundary_scale_1e3",1,"boundary cases","genotype x environment crossed, 12 environments, y on scale 1000",7.53807616233826
+"boundary_scale_1em3",1,"boundary cases","genotype x environment crossed, 12 environments, y on scale 0.001",5.63699102401733
+"boundary_term_4_levels",1,"boundary cases","genotype x environment crossed, 4 environments, y on scale 1",6.13182497024536

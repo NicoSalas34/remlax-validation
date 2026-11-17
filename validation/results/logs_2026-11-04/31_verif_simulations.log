@@ -1,0 +1,838 @@
+remlax 0.2.0.9000 installed in /scratch/users/salasn/validation_2026-11-04_3bfae58/rlib 
+remlax loaded from remlax 0.2.0.9000 installed in /scratch/users/salasn/validation_2026-11-04_3bfae58/rlib
+Python: /usr/bin/python3 (jax 0.11.1)
+55 cases x 1 replicate(s), 10 processes
+[13:27:17] levels_corg_ge                   rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_sparse=PASS
+[13:27:20] spline_spl2d                     rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_sparse=PASS
+[13:27:54] mt_g_ante1                       rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_sparse=PASS
+[13:27:55] mt_g_chol1                       rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_sparse=PASS
+[13:28:04] mt_residual_fa1                  rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_sparse=PASS
+[13:28:08] mt_g_rr2                         rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_sparse=PASS
+[13:28:10] iid_one_term                     rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_sparse=PASS
+[13:28:15] iid_two_crossed_terms            rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_sparse=PASS
+[13:28:16] mt_g_fa1                         rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_sparse=PASS
+[13:28:17] kinship_grm_dense                rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_sparse=PASS
+[13:28:22] kinship_pedigree_kinv            rep 1: lbfgsb=PASS ai=PASS mme@sparse=PASS mme_sparse@sparse=PASS mme_lbfgsb@sparse=PASS
+[13:28:35] mt_g_diag_r_diag                 rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_sparse=PASS
+[13:28:43] mt_g_corh                        rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_sparse=PASS
+[13:28:44] residual_ar1xar1                 rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_sparse=PASS
+[13:28:46] mt_g_us_r_us                     rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_sparse=PASS
+[13:28:50] residual_ar1xar1_missing         rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_sparse=PASS
+[13:28:51] mt_g_fa2                         rep 1: lbfgsb=FAIL ai=FAIL mme=FAIL mme_sparse=FAIL
+[13:28:52] dsum_iid_heterogeneous           rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_sparse=PASS
+[13:28:54] dsum_ar1xar1_and_iid             rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_sparse=PASS
+[13:28:56] lag_rx_lag                       rep 1: lbfgsb=PASS ai=EXPECTED_REFUSAL mme=PASS
+[13:28:58] levels_ar1                       rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_sparse=PASS
+[13:29:01] levels_cor_ge                    rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_sparse=PASS
+[13:29:04] metric_exp                       rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_sparse=PASS
+[13:29:04] levels_ar1xar1_field             rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_sparse=PASS mme_lbfgsb=PASS
+[13:29:04] residual_none_plant_term         rep 1: lbfgsb=PASS ai=PASS mme=PASS lbfgsb@twin=PASS mme@twin=PASS
+[13:29:05] metric_gau                       rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_sparse=PASS
+[13:29:11] metric_iexp                      rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_sparse=PASS
+[13:29:11] metric_ieuc                      rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_sparse=PASS
+[13:29:11] metric_igau                      rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_sparse=PASS
+[13:29:14] metric_sph                       rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_sparse=PASS
+[13:29:19] metric_aexp                      rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_sparse=PASS
+[13:29:19] metric_cir                       rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_sparse=PASS
+[13:29:19] metric_agau                      rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_sparse=PASS
+[13:29:25] ige_univariate_one_species       rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_sparse=PASS
+[13:29:35] metric_mtrn                      rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_sparse=PASS
+[13:29:37] metric_lvr                       rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_sparse=PASS
+[13:30:07] boundary_diag_zero_variance      rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_dense=PASS mme_sparse=PASS mme_hybrid=PASS
+[13:30:15] boundary_iid_zero_variance       rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_dense=PASS mme_sparse=PASS mme_hybrid=PASS
+[13:30:32] boundary_us_correlation_097      rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_dense=PASS mme_sparse=PASS mme_hybrid=PASS
+[13:30:36] boundary_fa1_psi_zero            rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_dense=PASS mme_sparse=PASS mme_hybrid=PASS
+[13:30:37] boundary_fa2_true_rank1          rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_dense=PASS mme_sparse=PASS mme_hybrid=PASS
+[13:30:38] boundary_ar1_rho_negative        rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_dense=PASS mme_sparse=PASS mme_hybrid=PASS
+[13:30:44] boundary_residual_ar1xar1_strong rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_dense=PASS mme_sparse=PASS mme_hybrid=PASS
+[13:30:46] boundary_ige_zero                rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_dense=PASS mme_sparse=PASS mme_hybrid=PASS
+Warning: rx_fit: the Hessian has 1 negative eigenvalue(s). The point reached is not a maximum of the likelihood.
+[13:30:47] boundary_cor_097                 rep 1: lbfgsb=PASS ai=PASS mme=FAIL mme_dense=FAIL mme_sparse=FAIL mme_hybrid=FAIL
+[13:30:51] boundary_scale_1e3               rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_dense=PASS mme_sparse=PASS mme_hybrid=PASS
+[13:30:52] boundary_scale_1em3              rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_dense=PASS mme_sparse=PASS mme_hybrid=PASS
+[13:30:54] boundary_term_4_levels           rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_dense=PASS mme_sparse=PASS mme_hybrid=PASS
+Warning: rx_fit: the REML fit did not converge (relative gradient 7.67e-06, Newton decrement 9.03e-04). Do not use it as is: try optimizer = "ai", other starting values (theta_init) or simpler structures.
+Warning: rx_fit: the REML fit did not converge (relative gradient 7.68e-06, Newton decrement 9.26e-04). Do not use it as is: try optimizer = "ai", other starting values (theta_init) or simpler structures.
+Warning: rx_fit: the REML fit did not converge (relative gradient 7.68e-06, Newton decrement 9.26e-04). Do not use it as is: try optimizer = "ai", other starting values (theta_init) or simpler structures.
+Warning: rx_fit: the REML fit did not converge (relative gradient 7.67e-06, Newton decrement 8.89e-04). Do not use it as is: try optimizer = "ai", other starting values (theta_init) or simpler structures.
+Warning: rx_fit: the REML fit did not converge (relative gradient 7.67e-06, Newton decrement 8.89e-04). Do not use it as is: try optimizer = "ai", other starting values (theta_init) or simpler structures.
+[13:31:21] boundary_ar1_rho_097             rep 1: lbfgsb=FAIL ai=FAIL mme=FAIL mme_dense=FAIL mme_sparse=FAIL mme_hybrid=FAIL
+[13:31:54] boundary_rr2_true_rank1          rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_dense=PASS mme_sparse=PASS mme_hybrid=PASS
+[13:32:20] boundary_us_rank1_t4             rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_dense=PASS mme_sparse=PASS mme_hybrid=PASS
+[13:32:48] boundary_two_us_at_bound         rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_dense=PASS mme_sparse=PASS mme_hybrid=PASS
+[13:32:52] ige_mixture_two_species          rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_sparse=PASS
+[13:33:06] boundary_mixture_iee_zero_us_rank2 rep 1: lbfgsb=PASS ai=PASS mme=PASS mme_sparse=PASS
+[14:01:59] boundary_us8_near_rank2          rep 1: lbfgsb=FAIL ai=PASS mme=PASS mme_dense=PASS mme_sparse=PASS mme_hybrid=PASS
+Simulation checks of remlax (2026-11-04 14:01)
+Package: remlax 0.2.0.9000 installed in /scratch/users/salasn/validation_2026-11-04_3bfae58/rlib
+Criteria: |logLik - arbiter| / |arbiter| < 1e-08; difference from the best route < 0.0001; |z| < 3
+Total time: 34.9 min
+
+Fits: EXPECTED_REFUSAL 1, FAIL 15, PASS 240
+
+== ige_mixture_two_species  [DGE / IGE]  2 trays 30 x 20, alternate columns; DGE + IGE intra + IGE inter us (3 x 3) per species with GRM; IEE iid; diag residual per species; ranks 2 (intra) and 1 (inter), L2 normalisation; h2 0.30, IGE 7 and 5 %, IEE 5 %, r(DGE, IGE) -0.4
+   lbfgsb             rep 1  PASS             logLik -1548.189279  arbiter -1548.189279  rel_diff 2.1e-14  route_diff 0.0e+00  max|z| 2.00  
+   ai                 rep 1  PASS             logLik -1548.189279  arbiter -1548.189279  rel_diff 1.0e-14  route_diff 2.3e-07  max|z| 2.00  
+   mme                rep 1  PASS             logLik -1548.189279  arbiter -1548.189279  rel_diff 2.2e-14  route_diff 3.6e-07  max|z| 2.00  
+   mme_sparse         rep 1  PASS             logLik -1548.189279  arbiter -1548.189279  rel_diff -1.1e-14  route_diff 3.6e-07  max|z| 2.00  
+      gA[1,1]                true    0.3026  estimate    0.2186  se   0.0474  z  -1.77
+      gA[2,1]                true   -0.0609  estimate   -0.0754  se   0.0291  z  -0.50
+      gA[2,2]                true    0.0766  estimate    0.0445  se   0.0285  z  -1.13
+      gA[3,1]                true   -0.0252  estimate   -0.0748  se   0.0251  z  -1.98
+      gA[3,2]                true    0.0190  estimate    0.0321  se   0.0175  z   0.75
+      gA[3,3]                true    0.0524  estimate    0.0278  se       NA  z     NA
+      gB[1,1]                true    0.3042  estimate    0.2532  se   0.0549  z  -0.93
+      gB[2,1]                true   -0.0609  estimate   -0.0334  se   0.0322  z   0.85
+      gB[2,2]                true    0.0763  estimate    0.0212  se   0.0276  z  -2.00
+      gB[3,1]                true   -0.0252  estimate   -0.0582  se   0.0326  z  -1.01
+      gB[3,2]                true    0.0189  estimate    0.0187  se   0.0244  z  -0.01
+      gB[3,3]                true    0.0521  estimate    0.0791  se   0.0358  z   0.76
+      iee                    true    0.0250  estimate    0.0348  se   0.0140  z   0.70
+      residual[1,1]          true    0.5000  estimate    0.4762  se   0.0388  z  -0.61
+      residual[2,2]          true    0.5500  estimate    0.5659  se   0.0450  z   0.35
+== mt_g_fa2  [multi-trait]  fa rank 2, 5 traits (rank 2 is not identified with 4 traits)
+   lbfgsb             rep 1  FAIL             logLik -1977.914757  arbiter -1977.914757  rel_diff 2.3e-16  route_diff 0.0e+00  max|z| 3.06  1 component(s) with |z| >= 3
+   ai                 rep 1  FAIL             logLik -1977.914757  arbiter -1977.914757  rel_diff 2.3e-16  route_diff 2.0e-08  max|z| 3.06  1 component(s) with |z| >= 3
+   mme                rep 1  FAIL             logLik -1977.914757  arbiter -1977.914757  rel_diff -3.4e-16  route_diff 2.0e-08  max|z| 3.06  1 component(s) with |z| >= 3
+   mme_sparse         rep 1  FAIL             logLik -1977.914757  arbiter -1977.914757  rel_diff -3.4e-16  route_diff 2.0e-08  max|z| 3.06  1 component(s) with |z| >= 3
+      g[1,1]                 true    0.6400  estimate    0.5053  se   0.1171  z  -1.15
+      g[2,1]                 true    0.3500  estimate    0.3296  se   0.0896  z  -0.23
+      g[2,2]                 true    0.7000  estimate    0.6408  se   0.1218  z  -0.49
+      g[3,1]                 true   -0.2100  estimate   -0.1566  se   0.0903  z   0.59
+      g[3,2]                 true    0.1500  estimate    0.1231  se   0.0868  z  -0.31
+      g[3,3]                 true    0.6500  estimate    0.7656  se   0.1425  z   0.81
+      g[4,1]                 true    0.4200  estimate    0.2319  se   0.0793  z  -2.37
+      g[4,2]                 true    0.1000  estimate   -0.0328  se   0.0764  z  -1.74
+      g[4,3]                 true   -0.4200  estimate   -0.3606  se   0.0912  z   0.65
+      g[4,4]                 true    0.6700  estimate    0.5172  se   0.1015  z  -1.51
+      g[5,1]                 true    0.2800  estimate    0.2233  se   0.0782  z  -0.73
+      g[5,2]                 true    0.3500  estimate    0.3085  se   0.0839  z  -0.50
+      g[5,3]                 true    0.0600  estimate    0.1608  se   0.0850  z   1.19
+      g[5,4]                 true    0.1200  estimate   -0.0865  se   0.0674  z  -3.06
+      g[5,5]                 true    0.5000  estimate    0.4793  se   0.1029  z  -0.20
+      residual[1,1]          true    0.8000  estimate    0.8267  se   0.0863  z   0.31
+      residual[2,2]          true    0.6000  estimate    0.5879  se   0.0605  z  -0.20
+      residual[3,3]          true    0.7000  estimate    0.6299  se   0.0650  z  -1.08
+      residual[4,4]          true    0.5000  estimate    0.5174  se   0.0541  z   0.32
+      residual[5,5]          true    0.6000  estimate    0.6307  se   0.0658  z   0.47
+== lag_rx_lag  [spatial lag]  y = (I - Psi (x) W)^-1 (Xb + Zu + e), queen W 15 x 20, 2 traits, reml_y criterion
+   lbfgsb             rep 1  PASS             logLik -945.562840  arbiter -945.562840  rel_diff 4.8e-16  route_diff 0.0e+00  max|z| 1.79  
+   ai                 rep 1  EXPECTED_REFUSAL logLik      NA  arbiter      NA  rel_diff NA  route_diff NA  max|z|  NA  rx_fit: the REML solver failed. Solver output: Traceback (most recent call last):   File "/scratch/users/salasn/validation_2026-11-04_3bfae58/rlib/remlax/python/remlax/serveur.py", line 120, in main     code = cli.main([str(a) for a in req.get("argv", [])])            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   mme                rep 1  PASS             logLik -945.562840  arbiter -945.562840  rel_diff 4.8e-16  route_diff 0.0e+00  max|z| 1.79  
+      gen[1,1]               true    1.0000  estimate    0.7662  se   0.1866  z  -1.25
+      gen[2,1]               true    0.3000  estimate    0.3353  se   0.1431  z   0.25
+      gen[2,2]               true    0.8000  estimate    0.9330  se   0.2033  z   0.65
+      residual[1,1]          true    1.0000  estimate    1.1965  se   0.1100  z   1.79
+      residual[2,1]          true   -0.2000  estimate   -0.1820  se   0.0661  z   0.27
+      residual[2,2]          true    0.9000  estimate    0.8376  se   0.0769  z  -0.81
+      Psi[T1<-T1]            true    0.0600  estimate    0.0538  se   0.0107  z  -0.58
+      Psi[T1<-T2]            true   -0.0400  estimate   -0.0357  se   0.0058  z   0.74
+      Psi[T2<-T1]            true    0.0500  estimate    0.0409  se   0.0112  z  -0.81
+      Psi[T2<-T2]            true    0.0300  estimate    0.0297  se   0.0047  z  -0.07
+== mt_residual_fa1  [multi-trait]  residual fa rank 1 between traits of a plant
+   lbfgsb             rep 1  PASS             logLik -1924.564384  arbiter -1924.564384  rel_diff 1.2e-16  route_diff 0.0e+00  max|z| 2.61  
+   ai                 rep 1  PASS             logLik -1924.564384  arbiter -1924.564384  rel_diff -3.5e-16  route_diff 7.2e-08  max|z| 2.61  
+   mme                rep 1  PASS             logLik -1924.564384  arbiter -1924.564384  rel_diff -3.5e-16  route_diff 7.2e-08  max|z| 2.61  
+   mme_sparse         rep 1  PASS             logLik -1924.564384  arbiter -1924.564384  rel_diff -7.1e-16  route_diff 7.2e-08  max|z| 2.61  
+      g[1,1]                 true    0.4000  estimate    0.4502  se   0.0968  z   0.52
+      g[2,2]                 true    0.5000  estimate    0.4442  se   0.0854  z  -0.65
+      g[3,3]                 true    0.3000  estimate    0.4419  se   0.0943  z   1.50
+      g[4,4]                 true    0.6000  estimate    0.4774  se   0.0943  z  -1.30
+      residual[1,1]          true    0.8600  estimate    0.8144  se   0.0768  z  -0.59
+      residual[2,1]          true    0.3000  estimate    0.2364  se   0.0498  z  -1.28
+      residual[2,2]          true    0.6500  estimate    0.6250  se   0.0581  z  -0.43
+      residual[3,1]          true    0.2400  estimate    0.1973  se   0.0482  z  -0.89
+      residual[3,2]          true    0.2000  estimate    0.2509  se   0.0483  z   1.05
+      residual[3,3]          true    0.7600  estimate    0.7561  se   0.0721  z  -0.05
+      residual[4,1]          true   -0.1800  estimate   -0.0887  se   0.0350  z   2.61
+      residual[4,2]          true   -0.1500  estimate   -0.1128  se   0.0382  z   0.97
+      residual[4,3]          true   -0.1200  estimate   -0.0941  se   0.0379  z   0.68
+      residual[4,4]          true    0.5900  estimate    0.6673  se   0.0626  z   1.24
+== mt_g_rr2  [multi-trait]  reduced rank 2 without specific variance: singular genetic Sigma
+   lbfgsb             rep 1  PASS             logLik -1818.264909  arbiter -1818.264909  rel_diff 3.8e-16  route_diff 0.0e+00  max|z| 2.58  
+   ai                 rep 1  PASS             logLik -1818.264909  arbiter -1818.264909  rel_diff 7.5e-16  route_diff 2.9e-09  max|z| 2.58  
+   mme                rep 1  PASS             logLik -1818.264909  arbiter -1818.264909  rel_diff 7.5e-16  route_diff 2.9e-09  max|z| 2.58  
+   mme_sparse         rep 1  PASS             logLik -1818.264909  arbiter -1818.264909  rel_diff 7.5e-16  route_diff 2.9e-09  max|z| 2.58  
+      g[1,1]                 true    0.4900  estimate    0.3055  se   0.0716  z  -2.58
+      g[2,1]                 true    0.3500  estimate    0.2714  se   0.0603  z  -1.30
+      g[2,2]                 true    0.4100  estimate    0.4384  se   0.0844  z   0.34
+      g[3,1]                 true   -0.2100  estimate   -0.1591  se   0.0516  z   0.99
+      g[3,2]                 true    0.0500  estimate    0.0634  se   0.0535  z   0.25
+      g[3,3]                 true    0.3400  estimate    0.2954  se   0.0694  z  -0.64
+      g[4,1]                 true    0.4200  estimate    0.3366  se   0.0625  z  -1.33
+      g[4,2]                 true    0.1800  estimate    0.1917  se   0.0606  z   0.19
+      g[4,3]                 true   -0.3300  estimate   -0.2868  se   0.0581  z   0.74
+      g[4,4]                 true    0.4500  estimate    0.4294  se   0.0811  z  -0.25
+      residual[1,1]          true    0.8000  estimate    0.7876  se   0.0656  z  -0.19
+      residual[2,2]          true    0.6000  estimate    0.5613  se   0.0529  z  -0.73
+      residual[3,3]          true    0.7000  estimate    0.7079  se   0.0618  z   0.13
+      residual[4,4]          true    0.5000  estimate    0.5526  se   0.0493  z   1.07
+== mt_g_ante1  [multi-trait]  antedependence of order 1
+   lbfgsb             rep 1  PASS             logLik -1900.808164  arbiter -1900.808164  rel_diff 2.4e-16  route_diff 0.0e+00  max|z| 2.62  
+   ai                 rep 1  PASS             logLik -1900.808164  arbiter -1900.808164  rel_diff 1.2e-16  route_diff 1.4e-07  max|z| 2.62  
+   mme                rep 1  PASS             logLik -1900.808164  arbiter -1900.808164  rel_diff 6.0e-16  route_diff 1.4e-07  max|z| 2.62  
+   mme_sparse         rep 1  PASS             logLik -1900.808164  arbiter -1900.808164  rel_diff 4.8e-16  route_diff 1.4e-07  max|z| 2.62  
+      g[1,1]                 true    0.6944  estimate    0.7024  se   0.1294  z   0.06
+      g[2,1]                 true   -0.3472  estimate   -0.3888  se   0.0793  z  -0.52
+      g[2,2]                 true    0.6181  estimate    0.3997  se   0.0834  z  -2.62
+      g[3,1]                 true   -0.1389  estimate   -0.1776  se   0.0819  z  -0.47
+      g[3,2]                 true    0.2472  estimate    0.1826  se   0.0799  z  -0.81
+      g[3,3]                 true    0.6906  estimate    1.0541  se   0.1699  z   2.14
+      g[4,1]                 true    0.0417  estimate    0.0428  se   0.0238  z   0.05
+      g[4,2]                 true   -0.0742  estimate   -0.0440  se   0.0236  z   1.28
+      g[4,3]                 true   -0.2072  estimate   -0.2540  se   0.0853  z  -0.55
+      g[4,4]                 true    0.4528  estimate    0.4674  se   0.0804  z   0.18
+      residual[1,1]          true    0.8000  estimate    0.7776  se   0.0733  z  -0.31
+      residual[2,2]          true    0.6000  estimate    0.6105  se   0.0583  z   0.18
+      residual[3,3]          true    0.7000  estimate    0.6712  se   0.0644  z  -0.45
+      residual[4,4]          true    0.5000  estimate    0.4155  se   0.0392  z  -2.16
+== mt_g_chol1  [multi-trait]  banded Cholesky of order 1
+   lbfgsb             rep 1  PASS             logLik -1936.439515  arbiter -1936.439515  rel_diff 2.3e-16  route_diff 0.0e+00  max|z| 1.73  
+   ai                 rep 1  PASS             logLik -1936.439515  arbiter -1936.439515  rel_diff -2.3e-16  route_diff 2.6e-08  max|z| 1.73  
+   mme                rep 1  PASS             logLik -1936.439515  arbiter -1936.439515  rel_diff -2.3e-16  route_diff 2.6e-08  max|z| 1.73  
+   mme_sparse         rep 1  PASS             logLik -1936.439515  arbiter -1936.439515  rel_diff 2.3e-16  route_diff 2.6e-08  max|z| 1.73  
+      g[1,1]                 true    0.6000  estimate    0.8624  se   0.1517  z   1.73
+      g[2,1]                 true    0.3000  estimate    0.3461  se   0.0897  z   0.51
+      g[2,2]                 true    0.5500  estimate    0.5509  se   0.1000  z   0.01
+      g[3,1]                 true    0.0000  estimate    0.0000  se   0.0000  z    NaN
+      g[3,2]                 true   -0.1600  estimate   -0.1726  se   0.0697  z  -0.18
+      g[3,3]                 true    0.5640  estimate    0.6091  se   0.1175  z   0.38
+      g[4,1]                 true    0.0000  estimate    0.0000  se   0.0000  z    NaN
+      g[4,2]                 true    0.0000  estimate    0.0000  se   0.0000  z    NaN
+      g[4,3]                 true    0.1500  estimate    0.1472  se   0.0640  z  -0.04
+      g[4,4]                 true    0.3450  estimate    0.3921  se   0.0744  z   0.63
+      residual[1,1]          true    0.8000  estimate    0.8345  se   0.0783  z   0.44
+      residual[2,2]          true    0.6000  estimate    0.5939  se   0.0558  z  -0.11
+      residual[3,3]          true    0.7000  estimate    0.7313  se   0.0703  z   0.45
+      residual[4,4]          true    0.5000  estimate    0.4819  se   0.0459  z  -0.39
+== mt_g_fa1  [multi-trait]  fa rank 1, 4 traits
+   lbfgsb             rep 1  PASS             logLik -1878.260227  arbiter -1878.260227  rel_diff 0.0e+00  route_diff 0.0e+00  max|z| 1.14  
+   ai                 rep 1  PASS             logLik -1878.260227  arbiter -1878.260227  rel_diff 7.3e-16  route_diff 4.0e-07  max|z| 1.14  
+   mme                rep 1  PASS             logLik -1878.260227  arbiter -1878.260227  rel_diff -2.4e-16  route_diff 4.0e-07  max|z| 1.14  
+   mme_sparse         rep 1  PASS             logLik -1878.260227  arbiter -1878.260227  rel_diff 2.4e-16  route_diff 4.0e-07  max|z| 1.14  
+      g[1,1]                 true    0.6900  estimate    0.7194  se   0.1365  z   0.22
+      g[2,1]                 true    0.3500  estimate    0.3850  se   0.0857  z   0.41
+      g[2,2]                 true    0.5500  estimate    0.5158  se   0.0964  z  -0.36
+      g[3,1]                 true   -0.2800  estimate   -0.3154  se   0.0812  z  -0.44
+      g[3,2]                 true   -0.2000  estimate   -0.1912  se   0.0551  z   0.16
+      g[3,3]                 true    0.4100  estimate    0.5030  se   0.0973  z   0.96
+      g[4,1]                 true    0.4200  estimate    0.4336  se   0.0816  z   0.17
+      g[4,2]                 true    0.3000  estimate    0.2628  se   0.0624  z  -0.60
+      g[4,3]                 true   -0.2400  estimate   -0.2153  se   0.0583  z   0.42
+      g[4,4]                 true    0.5100  estimate    0.4214  se   0.0780  z  -1.14
+      residual[1,1]          true    0.8000  estimate    0.8706  se   0.0833  z   0.85
+      residual[2,2]          true    0.6000  estimate    0.5855  se   0.0561  z  -0.26
+      residual[3,3]          true    0.7000  estimate    0.6653  se   0.0623  z  -0.56
+      residual[4,4]          true    0.5000  estimate    0.4823  se   0.0455  z  -0.39
+== spline_spl2d  [splines]  rx_spl2d(nseg = c(6, 8)): five PS-ANOVA terms, null part as fixed effects
+   lbfgsb             rep 1  PASS             logLik -759.118078  arbiter -759.118078  rel_diff 1.2e-15  route_diff 0.0e+00  max|z| 2.72  
+   ai                 rep 1  PASS             logLik -759.118078  arbiter -759.118078  rel_diff -3.0e-16  route_diff 2.1e-07  max|z| 2.72  
+   mme                rep 1  PASS             logLik -759.118078  arbiter -759.118078  rel_diff -6.0e-16  route_diff 2.8e-07  max|z| 2.72  
+   mme_sparse         rep 1  PASS             logLik -759.118078  arbiter -759.118078  rel_diff -1.2e-15  route_diff 2.8e-07  max|z| 2.72  
+      g                      true    0.4000  estimate    0.5497  se   0.0902  z   1.66
+      spl_fx                 true    3.2627  estimate    0.7862  se   0.9091  z  -2.72
+      spl_fy                 true    1.4039  estimate    1.8756  se   2.2662  z   0.21
+      spl_fx_y               true    2.8615  estimate    4.2736  se   4.2507  z   0.33
+      spl_x_fy               true    1.4113  estimate    0.0000  se       NA  z     NA
+      spl_fx_fy              true    3.7450  estimate    4.8190  se   2.0193  z   0.53
+      residual               true    0.5000  estimate    0.4664  se   0.0309  z  -1.09
+== levels_corg_ge  [structures between levels]  general correlation between 4 environments; correlations by the delta method on theta
+   lbfgsb             rep 1  PASS             logLik -671.786149  arbiter -671.786149  rel_diff 0.0e+00  route_diff 0.0e+00  max|z| 1.09  
+   ai                 rep 1  PASS             logLik -671.786149  arbiter -671.786149  rel_diff -1.7e-16  route_diff 2.3e-08  max|z| 1.09  
+   mme                rep 1  PASS             logLik -671.786149  arbiter -671.786149  rel_diff 0.0e+00  route_diff 2.3e-08  max|z| 0.32  
+   mme_sparse         rep 1  PASS             logLik -671.786149  arbiter -671.786149  rel_diff -3.4e-16  route_diff 2.3e-08  max|z| 0.32  
+      ge[1,1]                true    0.8000  estimate    0.8264  se   0.1123  z   0.23
+      residual               true    0.5000  estimate    0.4858  se   0.0444  z  -0.32
+      C[2,1]                 true    0.6000  estimate    0.5364  se   0.1193  z  -0.53
+      C[3,1]                 true    0.3000  estimate    0.1983  se   0.1723  z  -0.59
+      C[4,1]                 true    0.1000  estimate   -0.1050  se   0.1881  z  -1.09
+      C[3,2]                 true    0.5000  estimate    0.5079  se   0.1242  z   0.06
+      C[4,2]                 true    0.2000  estimate    0.2423  se   0.1503  z   0.28
+      C[4,3]                 true    0.4000  estimate    0.4963  se   0.1559  z   0.62
+== boundary_mixture_iee_zero_us_rank2  [boundary cases]  mixture of two species: IEE of zero variance, and (DGE, IGE intra, IGE inter) us(3) of rank 2 for each species
+   lbfgsb             rep 1  PASS             logLik -1511.838390  arbiter -1511.838390  rel_diff -1.1e-14  route_diff 0.0e+00  max|z| 1.87  
+   ai                 rep 1  PASS             logLik -1511.838390  arbiter -1511.838390  rel_diff 1.7e-14  route_diff 4.0e-07  max|z| 1.87  
+   mme                rep 1  PASS             logLik -1511.838391  arbiter -1511.838391  rel_diff 2.2e-14  route_diff 1.1e-06  max|z| 1.87  
+   mme_sparse         rep 1  PASS             logLik -1511.838391  arbiter -1511.838391  rel_diff -7.1e-14  route_diff 1.1e-06  max|z| 1.87  
+      gA[1,1]                true    0.3041  estimate    0.2961  se   0.0543  z  -0.15
+      gA[2,1]                true   -0.0909  estimate   -0.0954  se   0.0337  z  -0.13
+      gA[2,2]                true    0.0755  estimate    0.1186  se   0.0372  z   1.16
+      gA[3,1]                true    0.0755  estimate    0.0360  se   0.0299  z  -1.32
+      gA[3,2]                true    0.0175  estimate    0.0641  se   0.0256  z   1.82
+      gA[3,3]                true    0.0520  estimate    0.0696  se       NA  z     NA
+      gB[1,1]                true    0.3016  estimate    0.2156  se   0.0460  z  -1.87
+      gB[2,1]                true   -0.0903  estimate   -0.0792  se   0.0274  z   0.41
+      gB[2,2]                true    0.0752  estimate    0.0860  se   0.0298  z   0.36
+      gB[3,1]                true    0.0747  estimate    0.0802  se   0.0267  z   0.21
+      gB[3,2]                true    0.0174  estimate    0.0114  se   0.0204  z  -0.29
+      gB[3,3]                true    0.0514  estimate    0.0592  se       NA  z     NA
+      iee                    true    0.0000  estimate    0.0000  se       NA  z     NA
+      residual[1,1]          true    0.5000  estimate    0.4609  se   0.0342  z  -1.14
+      residual[2,2]          true    0.5500  estimate    0.5201  se   0.0376  z  -0.79
+== boundary_us8_near_rank2  [boundary cases]  genetic us(8) nearly of rank 2 (LL' + 0.01 I), as in the absolute benchmark; 100 genotypes
+   lbfgsb             rep 1  FAIL             logLik -3243.809799  arbiter -3243.809799  rel_diff 2.8e-16  route_diff 2.3e-03  max|z| 1.97  optimum lower by 2.29e-03
+   ai                 rep 1  PASS             logLik -3243.807506  arbiter -3243.807506  rel_diff -8.4e-16  route_diff 0.0e+00  max|z| 1.97  
+   mme                rep 1  PASS             logLik -3243.807507  arbiter -3243.807507  rel_diff -1.4e-16  route_diff 4.0e-07  max|z| 1.97  
+   mme_dense          rep 1  PASS             logLik -3243.807507  arbiter -3243.807507  rel_diff -1.4e-16  route_diff 4.0e-07  max|z| 1.97  
+   mme_sparse         rep 1  PASS             logLik -3243.807507  arbiter -3243.807507  rel_diff -1.4e-16  route_diff 3.9e-07  max|z| 1.97  
+   mme_hybrid         rep 1  PASS             logLik -3243.807507  arbiter -3243.807507  rel_diff -7.0e-16  route_diff 6.0e-07  max|z| 1.97  
+      g[1,1]                 true    1.4815  estimate    1.6284  se   0.2749  z   0.53
+      g[2,1]                 true   -0.6017  estimate   -0.7157  se   0.1323  z  -0.86
+      g[2,2]                 true    0.2699  estimate    0.4041  se   0.0979  z   1.37
+      g[3,1]                 true    1.0566  estimate    0.9247  se   0.2649  z  -0.50
+      g[3,2]                 true   -0.5864  estimate   -0.7449  se   0.1606  z  -0.99
+      g[3,3]                 true    2.4941  estimate    2.7040  se   0.4337  z   0.48
+      g[4,1]                 true    0.8849  estimate    0.7846  se   0.1931  z  -0.52
+      g[4,2]                 true   -0.4585  estimate   -0.5675  se   0.1130  z  -0.97
+      g[4,3]                 true    1.7152  estimate    1.7565  se   0.2860  z   0.14
+      g[4,4]                 true    1.2179  estimate    1.1977  se   0.2139  z  -0.09
+      g[5,1]                 true   -0.2216  estimate   -0.3393  se   0.0995  z  -1.18
+      g[5,2]                 true    0.0847  estimate    0.1218  se   0.0575  z   0.65
+      g[5,3]                 true   -0.0926  estimate   -0.2780  se   0.1247  z  -1.49
+      g[5,4]                 true   -0.0916  estimate   -0.2118  se   0.0846  z  -1.42
+      g[5,5]                 true    0.0459  estimate    0.1335  se       NA  z     NA
+      g[6,1]                 true   -0.2310  estimate   -0.2573  se   0.0868  z  -0.30
+      g[6,2]                 true    0.0916  estimate    0.1075  se   0.0508  z   0.31
+      g[6,3]                 true   -0.1340  estimate   -0.0415  se   0.1095  z   0.84
+      g[6,4]                 true   -0.1190  estimate   -0.0763  se   0.0731  z   0.58
+      g[6,5]                 true    0.0360  estimate    0.0461  se       NA  z     NA
+      g[6,6]                 true    0.0468  estimate    0.0546  se   0.0372  z   0.21
+      g[7,1]                 true   -0.7849  estimate   -0.8765  se   0.1545  z  -0.59
+      g[7,2]                 true    0.3146  estimate    0.4209  se   0.0933  z   1.14
+      g[7,3]                 true   -0.4923  estimate   -0.6082  se   0.1748  z  -0.66
+      g[7,4]                 true   -0.4274  estimate   -0.5181  se   0.1222  z  -0.74
+      g[7,5]                 true    0.1210  estimate    0.1833  se       NA  z     NA
+      g[7,6]                 true    0.1245  estimate    0.1443  se   0.0581  z   0.34
+      g[7,7]                 true    0.4317  estimate    0.5137  se   0.1226  z   0.67
+      g[8,1]                 true    0.7621  estimate    0.8124  se   0.1514  z   0.33
+      g[8,2]                 true   -0.3306  estimate   -0.3969  se   0.0780  z  -0.85
+      g[8,3]                 true    0.7590  estimate    0.7116  se   0.1740  z  -0.27
+      g[8,4]                 true    0.5909  estimate    0.5564  se   0.1243  z  -0.28
+      g[8,5]                 true   -0.1066  estimate   -0.1897  se       NA  z     NA
+      g[8,6]                 true   -0.1157  estimate   -0.1179  se   0.0497  z  -0.04
+      g[8,7]                 true   -0.3978  estimate   -0.4769  se   0.0888  z  -0.89
+      g[8,8]                 true    0.4307  estimate    0.4640  se       NA  z     NA
+      residual[1,1]          true    1.0000  estimate    0.8402  se   0.0834  z  -1.92
+      residual[2,1]          true    0.3000  estimate    0.3083  se   0.0598  z   0.14
+      residual[2,2]          true    1.0000  estimate    0.8456  se   0.0784  z  -1.97
+      residual[3,1]          true    0.3000  estimate    0.3058  se   0.0681  z   0.09
+      residual[3,2]          true    0.3000  estimate    0.2708  se   0.0663  z  -0.44
+      residual[3,3]          true    1.0000  estimate    0.9702  se   0.0988  z  -0.30
+      residual[4,1]          true    0.3000  estimate    0.3336  se   0.0646  z   0.52
+      residual[4,2]          true    0.3000  estimate    0.2132  se   0.0591  z  -1.47
+      residual[4,3]          true    0.3000  estimate    0.3194  se   0.0732  z   0.26
+      residual[4,4]          true    1.0000  estimate    0.9014  se   0.0857  z  -1.15
+      residual[5,1]          true    0.3000  estimate    0.3199  se   0.0672  z   0.30
+      residual[5,2]          true    0.3000  estimate    0.3072  se   0.0639  z   0.11
+      residual[5,3]          true    0.3000  estimate    0.3066  se   0.0718  z   0.09
+      residual[5,4]          true    0.3000  estimate    0.3484  se   0.0675  z   0.72
+      residual[5,5]          true    1.0000  estimate    1.0095  se   0.0965  z   0.10
+      residual[6,1]          true    0.3000  estimate    0.2866  se   0.0626  z  -0.21
+      residual[6,2]          true    0.3000  estimate    0.3265  se   0.0623  z   0.43
+      residual[6,3]          true    0.3000  estimate    0.3092  se   0.0697  z   0.13
+      residual[6,4]          true    0.3000  estimate    0.2506  se   0.0615  z  -0.80
+      residual[6,5]          true    0.3000  estimate    0.3003  se   0.0661  z   0.00
+      residual[6,6]          true    1.0000  estimate    0.9647  se   0.0839  z  -0.42
+      residual[7,1]          true    0.3000  estimate    0.2078  se   0.0672  z  -1.37
+      residual[7,2]          true    0.3000  estimate    0.2874  se   0.0665  z  -0.19
+      residual[7,3]          true    0.3000  estimate    0.3135  se   0.0758  z   0.18
+      residual[7,4]          true    0.3000  estimate    0.3225  se   0.0670  z   0.34
+      residual[7,5]          true    0.3000  estimate    0.4003  se   0.0751  z   1.33
+      residual[7,6]          true    0.3000  estimate    0.3247  se   0.0693  z   0.36
+      residual[7,7]          true    1.0000  estimate    1.1374  se   0.1019  z   1.35
+      residual[8,1]          true    0.3000  estimate    0.2217  se   0.0606  z  -1.29
+      residual[8,2]          true    0.3000  estimate    0.2021  se   0.0574  z  -1.71
+      residual[8,3]          true    0.3000  estimate    0.2783  se   0.0680  z  -0.32
+      residual[8,4]          true    0.3000  estimate    0.2240  se   0.0611  z  -1.25
+      residual[8,5]          true    0.3000  estimate    0.3324  se   0.0644  z   0.50
+      residual[8,6]          true    0.3000  estimate    0.2721  se   0.0622  z  -0.45
+      residual[8,7]          true    0.3000  estimate    0.2585  se   0.0650  z  -0.64
+      residual[8,8]          true    1.0000  estimate    0.8740  se   0.0823  z  -1.53
+== boundary_fa2_true_rank1  [boundary cases]  fa rank 2 fitted, truth of rank 1: zero second factor, flat direction
+   lbfgsb             rep 1  PASS             logLik -1958.155319  arbiter -1958.155319  rel_diff -7.0e-16  route_diff 0.0e+00  max|z| 1.66  
+   ai                 rep 1  PASS             logLik -1958.155319  arbiter -1958.155319  rel_diff -3.5e-16  route_diff 2.1e-08  max|z| 1.66  
+   mme                rep 1  PASS             logLik -1958.155319  arbiter -1958.155319  rel_diff -2.3e-16  route_diff 2.3e-08  max|z| 1.66  
+   mme_dense          rep 1  PASS             logLik -1958.155319  arbiter -1958.155319  rel_diff -2.3e-16  route_diff 2.3e-08  max|z| 1.66  
+   mme_sparse         rep 1  PASS             logLik -1958.155319  arbiter -1958.155319  rel_diff 9.3e-16  route_diff 2.1e-08  max|z| 1.66  
+   mme_hybrid         rep 1  PASS             logLik -1958.155319  arbiter -1958.155319  rel_diff 0.0e+00  route_diff 1.7e-08  max|z| 1.66  
+      g[1,1]                 true    0.6400  estimate    0.5899  se   0.1245  z  -0.40
+      g[2,1]                 true    0.3500  estimate    0.3125  se   0.0871  z  -0.43
+      g[2,2]                 true    0.4500  estimate    0.6671  se   0.1304  z   1.66
+      g[3,1]                 true   -0.2100  estimate   -0.1930  se   0.0732  z   0.23
+      g[3,2]                 true   -0.1500  estimate   -0.1805  se   0.0745  z  -0.41
+      g[3,3]                 true    0.2900  estimate    0.3101  se   0.0854  z   0.24
+      g[4,1]                 true    0.4200  estimate    0.4174  se   0.0880  z  -0.03
+      g[4,2]                 true    0.3000  estimate    0.3422  se   0.0864  z   0.49
+      g[4,3]                 true   -0.1800  estimate   -0.2313  se   0.0677  z  -0.76
+      g[4,4]                 true    0.5100  estimate    0.4924  se   0.1023  z  -0.17
+      g[5,1]                 true    0.2800  estimate    0.2443  se   0.0727  z  -0.49
+      g[5,2]                 true    0.2000  estimate    0.2040  se   0.0621  z   0.07
+      g[5,3]                 true   -0.1200  estimate   -0.1695  se   0.0627  z  -0.79
+      g[5,4]                 true    0.2400  estimate    0.2704  se   0.0696  z   0.44
+      g[5,5]                 true    0.4100  estimate    0.4379  se   0.0910  z   0.31
+      residual[1,1]          true    0.8000  estimate    0.7625  se   0.0790  z  -0.47
+      residual[2,2]          true    0.6000  estimate    0.6419  se   0.0662  z   0.63
+      residual[3,3]          true    0.7000  estimate    0.7564  se   0.0780  z   0.72
+      residual[4,4]          true    0.5000  estimate    0.5717  se   0.0604  z   1.19
+      residual[5,5]          true    0.6000  estimate    0.5459  se   0.0565  z  -0.96
+== boundary_two_us_at_bound  [boundary cases]  two us terms on the bound at once: genotype us(3) of rank 2, family us(3) of rank 1
+   lbfgsb             rep 1  PASS             logLik -1783.304079  arbiter -1783.304079  rel_diff 1.3e-16  route_diff 0.0e+00  max|z| 1.06  
+   ai                 rep 1  PASS             logLik -1783.304079  arbiter -1783.304079  rel_diff -6.4e-16  route_diff 3.1e-07  max|z| 1.06  
+   mme                rep 1  PASS             logLik -1783.304079  arbiter -1783.304079  rel_diff -3.8e-16  route_diff 5.1e-07  max|z| 1.06  
+   mme_dense          rep 1  PASS             logLik -1783.304079  arbiter -1783.304079  rel_diff -3.8e-16  route_diff 5.1e-07  max|z| 1.06  
+   mme_sparse         rep 1  PASS             logLik -1783.304079  arbiter -1783.304079  rel_diff -3.8e-16  route_diff 5.1e-07  max|z| 1.06  
+   mme_hybrid         rep 1  PASS             logLik -1783.304079  arbiter -1783.304079  rel_diff -2.6e-16  route_diff 5.1e-07  max|z| 1.06  
+      g[1,1]                 true    0.3600  estimate    0.4457  se   0.1005  z   0.85
+      g[2,1]                 true    0.2400  estimate    0.1826  se   0.0613  z  -0.94
+      g[2,2]                 true    0.3200  estimate    0.2517  se   0.0642  z  -1.06
+      g[3,1]                 true   -0.1800  estimate   -0.1734  se   0.0511  z   0.13
+      g[3,2]                 true    0.0000  estimate   -0.0103  se   0.0413  z  -0.25
+      g[3,3]                 true    0.1800  estimate    0.2093  se   0.0510  z   0.57
+      fam[1,1]               true    0.2500  estimate    0.3690  se   0.1351  z   0.88
+      fam[2,1]               true   -0.2000  estimate   -0.2709  se   0.0807  z  -0.88
+      fam[2,2]               true    0.1600  estimate    0.1989  se       NA  z     NA
+      fam[3,1]               true    0.1500  estimate    0.1927  se   0.0628  z   0.68
+      fam[3,2]               true   -0.1200  estimate   -0.1414  se       NA  z     NA
+      fam[3,3]               true    0.0900  estimate    0.1006  se       NA  z     NA
+      residual[1,1]          true    1.0000  estimate    1.0010  se   0.0857  z   0.01
+      residual[2,1]          true    0.3000  estimate    0.2927  se   0.0554  z  -0.13
+      residual[2,2]          true    0.8000  estimate    0.7433  se   0.0627  z  -0.90
+      residual[3,1]          true    0.2000  estimate    0.1829  se   0.0476  z  -0.36
+      residual[3,2]          true   -0.1000  estimate   -0.1204  se   0.0400  z  -0.51
+      residual[3,3]          true    0.6000  estimate    0.5698  se   0.0477  z  -0.63
+== iid_one_term  [simple terms]  one random factor, unbalanced group sizes
+   lbfgsb             rep 1  PASS             logLik -738.881925  arbiter -738.881925  rel_diff -3.5e-15  route_diff 0.0e+00  max|z| 1.33  
+   ai                 rep 1  PASS             logLik -738.881925  arbiter -738.881925  rel_diff 0.0e+00  route_diff 6.5e-11  max|z| 1.33  
+   mme                rep 1  PASS             logLik -738.881925  arbiter -738.881925  rel_diff -1.2e-15  route_diff 6.5e-11  max|z| 1.33  
+   mme_sparse         rep 1  PASS             logLik -738.881925  arbiter -738.881925  rel_diff -7.7e-16  route_diff 6.5e-11  max|z| 1.33  
+      g                      true    0.6000  estimate    0.4568  se   0.1076  z  -1.33
+      residual               true    1.0000  estimate    0.9828  se   0.0672  z  -0.26
+== iid_two_crossed_terms  [simple terms]  genotype x environment crossed, 8 % of cells missing
+   lbfgsb             rep 1  PASS             logLik -837.891502  arbiter -837.891502  rel_diff 0.0e+00  route_diff 0.0e+00  max|z| 0.86  
+   ai                 rep 1  PASS             logLik -837.891502  arbiter -837.891502  rel_diff 0.0e+00  route_diff 4.8e-08  max|z| 0.86  
+   mme                rep 1  PASS             logLik -837.891502  arbiter -837.891502  rel_diff -2.7e-16  route_diff 4.8e-08  max|z| 0.86  
+   mme_sparse         rep 1  PASS             logLik -837.891502  arbiter -837.891502  rel_diff 0.0e+00  route_diff 4.8e-08  max|z| 0.86  
+      g                      true    0.5000  estimate    0.5245  se   0.1234  z   0.20
+      env                    true    0.8000  estimate    0.7195  se   0.3157  z  -0.25
+      residual               true    1.0000  estimate    0.9479  se   0.0605  z  -0.86
+== kinship_grm_dense  [kinship]  VanRaden GRM (rx_grm, blending 0.05), 200 genotypes x 3 replicates
+   lbfgsb             rep 1  PASS             logLik -720.518236  arbiter -720.518236  rel_diff -4.7e-16  route_diff 0.0e+00  max|z| 0.68  
+   ai                 rep 1  PASS             logLik -720.518236  arbiter -720.518236  rel_diff -1.6e-16  route_diff 7.6e-08  max|z| 0.68  
+   mme                rep 1  PASS             logLik -720.518236  arbiter -720.518236  rel_diff 3.2e-16  route_diff 7.6e-08  max|z| 0.68  
+   mme_sparse         rep 1  PASS             logLik -720.518236  arbiter -720.518236  rel_diff 7.9e-16  route_diff 7.6e-08  max|z| 0.68  
+      g                      true    0.5000  estimate    0.4892  se   0.0713  z  -0.15
+      residual               true    0.5000  estimate    0.4767  se   0.0343  z  -0.68
+== kinship_pedigree_kinv  [kinship]  animal model, 500 individuals over 3 generations; A^-1 by Henderson (R function, asreml::ainverse not used); Kinv alone: MME engine (AI and L-BFGS-B); rx_fit on the same model with dense K = A
+   lbfgsb             rep 1  PASS             logLik -657.592314  arbiter -657.592314  rel_diff -1.7e-16  route_diff 0.0e+00  max|z| 0.72  
+   ai                 rep 1  PASS             logLik -657.592315  arbiter -657.592315  rel_diff 0.0e+00  route_diff 4.2e-07  max|z| 0.72  
+   mme@sparse         rep 1  PASS             logLik -657.592315  arbiter -657.592315  rel_diff 5.2e-16  route_diff 4.2e-07  max|z| 0.72  
+   mme_sparse@sparse  rep 1  PASS             logLik -657.592315  arbiter -657.592315  rel_diff 1.7e-16  route_diff 4.2e-07  max|z| 0.72  
+   mme_lbfgsb@sparse  rep 1  PASS             logLik -657.592314  arbiter -657.592314  rel_diff 3.5e-16  route_diff 0.0e+00  max|z| 0.72  
+      a                      true    0.5000  estimate    0.4307  se   0.0961  z  -0.72
+      residual               true    0.5000  estimate    0.4821  se   0.0651  z  -0.27
+== mt_g_diag_r_diag  [multi-trait]  3 traits, 120 genotypes x 3 plants, 5 % missing
+   lbfgsb             rep 1  PASS             logLik -1495.845575  arbiter -1495.845575  rel_diff -4.6e-16  route_diff 0.0e+00  max|z| 2.02  
+   ai                 rep 1  PASS             logLik -1495.845575  arbiter -1495.845575  rel_diff 4.6e-16  route_diff 6.0e-11  max|z| 2.02  
+   mme                rep 1  PASS             logLik -1495.845575  arbiter -1495.845575  rel_diff 9.1e-16  route_diff 5.9e-11  max|z| 2.02  
+   mme_sparse         rep 1  PASS             logLik -1495.845575  arbiter -1495.845575  rel_diff 6.1e-16  route_diff 5.9e-11  max|z| 2.02  
+      g[1,1]                 true    0.5000  estimate    0.3535  se   0.1000  z  -1.47
+      g[2,2]                 true    0.8000  estimate    0.6027  se   0.1215  z  -1.62
+      g[3,3]                 true    0.3000  estimate    0.3381  se   0.0692  z   0.55
+      residual[1,1]          true    1.0000  estimate    1.0233  se   0.0977  z   0.24
+      residual[2,2]          true    0.7000  estimate    0.8660  se   0.0822  z   2.02
+      residual[3,3]          true    0.5000  estimate    0.5241  se   0.0492  z   0.49
+== mt_g_us_r_us  [multi-trait]  genetic Sigma us, residual us between traits of the same plant
+   lbfgsb             rep 1  PASS             logLik -1462.218505  arbiter -1462.218505  rel_diff 3.1e-16  route_diff 0.0e+00  max|z| 2.15  
+   ai                 rep 1  PASS             logLik -1462.218505  arbiter -1462.218505  rel_diff 0.0e+00  route_diff 7.2e-10  max|z| 2.15  
+   mme                rep 1  PASS             logLik -1462.218505  arbiter -1462.218505  rel_diff -3.1e-16  route_diff 2.9e-07  max|z| 2.15  
+   mme_sparse         rep 1  PASS             logLik -1462.218505  arbiter -1462.218505  rel_diff -4.7e-16  route_diff 1.6e-09  max|z| 2.15  
+      g[1,1]                 true    0.6000  estimate    0.7297  se   0.1437  z   0.90
+      g[2,1]                 true    0.2000  estimate    0.2949  se   0.0918  z   1.03
+      g[2,2]                 true    0.5000  estimate    0.4909  se   0.0999  z  -0.09
+      g[3,1]                 true   -0.1500  estimate   -0.1205  se   0.0766  z   0.38
+      g[3,2]                 true    0.1000  estimate    0.0803  se   0.0648  z  -0.30
+      g[3,3]                 true    0.4000  estimate    0.4254  se   0.0813  z   0.31
+      residual[1,1]          true    1.0000  estimate    0.9805  se   0.0932  z  -0.21
+      residual[2,1]          true    0.3000  estimate    0.2576  se   0.0608  z  -0.70
+      residual[2,2]          true    0.8000  estimate    0.7280  se   0.0704  z  -1.02
+      residual[3,1]          true    0.2000  estimate    0.2441  se   0.0517  z   0.85
+      residual[3,2]          true   -0.1000  estimate   -0.0089  se   0.0424  z   2.15
+      residual[3,3]          true    0.6000  estimate    0.5484  se   0.0511  z  -1.01
+== mt_g_corh  [multi-trait]  heterogeneous variances, uniform correlation 0.4
+   lbfgsb             rep 1  PASS             logLik -1455.732123  arbiter -1455.732123  rel_diff 3.1e-16  route_diff 0.0e+00  max|z| 0.97  
+   ai                 rep 1  PASS             logLik -1455.732123  arbiter -1455.732123  rel_diff 0.0e+00  route_diff 1.1e-08  max|z| 0.97  
+   mme                rep 1  PASS             logLik -1455.732123  arbiter -1455.732123  rel_diff -6.2e-16  route_diff 1.1e-08  max|z| 0.97  
+   mme_sparse         rep 1  PASS             logLik -1455.732123  arbiter -1455.732123  rel_diff -4.7e-16  route_diff 1.1e-08  max|z| 0.97  
+      g[1,1]                 true    0.6400  estimate    0.6444  se   0.1256  z   0.04
+      g[2,1]                 true    0.1920  estimate    0.2029  se   0.0533  z   0.20
+      g[2,2]                 true    0.3600  estimate    0.3532  se   0.0770  z  -0.09
+      g[3,1]                 true    0.2240  estimate    0.2606  se   0.0677  z   0.54
+      g[3,2]                 true    0.1680  estimate    0.1929  se   0.0507  z   0.49
+      g[3,3]                 true    0.4900  estimate    0.5828  se   0.1073  z   0.86
+      residual[1,1]          true    0.8000  estimate    0.7929  se   0.0752  z  -0.09
+      residual[2,2]          true    0.6000  estimate    0.6234  se   0.0590  z   0.40
+      residual[3,3]          true    0.7000  estimate    0.6410  se   0.0611  z  -0.97
+== residual_ar1xar1  [residuals]  complete 30 x 20 field, residual = ~ ar1(row):ar1(col)
+   lbfgsb             rep 1  PASS             logLik -749.055049  arbiter -749.055049  rel_diff -1.5e-16  route_diff 0.0e+00  max|z| 1.78  
+   ai                 rep 1  PASS             logLik -749.055049  arbiter -749.055049  rel_diff -3.0e-16  route_diff 7.6e-09  max|z| 1.78  
+   mme                rep 1  PASS             logLik -749.055049  arbiter -749.055049  rel_diff 0.0e+00  route_diff 7.6e-09  max|z| 1.78  
+   mme_sparse         rep 1  PASS             logLik -749.055049  arbiter -749.055049  rel_diff -3.0e-16  route_diff 7.6e-09  max|z| 1.78  
+      g                      true    0.4000  estimate    0.4035  se   0.0645  z   0.05
+      residual               true    1.0000  estimate    1.0320  se   0.1008  z   0.32
+      residual!ar1ar11       true    0.6000  estimate    0.6329  se   0.0346  z   0.95
+      residual!ar1ar12       true    0.4000  estimate    0.4723  se   0.0407  z   1.78
+== residual_ar1xar1_missing  [residuals]  5 % of cells missing from the 30 x 20 field
+   lbfgsb             rep 1  PASS             logLik -749.780475  arbiter -749.780475  rel_diff 0.0e+00  route_diff 0.0e+00  max|z| 1.39  
+   ai                 rep 1  PASS             logLik -749.780476  arbiter -749.780476  rel_diff 1.5e-16  route_diff 1.5e-07  max|z| 1.39  
+   mme                rep 1  PASS             logLik -749.780476  arbiter -749.780476  rel_diff 1.5e-16  route_diff 1.5e-07  max|z| 1.39  
+   mme_sparse         rep 1  PASS             logLik -749.780476  arbiter -749.780476  rel_diff -1.5e-16  route_diff 1.5e-07  max|z| 1.39  
+      g                      true    0.4000  estimate    0.4344  se   0.0717  z   0.48
+      residual               true    1.0000  estimate    1.1104  se   0.1119  z   0.99
+      residual!ar1ar11       true    0.6000  estimate    0.6471  se   0.0339  z   1.39
+      residual!ar1ar12       true    0.4000  estimate    0.4013  se   0.0450  z   0.03
+== dsum_ar1xar1_and_iid  [residuals]  two sites, dsum(~ ar1(row):ar1(col) + units | site): different structures
+   lbfgsb             rep 1  PASS             logLik -760.034035  arbiter -760.034035  rel_diff 0.0e+00  route_diff 0.0e+00  max|z| 0.85  
+   ai                 rep 1  PASS             logLik -760.034036  arbiter -760.034036  rel_diff -7.5e-16  route_diff 1.5e-07  max|z| 0.85  
+   mme                rep 1  PASS             logLik -760.034036  arbiter -760.034036  rel_diff -3.0e-16  route_diff 1.5e-07  max|z| 0.85  
+   mme_sparse         rep 1  PASS             logLik -760.034036  arbiter -760.034036  rel_diff -3.0e-16  route_diff 1.5e-07  max|z| 0.85  
+      g                      true    0.5000  estimate    0.5407  se   0.0885  z   0.46
+      A                      true    1.0000  estimate    0.9083  se   0.1074  z  -0.85
+      A!ar1ar11              true    0.5000  estimate    0.4785  se   0.0576  z  -0.37
+      A!ar1ar12              true    0.3000  estimate    0.3536  se   0.0641  z   0.84
+      B                      true    0.6000  estimate    0.5962  se   0.0599  z  -0.06
+== dsum_iid_heterogeneous  [residuals]  iid residual specific to each site, dsum(~ units | site)
+   lbfgsb             rep 1  PASS             logLik -776.650760  arbiter -776.650760  rel_diff 1.5e-16  route_diff 0.0e+00  max|z| 1.19  
+   ai                 rep 1  PASS             logLik -776.650760  arbiter -776.650760  rel_diff 0.0e+00  route_diff 1.5e-08  max|z| 1.19  
+   mme                rep 1  PASS             logLik -776.650760  arbiter -776.650760  rel_diff 0.0e+00  route_diff 1.5e-08  max|z| 1.19  
+   mme_sparse         rep 1  PASS             logLik -776.650760  arbiter -776.650760  rel_diff 0.0e+00  route_diff 1.5e-08  max|z| 1.19  
+      g                      true    0.5000  estimate    0.6389  se   0.1165  z   1.19
+      A                      true    1.0000  estimate    1.0183  se   0.0900  z   0.20
+      B                      true    0.4000  estimate    0.4436  se   0.0453  z   0.96
+== residual_none_plant_term  [residuals]  residual none, the us plant term carries the residual; twin with residual us(trait):units
+   lbfgsb             rep 1  PASS             logLik -837.557066  arbiter -837.557066  rel_diff -2.7e-16  route_diff 0.0e+00  max|z| 2.11  
+   ai                 rep 1  PASS             logLik -837.557066  arbiter -837.557066  rel_diff -8.1e-16  route_diff 1.2e-09  max|z| 2.11  
+   mme                rep 1  PASS             logLik -837.557066  arbiter -837.557066  rel_diff -8.1e-16  route_diff 1.2e-09  max|z| 2.11  
+   lbfgsb@twin        rep 1  PASS             logLik -837.557066  arbiter -837.557066  rel_diff 6.8e-16  route_diff 0.0e+00  max|z| 2.11  
+   mme@twin           rep 1  PASS             logLik -837.557066  arbiter -837.557066  rel_diff -5.4e-16  route_diff 2.6e-08  max|z| 2.11  
+      g[1,1]                 true    0.5000  estimate    0.3148  se   0.0883  z  -2.10
+      g[2,1]                 true    0.1500  estimate    0.0945  se   0.0630  z  -0.88
+      g[2,2]                 true    0.4000  estimate    0.2535  se   0.0788  z  -1.86
+      plant[1,1]             true    1.0000  estimate    0.8258  se   0.0826  z  -2.11
+      plant[2,1]             true    0.3500  estimate    0.3366  se   0.0623  z  -0.22
+      plant[2,2]             true    0.8000  estimate    0.8038  se   0.0804  z   0.05
+== levels_ar1  [structures between levels]  transect of 100 plots x 4 subsamples, ar1 term
+   lbfgsb             rep 1  PASS             logLik -498.991063  arbiter -498.991063  rel_diff 0.0e+00  route_diff 0.0e+00  max|z| 1.47  
+   ai                 rep 1  PASS             logLik -498.991063  arbiter -498.991063  rel_diff 0.0e+00  route_diff 2.4e-08  max|z| 1.47  
+   mme                rep 1  PASS             logLik -498.991063  arbiter -498.991063  rel_diff 9.1e-16  route_diff 2.4e-08  max|z| 1.47  
+   mme_sparse         rep 1  PASS             logLik -498.991063  arbiter -498.991063  rel_diff 6.8e-16  route_diff 2.4e-08  max|z| 1.47  
+      plot                   true    1.0000  estimate    0.8174  se   0.1763  z  -1.04
+      plot!ar1               true    0.7000  estimate    0.5568  se   0.0971  z  -1.47
+      residual               true    0.5000  estimate    0.4467  se   0.0364  z  -1.47
+== levels_ar1xar1_field  [structures between levels]  ar1 x ar1 random field on 20 x 25 cells, with nugget and genotype
+   lbfgsb             rep 1  PASS             logLik -730.961091  arbiter -730.961091  rel_diff 0.0e+00  route_diff 0.0e+00  max|z| 1.79  
+   ai                 rep 1  PASS             logLik -730.961092  arbiter -730.961092  rel_diff -1.6e-16  route_diff 8.8e-08  max|z| 1.79  
+   mme                rep 1  PASS             logLik -730.961092  arbiter -730.961092  rel_diff -4.7e-16  route_diff 8.8e-08  max|z| 1.79  
+   mme_sparse         rep 1  PASS             logLik -730.961092  arbiter -730.961092  rel_diff -7.8e-16  route_diff 8.8e-08  max|z| 1.79  
+   mme_lbfgsb         rep 1  PASS             logLik -730.961091  arbiter -730.961091  rel_diff 0.0e+00  route_diff 0.0e+00  max|z| 1.79  
+      g                      true    0.4000  estimate    0.3085  se   0.0651  z  -1.41
+      field                  true    0.8000  estimate    0.9347  se   0.1369  z   0.98
+      field!ar1ar11          true    0.6000  estimate    0.5945  se   0.0693  z  -0.08
+      field!ar1ar12          true    0.4000  estimate    0.2524  se   0.0827  z  -1.79
+      residual               true    0.3000  estimate    0.2202  se   0.1010  z  -0.79
+== levels_cor_ge  [structures between levels]  60 genotypes x 4 environments x 2 reps, uniform correlation between environments
+   lbfgsb             rep 1  PASS             logLik -673.123994  arbiter -673.123994  rel_diff 0.0e+00  route_diff 0.0e+00  max|z| 1.57  
+   ai                 rep 1  PASS             logLik -673.123994  arbiter -673.123994  rel_diff 0.0e+00  route_diff 2.7e-12  max|z| 1.57  
+   mme                rep 1  PASS             logLik -673.123994  arbiter -673.123994  rel_diff 1.7e-16  route_diff 2.6e-12  max|z| 1.57  
+   mme_sparse         rep 1  PASS             logLik -673.123994  arbiter -673.123994  rel_diff 0.0e+00  route_diff 2.7e-12  max|z| 1.57  
+      ge[1,1]                true    0.8000  estimate    0.9064  se   0.1416  z   0.75
+      ge!cor                 true    0.5000  estimate    0.6197  se   0.0764  z   1.57
+      residual               true    0.5000  estimate    0.5149  se   0.0470  z   0.32
+== metric_exp  [structures between levels]  exp, 1D, 150 positions x 3 obs
+   lbfgsb             rep 1  PASS             logLik -503.338064  arbiter -503.338064  rel_diff 1.3e-11  route_diff 0.0e+00  max|z| 1.24  
+   ai                 rep 1  PASS             logLik -503.338064  arbiter -503.338064  rel_diff 1.3e-11  route_diff 1.8e-08  max|z| 1.24  
+   mme                rep 1  PASS             logLik -503.338064  arbiter -503.338064  rel_diff 1.3e-11  route_diff 1.8e-08  max|z| 1.24  
+   mme_sparse         rep 1  PASS             logLik -503.338064  arbiter -503.338064  rel_diff 1.3e-11  route_diff 1.8e-08  max|z| 1.24  
+      s                      true    1.0000  estimate    0.7925  se   0.3024  z  -0.69
+      s!exp                  true    0.8500  estimate    0.7093  se   0.1136  z  -1.24
+      residual               true    0.4000  estimate    0.4063  se   0.0316  z   0.20
+== metric_gau  [structures between levels]  gau, 1D, 150 positions x 3 obs
+   lbfgsb             rep 1  PASS             logLik -457.309038  arbiter -457.309038  rel_diff 3.6e-12  route_diff 0.0e+00  max|z| 1.37  
+   ai                 rep 1  PASS             logLik -457.309038  arbiter -457.309038  rel_diff 3.6e-12  route_diff 2.9e-09  max|z| 1.37  
+   mme                rep 1  PASS             logLik -457.309038  arbiter -457.309038  rel_diff 3.6e-12  route_diff 2.9e-09  max|z| 1.37  
+   mme_sparse         rep 1  PASS             logLik -457.309038  arbiter -457.309038  rel_diff 3.6e-12  route_diff 2.9e-09  max|z| 1.37  
+      s                      true    1.0000  estimate    0.7269  se   0.3449  z  -0.79
+      s!gau                  true    0.9700  estimate    0.9508  se   0.0139  z  -1.37
+      residual               true    0.4000  estimate    0.3956  se   0.0269  z  -0.16
+== metric_lvr  [structures between levels]  lvr, 1D, 150 positions x 3 obs
+   lbfgsb             rep 1  PASS             logLik -487.724066  arbiter -487.724066  rel_diff 2.7e-12  route_diff 0.0e+00  max|z| 0.78  
+   ai                 rep 1  PASS             logLik -487.724066  arbiter -487.724066  rel_diff 2.7e-12  route_diff 1.8e-08  max|z| 0.78  
+   mme                rep 1  PASS             logLik -487.724066  arbiter -487.724066  rel_diff 2.7e-12  route_diff 1.8e-08  max|z| 0.78  
+   mme_sparse         rep 1  PASS             logLik -487.724066  arbiter -487.724066  rel_diff 2.7e-12  route_diff 1.8e-08  max|z| 0.78  
+      s                      true    1.0000  estimate    1.1500  se   0.3128  z   0.48
+      s!lvr                  true    8.0000  estimate    8.0172  se   0.0222  z   0.78
+      residual               true    0.4000  estimate    0.4048  se   0.0298  z   0.16
+== metric_iexp  [structures between levels]  iexp, 2D, 150 positions x 3 obs
+   lbfgsb             rep 1  PASS             logLik -522.817220  arbiter -522.817220  rel_diff -1.3e-12  route_diff 0.0e+00  max|z| 1.48  
+   ai                 rep 1  PASS             logLik -522.817220  arbiter -522.817220  rel_diff -1.3e-12  route_diff 4.7e-07  max|z| 1.48  
+   mme                rep 1  PASS             logLik -522.817220  arbiter -522.817220  rel_diff -1.3e-12  route_diff 4.7e-07  max|z| 1.48  
+   mme_sparse         rep 1  PASS             logLik -522.817220  arbiter -522.817220  rel_diff -1.3e-12  route_diff 4.7e-07  max|z| 1.48  
+      s                      true    1.0000  estimate    1.4550  se   0.7701  z   0.59
+      s!iexp                 true    0.7000  estimate    0.8251  se   0.0844  z   1.48
+      residual               true    0.4000  estimate    0.3675  se   0.0296  z  -1.10
+== metric_igau  [structures between levels]  igau, 2D, 150 positions x 3 obs
+   lbfgsb             rep 1  PASS             logLik -476.663658  arbiter -476.663658  rel_diff -1.7e-12  route_diff 0.0e+00  max|z| 0.80  
+   ai                 rep 1  PASS             logLik -476.663658  arbiter -476.663658  rel_diff -1.7e-12  route_diff 4.8e-08  max|z| 0.80  
+   mme                rep 1  PASS             logLik -476.663658  arbiter -476.663658  rel_diff -1.7e-12  route_diff 4.8e-08  max|z| 0.80  
+   mme_sparse         rep 1  PASS             logLik -476.663658  arbiter -476.663658  rel_diff -1.7e-12  route_diff 4.8e-08  max|z| 0.80  
+      s                      true    1.0000  estimate    0.8492  se   0.2615  z  -0.58
+      s!igau                 true    0.9000  estimate    0.8991  se   0.0190  z  -0.05
+      residual               true    0.4000  estimate    0.3783  se   0.0272  z  -0.80
+== metric_ieuc  [structures between levels]  ieuc, 2D, 150 positions x 3 obs
+   lbfgsb             rep 1  PASS             logLik -514.833526  arbiter -514.833526  rel_diff 3.2e-13  route_diff 0.0e+00  max|z| 1.32  
+   ai                 rep 1  PASS             logLik -514.833526  arbiter -514.833526  rel_diff 3.2e-13  route_diff 7.8e-08  max|z| 1.32  
+   mme                rep 1  PASS             logLik -514.833526  arbiter -514.833526  rel_diff 3.2e-13  route_diff 7.8e-08  max|z| 1.32  
+   mme_sparse         rep 1  PASS             logLik -514.833526  arbiter -514.833526  rel_diff 3.2e-13  route_diff 7.8e-08  max|z| 1.32  
+      s                      true    1.0000  estimate    0.7180  se   0.2140  z  -1.32
+      s!ieuc                 true    0.7000  estimate    0.6474  se   0.1091  z  -0.48
+      residual               true    0.4000  estimate    0.3675  se   0.0299  z  -1.09
+== metric_sph  [structures between levels]  sph, 2D, 150 positions x 3 obs
+   lbfgsb             rep 1  PASS             logLik -518.929284  arbiter -518.929284  rel_diff 5.4e-12  route_diff 0.0e+00  max|z| 2.26  
+   ai                 rep 1  PASS             logLik -518.929284  arbiter -518.929284  rel_diff 5.4e-12  route_diff 6.6e-10  max|z| 2.26  
+   mme                rep 1  PASS             logLik -518.929284  arbiter -518.929284  rel_diff 5.4e-12  route_diff 6.6e-10  max|z| 2.26  
+   mme_sparse         rep 1  PASS             logLik -518.929284  arbiter -518.929284  rel_diff 5.4e-12  route_diff 6.6e-10  max|z| 2.26  
+      s                      true    1.0000  estimate    0.6672  se   0.1469  z  -2.26
+      s!sph                  true    5.0000  estimate    4.5111  se   0.5225  z  -0.94
+      residual               true    0.4000  estimate    0.3932  se   0.0318  z  -0.21
+== metric_cir  [structures between levels]  cir, 2D, 150 positions x 3 obs
+   lbfgsb             rep 1  PASS             logLik -512.581379  arbiter -512.581379  rel_diff -1.6e-12  route_diff 0.0e+00  max|z| 2.89  
+   ai                 rep 1  PASS             logLik -512.581379  arbiter -512.581379  rel_diff -1.6e-12  route_diff 7.5e-11  max|z| 2.89  
+   mme                rep 1  PASS             logLik -512.581379  arbiter -512.581379  rel_diff -1.6e-12  route_diff 7.5e-11  max|z| 2.89  
+   mme_sparse         rep 1  PASS             logLik -512.581379  arbiter -512.581379  rel_diff -1.6e-12  route_diff 7.5e-11  max|z| 2.89  
+      s                      true    1.0000  estimate    0.8222  se   0.1483  z  -1.20
+      s!cir                  true    5.0000  estimate    4.5848  se   0.1436  z  -2.89
+      residual               true    0.4000  estimate    0.3782  se   0.0295  z  -0.74
+== metric_aexp  [structures between levels]  aexp, 2D, 150 positions x 3 obs
+   lbfgsb             rep 1  PASS             logLik -547.964780  arbiter -547.964780  rel_diff -2.9e-12  route_diff 0.0e+00  max|z| 1.06  
+   ai                 rep 1  PASS             logLik -547.964780  arbiter -547.964780  rel_diff -2.9e-12  route_diff 6.5e-07  max|z| 1.06  
+   mme                rep 1  PASS             logLik -547.964780  arbiter -547.964780  rel_diff -2.9e-12  route_diff 6.5e-07  max|z| 1.06  
+   mme_sparse         rep 1  PASS             logLik -547.964780  arbiter -547.964780  rel_diff -2.9e-12  route_diff 6.5e-07  max|z| 1.06  
+      s                      true    1.0000  estimate    1.2339  se   0.4608  z   0.51
+      s!aexp1                true    0.6000  estimate    0.6151  se   0.1435  z   0.11
+      s!aexp2                true    0.8000  estimate    0.8597  se   0.0561  z   1.06
+      residual               true    0.4000  estimate    0.4040  se   0.0324  z   0.13
+== metric_agau  [structures between levels]  agau, 2D, 150 positions x 3 obs
+   lbfgsb             rep 1  PASS             logLik -501.114551  arbiter -501.114551  rel_diff -3.0e-12  route_diff 0.0e+00  max|z| 1.66  
+   ai                 rep 1  PASS             logLik -501.114551  arbiter -501.114551  rel_diff -3.0e-12  route_diff 2.4e-08  max|z| 1.66  
+   mme                rep 1  PASS             logLik -501.114551  arbiter -501.114551  rel_diff -3.0e-12  route_diff 2.4e-08  max|z| 1.66  
+   mme_sparse         rep 1  PASS             logLik -501.114551  arbiter -501.114551  rel_diff -3.0e-12  route_diff 2.4e-08  max|z| 1.66  
+      s                      true    1.0000  estimate    1.0988  se   0.3906  z   0.25
+      s!agau1                true    0.8500  estimate    0.8553  se   0.0362  z   0.15
+      s!agau2                true    0.9300  estimate    0.9535  se   0.0141  z   1.66
+      residual               true    0.4000  estimate    0.4290  se   0.0306  z   0.95
+== metric_mtrn  [structures between levels]  mtrn, 2D, 150 positions x 3 obs, nu fixed at 1.5
+   lbfgsb             rep 1  PASS             logLik -530.152909  arbiter -530.152909  rel_diff 2.7e-12  route_diff 0.0e+00  max|z| 1.91  
+   ai                 rep 1  PASS             logLik -530.152910  arbiter -530.152910  rel_diff 2.7e-12  route_diff 1.5e-07  max|z| 1.91  
+   mme                rep 1  PASS             logLik -530.152910  arbiter -530.152910  rel_diff 2.7e-12  route_diff 1.5e-07  max|z| 1.91  
+   mme_sparse         rep 1  PASS             logLik -530.152910  arbiter -530.152910  rel_diff 2.6e-12  route_diff 1.5e-07  max|z| 1.91  
+      s                      true    1.0000  estimate    0.8597  se   0.2239  z  -0.63
+      s!mtrn                 true    1.5000  estimate    1.1076  se   0.2059  z  -1.91
+      residual               true    0.4000  estimate    0.4210  se   0.0337  z   0.62
+== ige_univariate_one_species  [DGE / IGE]  monoculture 30 x 20, 120 genotypes x 5, DGE iid + IGE iid (rank 1, L2)
+   lbfgsb             rep 1  PASS             logLik -791.742633  arbiter -791.742633  rel_diff 1.4e-16  route_diff 0.0e+00  max|z| 0.98  
+   ai                 rep 1  PASS             logLik -791.742633  arbiter -791.742633  rel_diff -2.3e-15  route_diff 3.9e-10  max|z| 0.98  
+   mme                rep 1  PASS             logLik -791.742633  arbiter -791.742633  rel_diff -3.6e-15  route_diff 3.9e-10  max|z| 0.98  
+   mme_sparse         rep 1  PASS             logLik -791.742633  arbiter -791.742633  rel_diff 2.6e-15  route_diff 3.9e-10  max|z| 0.98  
+      dge                    true    0.3000  estimate    0.2506  se   0.0503  z  -0.98
+      ige                    true    0.0800  estimate    0.0630  se   0.0282  z  -0.60
+      residual               true    0.6000  estimate    0.6111  se   0.0439  z   0.25
+== boundary_us_rank1_t4  [boundary cases]  genetic Sigma us of rank 1, residual us: optimum on the boundary of the cone
+   lbfgsb             rep 1  PASS             logLik -1976.407761  arbiter -1976.407761  rel_diff 1.2e-16  route_diff 0.0e+00  max|z| 1.76  
+   ai                 rep 1  PASS             logLik -1976.407761  arbiter -1976.407761  rel_diff -2.3e-16  route_diff 4.5e-08  max|z| 1.76  
+   mme                rep 1  PASS             logLik -1976.407761  arbiter -1976.407761  rel_diff 5.8e-16  route_diff 2.3e-08  max|z| 1.76  
+   mme_dense          rep 1  PASS             logLik -1976.407761  arbiter -1976.407761  rel_diff 5.8e-16  route_diff 2.3e-08  max|z| 1.76  
+   mme_sparse         rep 1  PASS             logLik -1976.407761  arbiter -1976.407761  rel_diff 4.6e-16  route_diff 1.9e-08  max|z| 1.76  
+   mme_hybrid         rep 1  PASS             logLik -1976.407761  arbiter -1976.407761  rel_diff -3.5e-16  route_diff 1.9e-08  max|z| 1.76  
+      g[1,1]                 true    0.4900  estimate    0.5100  se   0.1163  z   0.17
+      g[2,1]                 true    0.3500  estimate    0.3026  se   0.0760  z  -0.62
+      g[2,2]                 true    0.2500  estimate    0.2153  se   0.0770  z  -0.45
+      g[3,1]                 true   -0.2800  estimate   -0.2233  se   0.0609  z   0.93
+      g[3,2]                 true   -0.2000  estimate   -0.1150  se   0.0506  z   1.68
+      g[3,3]                 true    0.1600  estimate    0.1412  se   0.0649  z  -0.29
+      g[4,1]                 true    0.4200  estimate    0.4130  se   0.0854  z  -0.08
+      g[4,2]                 true    0.3000  estimate    0.2318  se   0.0651  z  -1.05
+      g[4,3]                 true   -0.2400  estimate   -0.1555  se   0.0564  z   1.50
+      g[4,4]                 true    0.3600  estimate    0.3685  se   0.0914  z   0.09
+      residual[1,1]          true    1.0000  estimate    1.0983  se   0.0975  z   1.01
+      residual[2,1]          true    0.2500  estimate    0.2660  se   0.0694  z   0.23
+      residual[2,2]          true    1.0000  estimate    0.9558  se   0.0899  z  -0.49
+      residual[3,1]          true    0.2500  estimate    0.2317  se   0.0665  z  -0.28
+      residual[3,2]          true    0.2500  estimate    0.2644  se   0.0660  z   0.22
+      residual[3,3]          true    1.0000  estimate    0.9292  se   0.0859  z  -0.82
+      residual[4,1]          true    0.2500  estimate    0.1905  se   0.0656  z  -0.91
+      residual[4,2]          true    0.2500  estimate    0.2086  se   0.0630  z  -0.66
+      residual[4,3]          true    0.2500  estimate    0.2167  se   0.0615  z  -0.54
+      residual[4,4]          true    1.0000  estimate    0.8584  se   0.0804  z  -1.76
+== boundary_us_correlation_097  [boundary cases]  us(3) of full rank but genetic correlations of 0.97: ill-conditioned interior
+   lbfgsb             rep 1  PASS             logLik -1395.009031  arbiter -1395.009031  rel_diff -6.5e-16  route_diff 0.0e+00  max|z| 1.23  
+   ai                 rep 1  PASS             logLik -1395.009031  arbiter -1395.009031  rel_diff 3.3e-16  route_diff 2.5e-07  max|z| 1.23  
+   mme                rep 1  PASS             logLik -1395.009031  arbiter -1395.009031  rel_diff 8.1e-16  route_diff 6.4e-08  max|z| 1.23  
+   mme_dense          rep 1  PASS             logLik -1395.009031  arbiter -1395.009031  rel_diff 8.1e-16  route_diff 6.4e-08  max|z| 1.23  
+   mme_sparse         rep 1  PASS             logLik -1395.009031  arbiter -1395.009031  rel_diff 0.0e+00  route_diff 8.2e-08  max|z| 1.23  
+   mme_hybrid         rep 1  PASS             logLik -1395.009031  arbiter -1395.009031  rel_diff -4.9e-16  route_diff 5.3e-07  max|z| 1.23  
+      g[1,1]                 true    0.6400  estimate    0.5266  se   0.1085  z  -1.05
+      g[2,1]                 true    0.4656  estimate    0.4134  se   0.0839  z  -0.62
+      g[2,2]                 true    0.3600  estimate    0.3591  se   0.0879  z  -0.01
+      g[3,1]                 true    0.5432  estimate    0.5346  se   0.0913  z  -0.09
+      g[3,2]                 true    0.4074  estimate    0.3936  se   0.0745  z  -0.19
+      g[3,3]                 true    0.4900  estimate    0.5627  se       NA  z     NA
+      residual[1,1]          true    1.0000  estimate    0.9304  se   0.0801  z  -0.87
+      residual[2,1]          true    0.3000  estimate    0.2804  se   0.0603  z  -0.32
+      residual[2,2]          true    0.8000  estimate    0.8247  se   0.0776  z   0.32
+      residual[3,1]          true    0.2000  estimate    0.1430  se   0.0474  z  -1.20
+      residual[3,2]          true   -0.1000  estimate   -0.0564  se   0.0468  z   0.93
+      residual[3,3]          true    0.6000  estimate    0.5371  se   0.0510  z  -1.23
+== boundary_fa1_psi_zero  [boundary cases]  fa rank 1, zero specific variance for trait 2 (Heywood case)
+   lbfgsb             rep 1  PASS             logLik -1802.403675  arbiter -1802.403675  rel_diff -2.5e-16  route_diff 0.0e+00  max|z| 1.64  
+   ai                 rep 1  PASS             logLik -1802.403675  arbiter -1802.403675  rel_diff 5.0e-16  route_diff 3.1e-08  max|z| 1.64  
+   mme                rep 1  PASS             logLik -1802.403675  arbiter -1802.403675  rel_diff -1.3e-15  route_diff 1.2e-07  max|z| 1.64  
+   mme_dense          rep 1  PASS             logLik -1802.403675  arbiter -1802.403675  rel_diff -1.3e-15  route_diff 1.2e-07  max|z| 1.64  
+   mme_sparse         rep 1  PASS             logLik -1802.403675  arbiter -1802.403675  rel_diff -3.8e-16  route_diff 1.2e-07  max|z| 1.64  
+   mme_hybrid         rep 1  PASS             logLik -1802.403675  arbiter -1802.403675  rel_diff -1.4e-15  route_diff 1.2e-07  max|z| 1.64  
+      g[1,1]                 true    0.6900  estimate    0.7001  se   0.1238  z   0.08
+      g[2,1]                 true    0.3500  estimate    0.3485  se   0.0679  z  -0.02
+      g[2,2]                 true    0.2500  estimate    0.2777  se       NA  z     NA
+      g[3,1]                 true   -0.2800  estimate   -0.3196  se   0.0734  z  -0.54
+      g[3,2]                 true   -0.2000  estimate   -0.2547  se   0.0559  z  -0.98
+      g[3,3]                 true    0.4100  estimate    0.5215  se   0.0980  z   1.14
+      g[4,1]                 true    0.4200  estimate    0.3861  se   0.0787  z  -0.43
+      g[4,2]                 true    0.3000  estimate    0.3078  se   0.0588  z   0.13
+      g[4,3]                 true   -0.2400  estimate   -0.2822  se   0.0666  z  -0.63
+      g[4,4]                 true    0.5100  estimate    0.5533  se   0.0931  z   0.46
+      residual[1,1]          true    0.8000  estimate    0.6931  se   0.0650  z  -1.64
+      residual[2,2]          true    0.6000  estimate    0.5570  se   0.0486  z  -0.89
+      residual[3,3]          true    0.7000  estimate    0.6301  se   0.0591  z  -1.18
+      residual[4,4]          true    0.5000  estimate    0.4390  se   0.0418  z  -1.46
+== boundary_rr2_true_rank1  [boundary cases]  rr rank 2 fitted, truth of rank 1 without specific variance
+   lbfgsb             rep 1  PASS             logLik -1771.055581  arbiter -1771.055581  rel_diff -2.4e-15  route_diff 0.0e+00  max|z| 0.61  
+   ai                 rep 1  PASS             logLik -1771.055582  arbiter -1771.055582  rel_diff 1.3e-16  route_diff 2.0e-07  max|z| 0.61  
+   mme                rep 1  PASS             logLik -1771.055582  arbiter -1771.055582  rel_diff 1.3e-16  route_diff 2.0e-07  max|z| 0.61  
+   mme_dense          rep 1  PASS             logLik -1771.055582  arbiter -1771.055582  rel_diff 1.3e-16  route_diff 2.0e-07  max|z| 0.61  
+   mme_sparse         rep 1  PASS             logLik -1771.055582  arbiter -1771.055582  rel_diff 1.3e-16  route_diff 2.0e-07  max|z| 0.61  
+   mme_hybrid         rep 1  PASS             logLik -1771.055582  arbiter -1771.055582  rel_diff 1.3e-16  route_diff 2.0e-07  max|z| 0.61  
+      g[1,1]                 true    0.4900  estimate    0.5524  se   0.1112  z   0.56
+      g[2,1]                 true    0.3500  estimate    0.3453  se   0.0625  z  -0.07
+      g[2,2]                 true    0.2500  estimate    0.2172  se   0.0534  z  -0.61
+      g[3,1]                 true   -0.2100  estimate   -0.2257  se   0.0501  z  -0.31
+      g[3,2]                 true   -0.1500  estimate   -0.1437  se   0.0328  z   0.19
+      g[3,3]                 true    0.0900  estimate    0.0972  se   0.0326  z   0.22
+      g[4,1]                 true    0.4200  estimate    0.4162  se   0.0746  z  -0.05
+      g[4,2]                 true    0.3000  estimate    0.2712  se   0.0530  z  -0.54
+      g[4,3]                 true   -0.1800  estimate   -0.1914  se   0.0428  z  -0.27
+      g[4,4]                 true    0.3600  estimate    0.4050  se   0.0766  z   0.59
+      residual[1,1]          true    0.8000  estimate    0.8098  se   0.0753  z   0.13
+      residual[2,2]          true    0.6000  estimate    0.6204  se   0.0525  z   0.39
+      residual[3,3]          true    0.7000  estimate    0.7020  se   0.0546  z   0.04
+      residual[4,4]          true    0.5000  estimate    0.4809  se   0.0460  z  -0.42
+== boundary_diag_zero_variance  [boundary cases]  genetic diag, zero variance for trait 2
+   lbfgsb             rep 1  PASS             logLik -1383.495060  arbiter -1383.495060  rel_diff 6.6e-16  route_diff 0.0e+00  max|z| 0.78  
+   ai                 rep 1  PASS             logLik -1383.495060  arbiter -1383.495060  rel_diff 1.6e-16  route_diff 4.2e-11  max|z| 0.78  
+   mme                rep 1  PASS             logLik -1383.495060  arbiter -1383.495060  rel_diff 9.9e-16  route_diff 3.4e-07  max|z| 0.78  
+   mme_dense          rep 1  PASS             logLik -1383.495060  arbiter -1383.495060  rel_diff 9.9e-16  route_diff 3.4e-07  max|z| 0.78  
+   mme_sparse         rep 1  PASS             logLik -1383.495060  arbiter -1383.495060  rel_diff 1.5e-15  route_diff 3.4e-07  max|z| 0.78  
+   mme_hybrid         rep 1  PASS             logLik -1383.495060  arbiter -1383.495060  rel_diff 1.5e-15  route_diff 3.4e-07  max|z| 0.78  
+      g[1,1]                 true    0.5000  estimate    0.5778  se   0.1271  z   0.61
+      g[2,2]                 true    0.0000  estimate    0.0000  se       NA  z     NA
+      g[3,3]                 true    0.3000  estimate    0.2613  se   0.0579  z  -0.67
+      residual[1,1]          true    1.0000  estimate    1.0149  se   0.0955  z   0.16
+      residual[2,2]          true    0.7000  estimate    0.6813  se   0.0522  z  -0.36
+      residual[3,3]          true    0.5000  estimate    0.4652  se   0.0448  z  -0.78
+== boundary_iid_zero_variance  [boundary cases]  one random factor of zero true variance
+   lbfgsb             rep 1  PASS             logLik -702.058100  arbiter -702.058100  rel_diff -2.1e-15  route_diff 0.0e+00  max|z| 0.31  
+   ai                 rep 1  PASS             logLik -702.058100  arbiter -702.058100  rel_diff 1.2e-14  route_diff 3.4e-09  max|z| 0.31  
+   mme                rep 1  PASS             logLik -702.058100  arbiter -702.058100  rel_diff -5.2e-15  route_diff 4.5e-08  max|z| 0.31  
+   mme_dense          rep 1  PASS             logLik -702.058100  arbiter -702.058100  rel_diff -5.2e-15  route_diff 4.5e-08  max|z| 0.31  
+   mme_sparse         rep 1  PASS             logLik -702.058100  arbiter -702.058100  rel_diff -4.9e-15  route_diff 4.5e-08  max|z| 0.31  
+   mme_hybrid         rep 1  PASS             logLik -702.058100  arbiter -702.058100  rel_diff -5.0e-15  route_diff 4.5e-08  max|z| 0.31  
+      g                      true    0.0000  estimate    0.0000  se       NA  z     NA
+      residual               true    1.0000  estimate    1.0201  se   0.0654  z   0.31
+== boundary_ar1_rho_097  [boundary cases]  ar1 term on a transect of 100 plots, rho = 0.97
+   lbfgsb             rep 1  FAIL             logLik -456.794349  arbiter -456.794349  rel_diff 5.0e-10  route_diff 0.0e+00  max|z| 41313.93  1 component(s) with |z| >= 3
+   ai                 rep 1  FAIL             logLik -456.794803  arbiter -456.794803  rel_diff -4.3e-13  route_diff 4.5e-04  max|z| 41.44  optimum lower by 4.54e-04; convergence not established; 1 component(s) with |z| >= 3
+   mme                rep 1  FAIL             logLik -456.794803  arbiter -456.794803  rel_diff 1.7e-11  route_diff 4.5e-04  max|z| 40.94  optimum lower by 4.54e-04; convergence not established; 1 component(s) with |z| >= 3
+   mme_dense          rep 1  FAIL             logLik -456.794803  arbiter -456.794803  rel_diff 1.7e-11  route_diff 4.5e-04  max|z| 40.94  optimum lower by 4.54e-04; convergence not established; 1 component(s) with |z| >= 3
+   mme_sparse         rep 1  FAIL             logLik -456.794803  arbiter -456.794803  rel_diff 1.9e-11  route_diff 4.5e-04  max|z| 41.76  optimum lower by 4.54e-04; convergence not established; 1 component(s) with |z| >= 3
+   mme_hybrid         rep 1  FAIL             logLik -456.794803  arbiter -456.794803  rel_diff 1.6e-11  route_diff 4.5e-04  max|z| 41.76  optimum lower by 4.54e-04; convergence not established; 1 component(s) with |z| >= 3
+      plot                   true    1.0000  estimate 2322345.6501  se 151565122.3421  z   0.02
+      plot!ar1               true    0.9700  estimate    1.0000  se   0.0000  z 41313.93
+      residual               true    0.5000  estimate    0.4913  se   0.0383  z  -0.23
+== boundary_ar1_rho_negative  [boundary cases]  ar1 term on a transect of 100 plots, rho = -0.6
+   lbfgsb             rep 1  PASS             logLik -549.929285  arbiter -549.929285  rel_diff 0.0e+00  route_diff 0.0e+00  max|z| 1.53  
+   ai                 rep 1  PASS             logLik -549.929285  arbiter -549.929285  rel_diff -2.1e-16  route_diff 1.1e-07  max|z| 1.53  
+   mme                rep 1  PASS             logLik -549.929285  arbiter -549.929285  rel_diff 0.0e+00  route_diff 1.1e-07  max|z| 1.53  
+   mme_dense          rep 1  PASS             logLik -549.929285  arbiter -549.929285  rel_diff 0.0e+00  route_diff 1.1e-07  max|z| 1.53  
+   mme_sparse         rep 1  PASS             logLik -549.929285  arbiter -549.929285  rel_diff 0.0e+00  route_diff 1.1e-07  max|z| 1.53  
+   mme_hybrid         rep 1  PASS             logLik -549.929285  arbiter -549.929285  rel_diff 2.1e-16  route_diff 1.1e-07  max|z| 1.53  
+      plot                   true    1.0000  estimate    1.1161  se   0.2389  z   0.49
+      plot!ar1               true   -0.6000  estimate   -0.5874  se   0.0909  z   0.14
+      residual               true    0.5000  estimate    0.5712  se   0.0467  z   1.53
+== boundary_residual_ar1xar1_strong  [boundary cases]  residual ar1(row):ar1(col) with rho = 0.95 and 0.90 on a 30 x 20 field
+   lbfgsb             rep 1  PASS             logLik -12.826338  arbiter -12.826338  rel_diff 4.3e-14  route_diff 0.0e+00  max|z| 2.06  
+   ai                 rep 1  PASS             logLik -12.826338  arbiter -12.826338  rel_diff -4.1e-14  route_diff 1.3e-07  max|z| 2.06  
+   mme                rep 1  PASS             logLik -12.826338  arbiter -12.826338  rel_diff 2.0e-13  route_diff 1.3e-07  max|z| 2.06  
+   mme_dense          rep 1  PASS             logLik -12.826338  arbiter -12.826338  rel_diff 2.0e-13  route_diff 1.3e-07  max|z| 2.06  
+   mme_sparse         rep 1  PASS             logLik -12.826338  arbiter -12.826338  rel_diff 3.0e-13  route_diff 1.3e-07  max|z| 2.06  
+   mme_hybrid         rep 1  PASS             logLik -12.826338  arbiter -12.826338  rel_diff 1.3e-12  route_diff 1.3e-07  max|z| 2.06  
+      g                      true    0.4000  estimate    0.5658  se   0.0806  z   2.06
+      residual               true    1.0000  estimate    0.6922  se   0.1652  z  -1.86
+      residual!ar1ar11       true    0.9500  estimate    0.9350  se   0.0131  z  -1.15
+      residual!ar1ar12       true    0.9000  estimate    0.8842  se   0.0170  z  -0.93
+== boundary_cor_097  [boundary cases]  uniform correlation of 0.97 between 4 environments
+   lbfgsb             rep 1  PASS             logLik -596.400304  arbiter -596.400304  rel_diff -7.7e-12  route_diff 1.9e-05  max|z| 0.99  
+   ai                 rep 1  PASS             logLik -596.400304  arbiter -596.400304  rel_diff -7.7e-12  route_diff 1.9e-05  max|z| 0.99  
+   mme                rep 1  FAIL             logLik -596.400301  arbiter -596.400304  rel_diff 5.3e-09  route_diff 1.6e-05  max|z| 2899263.47  1 component(s) with |z| >= 3
+   mme_dense          rep 1  FAIL             logLik -596.400301  arbiter -596.400304  rel_diff 5.3e-09  route_diff 1.6e-05  max|z| 2899263.47  1 component(s) with |z| >= 3
+   mme_sparse         rep 1  FAIL             logLik -596.400304  arbiter -596.400305  rel_diff 1.1e-09  route_diff 1.9e-05  max|z| 130310.96  1 component(s) with |z| >= 3
+   mme_hybrid         rep 1  FAIL             logLik -596.400285  arbiter -596.400304  rel_diff 3.1e-08  route_diff 0.0e+00  max|z| 0.99  logLik != arbiter (rel diff 3.13e-08)
+      ge[1,1]                true    0.8000  estimate    0.9917  se   0.1938  z   0.99
+      ge!cor                 true    0.9700  estimate    1.0000  se       NA  z     NA
+      residual               true    0.5000  estimate    0.4837  se   0.0335  z  -0.49
+== boundary_ige_zero  [boundary cases]  monoculture 30 x 20, DGE iid + IGE iid of zero true variance
+   lbfgsb             rep 1  PASS             logLik -798.830096  arbiter -798.830096  rel_diff -7.1e-16  route_diff 0.0e+00  max|z| 1.80  
+   ai                 rep 1  PASS             logLik -798.830096  arbiter -798.830096  rel_diff 1.4e-15  route_diff 9.0e-09  max|z| 1.80  
+   mme                rep 1  PASS             logLik -798.830096  arbiter -798.830096  rel_diff -1.1e-15  route_diff 9.0e-09  max|z| 1.80  
+   mme_dense          rep 1  PASS             logLik -798.830096  arbiter -798.830096  rel_diff -1.1e-15  route_diff 9.0e-09  max|z| 1.80  
+   mme_sparse         rep 1  PASS             logLik -798.830096  arbiter -798.830096  rel_diff -4.3e-15  route_diff 9.0e-09  max|z| 1.80  
+   mme_hybrid         rep 1  PASS             logLik -798.830096  arbiter -798.830096  rel_diff -1.6e-15  route_diff 9.0e-09  max|z| 1.80  
+      dge                    true    0.3000  estimate    0.2156  se   0.0469  z  -1.80
+      ige                    true    0.0000  estimate    0.0148  se   0.0217  z   0.68
+      residual               true    0.6000  estimate    0.6790  se   0.0482  z   1.64
+== boundary_scale_1e3  [boundary cases]  genotype x environment crossed, 12 environments, y on scale 1000
+   lbfgsb             rep 1  PASS             logLik -4689.782712  arbiter -4689.782712  rel_diff 1.9e-16  route_diff 0.0e+00  max|z| 1.54  
+   ai                 rep 1  PASS             logLik -4689.782712  arbiter -4689.782712  rel_diff 1.9e-16  route_diff 5.0e-08  max|z| 1.54  
+   mme                rep 1  PASS             logLik -4689.782712  arbiter -4689.782712  rel_diff 1.9e-16  route_diff 5.0e-08  max|z| 1.54  
+   mme_dense          rep 1  PASS             logLik -4689.782712  arbiter -4689.782712  rel_diff 1.9e-16  route_diff 5.0e-08  max|z| 1.54  
+   mme_sparse         rep 1  PASS             logLik -4689.782712  arbiter -4689.782712  rel_diff 1.9e-16  route_diff 5.0e-08  max|z| 1.54  
+   mme_hybrid         rep 1  PASS             logLik -4689.782712  arbiter -4689.782712  rel_diff 1.9e-16  route_diff 5.0e-08  max|z| 1.54  
+      g                      true 500000.0000  estimate 725131.0223  se 166885.6042  z   1.35
+      env                    true 800000.0000  estimate 696158.1290  se 307227.9251  z  -0.34
+      residual               true 1000000.0000  estimate 1108918.9852  se 70762.1121  z   1.54
+== boundary_scale_1em3  [boundary cases]  genotype x environment crossed, 12 environments, y on scale 0.001
+   lbfgsb             rep 1  PASS             logLik 2975.223197  arbiter 2975.223197  rel_diff 3.1e-16  route_diff 0.0e+00  max|z| 1.69  
+   ai                 rep 1  PASS             logLik 2975.223197  arbiter 2975.223197  rel_diff 1.5e-16  route_diff 2.4e-10  max|z| 1.69  
+   mme                rep 1  PASS             logLik 2975.223197  arbiter 2975.223197  rel_diff 0.0e+00  route_diff 2.5e-10  max|z| 1.69  
+   mme_dense          rep 1  PASS             logLik 2975.223197  arbiter 2975.223197  rel_diff 0.0e+00  route_diff 2.5e-10  max|z| 1.69  
+   mme_sparse         rep 1  PASS             logLik 2975.223197  arbiter 2975.223197  rel_diff 0.0e+00  route_diff 2.5e-10  max|z| 1.69  
+   mme_hybrid         rep 1  PASS             logLik 2975.223197  arbiter 2975.223197  rel_diff 0.0e+00  route_diff 2.5e-10  max|z| 1.69  
+      g                      true    0.0000  estimate    0.0000  se   0.0000  z  -1.69
+      env                    true    0.0000  estimate    0.0000  se   0.0000  z  -1.56
+      residual               true    0.0000  estimate    0.0000  se   0.0000  z  -0.63
+== boundary_term_4_levels  [boundary cases]  genotype x environment crossed, 4 environments, y on scale 1
+   lbfgsb             rep 1  PASS             logLik -292.909081  arbiter -292.909081  rel_diff 1.9e-16  route_diff 0.0e+00  max|z| 0.93  
+   ai                 rep 1  PASS             logLik -292.909081  arbiter -292.909081  rel_diff 1.9e-16  route_diff 2.9e-11  max|z| 0.93  
+   mme                rep 1  PASS             logLik -292.909081  arbiter -292.909081  rel_diff -5.8e-16  route_diff 2.9e-11  max|z| 0.93  
+   mme_dense          rep 1  PASS             logLik -292.909081  arbiter -292.909081  rel_diff -5.8e-16  route_diff 2.9e-11  max|z| 0.93  
+   mme_sparse         rep 1  PASS             logLik -292.909081  arbiter -292.909081  rel_diff -1.6e-15  route_diff 3.0e-11  max|z| 0.93  
+   mme_hybrid         rep 1  PASS             logLik -292.909081  arbiter -292.909081  rel_diff -5.8e-16  route_diff 2.9e-11  max|z| 0.93  
+      g                      true    0.5000  estimate    0.3761  se   0.1338  z  -0.93
+      env                    true    0.8000  estimate    2.5283  se   2.0828  z   0.83
+      residual               true    1.0000  estimate    1.0308  se   0.1263  z   0.24
