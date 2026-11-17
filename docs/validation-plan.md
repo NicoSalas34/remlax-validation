@@ -14,9 +14,9 @@ the row says so.
 |---|---|---|
 | Internal algebra is self-consistent | `tests/python/test_remlax_core.py` | 25 checks, passing |
 | No configuration crashes or yields a non-PSD covariance | `tests/python/stress_remlax.py` | 150 random configurations, passing |
-| Agrees with `lme4` and `sommer` where their models overlap | `tests/R/test_remlax.R` | 31 checks, passing |
-| Agrees with `asreml`, including Kenward–Roger against `pbkrtest` | `tests/R/test_remlax_asreml.R` | 50 checks, passing |
-| Recovers known truth on the full indirect-effects model | `tests/R/test_remlax_ige.R` | 11 checks, passing |
+| Agrees with `lme4` and `sommer` where their models overlap | `correctness/reference_software/suites/test_remlax.R` | 31 checks, passing |
+| Agrees with `asreml`, including Kenward–Roger against `pbkrtest` | `correctness/reference_software/suites/test_remlax_asreml.R` | 50 checks, passing |
+| Recovers known truth on the full indirect-effects model | `correctness/reference_software/suites/test_remlax_ige.R` | 11 checks, passing |
 | CPU and GPU give the same answer | `tests/python/parite_gpu.py` | 34 checks, max relative gap 6.4e-15 |
 
 ## 2. The sparse engine computes the *same* REML
@@ -31,10 +31,10 @@ can leave the parameter estimates correct.
 
 | Claim | Why it can fail silently | Evidence |
 |---|---|---|
-| The parameterisation is read identically by both engines | A permuted or rescaled θ gives a plausible fit at the wrong point | `tests/R/test_remlax_tmb_parity.R`: 30 checks, including K⁻¹K = I by product rather than by inspecting the sparsity pattern |
+| The parameterisation is read identically by both engines | A permuted or rescaled θ gives a plausible fit at the wrong point | `correctness/reference_software/suites/test_remlax_tmb_parity.R`: 30 checks, including K⁻¹K = I by product rather than by inspecting the sparsity pattern |
 | The closed-form sparse precisions really invert the dense correlations | A tridiagonal matrix can look right and not be the inverse | same file |
-| Both engines evaluate the same function | Comparing two optima only shows where each stopped | `tests/R/test_remlax_tmb_vs_dense.R`: 16 checks, warm start in BOTH directions |
-| A term declared by its precision gives the same likelihood as the same term declared by its relationship matrix | A missing constant shifts the likelihood without touching the gradient | `tests/R/test_remlax_tmb_prec.R`: 9 checks, arbitrated by an independent dense-algebra REML |
+| Both engines evaluate the same function | Comparing two optima only shows where each stopped | `correctness/reference_software/suites/test_remlax_tmb_vs_dense.R`: 16 checks, warm start in BOTH directions |
+| A term declared by its precision gives the same likelihood as the same term declared by its relationship matrix | A missing constant shifts the likelihood without touching the gradient | `correctness/reference_software/suites/test_remlax_tmb_prec.R`: 9 checks, arbitrated by an independent dense-algebra REML |
 
 Three defects were found this way, and two of them were in code that had already
 passed a test on estimates:
@@ -88,7 +88,7 @@ engine. The declared scope excludes it on principle, since a genomic relationshi
 matrix has a full inverse. Forcing it is the quantitative answer to "why not
 use sparse everywhere". It is reachable through the `Kinv` slot.
 
-Produced by `benchmarks/bench_engines.R`. Two measurement traps it handles
+Produced by `benchmarks/bench_engines.R` (September 2026, kept in the git tag `archive/2026-11-17`). Two measurement traps it handles
 explicitly:
 
 - **Out-of-process cost.** The dense engine is invoked through a CLI, so every

@@ -1,0 +1,47 @@
+{
+ "versions": {
+  "R": {
+   "cluster": "4.6.0"
+  },
+  "nlme": {
+   "cluster": "3.1.169"
+  },
+  "lme4": {
+   "cluster": "2.0.1"
+  },
+  "sommer": {
+   "cluster": "4.4.5"
+  },
+  "asreml": {
+   "cluster": "4.2.0.480"
+  },
+  "pbkrtest": {
+   "cluster": "0.5.5"
+  },
+  "jax": {
+   "cluster": "0.11.1"
+  }
+ },
+ "logs": {
+  "01_core.log": "correctness/reference_software/latest/2026-11-04_remlax-3bfae58/logs/01_core.log",
+  "00_pytest.log": "correctness/reference_software/latest/2026-11-04_remlax-3bfae58/logs/00_pytest.log",
+  "02_stress_s0.log": "correctness/reference_software/latest/2026-11-04_remlax-3bfae58/logs/02_stress_s0.log",
+  "02_stress_s50.log": "correctness/reference_software/latest/2026-11-04_remlax-3bfae58/logs/02_stress_s50.log",
+  "02_stress_s100.log": "correctness/reference_software/latest/2026-11-04_remlax-3bfae58/logs/02_stress_s100.log",
+  "03_lme4_sommer.log": "correctness/reference_software/latest/2026-11-04_remlax-3bfae58/logs/03_lme4_sommer.log",
+  "07_nlme.log": "correctness/reference_software/latest/2026-11-04_remlax-3bfae58/logs/07_nlme.log",
+  "08_lme4_extra.log": "correctness/reference_software/latest/2026-11-04_remlax-3bfae58/logs/08_lme4_extra.log",
+  "09_sommer_extra.log": "correctness/reference_software/latest/2026-11-04_remlax-3bfae58/logs/09_sommer_extra.log",
+  "04_asreml.log": "correctness/reference_software/latest/2026-11-04_remlax-3bfae58/logs/04_asreml.log",
+  "05_asreml2.log": "correctness/reference_software/latest/2026-11-04_remlax-3bfae58/logs/05_asreml2.log",
+  "15_asreml3.log": "correctness/reference_software/latest/2026-11-04_remlax-3bfae58/logs/15_asreml3.log",
+  "06b_asreml_blup.log": "correctness/reference_software/latest/2026-11-04_remlax-3bfae58/logs/06b_asreml_blup.log",
+  "06_ige.log": "correctness/reference_software/latest/2026-11-04_remlax-3bfae58/logs/06_ige.log",
+  "21_parite.log": "correctness/reference_software/latest/2026-11-04_remlax-3bfae58/logs/21_parite.log"
+ },
+ "missing": [
+  "10_tmb_parity.log",
+  "11_tmb_vs_dense.log",
+  "12_tmb_prec.log"
+ ]
+}

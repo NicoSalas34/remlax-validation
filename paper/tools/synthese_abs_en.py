@@ -1,8 +1,8 @@
-"""Figures of the paper: banc_kmmr/absolu/synthese_abs.py with its figure
+"""Figures of the paper: speed/absolute/scripts/summarise.py with its figure
 titles removed and the figure file names that remlax.tex includes
 (fig_temps_n, fig_temps_p, fig_temps_C, fig_regle). The data logic is the same.
 
-    python3 tools/synthese_abs_en.py ../banc_kmmr/absolu/resultats <output folder>
+    python3 tools/synthese_abs_en.py ../speed/absolute/latest/2026-11-04_remlax-v14/inputs <output folder>
 
 The CSV folder holds abs_cpu.csv, abs_gpu.csv (genotoul), abs_meso.csv (meso),
 their *_timeouts.csv and *_timings.csv companions, and axes.csv (grille.py).

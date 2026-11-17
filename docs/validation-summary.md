@@ -3,14 +3,14 @@
 One page for the reader who wants to know whether remlax computes the same
 restricted likelihood as the programs they already trust. The full table of
 checks, one row per printed verdict, is in [validation.md](validation.md); the
-numbers below are read from the same CSV (`validation/results/checks_2026-10-30.csv`)
-and from the benchmark CSVs under `benchmarks/results/`.
+numbers below are read from the same CSV (`correctness/reference_software/latest/2026-11-04_remlax-3bfae58/checks.csv`).
 
-Revision tested: remlax `6dbada5`, the first revision with an English
-interface and the fix of the anisotropic Matern gradient, on 2026-10-30. Reference software: asreml 4.2.0.480, lme4 2.0.1,
+Revision tested: remlax `3bfae58` (version 0.2.0.9000), on 2026-11-04. Reference software: asreml 4.2.0.480, lme4 2.0.1,
 sommer 4.4.5, nlme 3.1.169, pbkrtest 0.5.5 and R 4.6.0 inside the cluster
-image `ige_reml_v3.sif` with JAX 0.11.1. `campaign/prepare.sh` launched the
-campaign; its logs are in `validation/results/logs_2026-10-30/`.
+image `ige_reml_v3.sif` with JAX 0.11.1. `cluster/validation_campaign/prepare.sh` launched the
+campaign; its logs are in `correctness/reference_software/latest/2026-11-04_remlax-3bfae58/logs/`. The campaign of 2026-10-30 on
+remlax `6dbada5` gave the same verdicts; it is kept in the git tag
+`archive/2026-11-17` (see [history.md](history.md)).
 
 **Result: 381 checks, 365 passed, 16 failed** (399 checks, 387 passed, in the
 2026-09-28 table, which still counted the suites of the RTMB engine since
@@ -64,122 +64,27 @@ and the GPU backend today (see below).
 
 ## Figure
 
-![remlax against the references](../validation/results/fig_validation.png)
+![remlax against the references](../correctness/reference_software/latest/2026-11-04_remlax-3bfae58/fig_validation.png)
 
-Left: every (remlax, reference) pair that a check line prints, 219 pairs,
+Left: every (remlax, reference) pair that a check line prints, 221 pairs,
 one colour per reference program, symlog axes. Right: |logLik gap| at the
 optimum for the 66 checks that print both log-likelihoods; zeros are drawn at
 1e-13. The points above 1e-5 are ma2, sph and cir against asreml, at the two
 programs' own optima and, for sph and cir, remlax evaluated at asreml's
 parameters (see Limits); the point at 4.3e-5 is rr(1), remlax being the higher. The pairs are listed in
-`validation/results/pairs_2026-09-28.csv`. Largest gaps per reference, read
+`correctness/reference_software/latest/2026-11-04_remlax-3bfae58/pairs.csv`. Largest gaps per reference, read
 from that file: asreml 4.3e-5 on logLik and 2e-2 on a null spline component
 (3.8e-11 vs 2.5e-10) once ma2, sph, cir and the boundary IGE model are set
 aside; lme4 0 on -2logL to 9 decimals; sommer 9.6e-5 on components (at its
 default tolerance) and 2e-9 tightened; nlme 9e-9 on -2logL and 3e-6 on
 parameters.
 
-## Speed at equal model
+## Speed
 
-Benchmark `benchmarks/bench_vs_reference.R`, cluster node AMD EPYC 9654, one
-job of 4 cores, everything inside `ige_reml.sif`. Wall time is the full call
-(for remlax: Python start-up, XLA compilation and the fit); `solver s` is the
-time remlax itself reports; evaluations are what each program counts (remlax:
-likelihood-and-gradient evaluations; asreml and sommer: average-information
-iterations; lme4: bobyqa function evaluations). Same data, same model, and the
-optimum was checked on every row (`benchmarks/summarise_bench.py`): the
-logLik gap between remlax and asreml is 0 to 9 decimals on iid, grm and us3 at
-both sizes and on us6 at n = 1998; it is +7e-6 on us6 at n = 498, +3e-6 on
-ar1ar1 at n = 2000 and +2.8e-5 on ar1ar1 at n = 500, remlax's value being the
-higher one in each case, which is within asreml's stopping rule.
-
-| case | n | remlax CPU 4 cores: wall s (solver s, evals) | remlax A100: wall s (solver s, evals) | asreml wall s (iters) | lme4 wall s | sommer wall s |
-|---|---|---|---|---|---|---|
-| iid | 500 | 9.2 (0.6, 27) | 11.2 (0.06, 24) | 4.1 (6) | 0.07 | 0.56 |
-| grm | 500 | 29.0 (23.1, 56) | 8.2 (0.15, 67) | 4.0 (6) | - | 0.38 |
-| us3 | 498 | 7.7 (2.2, 89) | 8.6 (0.21, 89) | 4.0 (17) | - | 0.77 |
-| us6 | 498 | 14.2 (10.0, 331) | 8.9 (0.74, 330) | 3.9 (47) | - | 2.7 |
-| ar1ar1 | 500 | 5.4 (0.8, 37) | 7.8 (0.10, 39) | 3.8 (8) | - | - |
-| iid | 2000 | 105.8 (91.0, 24) | 7.6 (0.41, 24) | 3.8 (6) | 0.02 | 6.6 |
-| grm | 2000 | 36.8 (24.4, 32) | 13.3 (0.74, 44) | 4.1 (6) | - | 6.5 |
-| us3 | 1998 | 102.5 (96.5, 89) | 10.1 (1.4, 89) | 3.3 (17) | - | 23.5 |
-| us6 | 1998 | 1395.8 (1383.1, 328) | 13.0 (4.4, 329) | 3.6 (47) | - | 84.0 |
-| ar1ar1 | 2000 | 278.7 (262.5, 41) | 8.3 (0.65, 40) | 4.4 (8) | - | - |
-| iid | 8000 | not measured | 29.7 (10.7, 34) | not measured | | |
-| grm | 8000 | not measured | 332.8 (12.8, 41; 300 s of XLA compilation) | not measured | | |
-| us3 | 7998 | not measured | 78.1 (52.3, 164) | not measured | | |
-| us6 | 7998 | not measured | 68.7 (45.5, 159) | not measured | | |
-| ar1ar1 | 8000 | not measured | 28.1 (11.9, 38) | not measured | | |
-
-GPU rows: one job on the whole A100 80GB (asserted: `nvidia-smi -L` without
-MIG), JAX 0.11.1 with CUDA, same data and models
-(`benchmarks/results/bench_2026-09-28_a100_*.csv`). On the ten models fitted
-on both devices the optimum is the same: largest |logLik gap| between the CPU
-and the GPU fit 1e-6 (values printed to 6 decimals). A remlax evaluation on
-the A100 costs 2 ms at n = 500, 15 ms at n = 2000 and 0.3 s at n = 8000,
-against 20 ms, 4 s and (extrapolated) 4 minutes on 4 CPU cores; the wall time
-of a GPU fit is dominated by Python start-up and XLA compilation (2.5 to 9 s,
-300 s for the GRM at n = 8000, which compiles the dense relationship factor).
-
-Reading. On a 4-core CPU at these sizes remlax is slower than asreml by one
-to two orders of magnitude, and slower than sommer on the models sommer
-expresses; on the whole A100 its solver time is 0.06 to 4.4 s at n <= 2000 and
-11 to 52 s at n = 8000, where asreml at n = 8000 was not measured. The reason is structural, not a defect: remlax evaluates the
-likelihood on the dense n x n covariance V with automatic differentiation,
-about 4 s per evaluation at n = 2000 on 4 cores (a Cholesky of order 2000
-takes 0.07 s on this node, its gradient 0.5 s, and one REML evaluation needs
-several of each), and it needs 25 to 330 evaluations; asreml works on the
-sparse mixed-model equations and needs 6 to 47 iterations. The dense
-formulation is the one that moves to a GPU unchanged, and the GPU rows show
-it: the same fits take 0.4 s (iid) to 4.4 s (us6) of solver time at n = 2000
-on the A100 against 91 to 1383 s on 4 CPU cores, a factor of 200 to 300.
-Where asreml is not available, the honest CPU comparison is: remlax reaches
-the same optimum, in minutes rather than seconds at n = 2000; with a GPU, in
-seconds.
-
-### The complete benchmark: size, model complexity and density (2026-09-28/29)
-
-The table above is the first campaign (five models, n <= 2000 on CPU). The
-complete campaign, `benchmarks/bench_complexite.R`, is written up in
-[benchmarks.md](benchmarks.md) with its tables
-(`benchmarks/results/benchc_2026-09-28_wide.md`) and five figures. Ten models
-from 2 to 157 variance parameters, n = 500 to 16000 (32000 attempted on the
-A100), and a density axis at fixed n where the number of replicates per
-genotype goes from 40 to 1. Three findings.
-
-1. On classical designs asreml is flat in n (5 to 8 s from n = 500 to 16000,
-   even with 157 parameters) because it solves sparse mixed model equations
-   of dimension q x t. remlax factorises the dense n x n matrix V at every
-   evaluation, so its time per evaluation is cubic in n: 0.0026, 0.017, 0.32
-   and 1.7 s on the A100 at n = 500 to 16000. remlax is never faster than
-   asreml on these designs.
-2. Where the problem is dense, many genotypes for few replicates, a dense
-   relationship matrix, weighted neighbourhood incidences, asreml's equations
-   fill in and its cost grows with q while the remlax solver does not see q.
-   On the model of Salas et al. (2026) the A100 is ahead from n = 2000 (13 s against
-   19 s), by a factor 7 at n = 8000 (114 s against 816 s) and 8 at n = 16000
-   (644 s against 5422 s), at the same log-likelihood to 1e-6. On
-   `usK3`/`usK6` at n = 16000 the A100 takes 442/449 s against 547/550 s. At
-   n = 8000 the A100 passes asreml between 200 and 800 genotypes for the
-   model of Salas et al. (2026) and between 2000 and 4000 for a single trait on a GRM.
-3. The costs specific to remlax are the number of evaluations, which grows
-   with the number of variance parameters (thousands on 91 to 157 parameters
-   fitted on small samples), and XLA compilation when the relationship and
-   incidence matrices are captured as constants (300 to 400 s at n = 8000 on
-   `grm`, `usK3`, `usK6`, against 10 to 25 s when the constant is too large to
-   be folded). Passing K and Z as arguments is the fix; the same capture
-   limits the dense formulation to n between 16000 and 32000 on an 80 GB
-   card.
-
-In the benchmark table no remlax fit has a lower log-likelihood than the
-asreml fit it is paired with (119 pairs, smallest gap 0.0). In five cases
-remlax is higher by more than 1e-3 (`ige` 500, `usK6` 2000 with 8
-genotypes, `us9` 500, `us12` 500 and 2000); in four of them asreml had not
-declared convergence at `maxit = 100`. Continued with `update()`
-(`benchmarks/verif_ecarts_asreml.R`), asreml moves toward remlax's value in
-all five and never passes it; on `ige` it reaches it to 4e-8 after 4
-updates; on the other four its log-likelihood is still rising after 40
-updates, including `us9`, where asreml reports convergence throughout.
+Speed is measured apart from correctness, on the latest tested versions of
+remlax only. See [speed/README.md](../speed/README.md). The speed campaigns of
+September 2026 on revision `9a51c79`, summarised here before, are kept in the
+git tag `archive/2026-11-17`.
 
 ## Defects found by this validation, and fixed
 
@@ -227,7 +132,7 @@ deciles at start-up.
   (0.163 vs 0.176, SE 0.35). That is a flat ridge, not a disagreement about
   the likelihood; it is the largest gap in the table and it is expected on a
   boundary.
-- **Where asreml stops, diagnosed (`tests/R/diag_asreml3_ecarts.R`, cluster
+- **Where asreml stops, diagnosed (`correctness/reference_software/suites/diag_asreml3_ecarts.R`, cluster
   log `40_diag_asreml3_ecarts.log`).** The three models where the two programs
   report different log-likelihoods were re-fitted with asreml's convergence
   flag, bound codes and per-iteration trace, then both sets of parameters were
@@ -289,7 +194,7 @@ deciles at start-up.
   stopping point. For ma2 remlax's likelihood is confirmed by the arbiter and
   asreml's parameterisation is the open point.
   The diagnostic log is kept as
-  `validation/results/diag_asreml3_ecarts_2026-09-28.log`. The 12 rows are left as failures because the suite's
+  `correctness/reference_software/latest/2026-11-04_remlax-3bfae58/logs/diag_asreml3_ecarts.log`. The 12 rows are left as failures because the suite's
   criterion is agreement with what asreml reports, and that is what a user
   would see; the diagnosis is the answer to why.
 - **lvr (corLin) is multimodal.** The truncated linear kernel makes the

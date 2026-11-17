@@ -2,8 +2,6 @@ __pycache__/
 *.py[cod]
 .Rhistory
 .RData
-benchmarks/results/scratch/
-benchmarks/figures/scratch/
 paper/*.aux
 paper/*.log
 paper/*.out
@@ -15,4 +13,3 @@ paper/*.fls
 paper/*.fdb_latexmk
 paper/*.pdf
 !paper/figures/*.pdf
-_archive_bancs_20261021/
