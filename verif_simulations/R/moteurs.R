@@ -14,7 +14,9 @@ fit_spec <- function(spec, model, dir) {
   t0 <- Sys.time()
   out <- switch(spec$type,
     rx_fit = {
-      fit <- rx_fit(model, backend = "cpu", verbose = FALSE, optimizer = spec$optimizer, dir = dir)
+      # dense engine, explicitly: the default engine of rx_fit() is "auto" since 2026-11-04
+      fit <- rx_fit(model, backend = "cpu", verbose = FALSE, optimizer = spec$optimizer,
+                    engine = "dense", dir = dir)
       # Verdict of the package: Newton decrement or projected relative gradient,
       # after polishing. scipy_success covers only the L-BFGS-B / AI phase
       # before polishing. It is reported in the detail and decides nothing.
